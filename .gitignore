@@ -1,0 +1,20 @@
+# Python cache/venv
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Trained model artifacts (do not commit)
+*.pkl
+Soccer Predictor/Data/Team_Data/model_cache.pkl
+Soccer Predictor/MLS/Data/Team_Data/model_cache.pkl
+
+# Generated prediction outputs
+Soccer Predictor/Data/Predictions/*.csv
+Soccer Predictor/Data/Predictions/*.json
+Soccer Predictor/MLS/Data/Predictions/*.csv
+Soccer Predictor/MLS/Data/Predictions/*.json
+Soccer Predictor/Website/files/accuracy_history/**/*.csv
+
+# Local api keys
+Soccer Predictor/files/local_api_keys.json

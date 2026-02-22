@@ -1,0 +1,271 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  color: #1b2630;
+  background: linear-gradient(135deg, #e8f2ff 0%, #f6fbff 45%, #e9f7ef 100%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page {
+  max-width: 860px;
+  margin: 40px auto 0;
+  padding: 0 16px 32px;
+  width: 100%;
+  flex: 1;
+}
+
+h1 {
+  margin: 0 0 6px;
+  font-size: 2rem;
+}
+
+.sub {
+  margin: 0 0 18px;
+  color: #3d4b59;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  margin: 0;
+  border: 1px solid #c7d6e5;
+  border-radius: 8px;
+  background: #f7fbff;
+  color: #1b2630;
+  padding: 8px 12px;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.tab-btn.active {
+  background: #0f6fc5;
+  color: #fff;
+  border-color: #0f6fc5;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #d6e2ee;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 14px;
+  box-shadow: 0 8px 24px rgba(21, 60, 94, 0.08);
+}
+
+h3 {
+  margin: 0 0 8px;
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
+h4 {
+  margin: 10px 0 6px;
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+label {
+  display: block;
+  margin: 10px 0 6px;
+  font-weight: 600;
+}
+
+input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #c7d6e5;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+button {
+  margin-top: 14px;
+  border: 0;
+  border-radius: 8px;
+  background: #0f6fc5;
+  color: #fff;
+  padding: 10px 14px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #0b5ea8;
+}
+
+.error {
+  border-color: #efb8b8;
+  background: #fff4f4;
+  color: #7c1d1d;
+}
+
+.hidden {
+  display: none;
+}
+
+.match-row {
+  border: 1px solid #dbe7f2;
+  border-radius: 10px;
+  padding: 8px 10px;
+  margin: 8px 0;
+  background: #fbfdff;
+}
+
+.match-row.match-correct {
+  border-color: #79c38c;
+  background: #eaf8ee;
+}
+
+.match-row.match-wrong {
+  border-color: #e08c8c;
+  background: #fdeeee;
+}
+
+.match-toggle {
+  display: block;
+  width: 100%;
+  text-align: left;
+  margin: 0;
+  padding: 8px 8px 6px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.match-toggle:hover {
+  background: #f3f8ff;
+}
+
+.matchup {
+  font-weight: 800;
+  font-size: 1.15rem;
+  margin-bottom: 4px;
+}
+
+.match-meta {
+  color: #2f3e4d;
+  font-size: 0.95rem;
+}
+
+.winner-line {
+  font-weight: 800;
+}
+
+.match-details {
+  border-top: 1px dashed #d4e1ee;
+  margin-top: 8px;
+  padding: 8px;
+}
+
+.table-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 12px;
+  align-items: center;
+}
+
+select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #c7d6e5;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #fff;
+}
+
+.league-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.league-table th,
+.league-table td {
+  border-bottom: 1px solid #dbe7f2;
+  padding: 8px 6px;
+  text-align: left;
+}
+
+.league-table th {
+  background: #f4f9ff;
+  font-weight: 800;
+}
+
+.league-table tr.table-first td {
+  background: #e7f7ea;
+}
+
+.league-table tr.table-bottom td {
+  background: #fdeaea;
+}
+
+.league-table tr.table-playoff-orange td {
+  background: #fff3df;
+}
+
+.league-table tr.table-promo-blue td {
+  background: #e6f0ff;
+}
+
+.league-table tr.table-playoff-purple td {
+  background: #f1e8ff;
+}
+
+.league-table tr.table-second-pink td {
+  background: #ffe5ef;
+}
+
+.bracket-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.bracket-col h4 {
+  margin-top: 0;
+}
+
+.bracket-conference {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.bracket-round h4 {
+  margin-top: 0;
+}
+
+.bracket-card {
+  border: 1px solid #dbe7f2;
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin: 8px 0;
+  background: #fbfdff;
+}
+
+.bracket-win {
+  margin: 4px 0 10px;
+  font-size: 0.92rem;
+}
+
+.mls-cup-card {
+  margin-top: 12px;
+}
+
+.disclaimer p {
+  margin: 6px 0;
+  color: #394756;
+}

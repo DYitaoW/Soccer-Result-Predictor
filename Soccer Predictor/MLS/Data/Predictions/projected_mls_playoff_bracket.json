@@ -1,0 +1,291 @@
+{
+  "generated_at_utc": "2026-02-22T05:44:44.848666Z",
+  "eastern_seeds": [
+    {
+      "seed": 1,
+      "team": "Inter Miami"
+    },
+    {
+      "seed": 2,
+      "team": "Nashville SC"
+    },
+    {
+      "seed": 3,
+      "team": "New York City"
+    },
+    {
+      "seed": 4,
+      "team": "Chicago Fire"
+    },
+    {
+      "seed": 5,
+      "team": "Philadelphia Union"
+    },
+    {
+      "seed": 6,
+      "team": "New York Red Bulls"
+    },
+    {
+      "seed": 7,
+      "team": "FC Cincinnati"
+    },
+    {
+      "seed": 8,
+      "team": "Columbus Crew"
+    },
+    {
+      "seed": 9,
+      "team": "Charlotte"
+    }
+  ],
+  "western_seeds": [
+    {
+      "seed": 1,
+      "team": "San Diego FC"
+    },
+    {
+      "seed": 2,
+      "team": "Vancouver Whitecaps"
+    },
+    {
+      "seed": 3,
+      "team": "Seattle Sounders"
+    },
+    {
+      "seed": 4,
+      "team": "Los Angeles FC"
+    },
+    {
+      "seed": 5,
+      "team": "Minnesota United"
+    },
+    {
+      "seed": 6,
+      "team": "Portland Timbers"
+    },
+    {
+      "seed": 7,
+      "team": "San Jose Earthquakes"
+    },
+    {
+      "seed": 8,
+      "team": "Austin FC"
+    },
+    {
+      "seed": 9,
+      "team": "Colorado Rapids"
+    }
+  ],
+  "wildcard": {
+    "east": {
+      "home_team": "Columbus Crew",
+      "away_team": "Charlotte",
+      "winner": "Charlotte"
+    },
+    "west": {
+      "home_team": "Austin FC",
+      "away_team": "Colorado Rapids",
+      "winner": "Colorado Rapids"
+    }
+  },
+  "round_one": {
+    "east": {
+      "A": {
+        "high_seed_team": "Inter Miami",
+        "low_seed_team": "Charlotte",
+        "winner": "Charlotte",
+        "games": [
+          {
+            "home": "Inter Miami",
+            "away": "Charlotte",
+            "winner": "Charlotte"
+          },
+          {
+            "home": "Charlotte",
+            "away": "Inter Miami",
+            "winner": "Charlotte"
+          }
+        ]
+      },
+      "B": {
+        "high_seed_team": "Nashville SC",
+        "low_seed_team": "FC Cincinnati",
+        "winner": "FC Cincinnati",
+        "games": [
+          {
+            "home": "Nashville SC",
+            "away": "FC Cincinnati",
+            "winner": "Nashville SC"
+          },
+          {
+            "home": "FC Cincinnati",
+            "away": "Nashville SC",
+            "winner": "FC Cincinnati"
+          },
+          {
+            "home": "Nashville SC",
+            "away": "FC Cincinnati",
+            "winner": "FC Cincinnati"
+          }
+        ]
+      },
+      "C": {
+        "high_seed_team": "New York City",
+        "low_seed_team": "New York Red Bulls",
+        "winner": "New York City",
+        "games": [
+          {
+            "home": "New York City",
+            "away": "New York Red Bulls",
+            "winner": "New York City"
+          },
+          {
+            "home": "New York Red Bulls",
+            "away": "New York City",
+            "winner": "New York City"
+          }
+        ]
+      },
+      "D": {
+        "high_seed_team": "Chicago Fire",
+        "low_seed_team": "Philadelphia Union",
+        "winner": "Philadelphia Union",
+        "games": [
+          {
+            "home": "Chicago Fire",
+            "away": "Philadelphia Union",
+            "winner": "Chicago Fire"
+          },
+          {
+            "home": "Philadelphia Union",
+            "away": "Chicago Fire",
+            "winner": "Philadelphia Union"
+          },
+          {
+            "home": "Chicago Fire",
+            "away": "Philadelphia Union",
+            "winner": "Philadelphia Union"
+          }
+        ]
+      }
+    },
+    "west": {
+      "A": {
+        "high_seed_team": "San Diego FC",
+        "low_seed_team": "Colorado Rapids",
+        "winner": "San Diego FC",
+        "games": [
+          {
+            "home": "San Diego FC",
+            "away": "Colorado Rapids",
+            "winner": "San Diego FC"
+          },
+          {
+            "home": "Colorado Rapids",
+            "away": "San Diego FC",
+            "winner": "San Diego FC"
+          }
+        ]
+      },
+      "B": {
+        "high_seed_team": "Vancouver Whitecaps",
+        "low_seed_team": "San Jose Earthquakes",
+        "winner": "Vancouver Whitecaps",
+        "games": [
+          {
+            "home": "Vancouver Whitecaps",
+            "away": "San Jose Earthquakes",
+            "winner": "Vancouver Whitecaps"
+          },
+          {
+            "home": "San Jose Earthquakes",
+            "away": "Vancouver Whitecaps",
+            "winner": "Vancouver Whitecaps"
+          }
+        ]
+      },
+      "C": {
+        "high_seed_team": "Seattle Sounders",
+        "low_seed_team": "Portland Timbers",
+        "winner": "Portland Timbers",
+        "games": [
+          {
+            "home": "Seattle Sounders",
+            "away": "Portland Timbers",
+            "winner": "Seattle Sounders"
+          },
+          {
+            "home": "Portland Timbers",
+            "away": "Seattle Sounders",
+            "winner": "Portland Timbers"
+          },
+          {
+            "home": "Seattle Sounders",
+            "away": "Portland Timbers",
+            "winner": "Portland Timbers"
+          }
+        ]
+      },
+      "D": {
+        "high_seed_team": "Los Angeles FC",
+        "low_seed_team": "Minnesota United",
+        "winner": "Los Angeles FC",
+        "games": [
+          {
+            "home": "Los Angeles FC",
+            "away": "Minnesota United",
+            "winner": "Los Angeles FC"
+          },
+          {
+            "home": "Minnesota United",
+            "away": "Los Angeles FC",
+            "winner": "Los Angeles FC"
+          }
+        ]
+      }
+    }
+  },
+  "conference_semifinals": {
+    "east": [
+      {
+        "home_team": "Charlotte",
+        "away_team": "Philadelphia Union",
+        "winner": "Charlotte"
+      },
+      {
+        "home_team": "FC Cincinnati",
+        "away_team": "New York City",
+        "winner": "New York City"
+      }
+    ],
+    "west": [
+      {
+        "home_team": "San Diego FC",
+        "away_team": "Los Angeles FC",
+        "winner": "San Diego FC"
+      },
+      {
+        "home_team": "Vancouver Whitecaps",
+        "away_team": "Portland Timbers",
+        "winner": "Vancouver Whitecaps"
+      }
+    ]
+  },
+  "conference_finals": {
+    "east": {
+      "home_team": "Charlotte",
+      "away_team": "New York City",
+      "winner": "Charlotte"
+    },
+    "west": {
+      "home_team": "San Diego FC",
+      "away_team": "Vancouver Whitecaps",
+      "winner": "San Diego FC"
+    }
+  },
+  "mls_cup": {
+    "home_team": "Charlotte",
+    "away_team": "San Diego FC",
+    "winner": "Charlotte"
+  }
+}

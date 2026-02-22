@@ -1,0 +1,944 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Soccer Predictor</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <main class="page">
+    <h1>Soccer Predictor</h1>
+    <p class="sub">Use tabs for predictors, upcoming picks, and projected league tables.</p>
+
+    <div class="tabs">
+      <button id="tab-home" class="tab-btn active" type="button">Home</button>
+      <button id="tab-predictor" class="tab-btn" type="button">Predictor (European Leagues)</button>
+      <button id="tab-global" class="tab-btn" type="button">Upcoming Matches</button>
+      <button id="tab-league-table" class="tab-btn" type="button">League Table</button>
+      <button id="tab-players" class="tab-btn" type="button">Players (Coming Soon)</button>
+      <button id="tab-about" class="tab-btn" type="button">About</button>
+    </div>
+
+    <section id="panel-home">
+      <div class="card">
+        <h3>Welcome</h3>
+        <p>
+          This is your soccer prediction dashboard for European leagues and MLS.
+          Use the tabs to run single-match predictions, review upcoming fixtures, and view projected tables.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Quick Navigation</h3>
+        <p>
+          Start with <strong>Predictor</strong> for one matchup, <strong>Upcoming Matches</strong> for matchweek picks,
+          or <strong>League Table</strong> for season projections.
+        </p>
+      </div>
+    </section>
+
+    <section id="panel-predictor" class="hidden">
+      <div class="tabs">
+        <button id="subtab-predictor-euro" class="tab-btn active" type="button">European</button>
+        <button id="subtab-predictor-mls" class="tab-btn" type="button">MLS</button>
+      </div>
+
+      <section id="predictor-euro-body">
+        <form id="predict-form" class="card">
+          <label for="home-team">Home Team</label>
+          <input id="home-team" name="home_team" list="teams" required placeholder="Start typing team name">
+
+          <label for="away-team">Away Team</label>
+          <input id="away-team" name="away_team" list="teams" required placeholder="Start typing team name">
+
+          <datalist id="teams">
+            {% for team in teams %}
+            <option value="{{ team }}"></option>
+            {% endfor %}
+          </datalist>
+
+          <button type="submit">Predict</button>
+        </form>
+
+        <section id="result" class="card hidden"></section>
+        <section class="card">
+          <p class="note">Disclaimer: predictions between different leagues are often far less accurate. Use for entertainment purposes only.</p>
+        </section>
+        <section id="error" class="card error hidden"></section>
+      </section>
+
+      <section id="predictor-mls-body" class="hidden">
+        <form id="predict-form-mls" class="card">
+          <label for="home-team-mls">Home Team (MLS)</label>
+          <input id="home-team-mls" name="home_team" list="mls-teams" required placeholder="Start typing MLS team name">
+
+          <label for="away-team-mls">Away Team (MLS)</label>
+          <input id="away-team-mls" name="away_team" list="mls-teams" required placeholder="Start typing MLS team name">
+
+          <datalist id="mls-teams">
+            {% for team in mls_teams %}
+            <option value="{{ team }}"></option>
+            {% endfor %}
+          </datalist>
+
+          <button type="submit">Predict MLS</button>
+        </form>
+
+        <section class="card">
+          <p class="note">Disclaimer: MLS data is currently limited and predictions may be less accurate. These predictions are likely to be less accurate than 
+          European league predictions. Use for entertainment purposes only.
+          </p>
+        </section>
+        <section id="result-mls" class="card hidden"></section>
+        <section id="error-mls" class="card error hidden"></section>
+      </section>
+    </section>
+
+    <section id="panel-global" class="hidden">
+      <div id="global-stats" class="card"></div>
+      <div class="card">
+        <label for="global-source-filter">Source</label>
+        <select id="global-source-filter">
+          <option value="global">European Leagues</option>
+          <option value="mls">MLS</option>
+        </select>
+      </div>
+      <div class="card">
+        <label for="global-league-filter">League</label>
+        <select id="global-league-filter"></select>
+      </div>
+      <div id="global-list" class="card">Loading...</div>
+    </section>
+
+    <section id="panel-league-table" class="hidden">
+      <div class="card">
+        <h3>Projected League Table</h3>
+        <div class="table-controls">
+          <label for="table-dataset">Dataset</label>
+          <select id="table-dataset">
+            <option value="global">European Leagues</option>
+            <option value="mls">MLS</option>
+          </select>
+
+          <label for="table-league">League</label>
+          <select id="table-league"></select>
+        </div>
+      </div>
+      <div id="league-table-view" class="card">Select a dataset and league.</div>
+    </section>
+
+    <section id="panel-players" class="hidden">
+      <div class="card">
+        <h3>Players</h3>
+        <p>Temporary tab: player features are not completed yet.</p>
+      </div>
+    </section>
+
+    <section id="panel-about" class="hidden">
+      <div class="card">
+        <h3>About This Project</h3>
+        <p>
+          This app predicts soccer match outcomes using historical match data, team-level form/stat features,
+          and model-generated probabilities. It supports many popular European leagues and the MLS with more leagues to come
+          in the future. The models include specific tuning to different leagues to improve accuracy. This website is created as 
+          a fun personal project to explore machine learning and data analysis and should not be used for any betting, financial, 
+          or professional purposes. Predictions are not guaranteed to be accurate and are likely highly inaccurate.
+        </p>
+      </div>
+      <div class="card">
+        <h3>How To Use It</h3>
+        <p>
+          The predictor tool allows for match predictions between teams in the currently supported European leagues (Premier League,
+           Championship, Bundesliga, Ligue 1, La Liga, Serie A, etc.). The separate MLS predictor only works with MLS matchups and uses a 
+           sepearate, less advanced model due to current data limitations. Predictions between teams in different leagues often create wild
+           predictions and are far less accurate than predictions of teams in the same league. The upcoming matches tab is used to show matches
+           of the current matchweek (and midweek fixtures), but do not include cup competitions (including the Champions League). Each prediction
+           also includes a score prediction and may include shots and shot on target predictions and a reasoning for the match prediction. These additional
+           features are experimental and may not be available for all matches or leagues. The league table shows the predicted league table based on real 
+           results and predicted results for the rest of the season. Accuracy of the predictions is not guaranteed and should be used for ENTERTAINMENT PURPOSES ONLY.
+        </p>
+      </div>
+      <div class = "card">
+        <h3>Upcoming Features & Improvements</h3>
+        <p>
+          <ul>
+            <li>Player performance predictions (improved game predictions based on player data & player stat predictions)</li>
+            <li>Adding a live tracker for correct/incorrect predictions of upcoming matches</li>
+            <li>Creation of a new homepage for the website</li>
+            <li>Expansion of the website to support other sports</li>
+            <li>Inclusion of minigame style games based on team & player data</li>
+            <li>Adding additional features to the website to improve the user experience</li>
+            <li>Adding more leagues to the prediction model</li>
+            <li>Adding a color key to the league table tab</li>
+            <li>Adding experimental prediction features such as cup competitions, player transfers, and adjustments to the prediction model</li>
+            <li>Continued improvements to prediction accuracy and bug fixes</li>
+          </ul>
+        </p>
+      </div>
+    </section>
+    <section>
+    <div class = "card">
+        <h3>Known Bugs & Issues</h3>
+        <p>
+          <ul>
+            <li>
+              Some team matchups may be missing or duplicated in the upcoming matches tab
+            </li>
+            <li>
+              Match prediction live correct/incorrect trackers is not stable and may be inaccurate or not update properly
+            </li>
+            <li>
+              Many predictions may lack reasoning or additional data
+            </li>
+            <li>
+              The model may have some inaccuracies due to data filtering limitations and often has wilder prediction
+              percentages compared to other prediction models
+            </li>
+            <li>
+              Some functions of the website may not function properly
+            </li>
+          </ul>
+        </p>
+    </section>
+    <section class="card disclaimer">
+      <h3>Disclaimer</h3>
+      <p>
+        These predictions are model-generated estimates for entertainment use only.
+        Results are not guaranteed, and probabilities can change as data updates. 
+        This is a project made for fun and should not be relied upon for any professional, betting, or financial decisions.
+
+      </p>
+      <p>
+
+        DO NOT treat this as betting, financial, or professional advice in any aspect.
+
+      </p>
+      <p>
+
+        Historical result data is sourced from football-data.co.uk. Realtime data is sourced from api.football-data.org, ESPN scoreboard, and Transfermarkt.com
+
+      </p>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById("predict-form");
+    const formMls = document.getElementById("predict-form-mls");
+    const resultEl = document.getElementById("result");
+    const errorEl = document.getElementById("error");
+    const resultMlsEl = document.getElementById("result-mls");
+    const errorMlsEl = document.getElementById("error-mls");
+    const panelHome = document.getElementById("panel-home");
+    const panelPredictor = document.getElementById("panel-predictor");
+    const predictorEuroBody = document.getElementById("predictor-euro-body");
+    const predictorMlsBody = document.getElementById("predictor-mls-body");
+    const panelGlobal = document.getElementById("panel-global");
+    const panelLeagueTable = document.getElementById("panel-league-table");
+    const panelPlayers = document.getElementById("panel-players");
+    const panelAbout = document.getElementById("panel-about");
+    const tabHome = document.getElementById("tab-home");
+    const tabPredictor = document.getElementById("tab-predictor");
+    const subtabPredictorEuro = document.getElementById("subtab-predictor-euro");
+    const subtabPredictorMls = document.getElementById("subtab-predictor-mls");
+    const tabGlobal = document.getElementById("tab-global");
+    const tabLeagueTable = document.getElementById("tab-league-table");
+    const tabPlayers = document.getElementById("tab-players");
+    const tabAbout = document.getElementById("tab-about");
+    const globalList = document.getElementById("global-list");
+    const globalStats = document.getElementById("global-stats");
+    const globalSourceFilter = document.getElementById("global-source-filter");
+    const globalLeagueFilter = document.getElementById("global-league-filter");
+    const tableDataset = document.getElementById("table-dataset");
+    const tableLeague = document.getElementById("table-league");
+    const leagueTableView = document.getElementById("league-table-view");
+    const leagueTablesCache = { global: null, mls: null };
+    const upcomingCache = { global: [], mls: [] };
+    const upcomingStatsCache = {
+      global: { stats: null, league_stats: [] },
+      mls: { stats: null, league_stats: [] },
+    };
+
+    function showError(targetError, targetResult, message) {
+      targetError.textContent = message;
+      targetError.classList.remove("hidden");
+      targetResult.classList.add("hidden");
+    }
+
+    function pctLabel(value) {
+      const n = Number(value);
+      if (!Number.isFinite(n)) return "0";
+      if (n > 0 && n < 1) return "<1";
+      return n.toFixed(1);
+    }
+
+    function showResult(targetError, targetResult, p, includeShots = true) {
+      targetError.classList.add("hidden");
+      targetResult.classList.remove("hidden");
+      let html = `
+        <h2>${p.home_team} vs ${p.away_team}</h2>
+        <p><strong>Competition:</strong> ${p.competition}</p>
+        <p>Winner: <span class="winner-line">${p.winner_label}</span></p>
+        <p><strong>Win probabilities:</strong> ${p.home_team} ${pctLabel(p.prob_home)}% | Draw ${pctLabel(p.prob_draw)}% | ${p.away_team} ${pctLabel(p.prob_away)}%</p>
+        <p><strong>Predicted score:</strong> ${p.home_team} ${p.pred_home_goals} - ${p.pred_away_goals} ${p.away_team}</p>
+      `;
+      if (includeShots) {
+        html += `
+          <p><strong>Predicted shots:</strong> ${p.home_team} ${p.pred_home_shots} | ${p.away_team} ${p.pred_away_shots}</p>
+          <p><strong>Predicted shots on target:</strong> ${p.home_team} ${p.pred_home_sot} | ${p.away_team} ${p.pred_away_sot}</p>
+        `;
+      }
+      targetResult.innerHTML = html;
+    }
+
+    function activateTab(tab) {
+      tabHome.classList.remove("active");
+      tabPredictor.classList.remove("active");
+      tabGlobal.classList.remove("active");
+      tabLeagueTable.classList.remove("active");
+      tabPlayers.classList.remove("active");
+      tabAbout.classList.remove("active");
+      panelHome.classList.add("hidden");
+      panelPredictor.classList.add("hidden");
+      panelGlobal.classList.add("hidden");
+      panelLeagueTable.classList.add("hidden");
+      panelPlayers.classList.add("hidden");
+      panelAbout.classList.add("hidden");
+
+      if (tab === "home") {
+        tabHome.classList.add("active");
+        panelHome.classList.remove("hidden");
+      } else if (tab === "predictor") {
+        tabPredictor.classList.add("active");
+        panelPredictor.classList.remove("hidden");
+      } else if (tab === "global") {
+        tabGlobal.classList.add("active");
+        panelGlobal.classList.remove("hidden");
+      } else if (tab === "league-table") {
+        tabLeagueTable.classList.add("active");
+        panelLeagueTable.classList.remove("hidden");
+      } else if (tab === "players") {
+        tabPlayers.classList.add("active");
+        panelPlayers.classList.remove("hidden");
+      } else if (tab === "about") {
+        tabAbout.classList.add("active");
+        panelAbout.classList.remove("hidden");
+      } else {
+        tabHome.classList.add("active");
+        panelHome.classList.remove("hidden");
+      }
+    }
+
+    function setPredictorMode(mode) {
+      if (mode === "mls") {
+        subtabPredictorEuro.classList.remove("active");
+        subtabPredictorMls.classList.add("active");
+        predictorEuroBody.classList.add("hidden");
+        predictorMlsBody.classList.remove("hidden");
+      } else {
+        subtabPredictorMls.classList.remove("active");
+        subtabPredictorEuro.classList.add("active");
+        predictorMlsBody.classList.add("hidden");
+        predictorEuroBody.classList.remove("hidden");
+      }
+    }
+
+    function normalizeLeagueName(name) {
+      return String(name || "").toLowerCase().replace(/\s+/g, " ").trim();
+    }
+
+    function getLeagueRowClass(leagueName, position, maxPos) {
+      const league = normalizeLeagueName(leagueName);
+      const isMlsSupporters = league === "united states/mls - supporters shield table";
+      const isMlsEast = league === "united states/mls - eastern conference";
+      const isMlsWest = league === "united states/mls - western conference";
+
+      if (isMlsEast || isMlsWest) {
+        if (position >= 1 && position <= 9) {
+          return "table-promo-blue";
+        }
+        return "";
+      }
+
+      if (position === 1) {
+        return "table-first";
+      }
+
+      const isBundesliga = league === "germany/bundesliga";
+      const isLigue1 = league === "france/ligue 1";
+      const isChampionship = league === "england/championship";
+      const isLaLiga2 = league === "spain/la liga 2";
+      const isSerieB = league === "italy/serie b";
+      const isBundesliga2 = league === "germany/bundesliga 2" || league === "germany/2. bundesliga";
+      const isLigue2 = league === "france/ligue 2";
+      const isLigaPortugal = league === "portugal/liga portugal";
+      const isPremier = league === "england/premier league";
+      const isLaLiga = league === "spain/la liga";
+      const isBundesligaTop = league === "germany/bundesliga";
+      const isSerieA = league === "italy/serie a";
+
+      if (isBundesliga || isLigue1) {
+        if (position === 2 || position === 3) {
+          return "table-promo-blue";
+        }
+        if (position === 4) {
+          return "table-playoff-purple";
+        }
+        if (position === Math.max(1, maxPos - 2)) {
+          return "table-playoff-orange";
+        }
+        if (position >= Math.max(1, maxPos - 1)) {
+          return "table-bottom";
+        }
+        return "";
+      }
+
+      if (isChampionship || isLaLiga2 || isSerieB) {
+        if (position === 2 || position === 3) {
+          return "table-promo-blue";
+        }
+      }
+
+      if (isBundesliga2 || isLigue2) {
+        if (position === 2) {
+          return "table-promo-blue";
+        }
+        if (position === 3) {
+          return "table-playoff-purple";
+        }
+      }
+
+      if (isLigaPortugal) {
+        if (position === 2) {
+          return "table-second-pink";
+        }
+        if (position === Math.max(1, maxPos - 2)) {
+          return "table-playoff-orange";
+        }
+        if (position >= Math.max(1, maxPos - 1)) {
+          return "table-bottom";
+        }
+      }
+
+      if (isPremier || isLaLiga || isSerieA) {
+        if (position >= 2 && position <= 4) {
+          return "table-promo-blue";
+        }
+        if (position === 5) {
+          return "table-playoff-purple";
+        }
+      }
+
+      if (isMlsSupporters) {
+        return "";
+      }
+
+      if (isLaLiga2) {
+        if (position >= Math.max(1, maxPos - 3)) {
+          return "table-bottom";
+        }
+      } else if (position >= Math.max(1, maxPos - 2)) {
+        return "table-bottom";
+      }
+
+      return "";
+    }
+
+    function renderLeagueTableRows(rows, leagueName) {
+      if (!rows || !rows.length) {
+        return "<p>No projected table data available for this league.</p>";
+      }
+      const sortedRows = [...rows].sort((a, b) => (a.position || 0) - (b.position || 0));
+      const maxPos = sortedRows.length;
+      let html = `
+        <table class="league-table">
+          <thead>
+            <tr>
+              <th>Pos</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th>
+              <th>GF</th><th>GA</th><th>GD</th><th>Pts</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+      for (const r of sortedRows) {
+        const rowClass = getLeagueRowClass(leagueName, r.position, maxPos);
+        html += `
+          <tr class="${rowClass}">
+            <td>${r.position}</td><td>${r.team}</td><td>${r.P}</td><td>${r.W}</td><td>${r.D}</td><td>${r.L}</td>
+            <td>${r.GF}</td><td>${r.GA}</td><td>${r.GD}</td><td><strong>${r.Pts}</strong></td>
+          </tr>
+        `;
+      }
+      html += "</tbody></table>";
+      return html;
+    }
+
+    function renderSelectedLeagueTable() {
+      const mode = tableDataset.value;
+      const selectedLeague = tableLeague.value;
+      const payload = leagueTablesCache[mode];
+      if (!payload || !payload.tables || !payload.tables[selectedLeague]) {
+        leagueTableView.innerHTML = "<p>No projected table data available.</p>";
+        return;
+      }
+      leagueTableView.innerHTML = `<h3>${selectedLeague}</h3>${renderLeagueTableRows(payload.tables[selectedLeague], selectedLeague)}`;
+    }
+
+    function seedAt(rows, seed) {
+      const row = (rows || []).find((r) => Number(r.position) === Number(seed));
+      return row ? row.team : `Seed ${seed}`;
+    }
+
+    function renderMlsBracket(payload) {
+      const bracket = payload ? payload.bracket : null;
+      if (!bracket) {
+        leagueTableView.innerHTML = "<p>No projected MLS playoff bracket found. Run MLS Project_League_Table.py first.</p>";
+        return;
+      }
+
+      const eastSeeds = bracket.eastern_seeds || [];
+      const westSeeds = bracket.western_seeds || [];
+      const eastBySeed = {};
+      const westBySeed = {};
+      for (const row of eastSeeds) eastBySeed[Number(row.seed)] = row.team;
+      for (const row of westSeeds) westBySeed[Number(row.seed)] = row.team;
+
+      const e1 = eastBySeed[1] || "Seed 1";
+      const e2 = eastBySeed[2] || "Seed 2";
+      const e3 = eastBySeed[3] || "Seed 3";
+      const e4 = eastBySeed[4] || "Seed 4";
+      const e5 = eastBySeed[5] || "Seed 5";
+      const e6 = eastBySeed[6] || "Seed 6";
+      const e7 = eastBySeed[7] || "Seed 7";
+      const e8 = eastBySeed[8] || "Seed 8";
+      const e9 = eastBySeed[9] || "Seed 9";
+
+      const w1 = westBySeed[1] || "Seed 1";
+      const w2 = westBySeed[2] || "Seed 2";
+      const w3 = westBySeed[3] || "Seed 3";
+      const w4 = westBySeed[4] || "Seed 4";
+      const w5 = westBySeed[5] || "Seed 5";
+      const w6 = westBySeed[6] || "Seed 6";
+      const w7 = westBySeed[7] || "Seed 7";
+      const w8 = westBySeed[8] || "Seed 8";
+      const w9 = westBySeed[9] || "Seed 9";
+
+      const wc = bracket.wildcard || {};
+      const r1 = bracket.round_one || {};
+      const sf = bracket.conference_semifinals || {};
+      const cf = bracket.conference_finals || {};
+      const cup = bracket.mls_cup || {};
+
+      const eWC = (wc.east || {}).winner || "TBD";
+      const wWC = (wc.west || {}).winner || "TBD";
+      const eR1A = ((r1.east || {}).A || {}).winner || "TBD";
+      const eR1B = ((r1.east || {}).B || {}).winner || "TBD";
+      const eR1C = ((r1.east || {}).C || {}).winner || "TBD";
+      const eR1D = ((r1.east || {}).D || {}).winner || "TBD";
+      const wR1A = ((r1.west || {}).A || {}).winner || "TBD";
+      const wR1B = ((r1.west || {}).B || {}).winner || "TBD";
+      const wR1C = ((r1.west || {}).C || {}).winner || "TBD";
+      const wR1D = ((r1.west || {}).D || {}).winner || "TBD";
+
+      const eSF1 = ((sf.east || [])[0] || {}).winner || "TBD";
+      const eSF2 = ((sf.east || [])[1] || {}).winner || "TBD";
+      const wSF1 = ((sf.west || [])[0] || {}).winner || "TBD";
+      const wSF2 = ((sf.west || [])[1] || {}).winner || "TBD";
+      const eChamp = ((cf.east || {}).winner) || "TBD";
+      const wChamp = ((cf.west || {}).winner) || "TBD";
+      const mlsCupWinner = cup.winner || "TBD";
+
+      leagueTableView.innerHTML = `
+        <h3>MLS Cup Playoff Bracket (Projected Seeds)</h3>
+        <p class="note">Predicted during MLS table generation using the same weighted model probabilities. No ties in playoff matches. Wildcard is single-game. Round One is best-of-3, with higher seed at home in Game 1 and Game 3.</p>
+        <div class="bracket-conference">
+          <div class="bracket-round">
+            <h4>Eastern Conference</h4>
+            <div class="bracket-card"><strong>Wildcard</strong><br>#8 ${e8} vs #9 ${e9}</div>
+            <div class="bracket-win">Winner: <strong>${eWC}</strong></div>
+          </div>
+          <div class="bracket-round">
+            <h4>Round One</h4>
+            <div class="bracket-card"><strong>Round One (Best-of-3)</strong><br>#1 ${e1} vs ${eWC}</div>
+            <div class="bracket-win">Winner: <strong>${eR1A}</strong></div>
+            <div class="bracket-card"><strong>Round One (Best-of-3)</strong><br>#2 ${e2} vs #7 ${e7}</div>
+            <div class="bracket-win">Winner: <strong>${eR1B}</strong></div>
+            <div class="bracket-card"><strong>Round One (Best-of-3)</strong><br>#3 ${e3} vs #6 ${e6}</div>
+            <div class="bracket-win">Winner: <strong>${eR1C}</strong></div>
+            <div class="bracket-card"><strong>Round One (Best-of-3)</strong><br>#4 ${e4} vs #5 ${e5}</div>
+            <div class="bracket-win">Winner: <strong>${eR1D}</strong></div>
+          </div>
+          <div class="bracket-round">
+            <h4>Semifinals + Final</h4>
+            <div class="bracket-card"><strong>Semifinal 1</strong><br>${((sf.east || [])[0] || {}).home_team || eR1A} vs ${((sf.east || [])[0] || {}).away_team || eR1D}</div>
+            <div class="bracket-win">Winner: <strong>${eSF1}</strong></div>
+            <div class="bracket-card"><strong>Semifinal 2</strong><br>${((sf.east || [])[1] || {}).home_team || eR1B} vs ${((sf.east || [])[1] || {}).away_team || eR1C}</div>
+            <div class="bracket-win">Winner: <strong>${eSF2}</strong></div>
+            <div class="bracket-card"><strong>Conference Final</strong><br>${(cf.east || {}).home_team || eSF1} vs ${(cf.east || {}).away_team || eSF2}</div>
+            <div class="bracket-win">East Champion: <strong>${eChamp}</strong></div>
+          </div>
+        </div>
+        <div class="bracket-conference">
+          <div class="bracket-round">
+            <h4>Western Conference</h4>
+            <div class="bracket-card"><strong>Wildcard</strong><br>#8 ${w8} vs #9 ${w9}</div>
+            <div class="bracket-win">Winner: <strong>${wWC}</strong></div>
+          </div>
+          <div class="bracket-round">
+            <h4>Round One</h4>
+            <div class="bracket-card"><strong>Round One (Best-of-3)</strong><br>#1 ${w1} vs ${wWC}</div>
+            <div class="bracket-win">Winner: <strong>${wR1A}</strong></div>
+            <div class="bracket-card"><strong>Round One (Best-of-3)</strong><br>#2 ${w2} vs #7 ${w7}</div>
+            <div class="bracket-win">Winner: <strong>${wR1B}</strong></div>
+            <div class="bracket-card"><strong>Round One (Best-of-3)</strong><br>#3 ${w3} vs #6 ${w6}</div>
+            <div class="bracket-win">Winner: <strong>${wR1C}</strong></div>
+            <div class="bracket-card"><strong>Round One (Best-of-3)</strong><br>#4 ${w4} vs #5 ${w5}</div>
+            <div class="bracket-win">Winner: <strong>${wR1D}</strong></div>
+          </div>
+          <div class="bracket-round">
+            <h4>Semifinals + Final</h4>
+            <div class="bracket-card"><strong>Semifinal 1</strong><br>${((sf.west || [])[0] || {}).home_team || wR1A} vs ${((sf.west || [])[0] || {}).away_team || wR1D}</div>
+            <div class="bracket-win">Winner: <strong>${wSF1}</strong></div>
+            <div class="bracket-card"><strong>Semifinal 2</strong><br>${((sf.west || [])[1] || {}).home_team || wR1B} vs ${((sf.west || [])[1] || {}).away_team || wR1C}</div>
+            <div class="bracket-win">Winner: <strong>${wSF2}</strong></div>
+            <div class="bracket-card"><strong>Conference Final</strong><br>${(cf.west || {}).home_team || wSF1} vs ${(cf.west || {}).away_team || wSF2}</div>
+            <div class="bracket-win">West Champion: <strong>${wChamp}</strong></div>
+          </div>
+        </div>
+        <div class="bracket-card mls-cup-card"><strong>MLS Cup Final</strong><br>${cup.home_team || eChamp} vs ${cup.away_team || wChamp}<br>Winner: <strong>${mlsCupWinner}</strong></div>
+      `;
+    }
+
+    async function loadLeagueTables(mode) {
+      leagueTableView.textContent = "Loading...";
+      const resp = await fetch(`/api/league-tables?mode=${encodeURIComponent(mode)}`);
+      const data = await resp.json();
+      if (!resp.ok || !data.ok) {
+        leagueTableView.textContent = "Failed to load league tables.";
+        return;
+      }
+      leagueTablesCache[mode] = data;
+      const leagues = data.leagues || [];
+      tableLeague.innerHTML = "";
+      if (!leagues.length) {
+        leagueTableView.innerHTML = "<p>No projected table CSV found. Run Project_League_Table.py first.</p>";
+        return;
+      }
+      const priorityLeagues = [
+        "England/Premier League",
+        "England/Championship",
+        "United States/MLS - Supporters Shield Table",
+        "United States/MLS - Eastern Conference",
+        "United States/MLS - Western Conference"
+      ];
+      const leagueRank = (name) => {
+        const idx = priorityLeagues.indexOf(name);
+        return idx >= 0 ? idx : 1000;
+      };
+      const orderedLeagues = [...leagues].sort((a, b) => {
+        const ra = leagueRank(a);
+        const rb = leagueRank(b);
+        if (ra !== rb) return ra - rb;
+        return a.localeCompare(b);
+      });
+      for (const league of orderedLeagues) {
+        const option = document.createElement("option");
+        option.value = league;
+        option.textContent = league;
+        tableLeague.appendChild(option);
+      }
+      if (mode === "mls") {
+        const option = document.createElement("option");
+        option.value = "__mls_bracket__";
+        option.textContent = "MLS Cup Playoff Bracket";
+        tableLeague.appendChild(option);
+      }
+      if (mode === "mls" && tableLeague.value === "__mls_bracket__") {
+        await renderMlsBracket(data);
+      } else {
+        renderSelectedLeagueTable();
+      }
+    }
+
+    function renderLeagueStats(leagueStats, selectedLeague) {
+      if (!selectedLeague || !leagueStats || !leagueStats.length) {
+        return "<p>No selected league stats yet.</p>";
+      }
+      const row = leagueStats.find((item) => item.competition === selectedLeague);
+      if (!row) {
+        return "<p>No selected league stats yet.</p>";
+      }
+      return `<p><strong>${row.competition} Accuracy:</strong> ${row.correct_total}/${row.settled_total} (${row.accuracy_pct}%)</p>`;
+    }
+
+    function renderStats(target, stats, leagueStats, selectedLeague) {
+      target.innerHTML = `
+        <h3>Tracking Stats</h3>
+        <p><strong>Correct / Decided:</strong> ${stats.correct_total} / ${stats.settled_total}</p>
+        <p><strong>Accuracy:</strong> ${stats.accuracy_pct}%</p>
+        <p><strong>Decided:</strong> ${stats.settled_total} | <strong>Pending:</strong> ${stats.pending_total}</p>
+        ${renderLeagueStats(leagueStats, selectedLeague)}
+      `;
+    }
+
+    function escapeHtml(value) {
+      return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function renderUpcoming(target, rows, selectedLeague) {
+      if (!rows.length) {
+        target.innerHTML = "<p>No upcoming predictions found.</p>";
+        return;
+      }
+      const visibleRows = selectedLeague ? rows.filter((r) => r.competition === selectedLeague) : rows;
+      if (!visibleRows.length) {
+        target.innerHTML = "<p>No upcoming predictions for this league.</p>";
+        return;
+      }
+      const byDay = {};
+      for (const r of visibleRows) {
+        const key = `${r.weekday} ${r.date_label}`;
+        byDay[key] = byDay[key] || [];
+        byDay[key].push(r);
+      }
+      const days = Object.keys(byDay);
+      let html = "";
+      let idx = 0;
+      for (const day of days) {
+        html += `<h4>${day}</h4>`;
+        for (const r of byDay[day]) {
+          idx += 1;
+          const detailId = `match-detail-${idx}`;
+          const homeGoals = (r.pred_home_goals === null || r.pred_home_goals === undefined) ? "NA" : r.pred_home_goals;
+          const awayGoals = (r.pred_away_goals === null || r.pred_away_goals === undefined) ? "NA" : r.pred_away_goals;
+          const reasoning = r.reasoning && r.reasoning.trim().length
+            ? escapeHtml(r.reasoning)
+            : "No model reasoning available for this prediction.";
+          const settled = String(r.actual_result || "").trim().match(/^[HDA]$/i);
+          const isCorrect = String(r.is_correct || "").trim().toLowerCase();
+          let rowClass = "";
+          let statusText = "Pending";
+          if (settled) {
+            if (isCorrect === "1" || isCorrect === "true") {
+              rowClass = "match-correct";
+              statusText = "Correct";
+            } else {
+              rowClass = "match-wrong";
+              statusText = "Wrong";
+            }
+          }
+          html += `
+            <div class="match-row ${rowClass}">
+              <button class="match-toggle" type="button" data-target="${detailId}" aria-expanded="false">
+                <div class="matchup">${r.home_team} vs ${r.away_team}</div>
+                <div class="match-meta">Winner: <span class="winner-line">${r.winner_label}</span></div>
+                <div class="match-meta">H ${r.prob_home_text || pctLabel(r.prob_home)}% | D ${r.prob_draw_text || pctLabel(r.prob_draw)}% | A ${r.prob_away_text || pctLabel(r.prob_away)}%</div>
+                <div class="match-meta"><strong>Status:</strong> ${statusText}</div>
+              </button>
+              <div id="${detailId}" class="match-details hidden">
+                <div class="match-meta"><strong>Predicted score:</strong> ${r.home_team} ${homeGoals} - ${awayGoals} ${r.away_team}</div>
+                <div class="match-meta"><strong>Reasoning:</strong> ${reasoning}</div>
+              </div>
+            </div>
+          `;
+        }
+      }
+      target.innerHTML = html;
+    }
+
+    function populateUpcomingLeagueFilter(selectEl, rows) {
+      const leagues = [...new Set(rows.map((r) => r.competition))];
+      const priorityLeagues = [
+        "England/Premier League",
+        "England/Championship"
+      ];
+      const leagueRank = (name) => {
+        const idx = priorityLeagues.indexOf(name);
+        return idx >= 0 ? idx : 1000;
+      };
+      leagues.sort((a, b) => {
+        const ra = leagueRank(a);
+        const rb = leagueRank(b);
+        if (ra !== rb) return ra - rb;
+        return a.localeCompare(b);
+      });
+      selectEl.innerHTML = "";
+      if (!leagues.length) {
+        const option = document.createElement("option");
+        option.value = "";
+        option.textContent = "No leagues";
+        selectEl.appendChild(option);
+        return "";
+      }
+      for (const league of leagues) {
+        const option = document.createElement("option");
+        option.value = league;
+        option.textContent = league;
+        selectEl.appendChild(option);
+      }
+      return leagues[0];
+    }
+
+    async function loadUpcoming(mode, url, target, statsTarget, filterEl) {
+      target.textContent = "Loading...";
+      statsTarget.textContent = "Loading...";
+      const resp = await fetch(url);
+      const data = await resp.json();
+      if (!resp.ok || !data.ok) {
+        target.textContent = "Failed to load upcoming predictions.";
+        statsTarget.textContent = "Failed to load stats.";
+        return;
+      }
+      const rows = data.rows || [];
+      upcomingCache[mode] = rows;
+      const stats = data.stats || {
+        correct_total: 0, settled_total: 0, accuracy_pct: 0.0, total_predictions: 0, pending_total: 0
+      };
+      const leagueStats = data.league_stats || [];
+      upcomingStatsCache[mode] = { stats: stats, league_stats: leagueStats };
+      const selectedLeague = populateUpcomingLeagueFilter(filterEl, rows);
+      renderUpcoming(target, rows, selectedLeague);
+      renderStats(statsTarget, stats, leagueStats, selectedLeague);
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const payload = {
+        home_team: formData.get("home_team"),
+        away_team: formData.get("away_team"),
+      };
+
+      const resp = await fetch("/api/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await resp.json();
+      if (!resp.ok || !data.ok) {
+        showError(errorEl, resultEl, data.error || "Prediction failed.");
+        return;
+      }
+      showResult(errorEl, resultEl, data.prediction);
+    });
+
+    formMls.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = new FormData(formMls);
+      const payload = {
+        home_team: formData.get("home_team"),
+        away_team: formData.get("away_team"),
+      };
+
+      const resp = await fetch("/api/predict/mls", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await resp.json();
+      if (!resp.ok || !data.ok) {
+        showError(errorMlsEl, resultMlsEl, data.error || "MLS prediction failed.");
+        return;
+      }
+      showResult(errorMlsEl, resultMlsEl, data.prediction, false);
+    });
+
+    tabHome.addEventListener("click", () => activateTab("home"));
+    tabPredictor.addEventListener("click", () => activateTab("predictor"));
+    subtabPredictorEuro.addEventListener("click", () => setPredictorMode("euro"));
+    subtabPredictorMls.addEventListener("click", () => setPredictorMode("mls"));
+    tabGlobal.addEventListener("click", async () => {
+      activateTab("global");
+      const source = globalSourceFilter.value === "mls" ? "mls" : "global";
+      const url = source === "mls" ? "/api/upcoming/mls" : "/api/upcoming/global";
+      await loadUpcoming(source, url, globalList, globalStats, globalLeagueFilter);
+    });
+    tabLeagueTable.addEventListener("click", async () => {
+      activateTab("league-table");
+      if (!leagueTablesCache[tableDataset.value]) {
+        await loadLeagueTables(tableDataset.value);
+      } else {
+        const cached = leagueTablesCache[tableDataset.value];
+        tableLeague.innerHTML = "";
+        const priorityLeagues = [
+          "England/Premier League",
+          "England/Championship",
+          "United States/MLS - Supporters Shield Table",
+          "United States/MLS - Eastern Conference",
+          "United States/MLS - Western Conference"
+        ];
+        const leagueRank = (name) => {
+          const idx = priorityLeagues.indexOf(name);
+          return idx >= 0 ? idx : 1000;
+        };
+        const orderedLeagues = [...(cached.leagues || [])].sort((a, b) => {
+          const ra = leagueRank(a);
+          const rb = leagueRank(b);
+          if (ra !== rb) return ra - rb;
+          return a.localeCompare(b);
+        });
+        for (const league of orderedLeagues) {
+          const option = document.createElement("option");
+          option.value = league;
+          option.textContent = league;
+          tableLeague.appendChild(option);
+        }
+        if (tableDataset.value === "mls") {
+          const option = document.createElement("option");
+          option.value = "__mls_bracket__";
+          option.textContent = "MLS Cup Playoff Bracket";
+          tableLeague.appendChild(option);
+        }
+        if (tableDataset.value === "mls" && tableLeague.value === "__mls_bracket__") {
+          await renderMlsBracket(cached);
+        } else {
+          renderSelectedLeagueTable();
+        }
+      }
+    });
+    tabPlayers.addEventListener("click", () => activateTab("players"));
+    tabAbout.addEventListener("click", () => activateTab("about"));
+    tableDataset.addEventListener("change", async () => {
+      await loadLeagueTables(tableDataset.value);
+    });
+    tableLeague.addEventListener("change", async () => {
+      if (tableDataset.value === "mls" && tableLeague.value === "__mls_bracket__") {
+        await renderMlsBracket(leagueTablesCache["mls"] || { tables: {} });
+      } else {
+        renderSelectedLeagueTable();
+      }
+    });
+    globalLeagueFilter.addEventListener("change", () => {
+      const source = globalSourceFilter.value === "mls" ? "mls" : "global";
+      renderUpcoming(globalList, upcomingCache[source], globalLeagueFilter.value);
+      const payload = upcomingStatsCache[source];
+      renderStats(
+        globalStats,
+        payload.stats || { correct_total: 0, total_predictions: 0, pending_total: 0, accuracy_pct: 0.0 },
+        payload.league_stats || [],
+        globalLeagueFilter.value
+      );
+    });
+    globalSourceFilter.addEventListener("change", async () => {
+      const source = globalSourceFilter.value === "mls" ? "mls" : "global";
+      const url = source === "mls" ? "/api/upcoming/mls" : "/api/upcoming/global";
+      await loadUpcoming(source, url, globalList, globalStats, globalLeagueFilter);
+    });
+
+    globalList.addEventListener("click", (event) => {
+      const btn = event.target.closest(".match-toggle");
+      if (!btn) return;
+      const targetId = btn.getAttribute("data-target");
+      const detail = targetId ? document.getElementById(targetId) : null;
+      if (!detail) return;
+      const isHidden = detail.classList.contains("hidden");
+      detail.classList.toggle("hidden");
+      btn.setAttribute("aria-expanded", isHidden ? "true" : "false");
+    });
+  </script>
+</body>
+</html>

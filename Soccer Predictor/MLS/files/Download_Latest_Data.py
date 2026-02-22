@@ -1,0 +1,126 @@
+import os
+from datetime import datetime
+from io import StringIO
+import urllib.request
+import re
+
+import pandas as pd
+import Process_Data as process_data
+import Sort_Data as sort_data
+
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+RAW_DATA_DIR = os.path.join(BASE_DIR, "Data", "Raw_Data")
+TARGET_DIR = os.path.join(RAW_DATA_DIR, "United States", "MLS")
+
+# MLS source page: https://www.football-data.co.uk/usa.php
+# Direct CSV contains many seasons in one file.
+MLS_SOURCE_URL = "https://www.football-data.co.uk/new/USA.csv"
+FILE_PREFIX = "mlsstat"
+MIN_START_YEAR = 2002
+REFRESH_RECENT_SEASONS = 2
+LEGACY_FILE_PATTERN = re.compile(rf"^{FILE_PREFIX}\d{{4}}-\d{{2}}\.csv$", re.IGNORECASE)
+
+RAW_REQUIRED_COLUMNS = ["Season", "Date", "Home", "Away", "HG", "AG", "Res"]
+
+
+def season_label(start_year):
+    return f"{start_year}"
+
+
+def season_file_name(start_year):
+    return f"{FILE_PREFIX}{season_label(start_year)}.csv"
+
+
+def fetch_source_dataframe():
+    with urllib.request.urlopen(MLS_SOURCE_URL, timeout=30) as response:
+        raw = response.read()
+
+    text = raw.decode("utf-8-sig", errors="replace")
+    try:
+        df = pd.read_csv(StringIO(text))
+    except Exception:
+        text = raw.decode("latin-1", errors="replace")
+        df = pd.read_csv(StringIO(text), engine="python", on_bad_lines="skip")
+    return df
+
+
+def normalize_season(value):
+    try:
+        return int(float(value))
+    except Exception:
+        return None
+
+
+def main():
+    os.makedirs(TARGET_DIR, exist_ok=True)
+    current_year = datetime.now().year
+
+    print(f"\nDownloading MLS source: {MLS_SOURCE_URL}")
+    source = fetch_source_dataframe()
+    if any(col not in source.columns for col in RAW_REQUIRED_COLUMNS):
+        raise ValueError("MLS source CSV does not contain expected columns.")
+
+    source = source.copy()
+    source["SeasonInt"] = source["Season"].map(normalize_season)
+    source = source[source["SeasonInt"].notna()]
+
+    valid_years = sorted(
+        {
+            int(year)
+            for year in source["SeasonInt"].unique().tolist()
+            if MIN_START_YEAR <= int(year) <= current_year
+        }
+    )
+
+    updated_count = 0
+    skipped_existing_count = 0
+    for start_year in valid_years:
+        season_rows = source[source["SeasonInt"] == start_year].copy()
+        if season_rows.empty:
+            continue
+        out_name = season_file_name(start_year)
+        out_path = os.path.join(TARGET_DIR, out_name)
+        legacy_name = f"{FILE_PREFIX}{start_year}-{str(start_year + 1)[-2:]}.csv"
+        legacy_path = os.path.join(TARGET_DIR, legacy_name)
+
+        # Older historical files are stable; refresh only recent seasons.
+        refresh_cutoff = current_year - REFRESH_RECENT_SEASONS
+        should_refresh = start_year >= refresh_cutoff
+        if os.path.exists(out_path) and not should_refresh:
+            skipped_existing_count += 1
+            continue
+
+        season_rows.to_csv(out_path, index=False)
+        updated_count += 1
+        print(f"Saved {out_name} ({len(season_rows)} rows)")
+        if os.path.exists(legacy_path):
+            os.remove(legacy_path)
+
+    # Remove any remaining legacy season files with YYYY-YY naming.
+    for file_name in os.listdir(TARGET_DIR):
+        if LEGACY_FILE_PATTERN.match(file_name):
+            os.remove(os.path.join(TARGET_DIR, file_name))
+
+    processed_target_dir = os.path.join(BASE_DIR, "Data", "Processed_Data", "United States", "MLS")
+    if os.path.isdir(processed_target_dir):
+        for file_name in os.listdir(processed_target_dir):
+            if LEGACY_FILE_PATTERN.match(file_name):
+                os.remove(os.path.join(processed_target_dir, file_name))
+
+    print(
+        f"\nDownload stage done. Updated {updated_count} season files, "
+        f"skipped {skipped_existing_count} existing historical files."
+    )
+
+    print("\nProcessing MLS files...")
+    process_data.main()
+    print("\nSorting MLS team data...")
+    sort_data.sort_all_seasons()
+    sort_data.build_current_form_file()
+    sort_data.build_top_market_value_players_file()
+    print("\nMLS pipeline complete (download + process + sort).")
+
+
+if __name__ == "__main__":
+    main()

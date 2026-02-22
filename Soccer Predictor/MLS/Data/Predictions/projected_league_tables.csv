@@ -1,0 +1,61 @@
+competition,position,team,P,W,D,L,GF,GA,GD,Pts,PlayedReal,PlayedPred
+United States/MLS - Supporters Shield Table,1,Inter Miami,34,23,7,4,96,68,28,76,0,34
+United States/MLS - Supporters Shield Table,2,San Diego FC,34,24,3,7,78,59,19,75,0,34
+United States/MLS - Supporters Shield Table,3,Vancouver Whitecaps,34,20,6,8,72,56,16,66,1,33
+United States/MLS - Supporters Shield Table,4,Seattle Sounders,34,18,10,6,73,57,16,64,0,34
+United States/MLS - Supporters Shield Table,5,Nashville SC,34,19,7,8,75,63,12,64,1,33
+United States/MLS - Supporters Shield Table,6,Los Angeles FC,34,17,6,11,79,66,13,57,0,34
+United States/MLS - Supporters Shield Table,7,New York City,34,16,8,10,67,60,7,56,0,34
+United States/MLS - Supporters Shield Table,8,Chicago Fire,34,16,8,10,82,76,6,56,0,34
+United States/MLS - Supporters Shield Table,9,Minnesota United,34,14,12,8,64,55,9,54,0,34
+United States/MLS - Supporters Shield Table,10,Portland Timbers,34,14,12,8,64,58,6,54,1,33
+United States/MLS - Supporters Shield Table,11,Philadelphia Union,34,14,9,11,64,60,4,51,1,33
+United States/MLS - Supporters Shield Table,12,New York Red Bulls,34,14,9,11,58,55,3,51,0,34
+United States/MLS - Supporters Shield Table,13,FC Cincinnati,34,13,11,10,68,63,5,50,0,34
+United States/MLS - Supporters Shield Table,14,Columbus Crew,34,14,8,12,67,66,1,50,1,33
+United States/MLS - Supporters Shield Table,15,Charlotte,34,13,10,11,59,57,2,49,0,34
+United States/MLS - Supporters Shield Table,16,Orlando City,34,12,11,11,68,65,3,47,0,34
+United States/MLS - Supporters Shield Table,17,San Jose Earthquakes,34,13,8,13,67,68,-1,47,1,33
+United States/MLS - Supporters Shield Table,18,Austin FC,34,12,10,12,61,60,1,46,0,34
+United States/MLS - Supporters Shield Table,19,New England Revolution,34,10,15,9,58,58,0,45,1,33
+United States/MLS - Supporters Shield Table,20,Colorado Rapids,34,13,6,15,58,64,-6,45,0,34
+United States/MLS - Supporters Shield Table,21,FC Dallas,34,11,9,14,62,66,-4,42,1,33
+United States/MLS - Supporters Shield Table,22,Real Salt Lake,34,10,10,14,53,61,-8,40,1,33
+United States/MLS - Supporters Shield Table,23,Sporting Kansas City,34,9,7,18,61,75,-14,34,1,33
+United States/MLS - Supporters Shield Table,24,Houston Dynamo,34,6,11,17,55,66,-11,29,0,34
+United States/MLS - Supporters Shield Table,25,St. Louis City,34,6,10,18,52,70,-18,28,0,34
+United States/MLS - Supporters Shield Table,26,CF Montreal,34,6,8,20,52,69,-17,26,0,34
+United States/MLS - Supporters Shield Table,27,DC United,34,6,8,20,49,66,-17,26,1,33
+United States/MLS - Supporters Shield Table,28,Toronto FC,34,5,10,19,46,61,-15,25,1,33
+United States/MLS - Supporters Shield Table,29,Los Angeles Galaxy,34,3,13,18,60,78,-18,22,0,34
+United States/MLS - Supporters Shield Table,30,Atlanta Utd,34,3,10,21,54,76,-22,19,0,34
+United States/MLS - Eastern Conference,1,Inter Miami,34,23,7,4,96,68,28,76,0,34
+United States/MLS - Eastern Conference,2,Nashville SC,34,19,7,8,75,63,12,64,1,33
+United States/MLS - Eastern Conference,3,New York City,34,16,8,10,67,60,7,56,0,34
+United States/MLS - Eastern Conference,4,Chicago Fire,34,16,8,10,82,76,6,56,0,34
+United States/MLS - Eastern Conference,5,Philadelphia Union,34,14,9,11,64,60,4,51,1,33
+United States/MLS - Eastern Conference,6,New York Red Bulls,34,14,9,11,58,55,3,51,0,34
+United States/MLS - Eastern Conference,7,FC Cincinnati,34,13,11,10,68,63,5,50,0,34
+United States/MLS - Eastern Conference,8,Columbus Crew,34,14,8,12,67,66,1,50,1,33
+United States/MLS - Eastern Conference,9,Charlotte,34,13,10,11,59,57,2,49,0,34
+United States/MLS - Eastern Conference,10,Orlando City,34,12,11,11,68,65,3,47,0,34
+United States/MLS - Eastern Conference,11,New England Revolution,34,10,15,9,58,58,0,45,1,33
+United States/MLS - Eastern Conference,12,CF Montreal,34,6,8,20,52,69,-17,26,0,34
+United States/MLS - Eastern Conference,13,DC United,34,6,8,20,49,66,-17,26,1,33
+United States/MLS - Eastern Conference,14,Toronto FC,34,5,10,19,46,61,-15,25,1,33
+United States/MLS - Eastern Conference,15,Atlanta Utd,34,3,10,21,54,76,-22,19,0,34
+United States/MLS - Western Conference,1,San Diego FC,34,24,3,7,78,59,19,75,0,34
+United States/MLS - Western Conference,2,Vancouver Whitecaps,34,20,6,8,72,56,16,66,1,33
+United States/MLS - Western Conference,3,Seattle Sounders,34,18,10,6,73,57,16,64,0,34
+United States/MLS - Western Conference,4,Los Angeles FC,34,17,6,11,79,66,13,57,0,34
+United States/MLS - Western Conference,5,Minnesota United,34,14,12,8,64,55,9,54,0,34
+United States/MLS - Western Conference,6,Portland Timbers,34,14,12,8,64,58,6,54,1,33
+United States/MLS - Western Conference,7,San Jose Earthquakes,34,13,8,13,67,68,-1,47,1,33
+United States/MLS - Western Conference,8,Austin FC,34,12,10,12,61,60,1,46,0,34
+United States/MLS - Western Conference,9,Colorado Rapids,34,13,6,15,58,64,-6,45,0,34
+United States/MLS - Western Conference,10,FC Dallas,34,11,9,14,62,66,-4,42,1,33
+United States/MLS - Western Conference,11,Real Salt Lake,34,10,10,14,53,61,-8,40,1,33
+United States/MLS - Western Conference,12,Sporting Kansas City,34,9,7,18,61,75,-14,34,1,33
+United States/MLS - Western Conference,13,Houston Dynamo,34,6,11,17,55,66,-11,29,0,34
+United States/MLS - Western Conference,14,St. Louis City,34,6,10,18,52,70,-18,28,0,34
+United States/MLS - Western Conference,15,Los Angeles Galaxy,34,3,13,18,60,78,-18,22,0,34
