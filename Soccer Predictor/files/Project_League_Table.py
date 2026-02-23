@@ -177,6 +177,7 @@ def predict_match(ctx, home_team, away_team, competition_hint):
     for idx, enc in enumerate(ctx["clf"].classes_):
         lbl = ctx["result_le"].inverse_transform([enc])[0]
         probs[lbl] = float(pvals[idx])
+    probs = pm.reduce_draw_probability(probs)
 
     labels = ["H", "D", "A"]
     weights = [max(0.0, float(probs.get(label, 0.0))) for label in labels]

@@ -4,6 +4,7 @@ import re
 import hashlib
 import random
 import math
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from collections import defaultdict
 from datetime import datetime
 
@@ -31,23 +32,36 @@ MLS_HOME_EDGE_SHIFT = 0.045
 MLS_DRAW_TARGET = 0.27
 MLS_DRAW_BLEND = 0.20
 MLS_ADJUSTMENT_WEIGHT = 0.45
-MLS_MARKET_SHIFT_MAX = 0.10
-MLS_MARKET_SHIFT_SCALE = 0.14
+MLS_MARKET_SHIFT_MAX = 0.075
+MLS_MARKET_SHIFT_SCALE = 0.10
 MLS_MARKET_POSITION_WEIGHTS = {
-    "attack": 1.7,
-    "midfield": 1.00,
-    "defense": 0.78,
-    "goalkeeper": 0.7,
+    "attack": 2.05,
+    "midfield": 0.95,
+    "defense": 0.55,
+    "goalkeeper": 0.5,
     "unknown": 1.0,
 }
-MLS_RANDOMIZER_MAX_DELTA = 0.15
+MLS_RANDOMIZER_MAX_DELTA = 0.16
 MLS_HOME_ADV_MIN_SHIFT = 0.03
-MLS_HOME_ADV_MAX_SHIFT = 0.15
+MLS_HOME_ADV_MAX_SHIFT = 0.13
+MLS_HOME_EXTRA_BOOST = 0.012
+MLS_DRAW_REDUCTION_FACTOR = 0.10
+MLS_HIGH_DRAW_THRESHOLD = 0.42
+MLS_HIGH_DRAW_EXTRA_REDUCTION_MAX = 0.20
+CPU_COUNT = max(1, (os.cpu_count() or 1))
+TRAIN_WORKERS = int(os.getenv("SOCCER_TRAIN_WORKERS", str(max(1, min(4, CPU_COUNT // 2)))))
+MODEL_THREADS = int(os.getenv("SOCCER_MODEL_THREADS", str(max(1, CPU_COUNT // TRAIN_WORKERS))))
 
 
 def load_json(path):
     with open(path, "r", encoding="utf-8") as file:
         return json.load(file)
+
+
+def save_json(path, payload):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as file:
+        json.dump(payload, file, indent=2, ensure_ascii=False)
 
 
 def load_json_if_exists(path):
@@ -252,6 +266,56 @@ def build_competition_offsets(league_strength, competition_tables):
         offsets[comp] = running
         running += int(competition_tables.get(comp, {}).get("size", 0))
     return offsets
+
+
+def refresh_league_strength_coefficients(league_strength, season_teams):
+    """Recompute and blend league-strength coefficients from latest season team stats."""
+    existing = dict(league_strength) if isinstance(league_strength, dict) else {}
+    comp_rows = {}
+    for season_key, teams in (season_teams or {}).items():
+        competition = os.path.dirname(str(season_key)).replace("\\", "/").strip()
+        if not competition or not isinstance(teams, dict):
+            continue
+        year = parse_start_year_from_key(season_key)
+        if year < 0:
+            continue
+        current = comp_rows.get(competition)
+        if current is None or year > current["year"]:
+            current = {"year": year, "rows": []}
+            comp_rows[competition] = current
+        rows = current["rows"]
+        for stats in teams.values():
+            row = clean_stats_dict(stats if isinstance(stats, dict) else {})
+            games = float(row.get("games", 0.0) or 0.0)
+            if games <= 0:
+                continue
+            ppg = float(row.get("points", 0.0) or 0.0) / games
+            gdpg = (float(row.get("goals_scored", 0.0) or 0.0) - float(row.get("goals_conceded", 0.0) or 0.0)) / games
+            rows.append((ppg, gdpg))
+
+    scored = {}
+    for competition, payload in comp_rows.items():
+        rows = payload.get("rows", [])
+        if not rows:
+            continue
+        avg_ppg = sum(r[0] for r in rows) / len(rows)
+        avg_gdpg = sum(r[1] for r in rows) / len(rows)
+        scored[competition] = avg_ppg + 0.35 * avg_gdpg
+
+    if not scored:
+        return existing
+    vals = list(scored.values())
+    low = min(vals)
+    high = max(vals)
+    spread = max(1e-6, high - low)
+    updated = dict(existing)
+    for competition, score in scored.items():
+        norm = (score - low) / spread if spread > 0 else 0.5
+        inferred = 0.72 + 0.33 * norm
+        old = float(existing.get(competition, 0.85) or 0.85)
+        blended = 0.65 * old + 0.35 * inferred
+        updated[competition] = round(max(0.65, min(1.10, blended)), 4)
+    return updated
 
 
 def build_dynamic_form_from_matches(matches):
@@ -718,6 +782,60 @@ def apply_probability_randomizer(probabilities, max_delta):
     return {"H": h / norm, "D": d / norm, "A": a / norm}
 
 
+def reduce_draw_probability(probabilities, reduction_factor=MLS_DRAW_REDUCTION_FACTOR):
+    h = max(0.0, float(probabilities.get("H", 0.0)))
+    d = max(0.0, float(probabilities.get("D", 0.0)))
+    a = max(0.0, float(probabilities.get("A", 0.0)))
+    total = h + d + a
+    if total <= 0:
+        return {"H": 1 / 3, "D": 1 / 3, "A": 1 / 3}
+    h /= total
+    d /= total
+    a /= total
+
+    r = max(0.0, min(0.6, float(reduction_factor)))
+    if d > MLS_HIGH_DRAW_THRESHOLD:
+        # Flatten very high draw outputs to avoid unrealistic tie-heavy predictions.
+        extra_ratio = min(1.0, (d - MLS_HIGH_DRAW_THRESHOLD) / max(1e-6, (1.0 - MLS_HIGH_DRAW_THRESHOLD)))
+        r += MLS_HIGH_DRAW_EXTRA_REDUCTION_MAX * extra_ratio
+    r = min(0.6, r)
+    reduced_d = d * (1.0 - r)
+    carry = d - reduced_d
+    d = reduced_d
+    h_a_total = h + a
+    if h_a_total > 0:
+        h += carry * (h / h_a_total)
+        a += carry * (a / h_a_total)
+    else:
+        h += carry * 0.5
+        a += carry * 0.5
+
+    norm = h + d + a
+    if norm <= 0:
+        return {"H": 1 / 3, "D": 1 / 3, "A": 1 / 3}
+    return {"H": h / norm, "D": d / norm, "A": a / norm}
+
+
+def apply_home_advantage_boost(probabilities, boost=MLS_HOME_EXTRA_BOOST):
+    h = max(0.0, float(probabilities.get("H", 0.0)))
+    d = max(0.0, float(probabilities.get("D", 0.0)))
+    a = max(0.0, float(probabilities.get("A", 0.0)))
+    total = h + d + a
+    if total <= 0:
+        return {"H": 1 / 3, "D": 1 / 3, "A": 1 / 3}
+    h /= total
+    d /= total
+    a /= total
+
+    transfer = min(max(0.0, float(boost)), a)
+    h += transfer
+    a -= transfer
+    norm = h + d + a
+    if norm <= 0:
+        return {"H": 1 / 3, "D": 1 / 3, "A": 1 / 3}
+    return {"H": h / norm, "D": d / norm, "A": a / norm}
+
+
 def mls_home_advantage_shift(home_team, prediction_season, season_teams):
     season_lookup = season_teams.get(prediction_season, {}) if isinstance(season_teams, dict) else {}
     home_stats = clean_stats_dict(season_lookup.get(home_team, {})) or clean_stats_dict(
@@ -745,12 +863,54 @@ def market_value_team_score(team_name, market_value_data):
     return score
 
 
+def apply_league_strength_adjustment(probabilities, home_strength, away_strength):
+    h = max(0.0, float(probabilities.get("H", 0.0)))
+    d = max(0.0, float(probabilities.get("D", 0.0)))
+    a = max(0.0, float(probabilities.get("A", 0.0)))
+    total = h + d + a
+    if total <= 0:
+        return {"H": 1 / 3, "D": 1 / 3, "A": 1 / 3}, 1.0, 0.0
+    h /= total
+    d /= total
+    a /= total
+
+    strength_delta = float(home_strength) - float(away_strength)
+    strength_gap = abs(strength_delta)
+    draw_scale = max(0.82, 1.0 - 0.35 * strength_gap)
+    old_draw = d
+    d = old_draw * draw_scale
+    carry = old_draw - d
+    h_a_total = h + a
+    if h_a_total > 0:
+        h += carry * (h / h_a_total)
+        a += carry * (a / h_a_total)
+    else:
+        h += carry * 0.5
+        a += carry * 0.5
+
+    league_direction_shift = max(-0.035, min(0.035, 0.18 * strength_delta * MLS_ADJUSTMENT_WEIGHT))
+    if league_direction_shift > 0:
+        transfer = min(league_direction_shift, a)
+        h += transfer
+        a -= transfer
+    elif league_direction_shift < 0:
+        transfer = min(abs(league_direction_shift), h)
+        a += transfer
+        h -= transfer
+
+    norm = h + d + a
+    if norm <= 0:
+        return {"H": 1 / 3, "D": 1 / 3, "A": 1 / 3}, draw_scale, league_direction_shift
+    return {"H": h / norm, "D": d / norm, "A": a / norm}, draw_scale, league_direction_shift
+
+
 def market_value_probability_shift(home_team, away_team, market_value_data):
     home_score = market_value_team_score(home_team, market_value_data)
     away_score = market_value_team_score(away_team, market_value_data)
     total = home_score + away_score
     if total <= 0:
         return 0.0, home_score, away_score
+    # Compare weighted team totals directly to create the overall edge.
     edge = (home_score - away_score) / total
     shift = max(-MLS_MARKET_SHIFT_MAX, min(MLS_MARKET_SHIFT_MAX, MLS_MARKET_SHIFT_SCALE * edge))
     return shift, home_score, away_score
@@ -792,6 +952,7 @@ def train_result_model(X_train, y_train):
                 random_state=42,
                 tree_method="hist",
                 device="cuda",
+                n_jobs=MODEL_THREADS,
             )
             model.fit(X_train, y_train_enc)
             trained_models.append(model)
@@ -810,6 +971,7 @@ def train_result_model(X_train, y_train):
                     random_state=42,
                     tree_method="hist",
                     device="cpu",
+                    n_jobs=MODEL_THREADS,
                 )
                 model.fit(X_train, y_train_enc)
                 trained_models.append(model)
@@ -817,12 +979,12 @@ def train_result_model(X_train, y_train):
             except Exception:
                 pass
 
-    rf_model = RandomForestClassifier(n_estimators=260, random_state=42, n_jobs=-1)
+    rf_model = RandomForestClassifier(n_estimators=260, random_state=42, n_jobs=MODEL_THREADS)
     rf_model.fit(X_train, y_train_enc)
     trained_models.append(rf_model)
     backends.append("random-forest")
 
-    et_model = ExtraTreesClassifier(n_estimators=320, random_state=42, n_jobs=-1)
+    et_model = ExtraTreesClassifier(n_estimators=320, random_state=42, n_jobs=MODEL_THREADS)
     et_model.fit(X_train, y_train_enc)
     trained_models.append(et_model)
     backends.append("extra-trees")
@@ -848,6 +1010,7 @@ def train_regression_model(X_train, y_train, random_state):
                 random_state=random_state,
                 tree_method="hist",
                 device="cuda",
+                n_jobs=MODEL_THREADS,
             )
             model.fit(X_train, y_train)
             return model
@@ -863,13 +1026,27 @@ def train_regression_model(X_train, y_train, random_state):
                 random_state=random_state,
                 tree_method="hist",
                 device="cpu",
+                n_jobs=MODEL_THREADS,
             )
             model.fit(X_train, y_train)
             return model
 
-    model = RandomForestRegressor(n_estimators=160, random_state=random_state, n_jobs=-1)
+    model = RandomForestRegressor(n_estimators=160, random_state=random_state, n_jobs=MODEL_THREADS)
     model.fit(X_train, y_train)
     return model
+
+
+def train_all_regressors(X, targets):
+    results = {}
+    with ThreadPoolExecutor(max_workers=TRAIN_WORKERS) as pool:
+        future_map = {
+            pool.submit(train_regression_model, X, series, seed): key
+            for key, series, seed in targets
+        }
+        for future in as_completed(future_map):
+            key = future_map[future]
+            results[key] = future.result()
+    return results
 
 
 def main():
@@ -900,6 +1077,8 @@ def main():
     head_to_head = replace_nan_with_sentinel(head_to_head)
     current_form = replace_nan_with_sentinel(current_form)
     league_strength = replace_nan_with_sentinel(league_strength)
+    league_strength = refresh_league_strength_coefficients(league_strength, season_teams)
+    save_json(os.path.join(TEAM_DATA_DIR, "league_strength.json"), league_strength)
 
     if not isinstance(current_form, dict):
         current_form = {"teams": {}}
@@ -960,12 +1139,23 @@ def main():
         backend = cache_bundle.get("backend", "cached")
     else:
         clf, result_label_encoder, backend = train_result_model(X, y_result)
-        home_goal_reg = train_regression_model(X, y_home_goals, 42)
-        away_goal_reg = train_regression_model(X, y_away_goals, 43)
-        home_shot_reg = train_regression_model(X, y_home_shots, 44)
-        away_shot_reg = train_regression_model(X, y_away_shots, 45)
-        home_sot_reg = train_regression_model(X, y_home_sot, 46)
-        away_sot_reg = train_regression_model(X, y_away_sot, 47)
+        regs = train_all_regressors(
+            X,
+            [
+                ("home_goal_reg", y_home_goals, 42),
+                ("away_goal_reg", y_away_goals, 43),
+                ("home_shot_reg", y_home_shots, 44),
+                ("away_shot_reg", y_away_shots, 45),
+                ("home_sot_reg", y_home_sot, 46),
+                ("away_sot_reg", y_away_sot, 47),
+            ],
+        )
+        home_goal_reg = regs["home_goal_reg"]
+        away_goal_reg = regs["away_goal_reg"]
+        home_shot_reg = regs["home_shot_reg"]
+        away_shot_reg = regs["away_shot_reg"]
+        home_sot_reg = regs["home_sot_reg"]
+        away_sot_reg = regs["away_sot_reg"]
         try:
             joblib.dump(
                 {
@@ -1063,9 +1253,9 @@ def main():
         strength_delta = home_league_strength - away_league_strength
         strength_gap = abs(strength_delta)
 
-        # MLS setup: disable league-level post-model shifts.
-        draw_scale = 1.0
-        league_direction_shift = 0.0
+        probabilities, draw_scale, league_direction_shift = apply_league_strength_adjustment(
+            probabilities, home_league_strength, away_league_strength
+        )
         after_league_probabilities = dict(probabilities)
 
         # MLS setup: disable recent-form post-model shifts.
@@ -1193,6 +1383,8 @@ def main():
                 probabilities["H"] /= total_prob
                 probabilities["D"] /= total_prob
                 probabilities["A"] /= total_prob
+        probabilities = apply_home_advantage_boost(probabilities)
+        probabilities = reduce_draw_probability(probabilities)
         probabilities = apply_probability_randomizer(probabilities, MLS_RANDOMIZER_MAX_DELTA)
         final_probabilities = dict(probabilities)
 
@@ -1220,7 +1412,7 @@ def main():
         print(
             "Reasoning: "
             f"base model H/D/A {raw_probabilities['H'] * 100:.1f}/{raw_probabilities['D'] * 100:.1f}/{raw_probabilities['A'] * 100:.1f}, "
-            f"league shift {league_direction_shift:+.3f} (disabled), form shift {form_shift:+.3f} (disabled), "
+            f"league shift {league_direction_shift:+.3f}, form shift {form_shift:+.3f} (disabled), "
             f"season shift {season_shift:+.3f}, table shift {table_shift:+.3f}, home shift {home_adv_shift:+.3f}, "
             f"market shift {market_shift:+.3f} (attacker-weighted and capped)."
         )
@@ -1239,7 +1431,7 @@ def main():
                 f"Raw model probs: H {raw_probabilities['H']:.3f}, D {raw_probabilities['D']:.3f}, A {raw_probabilities['A']:.3f}"
             )
             print(
-                f"After league adj (disabled; delta {strength_delta:.3f}, gap {strength_gap:.3f}, draw_scale {draw_scale:.3f}, "
+                f"After league adj (delta {strength_delta:.3f}, gap {strength_gap:.3f}, draw_scale {draw_scale:.3f}, "
                 f"direction_shift {league_direction_shift:.3f}): "
                 f"H {after_league_probabilities['H']:.3f}, D {after_league_probabilities['D']:.3f}, A {after_league_probabilities['A']:.3f}"
             )

@@ -1,217 +1,217 @@
 competition,position,team,P,W,D,L,GF,GA,GD,Pts,PlayedReal,PlayedPred
-England/Championship,1,Ipswich,46,25,14,7,82,51,31,89,30,16
-England/Championship,2,Coventry,46,25,13,8,96,61,35,88,32,14
-England/Championship,3,Middlesbrough,46,23,14,9,75,55,20,83,32,14
-England/Championship,4,Hull,46,23,10,13,78,67,11,79,31,15
-England/Championship,5,Southampton,46,20,15,11,74,62,12,75,32,14
-England/Championship,6,Millwall,46,21,11,14,61,58,3,74,32,14
-England/Championship,7,QPR,46,18,11,17,70,72,-2,65,32,14
-England/Championship,8,Wrexham,46,15,19,12,63,60,3,64,32,14
-England/Championship,9,Stoke,46,17,12,17,53,47,6,63,32,14
-England/Championship,10,Birmingham,46,16,15,15,64,61,3,63,32,14
-England/Championship,11,Derby,46,17,11,18,72,68,4,62,32,14
-England/Championship,12,Preston,46,15,17,14,59,58,1,62,32,14
-England/Championship,13,Sheffield United,46,17,9,20,72,71,1,60,32,14
-England/Championship,14,Watford,46,15,15,16,64,64,0,60,32,14
-England/Championship,15,Swansea,46,17,9,20,63,65,-2,60,32,14
-England/Championship,16,Charlton,46,15,14,17,52,61,-9,59,32,14
-England/Championship,17,Norwich,46,16,10,20,65,65,0,58,32,14
-England/Championship,18,Leicester,46,15,13,18,69,75,-6,58,32,14
-England/Championship,19,Portsmouth,46,15,12,19,53,63,-10,57,31,15
-England/Championship,20,Bristol City,46,14,12,20,64,67,-3,54,32,14
-England/Championship,21,West Brom,46,14,12,20,55,69,-14,54,32,14
-England/Championship,22,Blackburn,46,12,14,20,48,61,-13,50,32,14
-England/Championship,23,Oxford,46,9,13,24,46,67,-21,40,32,14
-England/Championship,24,Sheffield Weds,46,5,11,30,42,92,-50,26,32,14
-England/Premier League,1,Arsenal,38,24,11,3,77,30,47,83,27,11
-England/Premier League,2,Man City,38,25,7,6,81,39,42,82,26,12
-England/Premier League,3,Man United,38,21,11,6,74,55,19,74,26,12
-England/Premier League,4,Aston Villa,38,18,12,8,56,44,12,66,26,12
-England/Premier League,5,Liverpool,38,18,10,10,63,52,11,64,26,12
-England/Premier League,6,Chelsea,38,17,11,10,67,49,18,62,26,12
-England/Premier League,7,Brentford,38,17,7,14,63,57,6,58,26,12
-England/Premier League,8,Sunderland,38,14,12,12,46,49,-3,54,26,12
-England/Premier League,9,Bournemouth,38,12,14,12,66,72,-6,50,26,12
-England/Premier League,10,Fulham,38,15,5,18,55,62,-7,50,26,12
-England/Premier League,11,Brighton,38,11,15,12,57,56,1,48,26,12
-England/Premier League,12,Crystal Palace,38,12,12,14,45,49,-4,48,26,12
-England/Premier League,13,Everton,38,12,11,15,44,50,-6,47,26,12
-England/Premier League,14,Newcastle,38,13,7,18,54,62,-8,46,26,12
-England/Premier League,15,Tottenham,38,9,14,15,52,55,-3,41,26,12
-England/Premier League,16,Leeds,38,9,14,15,56,69,-13,41,26,12
-England/Premier League,17,Nott'm Forest,38,10,10,18,41,58,-17,40,26,12
-England/Premier League,18,West Ham,38,7,11,20,49,73,-24,32,26,12
-England/Premier League,19,Burnley,38,8,8,22,49,75,-26,32,26,12
-England/Premier League,20,Wolves,38,2,10,26,31,70,-39,16,27,11
-France/Ligue 1,1,Paris SG,34,27,4,3,78,29,49,85,22,12
-France/Ligue 1,2,Lens,34,25,2,7,67,36,31,77,22,12
-France/Ligue 1,3,Marseille,34,21,6,7,76,45,31,69,22,12
-France/Ligue 1,4,Lyon,34,20,4,10,58,40,18,64,22,12
-France/Ligue 1,5,Lille,34,17,8,9,61,50,11,59,22,12
-France/Ligue 1,6,Strasbourg,34,15,7,12,61,51,10,52,22,12
-France/Ligue 1,7,Monaco,34,14,8,12,59,57,2,50,22,12
-France/Ligue 1,8,Rennes,34,13,11,10,59,58,1,50,22,12
-France/Ligue 1,9,Lorient,34,13,8,13,49,56,-7,47,22,12
-France/Ligue 1,10,Angers,34,12,7,15,42,50,-8,43,22,12
-France/Ligue 1,11,Brest,34,11,8,15,48,57,-9,41,22,12
-France/Ligue 1,12,Toulouse,34,10,10,14,50,49,1,40,22,12
-France/Ligue 1,13,Nice,34,9,10,15,51,66,-15,37,22,12
-France/Ligue 1,14,Le Havre,34,9,8,17,36,49,-13,35,22,12
-France/Ligue 1,15,Paris FC,34,6,12,16,44,63,-19,30,22,12
-France/Ligue 1,16,Metz,34,8,6,20,43,76,-33,30,22,12
-France/Ligue 1,17,Auxerre,34,7,6,21,35,54,-19,27,22,12
-France/Ligue 1,18,Nantes,34,3,7,24,32,63,-31,16,22,12
-France/Ligue 2,1,St Etienne,34,17,8,9,58,44,14,59,23,11
-France/Ligue 2,2,Troyes,34,16,8,10,50,39,11,56,23,11
-France/Ligue 2,3,Montpellier,34,16,8,10,45,36,9,56,23,11
-France/Ligue 2,4,Le Mans,34,14,14,6,44,36,8,56,23,11
-France/Ligue 2,5,Red Star,34,14,12,8,46,38,8,54,22,12
-France/Ligue 2,6,Dunkerque,34,14,11,9,57,41,16,53,23,11
-France/Ligue 2,7,Reims,34,14,11,9,56,40,16,53,23,11
-France/Ligue 2,8,Rodez,34,14,11,9,49,47,2,53,23,11
-France/Ligue 2,9,Guingamp,34,13,9,12,53,56,-3,48,23,11
-France/Ligue 2,10,Pau FC,34,12,10,12,50,53,-3,46,23,11
-France/Ligue 2,11,Annecy,34,12,9,13,45,41,4,45,23,11
-France/Ligue 2,12,Boulogne,34,10,10,14,40,49,-9,40,23,11
-France/Ligue 2,13,Nancy,34,10,9,15,34,46,-12,39,23,11
-France/Ligue 2,14,Grenoble,34,7,14,13,38,47,-9,35,23,11
-France/Ligue 2,15,Bastia,34,7,13,14,26,38,-12,34,22,12
-France/Ligue 2,16,Clermont,34,8,9,17,39,48,-9,33,23,11
-France/Ligue 2,17,Amiens,34,9,6,19,44,58,-14,33,23,11
-France/Ligue 2,18,Laval,34,7,12,15,34,51,-17,33,23,11
-Germany/Bundesliga,1,Bayern Munich,34,28,3,3,123,38,85,87,22,12
-Germany/Bundesliga,2,Dortmund,34,21,9,4,74,42,32,72,22,12
-Germany/Bundesliga,3,RB Leipzig,34,22,5,7,72,50,22,71,22,12
-Germany/Bundesliga,4,Hoffenheim,34,18,8,8,74,53,21,62,22,12
-Germany/Bundesliga,5,Stuttgart,34,19,3,12,66,55,11,60,22,12
-Germany/Bundesliga,6,Leverkusen,34,17,5,12,72,55,17,56,21,13
-Germany/Bundesliga,7,Freiburg,34,13,8,13,53,60,-7,47,22,12
-Germany/Bundesliga,8,Augsburg,34,13,6,15,50,64,-14,45,22,12
-Germany/Bundesliga,9,Ein Frankfurt,34,10,11,13,68,77,-9,41,22,12
-Germany/Bundesliga,10,Union Berlin,34,10,11,13,49,59,-10,41,22,12
-Germany/Bundesliga,11,Wolfsburg,34,11,7,16,61,74,-13,40,22,12
-Germany/Bundesliga,12,M'gladbach,34,10,8,16,47,60,-13,38,22,12
-Germany/Bundesliga,13,Mainz,34,9,10,15,45,58,-13,37,22,12
-Germany/Bundesliga,14,FC Koln,34,7,13,14,51,60,-9,34,22,12
-Germany/Bundesliga,15,Werder Bremen,34,7,12,15,44,65,-21,33,22,12
-Germany/Bundesliga,16,Hamburg,34,7,11,16,42,57,-15,32,21,13
-Germany/Bundesliga,17,St Pauli,34,6,7,21,37,65,-28,25,22,12
-Germany/Bundesliga,18,Heidenheim,34,6,7,21,40,76,-36,25,22,12
-Germany/Bundesliga 2,1,Elversberg,34,21,6,7,63,40,23,69,22,12
-Germany/Bundesliga 2,2,Hannover,34,17,8,9,65,53,12,59,22,12
-Germany/Bundesliga 2,3,Paderborn,34,16,8,10,54,45,9,56,22,12
-Germany/Bundesliga 2,4,Schalke 04,34,16,8,10,47,38,9,56,22,12
-Germany/Bundesliga 2,5,Hertha,34,14,13,7,48,36,12,55,22,12
-Germany/Bundesliga 2,6,Darmstadt,34,14,12,8,62,47,15,54,22,12
-Germany/Bundesliga 2,7,Bielefeld,34,15,6,13,59,50,9,51,22,12
-Germany/Bundesliga 2,8,Kaiserslautern,34,14,8,12,58,53,5,50,22,12
-Germany/Bundesliga 2,9,Bochum,34,13,10,11,53,47,6,49,22,12
-Germany/Bundesliga 2,10,Karlsruhe,34,13,10,11,62,69,-7,49,22,12
-Germany/Bundesliga 2,11,Nurnberg,34,12,9,13,47,49,-2,45,22,12
-Germany/Bundesliga 2,12,Preußen Münster,34,10,13,11,43,47,-4,43,22,12
-Germany/Bundesliga 2,13,Magdeburg,34,12,4,18,52,60,-8,40,22,12
-Germany/Bundesliga 2,14,Braunschweig,34,9,10,15,42,56,-14,37,22,12
-Germany/Bundesliga 2,15,Fortuna Dusseldorf,34,9,8,17,36,51,-15,35,22,12
-Germany/Bundesliga 2,16,Holstein Kiel,34,8,9,17,42,51,-9,33,22,12
-Germany/Bundesliga 2,17,Greuther Furth,34,8,6,20,55,81,-26,30,22,12
-Germany/Bundesliga 2,18,Dresden,34,6,10,18,49,64,-15,28,22,12
-Italy/Serie A,1,Inter,38,30,4,4,88,33,55,94,25,13
-Italy/Serie A,2,Milan,38,23,12,3,62,33,29,81,25,13
-Italy/Serie A,3,Napoli,38,21,11,6,60,41,19,74,25,13
-Italy/Serie A,4,Roma,38,22,7,9,50,28,22,73,25,13
-Italy/Serie A,5,Juventus,38,21,8,9,68,42,26,71,25,13
-Italy/Serie A,6,Atalanta,38,18,9,11,55,40,15,63,25,13
-Italy/Serie A,7,Como,38,15,16,7,57,34,23,61,25,13
-Italy/Serie A,8,Bologna,38,15,10,13,55,49,6,55,25,13
-Italy/Serie A,9,Lazio,38,12,14,12,45,44,1,50,25,13
-Italy/Serie A,10,Udinese,38,14,8,16,48,58,-10,50,25,13
-Italy/Serie A,11,Sassuolo,38,13,8,17,46,54,-8,47,25,13
-Italy/Serie A,12,Genoa,38,11,13,14,53,58,-5,46,25,13
-Italy/Serie A,13,Cagliari,38,11,11,16,45,54,-9,44,25,13
-Italy/Serie A,14,Cremonese,38,7,17,14,41,54,-13,38,25,13
-Italy/Serie A,15,Parma,38,9,11,18,32,52,-20,38,25,13
-Italy/Serie A,16,Torino,38,10,6,22,42,70,-28,36,25,13
-Italy/Serie A,17,Fiorentina,38,6,14,18,46,60,-14,32,25,13
-Italy/Serie A,18,Lecce,38,7,11,20,28,52,-24,32,25,13
-Italy/Serie A,19,Pisa,38,3,17,18,37,66,-29,26,25,13
-Italy/Serie A,20,Verona,38,3,11,24,31,67,-36,20,25,13
-Italy/Serie B,1,Venezia,38,29,5,4,77,35,42,92,25,13
-Italy/Serie B,2,Frosinone,38,20,12,6,70,43,27,72,25,13
-Italy/Serie B,3,Monza,38,20,11,7,58,37,21,71,25,13
-Italy/Serie B,4,Palermo,38,17,14,7,61,38,23,65,25,13
-Italy/Serie B,5,Cesena,38,18,9,11,57,53,4,63,25,13
-Italy/Serie B,6,Catanzaro,38,14,16,8,51,40,11,58,25,13
-Italy/Serie B,7,Juve Stabia,38,14,16,8,48,45,3,58,25,13
-Italy/Serie B,8,Modena,38,14,13,11,51,37,14,55,25,13
-Italy/Serie B,9,Empoli,38,12,13,13,53,55,-2,49,25,13
-Italy/Serie B,10,Sudtirol,38,10,17,11,42,42,0,47,25,13
-Italy/Serie B,11,Carrarese,38,11,13,14,50,56,-6,46,25,13
-Italy/Serie B,12,Reggiana,38,10,13,15,47,54,-7,43,25,13
-Italy/Serie B,13,Sampdoria,38,10,12,16,44,52,-8,42,25,13
-Italy/Serie B,14,Virtus Entella,38,9,15,14,41,52,-11,42,25,13
-Italy/Serie B,15,Avellino,38,9,14,15,44,58,-14,41,25,13
-Italy/Serie B,16,Mantova,38,10,9,19,43,61,-18,39,25,13
-Italy/Serie B,17,Padova,38,9,11,18,43,55,-12,38,25,13
-Italy/Serie B,18,Bari,38,8,14,16,40,59,-19,38,25,13
-Italy/Serie B,19,Spezia,38,6,11,21,32,53,-21,29,25,13
-Italy/Serie B,20,Pescara,38,4,14,20,47,74,-27,26,25,13
-Portugal/Liga Portugal,1,Porto,34,30,3,1,73,12,61,93,22,12
-Portugal/Liga Portugal,2,Sp Lisbon,34,27,5,2,91,26,65,86,22,12
-Portugal/Liga Portugal,3,Benfica,34,23,7,4,73,31,42,76,22,12
-Portugal/Liga Portugal,4,Sp Braga,34,18,9,7,70,34,36,63,22,12
-Portugal/Liga Portugal,5,Gil Vicente,34,15,13,6,52,32,20,58,22,12
-Portugal/Liga Portugal,6,Moreirense,34,14,7,13,50,54,-4,49,22,12
-Portugal/Liga Portugal,7,Estoril,34,13,8,13,66,61,5,47,22,12
-Portugal/Liga Portugal,8,Famalicao,34,13,7,14,42,40,2,46,22,12
-Portugal/Liga Portugal,9,Alverca,34,11,8,15,40,59,-19,41,22,12
-Portugal/Liga Portugal,10,Guimaraes,34,11,6,17,41,57,-16,39,22,12
-Portugal/Liga Portugal,11,Rio Ave,34,8,13,13,41,64,-23,37,22,12
-Portugal/Liga Portugal,12,Estrela,34,9,9,16,47,65,-18,36,22,12
-Portugal/Liga Portugal,13,Arouca,34,10,6,18,45,74,-29,36,22,12
-Portugal/Liga Portugal,14,Nacional,34,8,11,15,44,49,-5,35,22,12
-Portugal/Liga Portugal,15,Casa Pia,34,8,8,18,42,66,-24,32,22,12
-Portugal/Liga Portugal,16,Santa Clara,34,6,9,19,32,48,-16,27,22,12
-Portugal/Liga Portugal,17,Tondela,34,5,10,19,27,56,-29,25,22,12
-Portugal/Liga Portugal,18,AVS,34,3,9,22,38,86,-48,18,22,12
-Spain/La Liga,1,Real Madrid,38,30,6,2,88,32,56,96,24,14
-Spain/La Liga,2,Villarreal,38,26,6,6,76,46,30,84,24,14
-Spain/La Liga,3,Barcelona,38,26,4,8,102,56,46,82,24,14
-Spain/La Liga,4,Ath Madrid,38,20,12,6,64,39,25,72,24,14
-Spain/La Liga,5,Betis,38,18,12,8,64,51,13,66,24,14
-Spain/La Liga,6,Celta,38,15,12,11,56,50,6,57,24,14
-Spain/La Liga,7,Sociedad,38,14,9,15,60,61,-1,51,24,14
-Spain/La Liga,8,Vallecano,38,13,10,15,47,54,-7,49,23,15
-Spain/La Liga,9,Espanol,38,13,9,16,51,61,-10,48,24,14
-Spain/La Liga,10,Osasuna,38,12,11,15,49,50,-1,47,24,14
-Spain/La Liga,11,Getafe,38,11,12,15,37,47,-10,45,24,14
-Spain/La Liga,12,Girona,38,11,10,17,45,65,-20,43,24,14
-Spain/La Liga,13,Ath Bilbao,38,12,6,20,48,62,-14,42,24,14
-Spain/La Liga,14,Alaves,38,12,6,20,41,56,-15,42,24,14
-Spain/La Liga,15,Mallorca,38,10,9,19,51,64,-13,39,24,14
-Spain/La Liga,16,Sevilla,38,10,8,20,56,69,-13,38,24,14
-Spain/La Liga,17,Valencia,38,8,14,16,45,61,-16,38,24,14
-Spain/La Liga,18,Elche,38,7,16,15,52,61,-9,37,24,14
-Spain/La Liga,19,Levante,38,9,9,20,48,65,-17,36,24,14
-Spain/La Liga,20,Oviedo,38,6,13,19,31,61,-30,31,23,15
-Spain/La Liga 2,1,Santander,42,24,8,10,84,58,26,80,26,16
-Spain/La Liga 2,2,Las Palmas,42,21,14,7,56,36,20,77,26,16
-Spain/La Liga 2,3,Almeria,42,22,10,10,87,68,19,76,26,16
-Spain/La Liga 2,4,Cordoba,42,20,12,10,62,51,11,72,25,17
-Spain/La Liga 2,5,Castellon,42,20,10,12,71,51,20,70,26,16
-Spain/La Liga 2,6,Malaga,42,18,10,14,67,58,9,64,26,16
-Spain/La Liga 2,7,La Coruna,42,16,15,11,64,53,11,63,26,16
-Spain/La Liga 2,8,Leganes,42,15,14,13,53,48,5,59,26,16
-Spain/La Liga 2,9,Burgos,42,15,13,14,51,48,3,58,26,16
-Spain/La Liga 2,10,Sp Gijon,42,17,7,18,59,61,-2,58,26,16
-Spain/La Liga 2,11,Eibar,42,13,17,12,51,50,1,56,26,16
-Spain/La Liga 2,12,Ceuta,42,15,11,16,53,58,-5,56,25,17
-Spain/La Liga 2,13,Albacete,42,13,15,14,54,59,-5,54,26,16
-Spain/La Liga 2,14,Granada,42,12,17,13,55,54,1,53,26,16
-Spain/La Liga 2,15,Cadiz,42,13,14,15,50,54,-4,53,26,16
-Spain/La Liga 2,16,Valladolid,42,13,11,18,52,62,-10,50,26,16
-Spain/La Liga 2,17,Huesca,42,14,8,20,49,60,-11,50,26,16
-Spain/La Liga 2,18,Andorra,42,11,12,19,48,61,-13,45,26,16
-Spain/La Liga 2,19,Cultural Leonesa,42,12,9,21,48,69,-21,45,26,16
-Spain/La Liga 2,20,Sociedad B,42,10,14,18,52,61,-9,44,26,16
-Spain/La Liga 2,21,Zaragoza,42,6,17,19,39,61,-22,35,26,16
-Spain/La Liga 2,22,Mirandes,42,8,10,24,46,70,-24,34,26,16
+England/Championship,1,Middlesbrough,46,25,12,9,76,54,22,87,33,13
+England/Championship,2,Hull,46,24,9,13,81,71,10,81,32,14
+England/Championship,3,Coventry,46,22,13,11,93,62,31,79,33,13
+England/Championship,4,Wrexham,46,19,16,11,76,66,10,73,33,13
+England/Championship,5,Ipswich,46,18,15,13,78,61,17,69,31,15
+England/Championship,6,Stoke,46,19,12,15,59,49,10,69,33,13
+England/Championship,7,Watford,46,18,14,14,64,58,6,68,33,13
+England/Championship,8,Southampton,46,17,15,14,70,64,6,66,33,13
+England/Championship,9,Preston,46,16,17,13,58,55,3,65,33,13
+England/Championship,10,Millwall,46,17,14,15,57,60,-3,65,33,13
+England/Championship,11,Birmingham,46,17,13,16,65,62,3,64,33,13
+England/Championship,12,Sheffield United,46,19,7,20,70,68,2,64,33,13
+England/Championship,13,QPR,46,17,12,17,70,72,-2,63,33,13
+England/Championship,14,Derby,46,16,14,16,70,66,4,62,33,13
+England/Championship,15,Swansea,46,17,11,18,63,63,0,62,33,13
+England/Championship,16,Norwich,46,16,12,18,63,61,2,60,33,13
+England/Championship,17,Bristol City,46,16,12,18,66,65,1,60,33,13
+England/Championship,18,Leicester,46,15,14,17,68,73,-5,59,33,13
+England/Championship,19,Portsmouth,46,14,13,19,54,64,-10,55,32,14
+England/Championship,20,Charlton,46,13,16,17,48,59,-11,55,33,13
+England/Championship,21,West Brom,46,15,10,21,53,68,-15,55,33,13
+England/Championship,22,Blackburn,46,13,11,22,48,62,-14,50,33,13
+England/Championship,23,Oxford,46,11,15,20,47,62,-15,48,33,13
+England/Championship,24,Sheffield Weds,46,2,15,29,38,90,-52,21,33,13
+England/Premier League,1,Arsenal,38,23,9,6,77,36,41,78,28,10
+England/Premier League,2,Man City,38,22,8,8,80,45,35,74,27,11
+England/Premier League,3,Aston Villa,38,20,9,9,56,44,12,69,27,11
+England/Premier League,4,Man United,38,17,15,6,69,55,14,66,26,12
+England/Premier League,5,Liverpool,38,18,9,11,62,53,9,63,27,11
+England/Premier League,6,Chelsea,38,16,13,9,69,51,18,61,27,11
+England/Premier League,7,Brentford,38,16,8,14,59,55,4,56,27,11
+England/Premier League,8,Fulham,38,17,5,16,60,61,-1,56,27,11
+England/Premier League,9,Bournemouth,38,13,16,9,66,66,0,55,27,11
+England/Premier League,10,Everton,38,14,11,13,45,46,-1,53,26,12
+England/Premier League,11,Sunderland,38,11,15,12,43,49,-6,48,27,11
+England/Premier League,12,Newcastle,38,12,11,15,57,61,-4,47,27,11
+England/Premier League,13,Tottenham,38,11,12,15,58,61,-3,45,27,11
+England/Premier League,14,Crystal Palace,38,10,14,14,40,46,-6,44,27,11
+England/Premier League,15,Nott'm Forest,38,12,8,18,43,57,-14,44,27,11
+England/Premier League,16,Brighton,38,9,15,14,52,53,-1,42,27,11
+England/Premier League,17,Leeds,38,8,17,13,56,67,-11,41,27,11
+England/Premier League,18,Burnley,38,10,8,20,54,77,-23,38,27,11
+England/Premier League,19,West Ham,38,9,8,21,48,71,-23,35,27,11
+England/Premier League,20,Wolves,38,2,9,27,30,70,-40,15,28,10
+France/Ligue 1,1,Paris SG,34,28,3,3,82,30,52,87,23,11
+France/Ligue 1,2,Lens,34,20,7,7,65,39,26,67,23,11
+France/Ligue 1,3,Lyon,34,20,6,8,56,37,19,66,23,11
+France/Ligue 1,4,Marseille,34,17,8,9,73,51,22,59,23,11
+France/Ligue 1,5,Strasbourg,34,17,7,10,61,45,16,58,23,11
+France/Ligue 1,6,Rennes,34,16,8,10,58,52,6,56,23,11
+France/Ligue 1,7,Lille,34,15,7,12,57,51,6,52,23,11
+France/Ligue 1,8,Brest,34,13,10,11,51,53,-2,49,23,11
+France/Ligue 1,9,Monaco,34,12,9,13,59,59,0,45,23,11
+France/Ligue 1,10,Toulouse,34,10,13,11,49,44,5,43,23,11
+France/Ligue 1,11,Le Havre,34,10,11,13,38,47,-9,41,23,11
+France/Ligue 1,12,Lorient,34,9,13,12,49,59,-10,40,23,11
+France/Ligue 1,13,Angers,34,11,7,16,37,47,-10,40,23,11
+France/Ligue 1,14,Nice,34,10,9,15,52,66,-14,39,23,11
+France/Ligue 1,15,Auxerre,34,8,7,19,35,54,-19,31,23,11
+France/Ligue 1,16,Paris FC,34,5,12,17,43,65,-22,27,23,11
+France/Ligue 1,17,Nantes,34,4,9,21,33,60,-27,21,23,11
+France/Ligue 1,18,Metz,34,5,6,23,38,77,-39,21,23,11
+France/Ligue 2,1,Le Mans,34,20,9,5,50,35,15,69,23,11
+France/Ligue 2,2,Troyes,34,19,6,9,55,40,15,63,24,10
+France/Ligue 2,3,St Etienne,34,18,7,9,58,43,15,61,24,10
+France/Ligue 2,4,Red Star,34,17,8,9,51,42,9,59,23,11
+France/Ligue 2,5,Reims,34,16,10,8,54,36,18,58,24,10
+France/Ligue 2,6,Rodez,34,14,12,8,48,45,3,54,24,10
+France/Ligue 2,7,Annecy,34,14,9,11,49,41,8,51,24,10
+France/Ligue 2,8,Guingamp,34,14,9,11,55,55,0,51,23,11
+France/Ligue 2,9,Montpellier,34,15,5,14,43,39,4,50,24,10
+France/Ligue 2,10,Dunkerque,34,12,10,12,58,46,12,46,24,10
+France/Ligue 2,11,Pau FC,34,10,11,13,52,58,-6,41,24,10
+France/Ligue 2,12,Nancy,34,11,6,17,35,48,-13,39,24,10
+France/Ligue 2,13,Grenoble,34,8,13,13,37,45,-8,37,24,10
+France/Ligue 2,14,Clermont,34,8,10,16,41,49,-8,34,24,10
+France/Ligue 2,15,Boulogne,34,9,7,18,39,54,-15,34,24,10
+France/Ligue 2,16,Bastia,34,6,14,14,26,39,-13,32,23,11
+France/Ligue 2,17,Amiens,34,8,6,20,42,58,-16,30,24,10
+France/Ligue 2,18,Laval,34,5,12,17,33,53,-20,27,24,10
+Germany/Bundesliga,1,Bayern Munich,34,28,4,2,123,38,85,88,23,11
+Germany/Bundesliga,2,Dortmund,34,21,10,3,74,39,35,73,23,11
+Germany/Bundesliga,3,Leverkusen,34,20,7,7,72,48,24,67,22,12
+Germany/Bundesliga,4,Hoffenheim,34,18,8,8,74,52,22,62,23,11
+Germany/Bundesliga,5,RB Leipzig,34,17,8,9,65,49,16,59,23,11
+Germany/Bundesliga,6,Stuttgart,34,16,11,7,63,49,14,59,23,11
+Germany/Bundesliga,7,Freiburg,34,13,8,13,55,62,-7,47,23,11
+Germany/Bundesliga,8,Union Berlin,34,12,10,12,49,57,-8,46,23,11
+Germany/Bundesliga,9,Augsburg,34,12,9,13,49,62,-13,45,23,11
+Germany/Bundesliga,10,Ein Frankfurt,34,10,13,11,70,75,-5,43,23,11
+Germany/Bundesliga,11,M'gladbach,34,9,11,14,46,58,-12,38,23,11
+Germany/Bundesliga,12,Hamburg,34,8,13,13,46,56,-10,37,22,12
+Germany/Bundesliga,13,FC Koln,34,8,10,16,51,62,-11,34,23,11
+Germany/Bundesliga,14,Mainz,34,6,11,17,44,62,-18,29,23,11
+Germany/Bundesliga,15,Werder Bremen,34,6,11,17,40,66,-26,29,23,11
+Germany/Bundesliga,16,Wolfsburg,34,6,8,20,53,77,-24,26,23,11
+Germany/Bundesliga,17,St Pauli,34,6,8,20,35,63,-28,26,23,11
+Germany/Bundesliga,18,Heidenheim,34,6,8,20,40,74,-34,26,23,11
+Germany/Bundesliga 2,1,Darmstadt,34,19,11,4,65,41,24,68,23,11
+Germany/Bundesliga 2,2,Schalke 04,34,19,7,8,52,37,15,64,23,11
+Germany/Bundesliga 2,3,Hannover,34,18,9,7,62,47,15,63,23,11
+Germany/Bundesliga 2,4,Elversberg,34,17,10,7,60,40,20,61,23,11
+Germany/Bundesliga 2,5,Kaiserslautern,34,17,7,10,62,52,10,58,23,11
+Germany/Bundesliga 2,6,Paderborn,34,17,5,12,56,46,10,56,23,11
+Germany/Bundesliga 2,7,Hertha,34,15,10,9,56,45,11,55,23,11
+Germany/Bundesliga 2,8,Karlsruhe,34,13,10,11,59,65,-6,49,23,11
+Germany/Bundesliga 2,9,Bielefeld,34,13,9,12,58,50,8,48,23,11
+Germany/Bundesliga 2,10,Bochum,34,11,11,12,50,47,3,44,23,11
+Germany/Bundesliga 2,11,Nurnberg,34,10,11,13,47,51,-4,41,23,11
+Germany/Bundesliga 2,12,Holstein Kiel,34,9,10,15,44,51,-7,37,23,11
+Germany/Bundesliga 2,13,Magdeburg,34,11,3,20,55,68,-13,36,23,11
+Germany/Bundesliga 2,14,Fortuna Dusseldorf,34,10,6,18,38,53,-15,36,23,11
+Germany/Bundesliga 2,15,Preußen Münster,34,7,13,14,44,54,-10,34,23,11
+Germany/Bundesliga 2,16,Dresden,34,8,9,17,49,61,-12,33,23,11
+Germany/Bundesliga 2,17,Braunschweig,34,8,5,21,41,64,-23,29,23,11
+Germany/Bundesliga 2,18,Greuther Furth,34,7,8,19,52,78,-26,29,23,11
+Italy/Serie A,1,Inter,38,27,6,5,82,34,48,87,26,12
+Italy/Serie A,2,Napoli,38,22,9,7,59,40,19,75,26,12
+Italy/Serie A,3,Milan,38,21,11,6,64,41,23,74,26,12
+Italy/Serie A,4,Atalanta,38,20,10,8,57,36,21,70,26,12
+Italy/Serie A,5,Juventus,38,18,11,9,65,45,20,65,26,12
+Italy/Serie A,6,Roma,38,20,5,13,51,33,18,65,26,12
+Italy/Serie A,7,Como,38,16,13,9,61,38,23,61,26,12
+Italy/Serie A,8,Bologna,38,18,7,13,56,48,8,61,25,13
+Italy/Serie A,9,Udinese,38,15,8,15,52,60,-8,53,25,13
+Italy/Serie A,10,Sassuolo,38,14,9,15,52,55,-3,51,26,12
+Italy/Serie A,11,Parma,38,12,13,13,35,47,-12,49,26,12
+Italy/Serie A,12,Genoa,38,12,11,15,53,57,-4,47,26,12
+Italy/Serie A,13,Torino,38,12,10,16,43,63,-20,46,26,12
+Italy/Serie A,14,Lazio,38,8,19,11,40,42,-2,43,26,12
+Italy/Serie A,15,Cremonese,38,10,10,18,39,56,-17,40,26,12
+Italy/Serie A,16,Fiorentina,38,8,11,19,47,60,-13,35,25,13
+Italy/Serie A,17,Cagliari,38,8,9,21,42,58,-16,33,26,12
+Italy/Serie A,18,Lecce,38,9,6,23,32,56,-24,33,26,12
+Italy/Serie A,19,Pisa,38,4,15,19,38,64,-26,27,25,13
+Italy/Serie A,20,Verona,38,4,11,23,33,68,-35,23,26,12
+Italy/Serie B,1,Frosinone,38,24,11,3,72,37,35,83,26,12
+Italy/Serie B,2,Monza,38,22,10,6,60,36,24,76,26,12
+Italy/Serie B,3,Palermo,38,19,15,4,67,34,33,72,26,12
+Italy/Serie B,4,Venezia,38,21,8,9,76,48,28,71,26,12
+Italy/Serie B,5,Catanzaro,38,18,12,8,59,45,14,66,26,12
+Italy/Serie B,6,Juve Stabia,38,15,13,10,50,49,1,58,26,12
+Italy/Serie B,7,Modena,38,14,14,10,51,37,14,56,26,12
+Italy/Serie B,8,Padova,38,13,11,14,48,52,-4,50,26,12
+Italy/Serie B,9,Empoli,38,12,12,14,54,54,0,48,26,12
+Italy/Serie B,10,Cesena,38,14,6,18,50,57,-7,48,26,12
+Italy/Serie B,11,Sampdoria,38,11,12,15,46,52,-6,45,26,12
+Italy/Serie B,12,Avellino,38,10,14,14,46,60,-14,44,26,12
+Italy/Serie B,13,Sudtirol,38,9,16,13,42,47,-5,43,26,12
+Italy/Serie B,14,Reggiana,38,10,13,15,45,52,-7,43,26,12
+Italy/Serie B,15,Spezia,38,10,12,16,40,51,-11,42,26,12
+Italy/Serie B,16,Carrarese,38,9,12,17,50,60,-10,39,26,12
+Italy/Serie B,17,Mantova,38,9,12,17,42,60,-18,39,26,12
+Italy/Serie B,18,Virtus Entella,38,6,15,17,39,57,-18,33,26,12
+Italy/Serie B,19,Pescara,38,5,15,18,47,71,-24,30,26,12
+Italy/Serie B,20,Bari,38,5,15,18,35,60,-25,30,26,12
+Portugal/Liga Portugal,1,Sp Lisbon,34,28,5,1,88,17,71,89,23,11
+Portugal/Liga Portugal,2,Porto,34,27,5,2,69,21,48,86,23,11
+Portugal/Liga Portugal,3,Benfica,34,21,10,3,72,30,42,73,23,11
+Portugal/Liga Portugal,4,Sp Braga,34,17,9,8,71,39,32,60,23,11
+Portugal/Liga Portugal,5,Gil Vicente,34,15,13,6,55,36,19,58,23,11
+Portugal/Liga Portugal,6,Famalicao,34,15,8,11,48,40,8,53,22,12
+Portugal/Liga Portugal,7,Moreirense,34,14,6,14,50,55,-5,48,23,11
+Portugal/Liga Portugal,8,Guimaraes,34,13,7,14,43,54,-11,46,23,11
+Portugal/Liga Portugal,9,Estoril,34,11,8,15,70,70,0,41,23,11
+Portugal/Liga Portugal,10,Alverca,34,11,8,15,40,62,-22,41,23,11
+Portugal/Liga Portugal,11,Estrela,34,10,8,16,46,64,-18,38,23,11
+Portugal/Liga Portugal,12,Casa Pia,34,9,9,16,46,64,-18,36,22,12
+Portugal/Liga Portugal,13,Arouca,34,9,9,16,50,73,-23,36,23,11
+Portugal/Liga Portugal,14,Nacional,34,8,9,17,45,55,-10,33,23,11
+Portugal/Liga Portugal,15,Rio Ave,34,6,11,17,39,67,-28,29,23,11
+Portugal/Liga Portugal,16,Santa Clara,34,6,9,19,31,48,-17,27,23,11
+Portugal/Liga Portugal,17,Tondela,34,6,8,20,29,56,-27,26,23,11
+Portugal/Liga Portugal,18,AVS,34,3,12,19,39,80,-41,21,23,11
+Spain/La Liga,1,Barcelona,38,31,1,6,102,44,58,94,25,13
+Spain/La Liga,2,Real Madrid,38,28,4,6,85,39,46,88,25,13
+Spain/La Liga,3,Villarreal,38,24,6,8,71,45,26,78,25,13
+Spain/La Liga,4,Ath Madrid,38,20,10,8,67,42,25,70,25,13
+Spain/La Liga,5,Betis,38,15,11,12,64,57,7,56,25,13
+Spain/La Liga,6,Celta,38,13,15,10,56,49,7,54,25,13
+Spain/La Liga,7,Osasuna,38,15,9,14,51,49,2,54,25,13
+Spain/La Liga,8,Ath Bilbao,38,15,7,16,49,57,-8,52,25,13
+Spain/La Liga,9,Sociedad,38,13,11,14,62,63,-1,50,25,13
+Spain/La Liga,10,Sevilla,38,14,7,17,53,60,-7,49,25,13
+Spain/La Liga,11,Espanol,38,13,7,18,51,63,-12,46,25,13
+Spain/La Liga,12,Elche,38,11,11,16,56,63,-7,44,25,13
+Spain/La Liga,13,Girona,38,10,14,14,44,61,-17,44,24,14
+Spain/La Liga,14,Vallecano,38,10,13,15,39,51,-12,43,24,14
+Spain/La Liga,15,Alaves,38,11,10,17,39,52,-13,43,24,14
+Spain/La Liga,16,Getafe,38,11,10,17,36,50,-14,43,25,13
+Spain/La Liga,17,Valencia,38,10,10,18,46,61,-15,40,25,13
+Spain/La Liga,18,Mallorca,38,9,8,21,49,66,-17,35,25,13
+Spain/La Liga,19,Oviedo,38,8,11,19,39,65,-26,35,24,14
+Spain/La Liga,20,Levante,38,6,11,21,45,67,-22,29,25,13
+Spain/La Liga 2,1,Santander,42,23,9,10,83,59,24,78,27,15
+Spain/La Liga 2,2,Burgos,42,20,10,12,54,43,11,70,27,15
+Spain/La Liga 2,3,Almeria,42,20,9,13,82,69,13,69,27,15
+Spain/La Liga 2,4,Castellon,42,17,15,10,68,50,18,66,27,15
+Spain/La Liga 2,5,Las Palmas,42,16,18,8,54,42,12,66,27,15
+Spain/La Liga 2,6,La Coruna,42,17,13,12,61,50,11,64,27,15
+Spain/La Liga 2,7,Sp Gijon,42,18,10,14,60,56,4,64,27,15
+Spain/La Liga 2,8,Albacete,42,15,15,12,56,57,-1,60,27,15
+Spain/La Liga 2,9,Leganes,42,15,14,13,53,48,5,59,27,15
+Spain/La Liga 2,10,Ceuta,42,16,10,16,55,61,-6,58,26,16
+Spain/La Liga 2,11,Malaga,42,15,12,15,62,57,5,57,27,15
+Spain/La Liga 2,12,Cordoba,42,15,11,16,57,56,1,56,26,16
+Spain/La Liga 2,13,Cadiz,42,13,17,12,49,50,-1,56,26,16
+Spain/La Liga 2,14,Eibar,42,14,11,17,50,53,-3,53,27,15
+Spain/La Liga 2,15,Andorra,42,13,13,16,54,62,-8,52,27,15
+Spain/La Liga 2,16,Sociedad B,42,12,15,15,60,62,-2,51,26,16
+Spain/La Liga 2,17,Valladolid,42,11,15,16,52,62,-10,48,27,15
+Spain/La Liga 2,18,Huesca,42,13,9,20,48,60,-12,48,27,15
+Spain/La Liga 2,19,Granada,42,10,17,15,54,57,-3,47,27,15
+Spain/La Liga 2,20,Mirandes,42,12,11,19,49,63,-14,47,27,15
+Spain/La Liga 2,21,Cultural Leonesa,42,10,12,20,50,71,-21,42,27,15
+Spain/La Liga 2,22,Zaragoza,42,6,16,20,42,65,-23,34,27,15

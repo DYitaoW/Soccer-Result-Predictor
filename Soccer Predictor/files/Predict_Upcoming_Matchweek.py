@@ -18,7 +18,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW_DATA_DIR = os.path.join(BASE_DIR, "Data", "Raw_Data")
 PREDICTIONS_DIR = os.path.join(BASE_DIR, "Data", "Predictions")
 PREDICTIONS_FILE = os.path.join(PREDICTIONS_DIR, "upcoming_matchweek_predictions.csv")
-TEAM_MAPPING_FILE = os.path.join(PREDICTIONS_DIR, "upcoming_fixture_team_mapping.json")
+TEAM_MAPPING_FILE = os.path.join(PREDICTIONS_DIR, "team_name_mapping_master.json")
+LEGACY_GLOBAL_MAPPING_FILE = os.path.join(PREDICTIONS_DIR, "upcoming_fixture_team_mapping.json")
+LEGACY_MLS_MAPPING_FILE = os.path.join(BASE_DIR, "MLS", "Data", "Predictions", "upcoming_fixture_team_mapping.json")
 FOOTBALL_DATA_API_BASE = "https://api.football-data.org/v4"
 
 # football-data.org competition codes mapped to your project competition naming.
@@ -205,103 +207,94 @@ def load_team_mapping(path):
     return cleaned
 
 
-def build_full_team_mapping(context, mapping):
-    updated = dict(mapping) if isinstance(mapping, dict) else {}
+def save_team_mapping(path, mapping):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as file:
+        json.dump(mapping, file, indent=2, ensure_ascii=False)
+
+
+def load_shared_mapping():
+    shared = load_team_mapping(TEAM_MAPPING_FILE)
+    if shared:
+        return shared
+    # One-time migration path so existing manual work is preserved.
+    merged = {}
+    for legacy in [LEGACY_GLOBAL_MAPPING_FILE, LEGACY_MLS_MAPPING_FILE]:
+        legacy_map = load_team_mapping(legacy)
+        for competition, names in legacy_map.items():
+            merged.setdefault(competition, {})
+            for api_name, mapped_name in names.items():
+                if api_name not in merged[competition]:
+                    merged[competition][api_name] = mapped_name
+    if merged:
+        save_team_mapping(TEAM_MAPPING_FILE, merged)
+    return merged
+
+
+def canonical_names_by_competition(context):
     team_competition_map = context.get("team_competition_map", {})
     available_teams = context.get("available_teams", [])
-
+    by_comp = {}
     for team in available_teams:
         team_name = str(team).strip()
-        if not team_name:
-            continue
         competition = str(team_competition_map.get(team_name, "")).strip()
-        if not competition:
+        if not team_name or not competition:
             continue
-        updated.setdefault(competition, {})
-        existing = str(updated[competition].get(team_name, "")).strip()
-        updated[competition][team_name] = existing if existing else team_name
-
-    # Keep output deterministic for easier manual edits.
-    normalized = {}
-    for competition, names in sorted(updated.items(), key=lambda item: item[0].lower()):
-        if not isinstance(names, dict):
-            continue
-        normalized[competition] = dict(sorted(
-            ((str(k).strip(), str(v).strip() or str(k).strip()) for k, v in names.items() if str(k).strip()),
-            key=lambda item: item[0].lower(),
-        ))
-    return normalized
+        by_comp.setdefault(competition, set()).add(team_name)
+    return by_comp
 
 
-def sync_api_name_mapping_from_fixtures(fixtures, mapping):
+def ensure_canonical_self_mappings(mapping, context):
     updated = dict(mapping) if isinstance(mapping, dict) else {}
     added = 0
+    by_comp = canonical_names_by_competition(context)
+    for competition, names in by_comp.items():
+        updated.setdefault(competition, {})
+        for team_name in names:
+            if team_name not in updated[competition]:
+                updated[competition][team_name] = team_name
+                added += 1
+    return updated, added
+
+
+def append_only_mapping_from_fixtures(fixtures, context, mapping):
+    updated = dict(mapping) if isinstance(mapping, dict) else {}
+    added = 0
+    blanks_added = 0
+    by_comp = canonical_names_by_competition(context)
 
     for _, row in fixtures.iterrows():
         competition = str(row.get("competition", "")).strip()
         if not competition:
             continue
         updated.setdefault(competition, {})
+        canonical_names = by_comp.get(competition, set())
 
         for side_col in ["home_team", "away_team"]:
             api_name = str(row.get(side_col, "")).strip()
             if not api_name:
                 continue
-            if api_name not in updated[competition]:
-                updated[competition][api_name] = api_name
-                added += 1
-
-    # Collapse only safe API-name variants (e.g., "Southampton FC" -> "Southampton")
-    # while keeping all API keys present in the file.
-    def safe_variant_key(name):
-        text = unicodedata.normalize("NFKD", str(name))
-        text = text.encode("ascii", "ignore").decode("ascii")
-        text = text.lower().strip().replace("&", " and ")
-        text = text.replace("'", "").replace(".", " ").replace("-", " ")
-        parts = [p for p in text.split() if p]
-        token_aliases = {"weds": "wednesday", "st": "saint"}
-        parts = [token_aliases.get(p, p) for p in parts]
-        # Keep differentiators like city/united; only drop light affixes.
-        drop = {"fc", "cf", "ac", "afc", "sc", "club"}
-        parts = [p for p in parts if p not in drop]
-        return "".join(parts)
-
-    for competition, names in updated.items():
-        if not isinstance(names, dict):
-            continue
-        grouped = {}
-        for api_name in names.keys():
-            grouped.setdefault(safe_variant_key(api_name), []).append(api_name)
-
-        for _, variants in grouped.items():
-            if len(variants) <= 1:
+            if api_name in updated[competition]:
                 continue
-            preferred = sorted(
-                variants,
-                key=lambda name: (
-                    int(" fc" in name.lower() or name.lower().endswith("fc")),
-                    len(name),
-                    name.lower(),
-                ),
-            )[0]
-            for name in variants:
-                names[name] = preferred
+            if api_name in canonical_names:
+                updated[competition][api_name] = api_name
+            else:
+                # Unknown mapping stays blank for manual assignment.
+                updated[competition][api_name] = ""
+                blanks_added += 1
+            added += 1
 
     normalized = {}
     for competition, names in sorted(updated.items(), key=lambda item: item[0].lower()):
         if not isinstance(names, dict):
             continue
-        normalized[competition] = dict(sorted(
-            ((str(k).strip(), str(v).strip() or str(k).strip()) for k, v in names.items() if str(k).strip()),
-            key=lambda item: item[0].lower(),
-        ))
-    return normalized, added
-
-
-def save_team_mapping(path, mapping):
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, "w", encoding="utf-8") as file:
-        json.dump(mapping, file, indent=2, ensure_ascii=False)
+        normalized[competition] = dict(
+            sorted(
+                ((str(k).strip(), str(v).strip()) for k, v in names.items() if str(k).strip()),
+                key=lambda item: item[0].lower(),
+            )
+        )
+    return normalized, added, blanks_added
 
 
 def resolve_live_team_name(raw_name, competition, context):
@@ -415,14 +408,12 @@ def apply_team_mapping_to_fixtures(fixtures, mapping, context):
         if direct:
             if direct in known_teams:
                 return direct
-            resolved_direct = resolve_live_team_name(direct, competition, context)
-            if resolved_direct:
-                return resolved_direct
+            return ""
 
-        resolved = resolve_live_team_name(api_name, competition, context)
-        if resolved:
-            return resolved
-        return api_name.strip()
+        # If API name already matches canonical raw-data team name, use it.
+        if api_name in known_teams:
+            return api_name
+        return ""
 
     mapped["mapped_home_team"] = mapped.apply(
         lambda row: mapped_name(row.get("competition", ""), row.get("home_team", "")),
@@ -838,6 +829,7 @@ def predict_fixture(row, context):
     for idx, encoded_label in enumerate(context["clf"].classes_):
         label = context["result_label_encoder"].inverse_transform([encoded_label])[0]
         probabilities[label] = float(proba_values[idx])
+    probabilities = pm.reduce_draw_probability(probabilities)
     probabilities = pm.apply_probability_randomizer(probabilities, pm.EU_RANDOMIZER_MAX_DELTA)
 
     prediction = max(probabilities, key=probabilities.get)
@@ -899,6 +891,18 @@ def settle_predictions(predictions_df, results_index):
         settled_count += 1
 
     return predictions_df, settled_count
+
+
+def drop_completed_predictions(predictions_df, results_index):
+    if predictions_df.empty:
+        return predictions_df, 0
+    if not isinstance(results_index, dict) or not results_index:
+        return predictions_df, 0
+    frame = predictions_df.copy()
+    keep_mask = ~frame["prediction_key"].astype(str).isin(set(results_index.keys()))
+    dropped = int((~keep_mask).sum())
+    frame = frame[keep_mask].copy()
+    return frame, dropped
 
 
 def dedupe_predictions(predictions_df):
@@ -970,8 +974,9 @@ def main():
         return
 
     context = build_prediction_context()
-    team_mapping = load_team_mapping(TEAM_MAPPING_FILE)
-    team_mapping, added_api_names = sync_api_name_mapping_from_fixtures(fixtures, team_mapping)
+    team_mapping = load_shared_mapping()
+    team_mapping, canonical_added = ensure_canonical_self_mappings(team_mapping, context)
+    team_mapping, added_api_names, blanks_added = append_only_mapping_from_fixtures(fixtures, context, team_mapping)
     save_team_mapping(TEAM_MAPPING_FILE, team_mapping)
     fixtures = apply_team_mapping_to_fixtures(fixtures, team_mapping, context)
     existing = load_prediction_store(PREDICTIONS_FILE)
@@ -1001,6 +1006,7 @@ def main():
 
     results_index = load_results_index(RAW_DATA_DIR)
     combined, settled_count = settle_predictions(combined, results_index)
+    combined, removed_completed = drop_completed_predictions(combined, results_index)
     combined = dedupe_predictions(combined)
     combined, single_match_dropped = enforce_single_match_per_team_day(combined)
     combined = combined[RESULT_COLUMNS].sort_values(["match_date", "competition", "home_team", "away_team"])
@@ -1010,10 +1016,13 @@ def main():
 
     print(f"Upcoming fixtures found: {len(fixtures)}")
     print(f"Team mappings file: {TEAM_MAPPING_FILE}")
+    print(f"Canonical raw-data names added: {canonical_added}")
     print(f"API names added from current fixtures: {added_api_names}")
+    print(f"New blank mappings needing manual edit: {blanks_added}")
     print(f"Predictions written: {len(new_df)}")
     print(f"Skipped (unmatched team names): {skipped}")
     print(f"Dropped by one-match-per-team-per-day rule: {single_match_dropped}")
+    print(f"Removed completed fixtures from upcoming list: {removed_completed}")
     print(f"Newly settled with real results: {settled_count}")
     print(f"Saved tracking file: {PREDICTIONS_FILE}")
 

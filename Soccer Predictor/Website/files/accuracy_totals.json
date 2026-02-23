@@ -1,0 +1,23 @@
+{
+  "updated_at_utc": "2026-02-23T20:01:11+00:00",
+  "overall": {
+    "correct_total": 0,
+    "total_predictions": 1,
+    "accuracy_pct": 0.0
+  },
+  "by_league": {
+    "Italy/Serie A": {
+      "correct_total": 0,
+      "total_predictions": 1,
+      "accuracy_pct": 0.0
+    }
+  },
+  "counted_prediction_keys": {
+    "2026-02-23|Italy/Serie A|fiorentina|pisa": {
+      "competition": "Italy/Serie A",
+      "predicted_result": "D",
+      "actual_result": "H",
+      "is_correct": 0
+    }
+  }
+}

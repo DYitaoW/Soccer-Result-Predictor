@@ -19,7 +19,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW_DATA_DIR = os.path.join(BASE_DIR, "Data", "Raw_Data")
 PREDICTIONS_DIR = os.path.join(BASE_DIR, "Data", "Predictions")
 PREDICTIONS_FILE = os.path.join(PREDICTIONS_DIR, "upcoming_matchweek_predictions.csv")
-TEAM_MAPPING_FILE = os.path.join(PREDICTIONS_DIR, "upcoming_fixture_team_mapping.json")
+SHARED_PREDICTIONS_DIR = os.path.join(os.path.dirname(BASE_DIR), "Data", "Predictions")
+TEAM_MAPPING_FILE = os.path.join(SHARED_PREDICTIONS_DIR, "team_name_mapping_master.json")
+LEGACY_GLOBAL_MAPPING_FILE = os.path.join(SHARED_PREDICTIONS_DIR, "upcoming_fixture_team_mapping.json")
+LEGACY_MLS_MAPPING_FILE = os.path.join(PREDICTIONS_DIR, "upcoming_fixture_team_mapping.json")
 FOOTBALL_DATA_API_BASE = "https://api.football-data.org/v4"
 ESPN_SCOREBOARD_API = "https://site.api.espn.com/apis/site/v2/sports/soccer/usa.1/scoreboard"
 EASTERN_TZ = ZoneInfo("America/New_York")
@@ -54,6 +57,7 @@ RESULT_COLUMNS = [
     "prediction_key",
     "created_at_utc",
     "match_date",
+    "match_datetime_et",
     "competition",
     "home_team",
     "away_team",
@@ -189,6 +193,23 @@ def save_team_mapping(path, mapping):
         json.dump(mapping, file, indent=2, ensure_ascii=False)
 
 
+def load_shared_mapping():
+    shared = load_team_mapping(TEAM_MAPPING_FILE)
+    if shared:
+        return shared
+    merged = {}
+    for legacy in [LEGACY_GLOBAL_MAPPING_FILE, LEGACY_MLS_MAPPING_FILE]:
+        legacy_map = load_team_mapping(legacy)
+        for competition, names in legacy_map.items():
+            merged.setdefault(competition, {})
+            for api_name, mapped_name in names.items():
+                if api_name not in merged[competition]:
+                    merged[competition][api_name] = mapped_name
+    if merged:
+        save_team_mapping(TEAM_MAPPING_FILE, merged)
+    return merged
+
+
 def resolve_live_team_name(raw_name, competition, context):
     valid_names = context["available_teams"]
 
@@ -222,38 +243,79 @@ def resolve_live_team_name(raw_name, competition, context):
     return None
 
 
+def canonical_names_by_competition(context):
+    team_competition_map = context.get("team_competition_map", {})
+    available_teams = context.get("available_teams", [])
+    by_comp = {}
+    for team in available_teams:
+        team_name = str(team).strip()
+        competition = str(team_competition_map.get(team_name, "")).strip()
+        if not team_name or not competition:
+            continue
+        by_comp.setdefault(competition, set()).add(team_name)
+    return by_comp
+
+
+def ensure_canonical_self_mappings(mapping, context):
+    updated = dict(mapping) if isinstance(mapping, dict) else {}
+    added = 0
+    by_comp = canonical_names_by_competition(context)
+    for competition, names in by_comp.items():
+        updated.setdefault(competition, {})
+        for team_name in names:
+            if team_name not in updated[competition]:
+                updated[competition][team_name] = team_name
+                added += 1
+    return updated, added
+
+
 def update_team_mapping_from_fixtures(fixtures, context, mapping):
     updated = dict(mapping)
     new_entries = 0
     changed_entries = 0
+    blanks_added = 0
+    by_comp = canonical_names_by_competition(context)
 
     for _, row in fixtures.iterrows():
         competition = str(row.get("competition", "")).strip()
         if not competition:
             continue
         updated.setdefault(competition, {})
+        canonical_names = by_comp.get(competition, set())
 
         for side_col in ["home_team", "away_team"]:
             api_name = str(row.get(side_col, "")).strip()
             if not api_name:
                 continue
             existing = str(updated[competition].get(api_name, "")).strip()
-            resolved = resolve_live_team_name(api_name, competition, context) or api_name
             if not existing:
-                updated[competition][api_name] = resolved
+                if api_name in canonical_names:
+                    updated[competition][api_name] = api_name
+                else:
+                    updated[competition][api_name] = ""
+                    blanks_added += 1
                 new_entries += 1
-            elif existing != resolved:
-                # Keep existing user mapping once provided.
-                changed_entries += 1
+            elif existing:
+                continue
 
-    return updated, new_entries, changed_entries
+    return updated, new_entries, changed_entries, blanks_added
 
 
-def apply_team_mapping_to_fixtures(fixtures, mapping):
+def apply_team_mapping_to_fixtures(fixtures, mapping, context):
     mapped = fixtures.copy()
+    known_teams = set(context.get("available_teams", []))
 
     def mapped_name(competition, api_name):
-        return str(mapping.get(str(competition), {}).get(str(api_name), api_name)).strip()
+        competition = str(competition).strip()
+        api_name = str(api_name).strip()
+        direct = str(mapping.get(competition, {}).get(api_name, "")).strip()
+        if direct:
+            if direct in known_teams:
+                return direct
+            return ""
+        if api_name in known_teams:
+            return api_name
+        return ""
 
     mapped["mapped_home_team"] = mapped.apply(
         lambda row: mapped_name(row.get("competition", ""), row.get("home_team", "")),
@@ -415,6 +477,7 @@ def load_upcoming_matchweek_fixtures_from_csv_fallback(window_days):
     frame = frame.rename(columns={"Home": "home_team", "Away": "away_team"})
     frame["competition"] = MLS_COMPETITION_NAME
     fixtures = frame[["match_date", "competition", "home_team", "away_team"]].copy()
+    fixtures["match_datetime_et"] = None
     fixtures = fixtures.sort_values(["match_date", "home_team", "away_team"]).reset_index(drop=True)
     first_date = fixtures["match_date"].min()
     cutoff_date = first_date + pd.Timedelta(days=max(0, window_days))
@@ -443,7 +506,8 @@ def load_upcoming_matchweek_fixtures_from_espn(window_days, lookahead_days=21):
             event_date = pd.to_datetime(event.get("date"), utc=True, errors="coerce")
             if pd.isna(event_date):
                 continue
-            match_date = event_date.tz_convert(EASTERN_TZ).tz_localize(None).normalize()
+            event_dt_et = event_date.tz_convert(EASTERN_TZ)
+            match_date = event_dt_et.tz_localize(None).normalize()
             if match_date < today:
                 continue
 
@@ -479,6 +543,7 @@ def load_upcoming_matchweek_fixtures_from_espn(window_days, lookahead_days=21):
             rows.append(
                 {
                     "match_date": match_date,
+                    "match_datetime_et": event_dt_et.isoformat(),
                     "competition": MLS_COMPETITION_NAME,
                     "home_team": home_team,
                     "away_team": away_team,
@@ -530,13 +595,15 @@ def load_upcoming_matchweek_fixtures_from_api(api_token, window_days):
         if pd.isna(parsed):
             continue
 
-        match_date = parsed.tz_convert(EASTERN_TZ).tz_localize(None).normalize()
+        match_dt_et = parsed.tz_convert(EASTERN_TZ)
+        match_date = match_dt_et.tz_localize(None).normalize()
         if match_date < today:
             continue
 
         rows.append(
             {
                 "match_date": match_date,
+                "match_datetime_et": match_dt_et.isoformat(),
                 "competition": MLS_COMPETITION_NAME,
                 "home_team": home_team,
                 "away_team": away_team,
@@ -741,6 +808,7 @@ def predict_fixture(row, context):
     raw_away = row["away_team"]
     competition = row["competition"]
     match_date = row["match_date"]
+    match_datetime_et = str(row.get("match_datetime_et", "")).strip()
 
     home_team = str(row.get("mapped_home_team", "")).strip() or str(raw_home).strip()
     away_team = str(row.get("mapped_away_team", "")).strip() or str(raw_away).strip()
@@ -780,6 +848,12 @@ def predict_fixture(row, context):
         label = context["result_label_encoder"].inverse_transform([encoded_label])[0]
         probabilities[label] = float(proba_values[idx])
 
+    home_league_strength = float(context.get("league_strength", {}).get(home_comp, 0.85))
+    away_league_strength = float(context.get("league_strength", {}).get(away_comp, 0.85))
+    probabilities, _, league_direction_shift = pm.apply_league_strength_adjustment(
+        probabilities, home_league_strength, away_league_strength
+    )
+
     home_adv_shift = pm.mls_home_advantage_shift(home_team, prediction_season, context["season_teams"])
     transfer = min(home_adv_shift, probabilities.get("A", 0.0))
     probabilities["H"] = max(0.0, probabilities.get("H", 0.0) + transfer)
@@ -807,6 +881,8 @@ def predict_fixture(row, context):
             probabilities["H"] /= total_prob
             probabilities["D"] /= total_prob
             probabilities["A"] /= total_prob
+    probabilities = pm.apply_home_advantage_boost(probabilities)
+    probabilities = pm.reduce_draw_probability(probabilities)
     probabilities = pm.apply_probability_randomizer(probabilities, pm.MLS_RANDOMIZER_MAX_DELTA)
 
     prediction = max(probabilities, key=probabilities.get)
@@ -820,12 +896,14 @@ def predict_fixture(row, context):
     key = make_prediction_key(match_date, competition, home_team, away_team)
     reasoning = (
         "Base ensemble probability from trained MLS model, then adjusted by top-player market-value edge "
-        f"(home shift {home_adv_shift:+.3f}; market shift {market_shift:+.3f}, attacker-weighted and capped)."
+        f"(league shift {league_direction_shift:+.3f}; home shift {home_adv_shift:+.3f}; "
+        f"market shift {market_shift:+.3f}, attacker-weighted and capped)."
     )
     return {
         "prediction_key": key,
         "created_at_utc": datetime.now(UTC).replace(microsecond=0).isoformat(),
         "match_date": match_date.strftime("%Y-%m-%d"),
+        "match_datetime_et": match_datetime_et,
         "competition": competition,
         "home_team": home_team,
         "away_team": away_team,
@@ -875,6 +953,18 @@ def settle_predictions(predictions_df, results_index):
     return predictions_df, settled_count
 
 
+def drop_completed_predictions(predictions_df, results_index):
+    if predictions_df.empty:
+        return predictions_df, 0
+    if not isinstance(results_index, dict) or not results_index:
+        return predictions_df, 0
+    frame = predictions_df.copy()
+    keep_mask = ~frame["prediction_key"].astype(str).isin(set(results_index.keys()))
+    dropped = int((~keep_mask).sum())
+    frame = frame[keep_mask].copy()
+    return frame, dropped
+
+
 def dedupe_predictions(predictions_df):
     if predictions_df.empty:
         return predictions_df
@@ -909,10 +999,11 @@ def main():
         return
 
     context = build_prediction_context()
-    team_mapping = load_team_mapping(TEAM_MAPPING_FILE)
-    team_mapping, new_map_entries, mapping_drift = update_team_mapping_from_fixtures(fixtures, context, team_mapping)
+    team_mapping = load_shared_mapping()
+    team_mapping, canonical_added = ensure_canonical_self_mappings(team_mapping, context)
+    team_mapping, new_map_entries, mapping_drift, blanks_added = update_team_mapping_from_fixtures(fixtures, context, team_mapping)
     save_team_mapping(TEAM_MAPPING_FILE, team_mapping)
-    fixtures = apply_team_mapping_to_fixtures(fixtures, team_mapping)
+    fixtures = apply_team_mapping_to_fixtures(fixtures, team_mapping, context)
     existing = load_prediction_store(PREDICTIONS_FILE)
     existing = existing.set_index("prediction_key", drop=False) if not existing.empty else existing
 
@@ -940,6 +1031,7 @@ def main():
 
     results_index = load_results_index(RAW_DATA_DIR)
     combined, settled_count = settle_predictions(combined, results_index)
+    combined, removed_completed = drop_completed_predictions(combined, results_index)
     combined = dedupe_predictions(combined)
     combined = combined[RESULT_COLUMNS].sort_values(["match_date", "competition", "home_team", "away_team"])
 
@@ -948,10 +1040,13 @@ def main():
 
     print(f"Upcoming fixtures found: {len(fixtures)}")
     print(f"Team mappings file: {TEAM_MAPPING_FILE}")
+    print(f"Canonical raw-data names added: {canonical_added}")
     print(f"Team mappings added from current pull: {new_map_entries}")
+    print(f"New blank mappings needing manual edit: {blanks_added}")
     print(f"Potential mapping drifts detected (kept your existing map): {mapping_drift}")
     print(f"Predictions written: {len(new_df)}")
     print(f"Skipped (unmatched team names): {skipped}")
+    print(f"Removed completed fixtures from upcoming list: {removed_completed}")
     print(f"Newly settled with real results: {settled_count}")
     print(f"Saved tracking file: {PREDICTIONS_FILE}")
 

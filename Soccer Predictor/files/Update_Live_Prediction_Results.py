@@ -12,9 +12,12 @@ import pandas as pd
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 GLOBAL_PREDICTIONS_FILE = os.path.join(BASE_DIR, "Data", "Predictions", "upcoming_matchweek_predictions.csv")
-GLOBAL_MAPPING_FILE = os.path.join(BASE_DIR, "Data", "Predictions", "upcoming_fixture_team_mapping.json")
 MLS_PREDICTIONS_FILE = os.path.join(BASE_DIR, "MLS", "Data", "Predictions", "upcoming_matchweek_predictions.csv")
-MLS_MAPPING_FILE = os.path.join(BASE_DIR, "MLS", "Data", "Predictions", "upcoming_fixture_team_mapping.json")
+SHARED_MAPPING_FILE = os.path.join(BASE_DIR, "Data", "Predictions", "team_name_mapping_master.json")
+LEGACY_GLOBAL_MAPPING_FILE = os.path.join(BASE_DIR, "Data", "Predictions", "upcoming_fixture_team_mapping.json")
+LEGACY_MLS_MAPPING_FILE = os.path.join(BASE_DIR, "MLS", "Data", "Predictions", "upcoming_fixture_team_mapping.json")
+ESPN_NAMES_FILE = os.path.join(BASE_DIR, "Data", "Predictions", "espn_team_names_seen.json")
+ACCURACY_TOTALS_FILE = os.path.join(BASE_DIR, "Website", "files", "accuracy_totals.json")
 
 ESPN_BASE = "https://site.api.espn.com/apis/site/v2/sports/soccer"
 ESPN_COMPETITION_KEYS = {
@@ -141,6 +144,101 @@ def save_mapping(path, mapping):
         )
     with open(path, "w", encoding="utf-8") as fh:
         json.dump(normalized, fh, indent=2, ensure_ascii=False)
+
+
+def save_json(path, payload):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as fh:
+        json.dump(payload, fh, indent=2, ensure_ascii=False)
+
+
+def load_accuracy_totals(path):
+    if not os.path.exists(path):
+        return {
+            "updated_at_utc": "",
+            "overall": {"correct_total": 0, "total_predictions": 0, "accuracy_pct": 0.0},
+            "by_league": {},
+            "counted_prediction_keys": {},
+        }
+    try:
+        with open(path, "r", encoding="utf-8") as fh:
+            payload = json.load(fh)
+    except Exception:
+        return {
+            "updated_at_utc": "",
+            "overall": {"correct_total": 0, "total_predictions": 0, "accuracy_pct": 0.0},
+            "by_league": {},
+            "counted_prediction_keys": {},
+        }
+    if not isinstance(payload, dict):
+        payload = {}
+    payload.setdefault("updated_at_utc", "")
+    payload.setdefault("overall", {"correct_total": 0, "total_predictions": 0, "accuracy_pct": 0.0})
+    payload.setdefault("by_league", {})
+    payload.setdefault("counted_prediction_keys", {})
+    return payload
+
+
+def update_accuracy_totals_from_frame(totals, frame):
+    if frame is None or frame.empty:
+        return 0
+    counted = totals.setdefault("counted_prediction_keys", {})
+    by_league = totals.setdefault("by_league", {})
+    overall = totals.setdefault("overall", {"correct_total": 0, "total_predictions": 0, "accuracy_pct": 0.0})
+
+    added = 0
+    for _, row in frame.iterrows():
+        actual = str(row.get("actual_result", "")).strip().upper()
+        if actual not in {"H", "D", "A"}:
+            continue
+        key = str(row.get("prediction_key", "")).strip()
+        if not key or key in counted:
+            continue
+        competition = str(row.get("competition", "Unknown")).strip() or "Unknown"
+        predicted = str(row.get("predicted_result", "")).strip().upper()
+        is_correct = int(predicted == actual)
+
+        league = by_league.setdefault(
+            competition,
+            {"correct_total": 0, "total_predictions": 0, "accuracy_pct": 0.0},
+        )
+        league["total_predictions"] = int(league.get("total_predictions", 0)) + 1
+        league["correct_total"] = int(league.get("correct_total", 0)) + is_correct
+        league["accuracy_pct"] = round(
+            100.0 * league["correct_total"] / max(1, league["total_predictions"]), 1
+        )
+
+        overall["total_predictions"] = int(overall.get("total_predictions", 0)) + 1
+        overall["correct_total"] = int(overall.get("correct_total", 0)) + is_correct
+        overall["accuracy_pct"] = round(
+            100.0 * overall["correct_total"] / max(1, overall["total_predictions"]), 1
+        )
+
+        counted[key] = {
+            "competition": competition,
+            "predicted_result": predicted,
+            "actual_result": actual,
+            "is_correct": is_correct,
+        }
+        added += 1
+    return added
+
+
+def load_shared_mapping():
+    shared = load_mapping(SHARED_MAPPING_FILE)
+    if shared:
+        return shared
+    merged = {}
+    for legacy in [LEGACY_GLOBAL_MAPPING_FILE, LEGACY_MLS_MAPPING_FILE]:
+        legacy_map = load_mapping(legacy)
+        for competition, values in legacy_map.items():
+            merged.setdefault(competition, {})
+            for api_name, mapped_name in (values or {}).items():
+                if api_name not in merged[competition]:
+                    merged[competition][api_name] = mapped_name
+    if merged:
+        save_mapping(SHARED_MAPPING_FILE, merged)
+    return merged
 
 
 def load_predictions(path):
@@ -316,6 +414,16 @@ def cleanup_all_settled_rows(frame):
     return frame, cleaned
 
 
+def drop_completed_rows(frame):
+    if frame is None or frame.empty or "actual_result" not in frame.columns:
+        return frame, 0
+    settled_mask = frame["actual_result"].astype(str).str.strip().str.upper().isin({"H", "D", "A"})
+    removed = int(settled_mask.sum())
+    if removed == 0:
+        return frame, 0
+    return frame[~settled_mask].copy(), removed
+
+
 def resolve_espn_team_name(raw_name, competition, mapping_by_competition, predicted_team_names):
     raw = str(raw_name or "").strip()
     if not raw:
@@ -357,10 +465,11 @@ def resolve_espn_team_name(raw_name, competition, mapping_by_competition, predic
 
 def build_results_index_from_espn(predictions_df, mapping_by_competition):
     if predictions_df is None or predictions_df.empty:
-        return {}, {}, {}
+        return {}, {}, {}, {}
     results = {}
     mapping_updates = {}
     unresolved = {}
+    seen_names = {}
     for competition in sorted(set(predictions_df["competition"].astype(str).str.strip())):
         if not competition:
             continue
@@ -369,6 +478,7 @@ def build_results_index_from_espn(predictions_df, mapping_by_competition):
             print(f"Skipping {competition}: no ESPN league mapping configured.")
             continue
         unresolved.setdefault(competition, set())
+        seen_names.setdefault(competition, set())
         subset = predictions_df[predictions_df["competition"].astype(str).str.strip() == competition]
         if subset.empty:
             continue
@@ -420,6 +530,8 @@ def build_results_index_from_espn(predictions_df, mapping_by_competition):
                     team_name = str((c.get("team") or {}).get("displayName") or "").strip()
                     score_val = pd.to_numeric(c.get("score"), errors="coerce")
                     if side == "home":
+                        if team_name:
+                            seen_names[competition].add(team_name)
                         home_name, home_ok = resolve_espn_team_name(
                             team_name, competition, mapping_by_competition, predicted_team_names
                         )
@@ -430,6 +542,8 @@ def build_results_index_from_espn(predictions_df, mapping_by_competition):
                             unresolved[competition].add(team_name)
                         home_score = int(score_val) if pd.notna(score_val) else None
                     elif side == "away":
+                        if team_name:
+                            seen_names[competition].add(team_name)
                         away_name, away_ok = resolve_espn_team_name(
                             team_name, competition, mapping_by_competition, predicted_team_names
                         )
@@ -451,7 +565,8 @@ def build_results_index_from_espn(predictions_df, mapping_by_competition):
                     "completed": True,
                 }
     unresolved = {k: sorted(v) for k, v in unresolved.items() if v}
-    return results, mapping_updates, unresolved
+    seen_names = {k: sorted(v) for k, v in seen_names.items()}
+    return results, mapping_updates, unresolved, seen_names
 
 
 def apply_mapping_updates(base_mapping, updates):
@@ -482,38 +597,51 @@ def main():
 
     global_df = load_predictions(GLOBAL_PREDICTIONS_FILE)
     mls_df = load_predictions(MLS_PREDICTIONS_FILE)
+    totals = load_accuracy_totals(ACCURACY_TOTALS_FILE)
 
     if global_df is None and mls_df is None:
         raise ValueError("No predictions CSV files found to update.")
 
-    global_mapping = load_mapping(GLOBAL_MAPPING_FILE)
-    mls_mapping = load_mapping(MLS_MAPPING_FILE)
+    shared_mapping = load_shared_mapping()
 
     needs_resettle = (not args.cleanup_all) or args.resettle_after_cleanup
     if needs_resettle:
-        global_results, global_mapping_updates, global_unresolved = build_results_index_from_espn(global_df, global_mapping)
-        mls_results, mls_mapping_updates, mls_unresolved = build_results_index_from_espn(mls_df, mls_mapping)
+        global_results, global_mapping_updates, global_unresolved, global_seen_names = build_results_index_from_espn(global_df, shared_mapping)
+        mls_results, mls_mapping_updates, mls_unresolved, mls_seen_names = build_results_index_from_espn(mls_df, shared_mapping)
     else:
-        global_results, global_mapping_updates, global_unresolved = {}, {}, {}
-        mls_results, mls_mapping_updates, mls_unresolved = {}, {}, {}
+        global_results, global_mapping_updates, global_unresolved, global_seen_names = {}, {}, {}, {}
+        mls_results, mls_mapping_updates, mls_unresolved, mls_seen_names = {}, {}, {}, {}
 
-    global_mapping, global_added, global_drift = apply_mapping_updates(global_mapping, global_mapping_updates)
-    mls_mapping, mls_added, mls_drift = apply_mapping_updates(mls_mapping, mls_mapping_updates)
-    save_mapping(GLOBAL_MAPPING_FILE, global_mapping)
-    save_mapping(MLS_MAPPING_FILE, mls_mapping)
+    shared_mapping, global_added, global_drift = apply_mapping_updates(shared_mapping, global_mapping_updates)
+    shared_mapping, mls_added, mls_drift = apply_mapping_updates(shared_mapping, mls_mapping_updates)
+    save_mapping(SHARED_MAPPING_FILE, shared_mapping)
+    save_json(
+        ESPN_NAMES_FILE,
+        {
+            "generated_at_utc": datetime.now(UTC).replace(microsecond=0).isoformat(),
+            "global": global_seen_names,
+            "mls": mls_seen_names,
+        },
+    )
 
     global_updates = 0
     global_cleaned = 0
+    global_removed_completed = 0
     if global_df is not None:
         if args.cleanup_all:
             global_df, global_cleaned = cleanup_all_settled_rows(global_df)
         if needs_resettle:
             global_df, global_updates = update_frame_with_results(global_df, global_results)
+        global_totals_added = update_accuracy_totals_from_frame(totals, global_df)
+        global_df, global_removed_completed = drop_completed_rows(global_df)
         global_df.to_csv(GLOBAL_PREDICTIONS_FILE, index=False)
+    else:
+        global_totals_added = 0
 
     mls_updates = 0
     mls_cleaned = 0
     mls_future_cleared = 0
+    mls_removed_completed = 0
     if mls_df is not None:
         today_et = datetime.now(EASTERN_TZ).date()
         mls_df, mls_future_cleared = clear_future_settled_rows(mls_df, today_et)
@@ -523,7 +651,14 @@ def main():
             mls_df, mls_cleaned = cleanup_settled_rows_not_in_results(mls_df, mls_results)
         if needs_resettle:
             mls_df, mls_updates = update_frame_with_results(mls_df, mls_results)
+        mls_totals_added = update_accuracy_totals_from_frame(totals, mls_df)
+        mls_df, mls_removed_completed = drop_completed_rows(mls_df)
         mls_df.to_csv(MLS_PREDICTIONS_FILE, index=False)
+    else:
+        mls_totals_added = 0
+
+    totals["updated_at_utc"] = datetime.now(UTC).replace(microsecond=0).isoformat()
+    save_json(ACCURACY_TOTALS_FILE, totals)
 
     if args.cleanup_all:
         print(f"Global predictions cleanup cleared: {global_cleaned}")
@@ -536,9 +671,15 @@ def main():
         print(f"MLS unresolved ESPN names by league: {mls_unresolved}")
     print(f"MLS future-settled rows cleared: {mls_future_cleared}")
     print(f"Global predictions updated: {global_updates}")
+    print(f"Global completed rows removed from upcoming list: {global_removed_completed}")
+    print(f"Global totals entries added: {global_totals_added}")
     if args.cleanup_mls and not args.cleanup_all:
         print(f"MLS predictions cleanup cleared: {mls_cleaned}")
     print(f"MLS predictions updated: {mls_updates}")
+    print(f"MLS completed rows removed from upcoming list: {mls_removed_completed}")
+    print(f"MLS totals entries added: {mls_totals_added}")
+    print(f"ESPN names seen file: {ESPN_NAMES_FILE}")
+    print(f"Accuracy totals file: {ACCURACY_TOTALS_FILE}")
     print("Done.")
 
 

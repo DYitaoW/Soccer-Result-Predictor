@@ -3,6 +3,7 @@ import os
 import re
 import hashlib
 import random
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from collections import defaultdict
 from datetime import datetime
 
@@ -24,12 +25,26 @@ TEAM_DATA_DIR = os.path.join(BASE_DIR, "Data", "Team_Data")
 MODEL_CACHE = os.path.join(TEAM_DATA_DIR, "model_cache.pkl")
 SEASON_PATTERN = re.compile(r"^(?:[a-z0-9]+stat)(\d{4})-(\d{2})\.csv$", re.IGNORECASE)
 MIN_START_YEAR = 2002
-EU_RANDOMIZER_MAX_DELTA = 0.07
+EU_RANDOMIZER_MAX_DELTA = 0.08
+DRAW_REDUCTION_FACTOR = 0.08
+HIGH_DRAW_THRESHOLD = 0.42
+HIGH_DRAW_EXTRA_REDUCTION_MAX = 0.18
+CPU_COUNT = max(1, (os.cpu_count() or 1))
+# Outer-level parallelism (train multiple regressors at once).
+TRAIN_WORKERS = int(os.getenv("SOCCER_TRAIN_WORKERS", str(max(1, min(4, CPU_COUNT // 2)))))
+# Inner model thread count to avoid oversubscription.
+MODEL_THREADS = int(os.getenv("SOCCER_MODEL_THREADS", str(max(1, CPU_COUNT // TRAIN_WORKERS))))
 
 
 def load_json(path):
     with open(path, "r", encoding="utf-8") as file:
         return json.load(file)
+
+
+def save_json(path, payload):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as file:
+        json.dump(payload, file, indent=2, ensure_ascii=False)
 
 
 def load_json_if_exists(path):
@@ -237,6 +252,56 @@ def build_competition_offsets(league_strength, competition_tables):
         offsets[comp] = running
         running += int(competition_tables.get(comp, {}).get("size", 0))
     return offsets
+
+
+def refresh_league_strength_coefficients(league_strength, season_teams):
+    """Recompute and blend league-strength coefficients from latest season team stats."""
+    existing = dict(league_strength) if isinstance(league_strength, dict) else {}
+    comp_rows = {}
+    for season_key, teams in (season_teams or {}).items():
+        competition = os.path.dirname(str(season_key)).replace("\\", "/").strip()
+        if not competition or not isinstance(teams, dict):
+            continue
+        year = parse_start_year_from_key(season_key)
+        if year < 0:
+            continue
+        current = comp_rows.get(competition)
+        if current is None or year > current["year"]:
+            current = {"year": year, "rows": []}
+            comp_rows[competition] = current
+        rows = current["rows"]
+        for stats in teams.values():
+            row = clean_stats_dict(stats if isinstance(stats, dict) else {})
+            games = float(row.get("games", 0.0) or 0.0)
+            if games <= 0:
+                continue
+            ppg = float(row.get("points", 0.0) or 0.0) / games
+            gdpg = (float(row.get("goals_scored", 0.0) or 0.0) - float(row.get("goals_conceded", 0.0) or 0.0)) / games
+            rows.append((ppg, gdpg))
+
+    scored = {}
+    for competition, payload in comp_rows.items():
+        rows = payload.get("rows", [])
+        if not rows:
+            continue
+        avg_ppg = sum(r[0] for r in rows) / len(rows)
+        avg_gdpg = sum(r[1] for r in rows) / len(rows)
+        scored[competition] = avg_ppg + 0.35 * avg_gdpg
+
+    if not scored:
+        return existing
+    vals = list(scored.values())
+    low = min(vals)
+    high = max(vals)
+    spread = max(1e-6, high - low)
+    updated = dict(existing)
+    for competition, score in scored.items():
+        norm = (score - low) / spread if spread > 0 else 0.5
+        inferred = 0.72 + 0.33 * norm
+        old = float(existing.get(competition, 0.85) or 0.85)
+        blended = 0.65 * old + 0.35 * inferred
+        updated[competition] = round(max(0.65, min(1.10, blended)), 4)
+    return updated
 
 
 def build_dynamic_form_from_matches(matches):
@@ -701,6 +766,40 @@ def apply_probability_randomizer(probabilities, max_delta):
     return {"H": h / norm, "D": d / norm, "A": a / norm}
 
 
+def reduce_draw_probability(probabilities, reduction_factor=DRAW_REDUCTION_FACTOR):
+    h = max(0.0, float(probabilities.get("H", 0.0)))
+    d = max(0.0, float(probabilities.get("D", 0.0)))
+    a = max(0.0, float(probabilities.get("A", 0.0)))
+    total = h + d + a
+    if total <= 0:
+        return {"H": 1 / 3, "D": 1 / 3, "A": 1 / 3}
+    h /= total
+    d /= total
+    a /= total
+
+    r = max(0.0, min(0.6, float(reduction_factor)))
+    if d > HIGH_DRAW_THRESHOLD:
+        # If draw is unusually dominant, suppress it further and re-distribute to H/A.
+        extra_ratio = min(1.0, (d - HIGH_DRAW_THRESHOLD) / max(1e-6, (1.0 - HIGH_DRAW_THRESHOLD)))
+        r += HIGH_DRAW_EXTRA_REDUCTION_MAX * extra_ratio
+    r = min(0.6, r)
+    reduced_d = d * (1.0 - r)
+    carry = d - reduced_d
+    d = reduced_d
+    h_a_total = h + a
+    if h_a_total > 0:
+        h += carry * (h / h_a_total)
+        a += carry * (a / h_a_total)
+    else:
+        h += carry * 0.5
+        a += carry * 0.5
+
+    norm = h + d + a
+    if norm <= 0:
+        return {"H": 1 / 3, "D": 1 / 3, "A": 1 / 3}
+    return {"H": h / norm, "D": d / norm, "A": a / norm}
+
+
 def train_result_model(X_train, y_train):
     label_encoder = LabelEncoder()
     y_train_enc = label_encoder.fit_transform(y_train)
@@ -719,6 +818,7 @@ def train_result_model(X_train, y_train):
                 random_state=42,
                 tree_method="hist",
                 device="cuda",
+                n_jobs=MODEL_THREADS,
             )
             model.fit(X_train, y_train_enc)
             return model, label_encoder, "xgboost-gpu"
@@ -735,11 +835,12 @@ def train_result_model(X_train, y_train):
                 random_state=42,
                 tree_method="hist",
                 device="cpu",
+                n_jobs=MODEL_THREADS,
             )
             model.fit(X_train, y_train_enc)
             return model, label_encoder, "xgboost-cpu"
 
-    model = RandomForestClassifier(n_estimators=220, random_state=42, n_jobs=-1)
+    model = RandomForestClassifier(n_estimators=220, random_state=42, n_jobs=MODEL_THREADS)
     model.fit(X_train, y_train_enc)
     return model, label_encoder, "random-forest-cpu"
 
@@ -758,6 +859,7 @@ def train_regression_model(X_train, y_train, random_state):
                 random_state=random_state,
                 tree_method="hist",
                 device="cuda",
+                n_jobs=MODEL_THREADS,
             )
             model.fit(X_train, y_train)
             return model
@@ -773,13 +875,27 @@ def train_regression_model(X_train, y_train, random_state):
                 random_state=random_state,
                 tree_method="hist",
                 device="cpu",
+                n_jobs=MODEL_THREADS,
             )
             model.fit(X_train, y_train)
             return model
 
-    model = RandomForestRegressor(n_estimators=160, random_state=random_state, n_jobs=-1)
+    model = RandomForestRegressor(n_estimators=160, random_state=random_state, n_jobs=MODEL_THREADS)
     model.fit(X_train, y_train)
     return model
+
+
+def train_all_regressors(X, targets):
+    results = {}
+    with ThreadPoolExecutor(max_workers=TRAIN_WORKERS) as pool:
+        future_map = {
+            pool.submit(train_regression_model, X, series, seed): key
+            for key, series, seed in targets
+        }
+        for future in as_completed(future_map):
+            key = future_map[future]
+            results[key] = future.result()
+    return results
 
 
 def main():
@@ -809,6 +925,8 @@ def main():
     head_to_head = replace_nan_with_sentinel(head_to_head)
     current_form = replace_nan_with_sentinel(current_form)
     league_strength = replace_nan_with_sentinel(league_strength)
+    league_strength = refresh_league_strength_coefficients(league_strength, season_teams)
+    save_json(os.path.join(TEAM_DATA_DIR, "league_strength.json"), league_strength)
 
     if not isinstance(current_form, dict):
         current_form = {"teams": {}}
@@ -869,12 +987,23 @@ def main():
         backend = cache_bundle.get("backend", "cached")
     else:
         clf, result_label_encoder, backend = train_result_model(X, y_result)
-        home_goal_reg = train_regression_model(X, y_home_goals, 42)
-        away_goal_reg = train_regression_model(X, y_away_goals, 43)
-        home_shot_reg = train_regression_model(X, y_home_shots, 44)
-        away_shot_reg = train_regression_model(X, y_away_shots, 45)
-        home_sot_reg = train_regression_model(X, y_home_sot, 46)
-        away_sot_reg = train_regression_model(X, y_away_sot, 47)
+        regs = train_all_regressors(
+            X,
+            [
+                ("home_goal_reg", y_home_goals, 42),
+                ("away_goal_reg", y_away_goals, 43),
+                ("home_shot_reg", y_home_shots, 44),
+                ("away_shot_reg", y_away_shots, 45),
+                ("home_sot_reg", y_home_sot, 46),
+                ("away_sot_reg", y_away_sot, 47),
+            ],
+        )
+        home_goal_reg = regs["home_goal_reg"]
+        away_goal_reg = regs["away_goal_reg"]
+        home_shot_reg = regs["home_shot_reg"]
+        away_shot_reg = regs["away_shot_reg"]
+        home_sot_reg = regs["home_sot_reg"]
+        away_sot_reg = regs["away_sot_reg"]
         try:
             joblib.dump(
                 {
@@ -1106,6 +1235,7 @@ def main():
                 probabilities["H"] /= total_prob
                 probabilities["D"] /= total_prob
                 probabilities["A"] /= total_prob
+        probabilities = reduce_draw_probability(probabilities)
         probabilities = apply_probability_randomizer(probabilities, EU_RANDOMIZER_MAX_DELTA)
         final_probabilities = dict(probabilities)
 

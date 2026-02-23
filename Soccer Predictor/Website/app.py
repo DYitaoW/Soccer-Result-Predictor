@@ -14,14 +14,17 @@ from flask import Flask, jsonify, render_template, request
 class AveragedProbaClassifier:
     # Cache compatibility shim for previously pickled wrappers.
     def __init__(self, models):
+        """Store underlying ensemble members and expose shared classes."""
         self.models = models
         self.classes_ = models[0].classes_
 
     def predict_proba(self, X):
+        """Average probability outputs from all wrapped models."""
         matrices = [model.predict_proba(X) for model in self.models]
         return sum(matrices) / len(matrices)
 
     def predict(self, X):
+        """Predict class labels from averaged probabilities."""
         avg = self.predict_proba(X)
         idx = avg.argmax(axis=1)
         return self.classes_[idx]
@@ -33,12 +36,14 @@ FILES_DIR = os.path.join(PROJECT_DIR, "files")
 MLS_FILES_DIR = os.path.join(PROJECT_DIR, "MLS", "files")
 WEBSITE_FILES_DIR = os.path.join(WEBSITE_DIR, "files")
 ACCURACY_HISTORY_DIR = os.path.join(WEBSITE_FILES_DIR, "accuracy_history")
+ACCURACY_TOTALS_FILE = os.path.join(WEBSITE_FILES_DIR, "accuracy_totals.json")
 GLOBAL_UPCOMING_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "upcoming_matchweek_predictions.csv")
 MLS_UPCOMING_FILE = os.path.join(PROJECT_DIR, "MLS", "Data", "Predictions", "upcoming_matchweek_predictions.csv")
 GLOBAL_PROJECTED_TABLE_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "projected_league_tables.csv")
 MLS_PROJECTED_TABLE_FILE = os.path.join(PROJECT_DIR, "MLS", "Data", "Predictions", "projected_league_tables.csv")
 MLS_PROJECTED_BRACKET_FILE = os.path.join(PROJECT_DIR, "MLS", "Data", "Predictions", "projected_mls_playoff_bracket.json")
 LIVE_RESULTS_UPDATER = os.path.join(FILES_DIR, "Update_Live_Prediction_Results.py")
+MLS_COMPETITION = "United States/MLS"
 if FILES_DIR not in sys.path:
     sys.path.insert(0, FILES_DIR)
 if MLS_FILES_DIR not in sys.path:
@@ -46,6 +51,7 @@ if MLS_FILES_DIR not in sys.path:
 
 
 def _load_module(module_name, file_path):
+    """Dynamically import a module from a specific file path."""
     spec = importlib.util.spec_from_file_location(module_name, file_path)
     module = importlib.util.module_from_spec(spec)
     assert spec.loader is not None
@@ -89,6 +95,7 @@ _ctx_mls = None
 
 
 def _load_context(pm_mod):
+    """Load cached model bundle and supporting team data for one predictor mode."""
     matches, season_files = pm_mod.load_training_matches(pm_mod.PROCESSED_DIR)
 
     if not os.path.exists(pm_mod.MODEL_CACHE):
@@ -165,6 +172,7 @@ def _load_context(pm_mod):
 
 
 def get_context(mode="global"):
+    """Return lazily initialized prediction context for global or MLS mode."""
     global _ctx_global, _ctx_mls
     if mode == "mls":
         if _ctx_mls is None:
@@ -181,6 +189,7 @@ def get_context(mode="global"):
 
 
 def _predict(home_raw, away_raw, mode="global"):
+    """Run a single match prediction and return probabilities plus stat projections."""
     ctx = get_context(mode)
     pm = ctx.pm
     home_team = pm.resolve_team_name(home_raw, ctx.available_teams)
@@ -229,8 +238,11 @@ def _predict(home_raw, away_raw, mode="global"):
             probabilities["H"] /= total_prob
             probabilities["D"] /= total_prob
             probabilities["A"] /= total_prob
+        probabilities = pm.apply_home_advantage_boost(probabilities)
+        probabilities = pm.reduce_draw_probability(probabilities)
         probabilities = pm.apply_probability_randomizer(probabilities, pm.MLS_RANDOMIZER_MAX_DELTA)
     else:
+        probabilities = pm.reduce_draw_probability(probabilities)
         probabilities = pm.apply_probability_randomizer(probabilities, pm.EU_RANDOMIZER_MAX_DELTA)
 
     prediction = max(probabilities, key=probabilities.get)
@@ -260,6 +272,7 @@ def _predict(home_raw, away_raw, mode="global"):
 
 
 def _winner_label(code, home_team, away_team):
+    """Convert H/D/A code to a display winner label."""
     code = str(code).strip().upper()
     if code == "H":
         return f"{home_team}"
@@ -269,6 +282,7 @@ def _winner_label(code, home_team, away_team):
 
 
 def _format_percent_value(value):
+    """Format percent values and clamp tiny non-zero values to '<1'."""
     try:
         v = float(value)
     except Exception:
@@ -279,6 +293,7 @@ def _format_percent_value(value):
 
 
 def _compute_accuracy_stats(frame):
+    """Compute aggregate accuracy counters from a predictions dataframe."""
     if frame.empty:
         return {
             "total_predictions": 0,
@@ -320,6 +335,7 @@ def _compute_accuracy_stats(frame):
 
 
 def _compute_league_accuracy_stats(frame):
+    """Compute accuracy counters grouped by competition."""
     if frame.empty or "competition" not in frame.columns:
         return []
 
@@ -341,7 +357,75 @@ def _compute_league_accuracy_stats(frame):
     return rows
 
 
+def _load_accuracy_totals():
+    """Load persistent all-time accuracy totals written by the live updater."""
+    payload = _load_json_payload(ACCURACY_TOTALS_FILE)
+    if not isinstance(payload, dict):
+        return {"overall": {}, "by_league": {}}
+    overall = payload.get("overall")
+    by_league = payload.get("by_league")
+    if not isinstance(overall, dict):
+        overall = {}
+    if not isinstance(by_league, dict):
+        by_league = {}
+    return {"overall": overall, "by_league": by_league}
+
+
+def _build_persistent_accuracy_stats(mode, rows):
+    """Build response stats by combining persistent settled totals with current pending rows."""
+    totals = _load_accuracy_totals()
+    by_league_all = totals.get("by_league", {})
+    if mode == "mls":
+        filtered = {
+            str(k): v for k, v in by_league_all.items()
+            if str(k).strip() == MLS_COMPETITION
+        }
+    else:
+        filtered = {
+            str(k): v for k, v in by_league_all.items()
+            if str(k).strip() != MLS_COMPETITION
+        }
+
+    pending_by_league = {}
+    for row in rows:
+        comp = str(row.get("competition", "")).strip() or "Unknown"
+        pending_by_league[comp] = pending_by_league.get(comp, 0) + 1
+
+    league_stats = []
+    comps = sorted(set(filtered.keys()) | set(pending_by_league.keys()), key=lambda name: name.lower())
+    correct_sum = 0
+    settled_sum = 0
+    for comp in comps:
+        league_payload = filtered.get(comp, {}) if isinstance(filtered.get(comp), dict) else {}
+        correct_total = int(league_payload.get("correct_total", 0) or 0)
+        settled_total = int(league_payload.get("total_predictions", 0) or 0)
+        pending_total = int(pending_by_league.get(comp, 0))
+        accuracy_pct = round((100.0 * correct_total / settled_total), 1) if settled_total else 0.0
+        league_stats.append(
+            {
+                "competition": comp,
+                "correct_total": correct_total,
+                "settled_total": settled_total,
+                "pending_total": pending_total,
+                "total_predictions": settled_total,
+                "accuracy_pct": accuracy_pct,
+            }
+        )
+        correct_sum += correct_total
+        settled_sum += settled_total
+
+    stats = {
+        "total_predictions": settled_sum,
+        "settled_total": settled_sum,
+        "correct_total": correct_sum,
+        "pending_total": int(len(rows)),
+        "accuracy_pct": round((100.0 * correct_sum / settled_sum), 1) if settled_sum else 0.0,
+    }
+    return stats, league_stats
+
+
 def _load_upcoming_rows(csv_path):
+    """Load upcoming prediction rows and attach persistent accuracy stats."""
     if not os.path.exists(csv_path):
         empty = pd.DataFrame()
         return [], _compute_accuracy_stats(empty), _compute_league_accuracy_stats(empty)
@@ -359,19 +443,42 @@ def _load_upcoming_rows(csv_path):
             return [], _compute_accuracy_stats(frame), _compute_league_accuracy_stats(frame)
 
     frame = frame.sort_values(["match_date", "competition", "home_team", "away_team"])
+    is_mls_file = os.path.normpath(csv_path) == os.path.normpath(MLS_UPCOMING_FILE)
+    # Current CSV rows are upcoming/pending only. Settled accuracy is persisted in accuracy_totals.json.
     stats = _compute_accuracy_stats(frame)
     league_stats = _compute_league_accuracy_stats(frame)
     rows = []
     for _, row in frame.iterrows():
         home = str(row["home_team"]).strip()
         away = str(row["away_team"]).strip()
-        date_val = pd.to_datetime(row["match_date"], errors="coerce")
+        raw_date = str(row["match_date"])
+        time_label = ""
+        mls_dt_raw = str(row.get("match_datetime_et", "")).strip() if "match_datetime_et" in frame.columns else ""
+        if is_mls_file and mls_dt_raw:
+            date_val = pd.to_datetime(mls_dt_raw, utc=True, errors="coerce")
+            if pd.notna(date_val):
+                try:
+                    date_val = date_val.tz_convert("America/New_York")
+                    time_label = date_val.strftime("%I:%M %p ET").lstrip("0")
+                except Exception:
+                    pass
+        elif is_mls_file and len(raw_date) == 10 and raw_date.count("-") == 2:
+            date_val = pd.to_datetime(raw_date, errors="coerce")
+        else:
+            date_val = pd.to_datetime(raw_date, utc=True, errors="coerce")
+            if pd.notna(date_val) and is_mls_file:
+                # MLS timestamps should be presented in Eastern time.
+                try:
+                    date_val = date_val.tz_convert("America/New_York")
+                    time_label = date_val.strftime("%I:%M %p ET").lstrip("0")
+                except Exception:
+                    pass
         if pd.isna(date_val):
             weekday = ""
             date_label = str(row["match_date"])
         else:
             weekday = date_val.strftime("%A")
-            date_label = date_val.strftime("%Y-%m-%d")
+            date_label = date_val.strftime("%B %d, %Y")
         try:
             ph_raw = float(row["prob_home"]) * 100
             pdv_raw = float(row["prob_draw"]) * 100
@@ -385,8 +492,10 @@ def _load_upcoming_rows(csv_path):
         rows.append(
             {
                 "match_date": str(row["match_date"]),
+                "match_datetime_et": mls_dt_raw if is_mls_file else "",
                 "weekday": weekday,
                 "date_label": date_label,
+                "time_label": time_label,
                 "competition": str(row["competition"]),
                 "home_team": home,
                 "away_team": away,
@@ -414,10 +523,13 @@ def _load_upcoming_rows(csv_path):
                 ),
             }
         )
-    return rows, stats, league_stats
+    mode = "mls" if is_mls_file else "global"
+    persistent_stats, persistent_league_stats = _build_persistent_accuracy_stats(mode, rows)
+    return rows, persistent_stats, persistent_league_stats
 
 
 def _load_projected_tables(csv_path):
+    """Load projected table CSV into API-ready league/table structure."""
     if not os.path.exists(csv_path):
         return {"leagues": [], "tables": {}}
     try:
@@ -477,6 +589,7 @@ def _load_projected_tables(csv_path):
 
 
 def _load_json_payload(path):
+    """Safely load JSON payload from disk, returning None on failure."""
     if not os.path.exists(path):
         return None
     try:
@@ -487,6 +600,7 @@ def _load_json_payload(path):
 
 
 def run_live_results_updater():
+    """Run the live-results updater script once at app startup."""
     if not os.path.exists(LIVE_RESULTS_UPDATER):
         print(f"[startup] Live updater not found: {LIVE_RESULTS_UPDATER}")
         return
@@ -509,12 +623,14 @@ def run_live_results_updater():
 
 
 def _safe_filename(name):
+    """Convert league names into filesystem-safe filenames."""
     text = "".join(ch if ch.isalnum() else "_" for ch in str(name or "").strip())
     text = "_".join(part for part in text.split("_") if part)
     return text[:120] or "unknown_league"
 
 
 def _update_accuracy_history_from_csv(csv_path, source_key):
+    """Append settled predictions into per-league accuracy history CSV files."""
     if not os.path.exists(csv_path):
         return 0, 0
     try:
@@ -584,6 +700,7 @@ def _update_accuracy_history_from_csv(csv_path, source_key):
 
 
 def update_accuracy_history_files():
+    """Refresh both global and MLS accuracy history stores."""
     os.makedirs(ACCURACY_HISTORY_DIR, exist_ok=True)
     global_files, global_rows = _update_accuracy_history_from_csv(GLOBAL_UPCOMING_FILE, "global")
     mls_files, mls_rows = _update_accuracy_history_from_csv(MLS_UPCOMING_FILE, "mls")
@@ -596,6 +713,7 @@ def update_accuracy_history_files():
 
 @app.get("/")
 def index():
+    """Render the main website page with available team lists."""
     global_ctx = get_context("global")
     mls_ctx = get_context("mls")
     return render_template("index.html", teams=global_ctx.available_teams, mls_teams=mls_ctx.available_teams)
@@ -603,6 +721,7 @@ def index():
 
 @app.get("/api/teams")
 def api_teams():
+    """Return selectable teams for the requested prediction mode."""
     mode = str(request.args.get("mode", "global")).strip().lower()
     if mode not in {"global", "mls"}:
         mode = "global"
@@ -611,6 +730,7 @@ def api_teams():
 
 @app.post("/api/predict")
 def api_predict():
+    """Predict a single European/global matchup from user input."""
     payload = request.get_json(silent=True) or request.form
     home_team = str(payload.get("home_team", "")).strip()
     away_team = str(payload.get("away_team", "")).strip()
@@ -623,6 +743,7 @@ def api_predict():
 
 @app.post("/api/predict/mls")
 def api_predict_mls():
+    """Predict a single MLS matchup from user input."""
     payload = request.get_json(silent=True) or request.form
     home_team = str(payload.get("home_team", "")).strip()
     away_team = str(payload.get("away_team", "")).strip()
@@ -635,18 +756,21 @@ def api_predict_mls():
 
 @app.get("/api/upcoming/global")
 def api_upcoming_global():
+    """Return upcoming global fixtures and persistent accuracy stats."""
     rows, stats, league_stats = _load_upcoming_rows(GLOBAL_UPCOMING_FILE)
     return jsonify({"ok": True, "rows": rows, "stats": stats, "league_stats": league_stats})
 
 
 @app.get("/api/upcoming/mls")
 def api_upcoming_mls():
+    """Return upcoming MLS fixtures and persistent accuracy stats."""
     rows, stats, league_stats = _load_upcoming_rows(MLS_UPCOMING_FILE)
     return jsonify({"ok": True, "rows": rows, "stats": stats, "league_stats": league_stats})
 
 
 @app.get("/api/league-tables")
 def api_league_tables():
+    """Return projected league tables (and MLS playoff bracket when requested)."""
     mode = str(request.args.get("mode", "global")).strip().lower()
     if mode == "mls":
         data = _load_projected_tables(MLS_PROJECTED_TABLE_FILE)

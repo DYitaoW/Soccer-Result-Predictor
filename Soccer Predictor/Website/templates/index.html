@@ -8,6 +8,12 @@
 </head>
 <body>
   <main class="page">
+    <div class="home-logo-wrap">
+      <a class="home-logo-btn" href="/" aria-label="Home">
+        <span class="home-logo-mark">SP</span>
+        <span>Home</span>
+      </a>
+    </div>
     <h1>Soccer Predictor</h1>
     <p class="sub">Use tabs for predictors, upcoming picks, and projected league tables.</p>
 
@@ -392,9 +398,30 @@
         return "";
       }
 
-      if (isChampionship || isLaLiga2 || isSerieB) {
-        if (position === 2 || position === 3) {
+      if (isChampionship) {
+        if (position === 2) {
           return "table-promo-blue";
+        }
+        if (position >= 3 && position <= 6) {
+          return "table-playoff-purple";
+        }
+      }
+
+      if (isSerieB) {
+        if (position === 2) {
+          return "table-promo-blue";
+        }
+        if (position >= 3 && position <= 8) {
+          return "table-playoff-purple";
+        }
+      }
+
+      if (isLaLiga2) {
+        if (position === 2) {
+          return "table-promo-blue";
+        }
+        if (position >= 3 && position <= 6) {
+          return "table-playoff-purple";
         }
       }
 
@@ -402,7 +429,10 @@
         if (position === 2) {
           return "table-promo-blue";
         }
-        if (position === 3) {
+        if (isLigue2 && position >= 3 && position <= 5) {
+          return "table-playoff-purple";
+        }
+        if (!isLigue2 && position === 3) {
           return "table-playoff-purple";
         }
       }
@@ -736,6 +766,7 @@
               <button class="match-toggle" type="button" data-target="${detailId}" aria-expanded="false">
                 <div class="matchup">${r.home_team} vs ${r.away_team}</div>
                 <div class="match-meta">Winner: <span class="winner-line">${r.winner_label}</span></div>
+                ${r.time_label ? `<div class="match-meta"><strong>Kickoff:</strong> ${escapeHtml(r.time_label)}</div>` : ""}
                 <div class="match-meta">H ${r.prob_home_text || pctLabel(r.prob_home)}% | D ${r.prob_draw_text || pctLabel(r.prob_draw)}% | A ${r.prob_away_text || pctLabel(r.prob_away)}%</div>
                 <div class="match-meta"><strong>Status:</strong> ${statusText}</div>
               </button>

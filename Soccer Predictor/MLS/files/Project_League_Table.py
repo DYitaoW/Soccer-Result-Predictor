@@ -468,6 +468,13 @@ def predict_match(ctx, home_team, away_team, competition_hint):
             probs["D"] /= total
             probs["A"] /= total
 
+    home_adv_shift = pm.mls_home_advantage_shift(home_team, prediction_season, ctx["season_teams"])
+    transfer = min(home_adv_shift, probs.get("A", 0.0))
+    probs["H"] = max(0.0, probs.get("H", 0.0) + transfer)
+    probs["A"] = max(0.0, probs.get("A", 0.0) - transfer)
+    probs = pm.apply_home_advantage_boost(probs)
+    probs = pm.reduce_draw_probability(probs)
+
     labels = ["H", "D", "A"]
     weights = [max(0.0, float(probs.get(label, 0.0))) for label in labels]
     total = sum(weights)

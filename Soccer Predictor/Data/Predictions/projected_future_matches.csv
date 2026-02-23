@@ -1,1401 +1,1300 @@
 competition,match_date,home_team,away_team,predicted_result,pred_home_goals,pred_away_goals,prob_home,prob_draw,prob_away
-England/Championship,,Birmingham,Blackburn,D,1,1,0.372727,0.268182,0.359091
-England/Championship,,Birmingham,Bristol City,D,2,2,0.65,0.186364,0.163636
-England/Championship,,Birmingham,Middlesbrough,D,2,2,0.368182,0.3,0.331818
-England/Championship,,Birmingham,Preston,H,2,1,0.395455,0.372727,0.231818
-England/Championship,,Birmingham,QPR,H,2,1,0.504545,0.281818,0.213636
-England/Championship,,Birmingham,Sheffield United,H,2,1,0.554545,0.218182,0.227273
-England/Championship,,Birmingham,Wrexham,D,1,1,0.259091,0.595455,0.145455
-England/Championship,,Blackburn,Bristol City,H,2,1,0.25,0.336364,0.413636
-England/Championship,,Blackburn,Coventry,D,1,1,0.131818,0.318182,0.55
-England/Championship,,Blackburn,Leicester,A,1,2,0.359091,0.231818,0.409091
-England/Championship,,Blackburn,Middlesbrough,D,1,1,0.277273,0.327273,0.395455
-England/Championship,,Blackburn,Portsmouth,A,1,2,0.486364,0.25,0.263636
-England/Championship,,Blackburn,Preston,A,1,2,0.254545,0.345455,0.4
-England/Championship,,Blackburn,West Brom,D,1,1,0.390909,0.3,0.309091
-England/Championship,,Bristol City,Coventry,A,2,3,0.431818,0.322727,0.245455
-England/Championship,,Bristol City,Norwich,A,1,2,0.368182,0.286364,0.345455
-England/Championship,,Bristol City,Sheffield United,D,2,2,0.372727,0.354545,0.272727
-England/Championship,,Bristol City,Stoke,H,2,1,0.468182,0.236364,0.295455
-England/Championship,,Bristol City,Watford,A,1,2,0.336364,0.363636,0.3
-England/Championship,,Bristol City,West Brom,A,1,2,0.427273,0.181818,0.390909
-England/Championship,,Charlton,Birmingham,D,1,1,0.413636,0.368182,0.218182
-England/Championship,,Charlton,Bristol City,H,2,1,0.409091,0.331818,0.259091
-England/Championship,,Charlton,Hull,H,3,2,0.3,0.295455,0.404545
-England/Championship,,Charlton,Ipswich,A,1,2,0.313636,0.286364,0.4
-England/Championship,,Charlton,Norwich,H,2,1,0.536364,0.204545,0.259091
-England/Championship,,Charlton,Preston,D,1,1,0.127273,0.318182,0.554545
-England/Championship,,Charlton,Wrexham,A,1,2,0.081818,0.45,0.468182
-England/Championship,,Coventry,Derby,D,2,2,0.5,0.304545,0.195455
-England/Championship,,Coventry,Portsmouth,H,2,1,0.731818,0.154545,0.113636
-England/Championship,,Coventry,Preston,H,2,1,0.309091,0.404545,0.286364
-England/Championship,,Coventry,Sheffield Weds,D,3,3,0.690909,0.222727,0.086364
-England/Championship,,Coventry,Southampton,H,2,1,0.404545,0.381818,0.213636
-England/Championship,,Coventry,Stoke,H,2,1,0.586364,0.295455,0.118182
-England/Championship,,Coventry,Wrexham,A,1,2,0.177273,0.463636,0.359091
-England/Championship,,Derby,Birmingham,A,2,3,0.45,0.272727,0.277273
-England/Championship,,Derby,Blackburn,A,1,2,0.290909,0.218182,0.490909
-England/Championship,,Derby,Oxford,A,1,2,0.140909,0.386364,0.472727
-England/Championship,,Derby,Sheffield United,H,3,2,0.404545,0.290909,0.304545
-England/Championship,,Derby,Sheffield Weds,D,2,2,0.6,0.3,0.1
-England/Championship,,Derby,Stoke,H,2,1,0.322727,0.295455,0.381818
-England/Championship,,Hull,Birmingham,H,2,1,0.595455,0.231818,0.172727
-England/Championship,,Hull,Coventry,A,2,3,0.331818,0.327273,0.340909
-England/Championship,,Hull,Derby,H,3,2,0.222727,0.272727,0.504545
-England/Championship,,Hull,Millwall,A,1,2,0.359091,0.354545,0.286364
-England/Championship,,Hull,Norwich,H,3,2,0.404545,0.3,0.295455
-England/Championship,,Hull,QPR,H,2,1,0.545455,0.277273,0.177273
-England/Championship,,Hull,Sheffield Weds,H,2,1,0.590909,0.277273,0.131818
-England/Championship,,Ipswich,Birmingham,H,2,1,0.654545,0.268182,0.077273
-England/Championship,,Ipswich,Hull,H,2,1,0.372727,0.390909,0.236364
-England/Championship,,Ipswich,Leicester,D,2,2,0.577273,0.272727,0.15
-England/Championship,,Ipswich,Middlesbrough,D,2,2,0.459091,0.313636,0.227273
-England/Championship,,Ipswich,Millwall,H,2,1,0.609091,0.181818,0.209091
-England/Championship,,Ipswich,QPR,D,2,2,0.768182,0.195455,0.036364
-England/Championship,,Ipswich,Swansea,H,2,1,0.668182,0.259091,0.072727
-England/Championship,,Leicester,Bristol City,D,1,1,0.290909,0.268182,0.440909
-England/Championship,,Leicester,Hull,D,1,1,0.309091,0.218182,0.472727
-England/Championship,,Leicester,Millwall,A,1,2,0.363636,0.240909,0.395455
-England/Championship,,Leicester,Norwich,A,2,3,0.404545,0.272727,0.322727
-England/Championship,,Leicester,Preston,H,2,1,0.354545,0.35,0.295455
-England/Championship,,Leicester,QPR,H,2,1,0.368182,0.3,0.331818
-England/Championship,,Leicester,Swansea,A,2,3,0.677273,0.159091,0.163636
-England/Championship,,Middlesbrough,Bristol City,H,2,1,0.359091,0.331818,0.309091
-England/Championship,,Middlesbrough,Charlton,D,2,2,0.695455,0.195455,0.109091
-England/Championship,,Middlesbrough,Leicester,D,2,2,0.454545,0.368182,0.177273
-England/Championship,,Middlesbrough,Millwall,H,2,1,0.609091,0.218182,0.172727
-England/Championship,,Middlesbrough,Oxford,H,2,1,0.786364,0.145455,0.068182
-England/Championship,,Middlesbrough,Portsmouth,A,1,2,0.381818,0.390909,0.227273
-England/Championship,,Middlesbrough,Sheffield Weds,H,2,1,0.654545,0.218182,0.127273
-England/Championship,,Middlesbrough,Watford,D,1,1,0.5,0.272727,0.227273
-England/Championship,,Millwall,Birmingham,H,2,1,0.472727,0.259091,0.268182
-England/Championship,,Millwall,Blackburn,D,1,1,0.204545,0.318182,0.477273
-England/Championship,,Millwall,Derby,A,1,2,0.318182,0.281818,0.4
-England/Championship,,Millwall,Norwich,H,3,2,0.354545,0.309091,0.336364
-England/Championship,,Millwall,Oxford,A,1,2,0.172727,0.372727,0.454545
-England/Championship,,Millwall,Portsmouth,H,2,1,0.468182,0.3,0.231818
-England/Championship,,Millwall,QPR,A,1,2,0.440909,0.318182,0.240909
-England/Championship,,Norwich,Birmingham,H,2,1,0.504545,0.190909,0.304545
-England/Championship,,Norwich,Derby,H,3,2,0.254545,0.231818,0.513636
-England/Championship,,Norwich,Ipswich,A,1,2,0.354545,0.190909,0.454545
-England/Championship,,Norwich,Portsmouth,A,1,2,0.345455,0.272727,0.381818
-England/Championship,,Norwich,Preston,H,2,1,0.240909,0.277273,0.481818
-England/Championship,,Norwich,Sheffield United,D,1,1,0.354545,0.281818,0.363636
-England/Championship,,Norwich,Sheffield Weds,D,1,1,0.454545,0.263636,0.281818
-England/Championship,,Norwich,Swansea,D,1,1,0.409091,0.254545,0.336364
-England/Championship,,Oxford,Blackburn,A,1,2,0.322727,0.331818,0.345455
-England/Championship,,Oxford,Charlton,A,1,2,0.036364,0.268182,0.695455
-England/Championship,,Oxford,Hull,A,1,2,0.259091,0.313636,0.427273
-England/Championship,,Oxford,Sheffield Weds,A,2,3,0.609091,0.195455,0.195455
-England/Championship,,Oxford,Watford,H,2,1,0.313636,0.222727,0.463636
-England/Championship,,Oxford,West Brom,A,1,2,0.113636,0.318182,0.568182
-England/Championship,,Oxford,Wrexham,A,1,2,0.081818,0.268182,0.65
-England/Championship,,Portsmouth,Birmingham,H,2,1,0.336364,0.190909,0.472727
-England/Championship,,Portsmouth,Derby,A,1,2,0.240909,0.277273,0.481818
-England/Championship,,Portsmouth,Hull,D,1,1,0.290909,0.359091,0.35
-England/Championship,,Portsmouth,Ipswich,A,1,2,0.154545,0.35,0.495455
-England/Championship,,Portsmouth,Leicester,A,2,3,0.377273,0.340909,0.281818
-England/Championship,,Portsmouth,Oxford,H,2,1,0.713636,0.209091,0.077273
-England/Championship,,Portsmouth,Swansea,H,2,1,0.536364,0.281818,0.181818
-England/Championship,,Preston,Millwall,H,2,1,0.227273,0.359091,0.413636
-England/Championship,,Preston,Oxford,D,1,1,0.368182,0.313636,0.318182
-England/Championship,,Preston,QPR,D,1,1,0.35,0.327273,0.322727
-England/Championship,,Preston,Southampton,A,2,3,0.427273,0.3,0.272727
-England/Championship,,Preston,Stoke,D,1,1,0.486364,0.277273,0.236364
-England/Championship,,Preston,West Brom,D,1,1,0.390909,0.254545,0.354545
-England/Championship,,QPR,Bristol City,H,3,2,0.345455,0.35,0.304545
-England/Championship,,QPR,Derby,H,3,2,0.336364,0.331818,0.331818
-England/Championship,,QPR,Middlesbrough,H,3,2,0.363636,0.218182,0.418182
-England/Championship,,QPR,Portsmouth,D,2,2,0.345455,0.331818,0.322727
-England/Championship,,QPR,Sheffield United,H,3,2,0.359091,0.359091,0.281818
-England/Championship,,QPR,Swansea,A,2,3,0.340909,0.259091,0.4
-England/Championship,,QPR,Watford,H,2,1,0.381818,0.290909,0.327273
-England/Championship,,Sheffield United,Blackburn,D,2,2,0.595455,0.231818,0.172727
-England/Championship,,Sheffield United,Coventry,D,2,2,0.477273,0.204545,0.318182
-England/Championship,,Sheffield United,Hull,D,2,2,0.527273,0.204545,0.268182
-England/Championship,,Sheffield United,Preston,H,2,1,0.481818,0.245455,0.272727
-England/Championship,,Sheffield United,Sheffield Weds,H,3,1,0.690909,0.231818,0.077273
-England/Championship,,Sheffield United,Swansea,H,2,1,0.595455,0.209091,0.195455
-England/Championship,,Sheffield United,West Brom,A,2,3,0.472727,0.245455,0.281818
-England/Championship,,Sheffield United,Wrexham,D,1,1,0.145455,0.336364,0.518182
-England/Championship,,Sheffield Weds,Charlton,H,2,1,0.263636,0.331818,0.404545
-England/Championship,,Sheffield Weds,Ipswich,A,1,2,0.1,0.236364,0.663636
-England/Championship,,Sheffield Weds,Leicester,A,1,2,0.190909,0.254545,0.554545
-England/Championship,,Sheffield Weds,Southampton,A,1,3,0.145455,0.186364,0.668182
-England/Championship,,Sheffield Weds,Watford,H,3,2,0.086364,0.227273,0.686364
-England/Championship,,Sheffield Weds,West Brom,H,2,1,0.140909,0.327273,0.531818
-England/Championship,,Southampton,Blackburn,H,2,1,0.45,0.336364,0.213636
-England/Championship,,Southampton,Bristol City,D,1,1,0.3,0.195455,0.504545
-England/Championship,,Southampton,Charlton,H,2,1,0.4,0.427273,0.172727
-England/Championship,,Southampton,Derby,H,2,1,0.286364,0.395455,0.318182
-England/Championship,,Southampton,Ipswich,D,1,1,0.272727,0.404545,0.322727
-England/Championship,,Southampton,Norwich,D,1,1,0.395455,0.345455,0.259091
-England/Championship,,Southampton,Oxford,D,1,1,0.086364,0.404545,0.509091
-England/Championship,,Southampton,QPR,H,2,1,0.686364,0.172727,0.140909
-England/Championship,,Stoke,Blackburn,H,2,1,0.659091,0.145455,0.195455
-England/Championship,,Stoke,Ipswich,H,2,1,0.522727,0.25,0.227273
-England/Championship,,Stoke,Leicester,D,1,1,0.281818,0.259091,0.459091
-England/Championship,,Stoke,Millwall,D,1,1,0.318182,0.35,0.331818
-England/Championship,,Stoke,Oxford,D,1,1,0.390909,0.404545,0.204545
-England/Championship,,Stoke,Portsmouth,H,2,1,0.6,0.259091,0.140909
-England/Championship,,Stoke,Sheffield Weds,H,2,1,0.586364,0.295455,0.118182
-England/Championship,,Stoke,Watford,H,2,1,0.359091,0.318182,0.322727
-England/Championship,,Swansea,Bristol City,H,2,1,0.327273,0.286364,0.386364
-England/Championship,,Swansea,Charlton,D,1,1,0.459091,0.277273,0.263636
-England/Championship,,Swansea,Coventry,H,3,2,0.404545,0.25,0.345455
-England/Championship,,Swansea,Middlesbrough,A,2,3,0.245455,0.159091,0.595455
-England/Championship,,Swansea,Preston,A,2,3,0.563636,0.195455,0.240909
-England/Championship,,Swansea,Southampton,A,2,3,0.213636,0.277273,0.509091
-England/Championship,,Swansea,Stoke,H,2,1,0.318182,0.327273,0.354545
-England/Championship,,Watford,Charlton,D,1,1,0.368182,0.427273,0.204545
-England/Championship,,Watford,Coventry,D,2,2,0.313636,0.359091,0.327273
-England/Championship,,Watford,Derby,H,2,1,0.390909,0.218182,0.390909
-England/Championship,,Watford,Ipswich,A,2,3,0.536364,0.218182,0.245455
-England/Championship,,Watford,Leicester,H,3,2,0.445455,0.218182,0.336364
-England/Championship,,Watford,Sheffield United,A,2,3,0.368182,0.359091,0.272727
-England/Championship,,Watford,Wrexham,H,2,1,0.159091,0.631818,0.209091
-England/Championship,,West Brom,Charlton,A,1,2,0.25,0.427273,0.322727
-England/Championship,,West Brom,Coventry,A,2,3,0.431818,0.25,0.318182
-England/Championship,,West Brom,Hull,D,1,1,0.327273,0.254545,0.418182
-England/Championship,,West Brom,Ipswich,A,2,3,0.440909,0.277273,0.281818
-England/Championship,,West Brom,Millwall,D,1,1,0.231818,0.35,0.418182
-England/Championship,,West Brom,Southampton,D,2,2,0.295455,0.336364,0.368182
-England/Championship,,West Brom,Watford,H,2,1,0.290909,0.381818,0.327273
-England/Championship,,West Brom,Wrexham,H,2,1,0.554545,0.186364,0.259091
-England/Championship,,Wrexham,Hull,A,1,3,0.145455,0.3,0.554545
-England/Championship,,Wrexham,Ipswich,D,1,1,0.209091,0.459091,0.331818
-England/Championship,,Wrexham,Middlesbrough,D,1,1,0.213636,0.459091,0.327273
-England/Championship,,Wrexham,Portsmouth,D,1,1,0.209091,0.595455,0.195455
-England/Championship,,Wrexham,Southampton,A,1,2,0.15,0.322727,0.527273
-England/Championship,,Wrexham,Stoke,D,1,1,0.104545,0.309091,0.586364
-England/Championship,,Wrexham,Swansea,D,1,1,0.145455,0.304545,0.55
-England/Premier League,,Arsenal,Bournemouth,H,4,1,0.768182,0.127273,0.104545
-England/Premier League,,Arsenal,Burnley,H,3,1,0.85,0.113636,0.036364
-England/Premier League,,Arsenal,Chelsea,D,2,2,0.377273,0.440909,0.181818
-England/Premier League,,Arsenal,Everton,H,2,0,0.663636,0.263636,0.072727
-England/Premier League,,Arsenal,Fulham,H,3,1,0.772727,0.177273,0.05
-England/Premier League,,Arsenal,Newcastle,H,3,0,0.818182,0.140909,0.040909
-England/Premier League,,Aston Villa,Chelsea,A,1,2,0.427273,0.25,0.322727
-England/Premier League,,Aston Villa,Leeds,D,2,2,0.559091,0.336364,0.104545
-England/Premier League,,Aston Villa,Liverpool,A,1,2,0.381818,0.277273,0.340909
-England/Premier League,,Aston Villa,Sunderland,H,2,0,0.595455,0.263636,0.140909
-England/Premier League,,Aston Villa,Tottenham,D,1,1,0.45,0.25,0.3
-England/Premier League,,Aston Villa,West Ham,H,2,1,0.504545,0.359091,0.136364
-England/Premier League,,Bournemouth,Brentford,A,2,3,0.322727,0.318182,0.359091
-England/Premier League,,Bournemouth,Crystal Palace,A,1,2,0.263636,0.354545,0.381818
-England/Premier League,,Bournemouth,Leeds,D,2,2,0.477273,0.363636,0.159091
-England/Premier League,,Bournemouth,Man City,H,3,2,0.222727,0.213636,0.563636
-England/Premier League,,Bournemouth,Man United,A,2,3,0.409091,0.340909,0.25
-England/Premier League,,Bournemouth,Sunderland,A,1,2,0.454545,0.245455,0.3
-England/Premier League,,Brentford,Brighton,A,2,3,0.422727,0.363636,0.213636
-England/Premier League,,Brentford,Crystal Palace,A,1,2,0.304545,0.404545,0.290909
-England/Premier League,,Brentford,Everton,D,1,1,0.359091,0.440909,0.2
-England/Premier League,,Brentford,Fulham,H,2,1,0.559091,0.227273,0.213636
-England/Premier League,,Brentford,West Ham,D,2,2,0.709091,0.163636,0.127273
-England/Premier League,,Brentford,Wolves,H,2,1,0.536364,0.268182,0.195455
-England/Premier League,,Brighton,Arsenal,D,1,1,0.181818,0.313636,0.504545
-England/Premier League,,Brighton,Chelsea,A,1,2,0.254545,0.336364,0.409091
-England/Premier League,,Brighton,Liverpool,A,2,3,0.35,0.318182,0.331818
-England/Premier League,,Brighton,Man United,A,2,3,0.463636,0.259091,0.277273
-England/Premier League,,Brighton,Nott'm Forest,D,2,2,0.463636,0.236364,0.3
-England/Premier League,,Brighton,Wolves,D,2,2,0.577273,0.327273,0.095455
-England/Premier League,,Burnley,Aston Villa,D,1,1,0.127273,0.368182,0.504545
-England/Premier League,,Burnley,Bournemouth,D,2,2,0.368182,0.254545,0.377273
-England/Premier League,,Burnley,Brentford,A,2,3,0.409091,0.168182,0.422727
-England/Premier League,,Burnley,Brighton,A,1,2,0.213636,0.372727,0.413636
-England/Premier League,,Burnley,Man City,A,1,2,0.040909,0.072727,0.886364
-England/Premier League,,Burnley,Wolves,H,2,1,0.454545,0.331818,0.213636
-England/Premier League,,Chelsea,Burnley,A,2,3,0.581818,0.340909,0.077273
-England/Premier League,,Chelsea,Man City,A,1,2,0.390909,0.254545,0.354545
-England/Premier League,,Chelsea,Man United,A,2,3,0.477273,0.222727,0.3
-England/Premier League,,Chelsea,Newcastle,H,2,1,0.531818,0.218182,0.25
-England/Premier League,,Chelsea,Nott'm Forest,A,1,2,0.504545,0.268182,0.227273
-England/Premier League,,Chelsea,Tottenham,H,2,1,0.622727,0.218182,0.159091
-England/Premier League,,Crystal Palace,Arsenal,A,1,2,0.081818,0.227273,0.690909
-England/Premier League,,Crystal Palace,Everton,H,3,2,0.136364,0.359091,0.504545
-England/Premier League,,Crystal Palace,Leeds,D,1,1,0.354545,0.381818,0.263636
-England/Premier League,,Crystal Palace,Newcastle,A,1,2,0.222727,0.345455,0.431818
-England/Premier League,,Crystal Palace,West Ham,D,1,1,0.327273,0.3,0.372727
-England/Premier League,,Crystal Palace,Wolves,H,2,1,0.540909,0.268182,0.190909
-England/Premier League,,Everton,Burnley,H,2,1,0.613636,0.222727,0.163636
-England/Premier League,,Everton,Chelsea,D,1,1,0.263636,0.281818,0.454545
-England/Premier League,,Everton,Liverpool,D,1,1,0.181818,0.35,0.468182
-England/Premier League,,Everton,Man City,A,1,2,0.263636,0.181818,0.554545
-England/Premier League,,Everton,Man United,A,1,2,0.231818,0.245455,0.522727
-England/Premier League,,Everton,Sunderland,D,2,2,0.604545,0.227273,0.168182
-England/Premier League,,Fulham,Aston Villa,D,1,1,0.181818,0.263636,0.554545
-England/Premier League,,Fulham,Bournemouth,A,2,3,0.245455,0.381818,0.372727
-England/Premier League,,Fulham,Burnley,A,2,3,0.377273,0.309091,0.313636
-England/Premier League,,Fulham,Newcastle,H,2,1,0.490909,0.227273,0.281818
-England/Premier League,,Fulham,Tottenham,H,2,1,0.477273,0.259091,0.263636
-England/Premier League,,Fulham,West Ham,H,3,2,0.359091,0.363636,0.277273
-England/Premier League,,Leeds,Brentford,A,2,3,0.4,0.313636,0.286364
-England/Premier League,,Leeds,Brighton,A,1,2,0.209091,0.290909,0.5
-England/Premier League,,Leeds,Burnley,H,2,1,0.681818,0.204545,0.113636
-England/Premier League,,Leeds,Man City,A,2,3,0.263636,0.254545,0.481818
-England/Premier League,,Leeds,Sunderland,D,2,2,0.531818,0.2,0.268182
-England/Premier League,,Leeds,Wolves,H,2,1,0.577273,0.25,0.172727
-England/Premier League,,Liverpool,Brentford,D,2,2,0.613636,0.181818,0.204545
-England/Premier League,,Liverpool,Chelsea,D,1,1,0.390909,0.295455,0.313636
-England/Premier League,,Liverpool,Crystal Palace,H,2,1,0.436364,0.309091,0.254545
-England/Premier League,,Liverpool,Fulham,H,2,1,0.618182,0.236364,0.145455
-England/Premier League,,Liverpool,Tottenham,D,2,2,0.622727,0.213636,0.163636
-England/Premier League,,Liverpool,West Ham,H,2,1,0.640909,0.268182,0.090909
-England/Premier League,,Man City,Arsenal,D,1,1,0.390909,0.409091,0.2
-England/Premier League,,Man City,Aston Villa,D,3,3,0.718182,0.140909,0.140909
-England/Premier League,,Man City,Brentford,H,2,1,0.672727,0.195455,0.131818
-England/Premier League,,Man City,Crystal Palace,H,2,1,0.681818,0.227273,0.090909
-England/Premier League,,Man City,Newcastle,H,2,0,0.877273,0.072727,0.05
-England/Premier League,,Man City,Nott'm Forest,H,3,0,0.804545,0.122727,0.072727
-England/Premier League,,Man United,Aston Villa,D,2,2,0.7,0.1,0.2
-England/Premier League,,Man United,Brentford,H,2,1,0.586364,0.218182,0.195455
-England/Premier League,,Man United,Crystal Palace,D,1,1,0.486364,0.263636,0.25
-England/Premier League,,Man United,Leeds,H,3,1,0.640909,0.277273,0.081818
-England/Premier League,,Man United,Liverpool,H,2,1,0.545455,0.231818,0.222727
-England/Premier League,,Man United,Nott'm Forest,H,2,1,0.513636,0.245455,0.240909
-England/Premier League,,Newcastle,Bournemouth,A,2,3,0.304545,0.35,0.345455
-England/Premier League,,Newcastle,Brighton,A,2,3,0.395455,0.286364,0.318182
-England/Premier League,,Newcastle,Everton,A,1,2,0.363636,0.295455,0.340909
-England/Premier League,,Newcastle,Man United,H,3,2,0.322727,0.309091,0.368182
-England/Premier League,,Newcastle,Sunderland,A,2,3,0.45,0.322727,0.227273
-England/Premier League,,Newcastle,West Ham,H,2,1,0.595455,0.240909,0.163636
-England/Premier League,,Nott'm Forest,Aston Villa,D,1,1,0.195455,0.222727,0.581818
-England/Premier League,,Nott'm Forest,Bournemouth,D,1,1,0.104545,0.327273,0.568182
-England/Premier League,,Nott'm Forest,Burnley,A,2,3,0.331818,0.368182,0.3
-England/Premier League,,Nott'm Forest,Fulham,A,1,2,0.35,0.277273,0.372727
-England/Premier League,,Nott'm Forest,Liverpool,H,2,1,0.413636,0.331818,0.254545
-England/Premier League,,Nott'm Forest,Newcastle,D,1,1,0.25,0.268182,0.481818
-England/Premier League,,Sunderland,Brighton,D,1,1,0.245455,0.486364,0.268182
-England/Premier League,,Sunderland,Chelsea,A,1,2,0.240909,0.268182,0.490909
-England/Premier League,,Sunderland,Fulham,H,2,1,0.481818,0.318182,0.2
-England/Premier League,,Sunderland,Man United,A,1,2,0.195455,0.327273,0.477273
-England/Premier League,,Sunderland,Nott'm Forest,H,2,1,0.672727,0.218182,0.109091
-England/Premier League,,Sunderland,Tottenham,H,2,1,0.354545,0.359091,0.286364
-England/Premier League,,Tottenham,Arsenal,D,1,1,0.181818,0.331818,0.486364
-England/Premier League,,Tottenham,Brighton,D,2,2,0.363636,0.254545,0.381818
-England/Premier League,,Tottenham,Crystal Palace,D,1,1,0.472727,0.268182,0.259091
-England/Premier League,,Tottenham,Everton,H,2,1,0.404545,0.272727,0.322727
-England/Premier League,,Tottenham,Leeds,H,2,1,0.668182,0.190909,0.140909
-England/Premier League,,Tottenham,Nott'm Forest,A,1,2,0.354545,0.295455,0.35
-England/Premier League,,West Ham,Arsenal,A,1,3,0.113636,0.145455,0.740909
-England/Premier League,,West Ham,Bournemouth,D,2,2,0.336364,0.359091,0.304545
-England/Premier League,,West Ham,Everton,H,2,1,0.277273,0.354545,0.368182
-England/Premier League,,West Ham,Leeds,D,2,2,0.368182,0.318182,0.313636
-England/Premier League,,West Ham,Man City,A,1,3,0.063636,0.113636,0.822727
-England/Premier League,,West Ham,Wolves,D,1,1,0.459091,0.259091,0.281818
-England/Premier League,,Wolves,Aston Villa,A,1,2,0.186364,0.25,0.563636
-England/Premier League,,Wolves,Fulham,A,1,2,0.254545,0.259091,0.486364
-England/Premier League,,Wolves,Liverpool,A,1,3,0.1,0.227273,0.672727
-England/Premier League,,Wolves,Sunderland,H,2,1,0.181818,0.286364,0.531818
-England/Premier League,,Wolves,Tottenham,D,1,1,0.259091,0.25,0.490909
-France/Ligue 1,,Angers,Le Havre,H,2,1,0.431818,0.327273,0.240909
-France/Ligue 1,,Angers,Lille,D,2,2,0.359091,0.231818,0.409091
-France/Ligue 1,,Angers,Lyon,A,1,2,0.190909,0.209091,0.6
-France/Ligue 1,,Angers,Nice,D,2,2,0.527273,0.163636,0.309091
-France/Ligue 1,,Angers,Paris SG,A,1,2,0.072727,0.177273,0.75
-France/Ligue 1,,Angers,Strasbourg,A,2,3,0.431818,0.263636,0.304545
-France/Ligue 1,,Auxerre,Angers,H,2,1,0.277273,0.35,0.372727
-France/Ligue 1,,Auxerre,Brest,A,1,2,0.227273,0.413636,0.359091
-France/Ligue 1,,Auxerre,Nantes,H,2,1,0.413636,0.290909,0.295455
-France/Ligue 1,,Auxerre,Nice,A,2,3,0.445455,0.245455,0.309091
-France/Ligue 1,,Auxerre,Rennes,A,2,3,0.45,0.254545,0.295455
-France/Ligue 1,,Auxerre,Strasbourg,A,1,2,0.222727,0.25,0.527273
-France/Ligue 1,,Brest,Angers,A,2,3,0.527273,0.245455,0.227273
-France/Ligue 1,,Brest,Le Havre,H,2,1,0.681818,0.218182,0.1
-France/Ligue 1,,Brest,Lens,A,2,3,0.204545,0.409091,0.386364
-France/Ligue 1,,Brest,Marseille,A,1,2,0.204545,0.231818,0.563636
-France/Ligue 1,,Brest,Rennes,D,2,2,0.313636,0.413636,0.272727
-France/Ligue 1,,Brest,Strasbourg,H,2,1,0.563636,0.195455,0.240909
-France/Ligue 1,,Le Havre,Auxerre,H,2,1,0.627273,0.277273,0.095455
-France/Ligue 1,,Le Havre,Lyon,A,1,2,0.15,0.259091,0.590909
-France/Ligue 1,,Le Havre,Marseille,A,1,2,0.113636,0.186364,0.7
-France/Ligue 1,,Le Havre,Metz,A,2,3,0.5,0.295455,0.204545
-France/Ligue 1,,Le Havre,Paris SG,A,1,2,0.081818,0.163636,0.754545
-France/Ligue 1,,Lens,Angers,H,2,0,0.745455,0.2,0.054545
-France/Ligue 1,,Lens,Metz,A,2,3,0.527273,0.222727,0.25
-France/Ligue 1,,Lens,Monaco,H,2,1,0.609091,0.25,0.140909
-France/Ligue 1,,Lens,Nantes,H,2,1,0.7,0.227273,0.072727
-France/Ligue 1,,Lens,Paris SG,A,1,2,0.290909,0.331818,0.377273
-France/Ligue 1,,Lens,Toulouse,H,2,1,0.590909,0.240909,0.168182
-France/Ligue 1,,Lille,Auxerre,D,2,2,0.45,0.318182,0.231818
-France/Ligue 1,,Lille,Le Havre,H,2,1,0.718182,0.190909,0.090909
-France/Ligue 1,,Lille,Lens,H,3,2,0.490909,0.254545,0.254545
-France/Ligue 1,,Lille,Lorient,H,2,1,0.595455,0.218182,0.186364
-France/Ligue 1,,Lille,Nantes,H,2,1,0.727273,0.168182,0.104545
-France/Ligue 1,,Lille,Nice,H,2,1,0.4,0.359091,0.240909
-France/Ligue 1,,Lorient,Auxerre,H,2,1,0.35,0.295455,0.354545
-France/Ligue 1,,Lorient,Le Havre,H,2,1,0.477273,0.313636,0.209091
-France/Ligue 1,,Lorient,Lens,D,1,1,0.209091,0.277273,0.513636
-France/Ligue 1,,Lorient,Marseille,H,4,3,0.236364,0.259091,0.504545
-France/Ligue 1,,Lorient,Paris FC,H,2,1,0.563636,0.227273,0.209091
-France/Ligue 1,,Lorient,Strasbourg,A,2,3,0.472727,0.272727,0.254545
-France/Ligue 1,,Lyon,Auxerre,H,2,0,0.75,0.177273,0.072727
-France/Ligue 1,,Lyon,Lens,A,2,3,0.504545,0.277273,0.218182
-France/Ligue 1,,Lyon,Lorient,H,2,1,0.622727,0.240909,0.136364
-France/Ligue 1,,Lyon,Monaco,A,2,3,0.7,0.186364,0.113636
-France/Ligue 1,,Lyon,Paris FC,D,2,2,0.363636,0.395455,0.240909
-France/Ligue 1,,Lyon,Rennes,H,2,1,0.6,0.204545,0.195455
-France/Ligue 1,,Marseille,Auxerre,H,2,1,0.7,0.163636,0.136364
-France/Ligue 1,,Marseille,Lille,H,2,1,0.504545,0.286364,0.209091
-France/Ligue 1,,Marseille,Lyon,H,2,1,0.477273,0.218182,0.304545
-France/Ligue 1,,Marseille,Metz,H,4,1,0.695455,0.181818,0.122727
-France/Ligue 1,,Marseille,Nice,H,3,1,0.659091,0.177273,0.163636
-France/Ligue 1,,Marseille,Rennes,H,3,1,0.654545,0.154545,0.190909
-France/Ligue 1,,Metz,Brest,A,1,2,0.259091,0.209091,0.531818
-France/Ligue 1,,Metz,Lorient,H,2,1,0.254545,0.277273,0.468182
-France/Ligue 1,,Metz,Monaco,A,1,2,0.104545,0.231818,0.663636
-France/Ligue 1,,Metz,Nantes,H,2,1,0.372727,0.372727,0.254545
-France/Ligue 1,,Metz,Paris FC,D,1,1,0.445455,0.340909,0.213636
-France/Ligue 1,,Metz,Toulouse,D,1,1,0.109091,0.181818,0.709091
-France/Ligue 1,,Monaco,Angers,H,2,1,0.695455,0.172727,0.131818
-France/Ligue 1,,Monaco,Auxerre,A,2,3,0.7,0.204545,0.095455
-France/Ligue 1,,Monaco,Brest,H,2,1,0.631818,0.168182,0.2
-France/Ligue 1,,Monaco,Lille,D,2,2,0.381818,0.295455,0.322727
-France/Ligue 1,,Monaco,Marseille,D,2,2,0.395455,0.268182,0.336364
-France/Ligue 1,,Nantes,Angers,A,1,2,0.318182,0.281818,0.4
-France/Ligue 1,,Nantes,Brest,D,1,1,0.227273,0.259091,0.513636
-France/Ligue 1,,Nantes,Le Havre,A,1,2,0.195455,0.377273,0.427273
-France/Ligue 1,,Nantes,Marseille,A,1,2,0.181818,0.218182,0.6
-France/Ligue 1,,Nantes,Strasbourg,A,1,2,0.245455,0.177273,0.577273
-France/Ligue 1,,Nantes,Toulouse,D,1,1,0.218182,0.395455,0.386364
-France/Ligue 1,,Nice,Le Havre,H,2,1,0.463636,0.295455,0.240909
-France/Ligue 1,,Nice,Lens,A,1,2,0.268182,0.327273,0.404545
-France/Ligue 1,,Nice,Lorient,H,2,1,0.459091,0.286364,0.254545
-France/Ligue 1,,Nice,Metz,A,3,4,0.631818,0.218182,0.15
-France/Ligue 1,,Nice,Paris SG,D,2,2,0.181818,0.186364,0.631818
-France/Ligue 1,,Nice,Rennes,D,2,2,0.5,0.259091,0.240909
-France/Ligue 1,,Paris FC,Brest,H,3,2,0.359091,0.331818,0.309091
-France/Ligue 1,,Paris FC,Le Havre,A,1,2,0.381818,0.413636,0.204545
-France/Ligue 1,,Paris FC,Lille,A,1,3,0.090909,0.295455,0.613636
-France/Ligue 1,,Paris FC,Monaco,D,2,2,0.663636,0.15,0.186364
-France/Ligue 1,,Paris FC,Nice,D,2,2,0.236364,0.540909,0.222727
-France/Ligue 1,,Paris FC,Paris SG,A,1,2,0.1,0.222727,0.677273
-France/Ligue 1,,Paris SG,Brest,H,3,0,0.881818,0.095455,0.022727
-France/Ligue 1,,Paris SG,Lorient,H,3,0,0.709091,0.195455,0.095455
-France/Ligue 1,,Paris SG,Lyon,H,2,1,0.613636,0.195455,0.190909
-France/Ligue 1,,Paris SG,Metz,H,4,1,0.95,0.040909,0.009091
-France/Ligue 1,,Paris SG,Monaco,H,3,1,0.609091,0.3,0.090909
-France/Ligue 1,,Paris SG,Nantes,H,2,1,0.827273,0.140909,0.031818
-France/Ligue 1,,Paris SG,Toulouse,H,2,0,0.763636,0.118182,0.118182
-France/Ligue 1,,Rennes,Angers,A,2,3,0.727273,0.168182,0.104545
-France/Ligue 1,,Rennes,Lille,D,2,2,0.440909,0.281818,0.277273
-France/Ligue 1,,Rennes,Metz,H,4,1,0.759091,0.131818,0.109091
-France/Ligue 1,,Rennes,Nantes,H,3,1,0.672727,0.195455,0.131818
-France/Ligue 1,,Rennes,Paris FC,D,2,2,0.731818,0.154545,0.113636
-France/Ligue 1,,Rennes,Toulouse,H,2,1,0.5,0.204545,0.295455
-France/Ligue 1,,Strasbourg,Lens,A,2,3,0.313636,0.309091,0.377273
-France/Ligue 1,,Strasbourg,Lyon,A,1,2,0.313636,0.25,0.436364
-France/Ligue 1,,Strasbourg,Monaco,D,2,2,0.431818,0.254545,0.313636
-France/Ligue 1,,Strasbourg,Nice,D,3,3,0.486364,0.327273,0.186364
-France/Ligue 1,,Strasbourg,Paris FC,H,2,1,0.85,0.077273,0.072727
-France/Ligue 1,,Strasbourg,Rennes,H,2,1,0.490909,0.268182,0.240909
-France/Ligue 1,,Strasbourg,Toulouse,D,2,2,0.65,0.2,0.15
-France/Ligue 1,,Toulouse,Lille,A,2,3,0.422727,0.304545,0.272727
-France/Ligue 1,,Toulouse,Lorient,A,2,3,0.413636,0.345455,0.240909
-France/Ligue 1,,Toulouse,Lyon,H,3,2,0.3,0.213636,0.486364
-France/Ligue 1,,Toulouse,Marseille,D,1,1,0.254545,0.254545,0.490909
-France/Ligue 1,,Toulouse,Monaco,A,2,3,0.45,0.340909,0.209091
-France/Ligue 1,,Toulouse,Paris FC,H,2,1,0.654545,0.227273,0.118182
-France/Ligue 2,,Amiens,Le Mans,A,1,2,0.068182,0.268182,0.663636
-France/Ligue 2,,Amiens,Montpellier,D,1,1,0.095455,0.377273,0.527273
-France/Ligue 2,,Amiens,Pau FC,A,1,2,0.277273,0.281818,0.440909
-France/Ligue 2,,Amiens,Red Star,H,2,1,0.459091,0.295455,0.245455
-France/Ligue 2,,Amiens,Troyes,A,1,2,0.118182,0.25,0.631818
-France/Ligue 2,,Annecy,Guingamp,H,2,1,0.481818,0.290909,0.227273
-France/Ligue 2,,Annecy,Montpellier,D,1,1,0.122727,0.368182,0.509091
-France/Ligue 2,,Annecy,Pau FC,H,2,1,0.459091,0.35,0.190909
-France/Ligue 2,,Annecy,Red Star,A,1,2,0.481818,0.268182,0.25
-France/Ligue 2,,Annecy,Rodez,A,1,2,0.190909,0.286364,0.522727
-France/Ligue 2,,Annecy,Troyes,H,2,1,0.486364,0.263636,0.25
-France/Ligue 2,,Bastia,Amiens,D,1,1,0.140909,0.390909,0.468182
-France/Ligue 2,,Bastia,Annecy,H,2,1,0.381818,0.35,0.268182
-France/Ligue 2,,Bastia,Boulogne,D,1,1,0.05,0.359091,0.590909
-France/Ligue 2,,Bastia,Le Mans,D,1,1,0.054545,0.268182,0.677273
-France/Ligue 2,,Bastia,Red Star,H,2,1,0.327273,0.290909,0.381818
-France/Ligue 2,,Bastia,St Etienne,D,1,1,0.163636,0.304545,0.531818
-France/Ligue 2,,Boulogne,Amiens,H,2,1,0.759091,0.140909,0.1
-France/Ligue 2,,Boulogne,Annecy,D,1,1,0.154545,0.568182,0.277273
-France/Ligue 2,,Boulogne,Clermont,D,1,1,0.15,0.663636,0.186364
-France/Ligue 2,,Boulogne,Dunkerque,D,1,1,0.118182,0.572727,0.309091
-France/Ligue 2,,Boulogne,Le Mans,H,3,2,0.063636,0.190909,0.745455
-France/Ligue 2,,Boulogne,Nancy,D,1,1,0.363636,0.318182,0.318182
-France/Ligue 2,,Clermont,Bastia,H,2,1,0.154545,0.522727,0.322727
-France/Ligue 2,,Clermont,Dunkerque,A,1,2,0.204545,0.327273,0.468182
-France/Ligue 2,,Clermont,Guingamp,H,3,1,0.654545,0.227273,0.118182
-France/Ligue 2,,Clermont,Nancy,A,1,2,0.454545,0.281818,0.263636
-France/Ligue 2,,Clermont,Pau FC,A,1,2,0.172727,0.359091,0.468182
-France/Ligue 2,,Clermont,Red Star,D,1,1,0.209091,0.459091,0.331818
-France/Ligue 2,,Dunkerque,Bastia,H,2,1,0.445455,0.268182,0.286364
-France/Ligue 2,,Dunkerque,Grenoble,A,2,3,0.468182,0.345455,0.186364
-France/Ligue 2,,Dunkerque,Laval,H,2,1,0.486364,0.277273,0.236364
-France/Ligue 2,,Dunkerque,Reims,D,2,2,0.763636,0.163636,0.072727
-France/Ligue 2,,Dunkerque,Rodez,A,2,3,0.359091,0.309091,0.331818
-France/Ligue 2,,Grenoble,Boulogne,A,1,2,0.272727,0.295455,0.431818
-France/Ligue 2,,Grenoble,Clermont,A,1,2,0.372727,0.45,0.177273
-France/Ligue 2,,Grenoble,Le Mans,D,1,1,0.240909,0.35,0.409091
-France/Ligue 2,,Grenoble,St Etienne,A,1,2,0.309091,0.295455,0.395455
-France/Ligue 2,,Grenoble,Troyes,D,1,1,0.218182,0.377273,0.404545
-France/Ligue 2,,Guingamp,Amiens,H,3,2,0.35,0.318182,0.331818
-France/Ligue 2,,Guingamp,Bastia,A,1,2,0.4,0.336364,0.263636
-France/Ligue 2,,Guingamp,Grenoble,H,3,2,0.295455,0.518182,0.186364
-France/Ligue 2,,Guingamp,Reims,D,1,1,0.222727,0.290909,0.486364
-France/Ligue 2,,Guingamp,Rodez,D,2,2,0.418182,0.404545,0.177273
-France/Ligue 2,,Laval,Boulogne,H,2,1,0.677273,0.177273,0.145455
-France/Ligue 2,,Laval,Grenoble,D,1,1,0.118182,0.472727,0.409091
-France/Ligue 2,,Laval,Guingamp,A,1,2,0.113636,0.181818,0.704545
-France/Ligue 2,,Laval,Nancy,H,2,1,0.786364,0.15,0.063636
-France/Ligue 2,,Laval,Reims,A,1,4,0.018182,0.145455,0.836364
-France/Ligue 2,,Laval,Rodez,H,2,1,0.604545,0.163636,0.231818
-France/Ligue 2,,Le Mans,Annecy,H,2,1,0.759091,0.159091,0.081818
-France/Ligue 2,,Le Mans,Clermont,H,1,0,0.659091,0.204545,0.136364
-France/Ligue 2,,Le Mans,Guingamp,A,1,2,0.427273,0.286364,0.286364
-France/Ligue 2,,Le Mans,Pau FC,H,2,1,0.686364,0.204545,0.109091
-France/Ligue 2,,Le Mans,Reims,D,1,1,0.136364,0.418182,0.445455
-France/Ligue 2,,Montpellier,Clermont,H,2,1,0.4,0.409091,0.190909
-France/Ligue 2,,Montpellier,Grenoble,H,2,1,0.663636,0.190909,0.145455
-France/Ligue 2,,Montpellier,Laval,H,2,1,0.731818,0.172727,0.095455
-France/Ligue 2,,Montpellier,Reims,H,3,2,0.322727,0.231818,0.445455
-France/Ligue 2,,Montpellier,Troyes,H,2,1,0.472727,0.309091,0.218182
-France/Ligue 2,,Nancy,Annecy,H,2,1,0.709091,0.154545,0.136364
-France/Ligue 2,,Nancy,Dunkerque,H,2,1,0.536364,0.245455,0.218182
-France/Ligue 2,,Nancy,Grenoble,D,1,1,0.2,0.272727,0.527273
-France/Ligue 2,,Nancy,Le Mans,D,1,1,0.190909,0.313636,0.495455
-France/Ligue 2,,Nancy,Montpellier,D,0,0,0.181818,0.2,0.618182
-France/Ligue 2,,Nancy,St Etienne,A,1,2,0.2,0.222727,0.577273
-France/Ligue 2,,Pau FC,Bastia,A,1,2,0.368182,0.345455,0.286364
-France/Ligue 2,,Pau FC,Guingamp,D,2,2,0.272727,0.245455,0.481818
-France/Ligue 2,,Pau FC,Montpellier,D,1,1,0.718182,0.127273,0.154545
-France/Ligue 2,,Pau FC,Nancy,D,2,2,0.486364,0.363636,0.15
-France/Ligue 2,,Pau FC,St Etienne,A,1,2,0.145455,0.209091,0.645455
-France/Ligue 2,,Red Star,Bastia,D,1,1,0.163636,0.418182,0.418182
-France/Ligue 2,,Red Star,Dunkerque,D,1,1,0.077273,0.263636,0.659091
-France/Ligue 2,,Red Star,Guingamp,H,3,1,0.804545,0.122727,0.072727
-France/Ligue 2,,Red Star,Laval,A,1,2,0.354545,0.3,0.345455
-France/Ligue 2,,Red Star,Le Mans,D,1,1,0.172727,0.568182,0.259091
-France/Ligue 2,,Red Star,Montpellier,H,2,1,0.145455,0.622727,0.231818
-France/Ligue 2,,Reims,Amiens,A,1,2,0.163636,0.404545,0.431818
-France/Ligue 2,,Reims,Boulogne,H,2,1,0.8,0.113636,0.086364
-France/Ligue 2,,Reims,Nancy,H,2,0,0.922727,0.040909,0.036364
-France/Ligue 2,,Reims,Pau FC,A,1,2,0.104545,0.295455,0.6
-France/Ligue 2,,Reims,Red Star,D,1,1,0.195455,0.577273,0.227273
-France/Ligue 2,,Reims,Rodez,A,2,3,0.322727,0.468182,0.209091
-France/Ligue 2,,Rodez,Amiens,A,1,2,0.336364,0.418182,0.245455
-France/Ligue 2,,Rodez,Bastia,H,1,0,0.463636,0.340909,0.195455
-France/Ligue 2,,Rodez,Grenoble,D,1,1,0.368182,0.363636,0.268182
-France/Ligue 2,,Rodez,Montpellier,A,1,2,0.081818,0.327273,0.590909
-France/Ligue 2,,Rodez,St Etienne,H,2,1,0.368182,0.268182,0.363636
-France/Ligue 2,,Rodez,Troyes,H,2,1,0.5,0.281818,0.218182
-France/Ligue 2,,St Etienne,Amiens,H,3,2,0.518182,0.322727,0.159091
-France/Ligue 2,,St Etienne,Annecy,D,2,2,0.372727,0.231818,0.395455
-France/Ligue 2,,St Etienne,Dunkerque,D,1,1,0.322727,0.354545,0.322727
-France/Ligue 2,,St Etienne,Laval,D,2,2,0.577273,0.240909,0.181818
-France/Ligue 2,,St Etienne,Red Star,A,1,2,0.140909,0.218182,0.640909
-France/Ligue 2,,St Etienne,Troyes,H,2,1,0.681818,0.172727,0.145455
-France/Ligue 2,,Troyes,Boulogne,H,2,1,0.8,0.109091,0.090909
-France/Ligue 2,,Troyes,Clermont,H,2,1,0.531818,0.290909,0.177273
-France/Ligue 2,,Troyes,Dunkerque,A,1,2,0.354545,0.286364,0.359091
-France/Ligue 2,,Troyes,Laval,D,2,2,0.709091,0.195455,0.095455
-France/Ligue 2,,Troyes,Pau FC,H,2,1,0.718182,0.190909,0.090909
-Germany/Bundesliga,,Augsburg,Ein Frankfurt,D,2,2,0.272727,0.336364,0.390909
-Germany/Bundesliga,,Augsburg,FC Koln,D,1,1,0.272727,0.359091,0.368182
-Germany/Bundesliga,,Augsburg,Hoffenheim,A,1,2,0.109091,0.209091,0.681818
-Germany/Bundesliga,,Augsburg,M'gladbach,H,2,1,0.290909,0.327273,0.381818
-Germany/Bundesliga,,Augsburg,Stuttgart,H,3,2,0.2,0.231818,0.568182
-Germany/Bundesliga,,Bayern Munich,Ein Frankfurt,H,5,1,0.686364,0.213636,0.1
-Germany/Bundesliga,,Bayern Munich,FC Koln,H,3,1,0.640909,0.204545,0.154545
-Germany/Bundesliga,,Bayern Munich,Heidenheim,H,5,1,0.845455,0.095455,0.059091
-Germany/Bundesliga,,Bayern Munich,M'gladbach,A,3,4,0.618182,0.222727,0.159091
-Germany/Bundesliga,,Bayern Munich,Stuttgart,H,3,1,0.731818,0.168182,0.1
-Germany/Bundesliga,,Bayern Munich,Union Berlin,H,3,1,0.65,0.186364,0.163636
-Germany/Bundesliga,,Dortmund,Augsburg,A,3,4,0.768182,0.131818,0.1
-Germany/Bundesliga,,Dortmund,Bayern Munich,A,1,2,0.3,0.290909,0.409091
-Germany/Bundesliga,,Dortmund,Ein Frankfurt,H,3,2,0.681818,0.172727,0.145455
-Germany/Bundesliga,,Dortmund,Freiburg,H,3,0,0.922727,0.045455,0.031818
-Germany/Bundesliga,,Dortmund,Hamburg,H,2,1,0.781818,0.154545,0.063636
-Germany/Bundesliga,,Dortmund,Leverkusen,D,3,3,0.654545,0.209091,0.136364
-Germany/Bundesliga,,Ein Frankfurt,FC Koln,D,2,2,0.4,0.318182,0.281818
-Germany/Bundesliga,,Ein Frankfurt,Freiburg,D,2,2,0.454545,0.327273,0.218182
-Germany/Bundesliga,,Ein Frankfurt,Hamburg,H,2,1,0.577273,0.245455,0.177273
-Germany/Bundesliga,,Ein Frankfurt,Heidenheim,A,3,4,0.809091,0.127273,0.063636
-Germany/Bundesliga,,Ein Frankfurt,RB Leipzig,A,2,3,0.372727,0.322727,0.304545
-Germany/Bundesliga,,Ein Frankfurt,Stuttgart,A,2,3,0.218182,0.281818,0.5
-Germany/Bundesliga,,FC Koln,Dortmund,D,1,1,0.127273,0.190909,0.681818
-Germany/Bundesliga,,FC Koln,Heidenheim,D,2,2,0.372727,0.386364,0.240909
-Germany/Bundesliga,,FC Koln,Hoffenheim,D,2,2,0.268182,0.213636,0.518182
-Germany/Bundesliga,,FC Koln,Leverkusen,A,2,3,0.227273,0.204545,0.568182
-Germany/Bundesliga,,FC Koln,M'gladbach,A,1,2,0.322727,0.340909,0.336364
-Germany/Bundesliga,,FC Koln,Werder Bremen,D,2,2,0.45,0.35,0.2
-Germany/Bundesliga,,Freiburg,Bayern Munich,A,1,3,0.095455,0.3,0.604545
-Germany/Bundesliga,,Freiburg,Heidenheim,H,2,1,0.681818,0.222727,0.095455
-Germany/Bundesliga,,Freiburg,Leverkusen,H,2,1,0.336364,0.295455,0.368182
-Germany/Bundesliga,,Freiburg,M'gladbach,H,2,1,0.654545,0.245455,0.1
-Germany/Bundesliga,,Freiburg,RB Leipzig,A,2,3,0.295455,0.263636,0.440909
-Germany/Bundesliga,,Freiburg,Union Berlin,A,2,3,0.3,0.35,0.35
-Germany/Bundesliga,,Freiburg,Wolfsburg,A,2,3,0.636364,0.222727,0.140909
-Germany/Bundesliga,,Hamburg,Augsburg,H,2,1,0.5,0.231818,0.268182
-Germany/Bundesliga,,Hamburg,FC Koln,A,2,3,0.55,0.227273,0.222727
-Germany/Bundesliga,,Hamburg,Freiburg,D,2,2,0.322727,0.427273,0.25
-Germany/Bundesliga,,Hamburg,Hoffenheim,D,2,2,0.259091,0.245455,0.495455
-Germany/Bundesliga,,Hamburg,Leverkusen,D,2,2,0.277273,0.277273,0.445455
-Germany/Bundesliga,,Hamburg,RB Leipzig,A,1,2,0.254545,0.295455,0.45
-Germany/Bundesliga,,Heidenheim,Hoffenheim,D,1,1,0.059091,0.313636,0.627273
-Germany/Bundesliga,,Heidenheim,Leverkusen,A,1,3,0.031818,0.122727,0.845455
-Germany/Bundesliga,,Heidenheim,Mainz,A,1,2,0.404545,0.25,0.345455
-Germany/Bundesliga,,Heidenheim,St Pauli,H,2,1,0.218182,0.318182,0.463636
-Germany/Bundesliga,,Heidenheim,Stuttgart,H,4,3,0.240909,0.186364,0.572727
-Germany/Bundesliga,,Heidenheim,Union Berlin,D,2,2,0.586364,0.240909,0.172727
-Germany/Bundesliga,,Hoffenheim,Dortmund,A,2,3,0.313636,0.304545,0.381818
-Germany/Bundesliga,,Hoffenheim,Mainz,D,3,3,0.590909,0.25,0.159091
-Germany/Bundesliga,,Hoffenheim,St Pauli,H,3,1,0.672727,0.222727,0.104545
-Germany/Bundesliga,,Hoffenheim,Stuttgart,A,2,3,0.422727,0.245455,0.331818
-Germany/Bundesliga,,Hoffenheim,Werder Bremen,D,3,3,0.631818,0.222727,0.145455
-Germany/Bundesliga,,Hoffenheim,Wolfsburg,H,3,2,0.563636,0.245455,0.190909
-Germany/Bundesliga,,Leverkusen,Augsburg,H,3,1,0.845455,0.1,0.054545
-Germany/Bundesliga,,Leverkusen,Bayern Munich,A,1,3,0.127273,0.345455,0.527273
-Germany/Bundesliga,,Leverkusen,Hamburg,H,3,1,0.722727,0.163636,0.113636
-Germany/Bundesliga,,Leverkusen,Mainz,H,2,1,0.731818,0.177273,0.090909
-Germany/Bundesliga,,Leverkusen,RB Leipzig,A,2,3,0.55,0.231818,0.218182
-Germany/Bundesliga,,Leverkusen,Wolfsburg,A,2,3,0.531818,0.318182,0.15
-Germany/Bundesliga,,M'gladbach,Dortmund,A,1,2,0.095455,0.190909,0.713636
-Germany/Bundesliga,,M'gladbach,Heidenheim,H,2,1,0.790909,0.154545,0.054545
-Germany/Bundesliga,,M'gladbach,Hoffenheim,A,1,2,0.218182,0.295455,0.486364
-Germany/Bundesliga,,M'gladbach,Mainz,D,2,2,0.359091,0.359091,0.281818
-Germany/Bundesliga,,M'gladbach,St Pauli,A,2,3,0.468182,0.359091,0.172727
-Germany/Bundesliga,,M'gladbach,Union Berlin,H,2,1,0.245455,0.377273,0.377273
-Germany/Bundesliga,,Mainz,Bayern Munich,A,1,3,0.131818,0.168182,0.7
-Germany/Bundesliga,,Mainz,Ein Frankfurt,H,2,1,0.245455,0.463636,0.290909
-Germany/Bundesliga,,Mainz,Freiburg,A,1,2,0.404545,0.213636,0.381818
-Germany/Bundesliga,,Mainz,Hamburg,H,2,1,0.354545,0.381818,0.263636
-Germany/Bundesliga,,Mainz,Stuttgart,A,1,2,0.218182,0.181818,0.6
-Germany/Bundesliga,,Mainz,Union Berlin,D,1,1,0.2,0.363636,0.436364
-Germany/Bundesliga,,RB Leipzig,Augsburg,H,3,1,0.818182,0.1,0.081818
-Germany/Bundesliga,,RB Leipzig,Dortmund,D,2,2,0.331818,0.222727,0.445455
-Germany/Bundesliga,,RB Leipzig,Hoffenheim,H,3,2,0.35,0.172727,0.477273
-Germany/Bundesliga,,RB Leipzig,M'gladbach,H,2,1,0.563636,0.309091,0.127273
-Germany/Bundesliga,,RB Leipzig,St Pauli,A,3,4,0.604545,0.227273,0.168182
-Germany/Bundesliga,,RB Leipzig,Union Berlin,H,2,1,0.55,0.213636,0.236364
-Germany/Bundesliga,,St Pauli,Bayern Munich,A,1,4,0.036364,0.118182,0.845455
-Germany/Bundesliga,,St Pauli,Ein Frankfurt,D,1,1,0.063636,0.381818,0.554545
-Germany/Bundesliga,,St Pauli,FC Koln,D,1,1,0.163636,0.386364,0.45
-Germany/Bundesliga,,St Pauli,Freiburg,A,1,2,0.422727,0.277273,0.3
-Germany/Bundesliga,,St Pauli,Mainz,A,1,2,0.095455,0.263636,0.640909
-Germany/Bundesliga,,St Pauli,Werder Bremen,A,1,2,0.127273,0.322727,0.55
-Germany/Bundesliga,,St Pauli,Wolfsburg,A,1,2,0.159091,0.490909,0.35
-Germany/Bundesliga,,Stuttgart,Dortmund,A,1,2,0.240909,0.327273,0.431818
-Germany/Bundesliga,,Stuttgart,Hamburg,H,2,1,0.595455,0.25,0.154545
-Germany/Bundesliga,,Stuttgart,Leverkusen,H,3,2,0.381818,0.295455,0.322727
-Germany/Bundesliga,,Stuttgart,RB Leipzig,A,1,2,0.390909,0.263636,0.345455
-Germany/Bundesliga,,Stuttgart,Werder Bremen,H,2,1,0.618182,0.218182,0.163636
-Germany/Bundesliga,,Stuttgart,Wolfsburg,A,2,3,0.509091,0.290909,0.2
-Germany/Bundesliga,,Union Berlin,Augsburg,A,2,3,0.240909,0.368182,0.390909
-Germany/Bundesliga,,Union Berlin,FC Koln,D,2,2,0.7,0.209091,0.090909
-Germany/Bundesliga,,Union Berlin,Leverkusen,H,3,2,0.154545,0.25,0.595455
-Germany/Bundesliga,,Union Berlin,St Pauli,H,2,1,0.531818,0.272727,0.195455
-Germany/Bundesliga,,Union Berlin,Werder Bremen,H,2,1,0.390909,0.354545,0.254545
-Germany/Bundesliga,,Union Berlin,Wolfsburg,D,1,1,0.381818,0.259091,0.359091
-Germany/Bundesliga,,Werder Bremen,Augsburg,A,2,3,0.431818,0.290909,0.277273
-Germany/Bundesliga,,Werder Bremen,Dortmund,H,3,2,0.122727,0.2,0.677273
-Germany/Bundesliga,,Werder Bremen,Hamburg,D,1,1,0.390909,0.313636,0.295455
-Germany/Bundesliga,,Werder Bremen,Heidenheim,H,2,1,0.404545,0.35,0.245455
-Germany/Bundesliga,,Werder Bremen,Mainz,D,2,2,0.422727,0.268182,0.309091
-Germany/Bundesliga,,Werder Bremen,RB Leipzig,A,1,2,0.113636,0.236364,0.65
-Germany/Bundesliga,,Wolfsburg,Augsburg,A,2,3,0.322727,0.381818,0.295455
-Germany/Bundesliga,,Wolfsburg,Bayern Munich,H,5,4,0.040909,0.181818,0.777273
-Germany/Bundesliga,,Wolfsburg,Ein Frankfurt,A,3,4,0.304545,0.309091,0.386364
-Germany/Bundesliga,,Wolfsburg,Hamburg,H,2,1,0.422727,0.377273,0.2
-Germany/Bundesliga,,Wolfsburg,M'gladbach,A,2,3,0.404545,0.290909,0.304545
-Germany/Bundesliga,,Wolfsburg,Werder Bremen,D,2,2,0.290909,0.472727,0.236364
-Germany/Bundesliga 2,,Bielefeld,Bochum,H,2,1,0.45,0.272727,0.277273
-Germany/Bundesliga 2,,Bielefeld,Darmstadt,H,2,1,0.577273,0.254545,0.168182
-Germany/Bundesliga 2,,Bielefeld,Hannover,A,2,3,0.318182,0.177273,0.504545
-Germany/Bundesliga 2,,Bielefeld,Hertha,A,1,2,0.236364,0.4,0.363636
-Germany/Bundesliga 2,,Bielefeld,Nurnberg,H,2,1,0.559091,0.3,0.140909
-Germany/Bundesliga 2,,Bielefeld,Paderborn,H,2,1,0.422727,0.3,0.277273
-Germany/Bundesliga 2,,Bochum,Braunschweig,H,2,1,0.636364,0.2,0.163636
-Germany/Bundesliga 2,,Bochum,Greuther Furth,A,2,3,0.522727,0.304545,0.172727
-Germany/Bundesliga 2,,Bochum,Hannover,D,2,2,0.363636,0.277273,0.359091
-Germany/Bundesliga 2,,Bochum,Holstein Kiel,H,2,1,0.263636,0.340909,0.395455
-Germany/Bundesliga 2,,Bochum,Kaiserslautern,A,2,3,0.381818,0.3,0.318182
-Germany/Bundesliga 2,,Bochum,Nurnberg,H,2,1,0.372727,0.395455,0.231818
-Germany/Bundesliga 2,,Braunschweig,Dresden,H,2,1,0.336364,0.390909,0.272727
-Germany/Bundesliga 2,,Braunschweig,Fortuna Dusseldorf,D,1,1,0.113636,0.4,0.486364
-Germany/Bundesliga 2,,Braunschweig,Hertha,D,1,1,0.086364,0.254545,0.659091
-Germany/Bundesliga 2,,Braunschweig,Nurnberg,D,1,1,0.190909,0.345455,0.463636
-Germany/Bundesliga 2,,Braunschweig,Preußen Münster,A,1,2,0.095455,0.509091,0.395455
-Germany/Bundesliga 2,,Darmstadt,Elversberg,A,1,2,0.177273,0.309091,0.513636
-Germany/Bundesliga 2,,Darmstadt,Fortuna Dusseldorf,A,2,3,0.559091,0.263636,0.177273
-Germany/Bundesliga 2,,Darmstadt,Hannover,A,2,3,0.631818,0.2,0.168182
-Germany/Bundesliga 2,,Darmstadt,Holstein Kiel,H,2,1,0.736364,0.168182,0.095455
-Germany/Bundesliga 2,,Darmstadt,Paderborn,H,2,1,0.518182,0.213636,0.268182
-Germany/Bundesliga 2,,Darmstadt,Schalke 04,A,1,2,0.468182,0.259091,0.272727
-Germany/Bundesliga 2,,Dresden,Bochum,D,2,2,0.395455,0.354545,0.25
-Germany/Bundesliga 2,,Dresden,Darmstadt,A,1,2,0.190909,0.290909,0.518182
-Germany/Bundesliga 2,,Dresden,Hertha,A,1,3,0.036364,0.181818,0.781818
-Germany/Bundesliga 2,,Dresden,Holstein Kiel,A,1,2,0.095455,0.313636,0.590909
-Germany/Bundesliga 2,,Dresden,Kaiserslautern,A,2,3,0.336364,0.254545,0.409091
-Germany/Bundesliga 2,,Dresden,Preußen Münster,D,1,1,0.227273,0.568182,0.204545
-Germany/Bundesliga 2,,Elversberg,Bielefeld,A,1,2,0.131818,0.463636,0.404545
-Germany/Bundesliga 2,,Elversberg,Braunschweig,D,2,2,0.836364,0.109091,0.054545
-Germany/Bundesliga 2,,Elversberg,Karlsruhe,A,2,3,0.454545,0.304545,0.240909
-Germany/Bundesliga 2,,Elversberg,Magdeburg,H,2,1,0.454545,0.327273,0.218182
-Germany/Bundesliga 2,,Elversberg,Paderborn,H,2,1,0.477273,0.277273,0.245455
-Germany/Bundesliga 2,,Elversberg,Preußen Münster,H,2,1,0.25,0.404545,0.345455
-Germany/Bundesliga 2,,Elversberg,Schalke 04,H,2,1,0.395455,0.290909,0.313636
-Germany/Bundesliga 2,,Fortuna Dusseldorf,Bochum,A,1,2,0.240909,0.277273,0.481818
-Germany/Bundesliga 2,,Fortuna Dusseldorf,Dresden,D,1,1,0.263636,0.263636,0.472727
-Germany/Bundesliga 2,,Fortuna Dusseldorf,Elversberg,A,1,2,0.190909,0.386364,0.422727
-Germany/Bundesliga 2,,Fortuna Dusseldorf,Hertha,A,1,2,0.4,0.213636,0.386364
-Germany/Bundesliga 2,,Fortuna Dusseldorf,Holstein Kiel,D,1,1,0.25,0.404545,0.345455
-Germany/Bundesliga 2,,Greuther Furth,Bielefeld,A,2,3,0.245455,0.368182,0.386364
-Germany/Bundesliga 2,,Greuther Furth,Darmstadt,D,2,2,0.218182,0.3,0.481818
-Germany/Bundesliga 2,,Greuther Furth,Elversberg,A,1,3,0.077273,0.163636,0.759091
-Germany/Bundesliga 2,,Greuther Furth,Fortuna Dusseldorf,H,2,1,0.336364,0.3,0.363636
-Germany/Bundesliga 2,,Greuther Furth,Nurnberg,A,2,3,0.409091,0.231818,0.359091
-Germany/Bundesliga 2,,Greuther Furth,Paderborn,D,1,1,0.345455,0.259091,0.395455
-Germany/Bundesliga 2,,Greuther Furth,Schalke 04,H,3,2,0.309091,0.277273,0.413636
-Germany/Bundesliga 2,,Hannover,Braunschweig,H,2,1,0.595455,0.25,0.154545
-Germany/Bundesliga 2,,Hannover,Dresden,D,2,2,0.568182,0.286364,0.145455
-Germany/Bundesliga 2,,Hannover,Elversberg,A,1,2,0.181818,0.363636,0.454545
-Germany/Bundesliga 2,,Hannover,Greuther Furth,H,3,2,0.572727,0.268182,0.159091
-Germany/Bundesliga 2,,Hannover,Nurnberg,D,2,2,0.763636,0.127273,0.109091
-Germany/Bundesliga 2,,Hannover,Paderborn,A,1,2,0.25,0.354545,0.395455
-Germany/Bundesliga 2,,Hannover,Preußen Münster,H,2,1,0.286364,0.536364,0.177273
-Germany/Bundesliga 2,,Hertha,Bochum,A,1,2,0.409091,0.340909,0.25
-Germany/Bundesliga 2,,Hertha,Greuther Furth,H,2,1,0.563636,0.3,0.136364
-Germany/Bundesliga 2,,Hertha,Holstein Kiel,H,2,1,0.659091,0.181818,0.159091
-Germany/Bundesliga 2,,Hertha,Kaiserslautern,D,1,1,0.572727,0.231818,0.195455
-Germany/Bundesliga 2,,Hertha,Nurnberg,D,1,1,0.531818,0.245455,0.222727
-Germany/Bundesliga 2,,Holstein Kiel,Braunschweig,H,2,1,0.540909,0.227273,0.231818
-Germany/Bundesliga 2,,Holstein Kiel,Elversberg,A,1,2,0.218182,0.35,0.431818
-Germany/Bundesliga 2,,Holstein Kiel,Kaiserslautern,A,1,2,0.290909,0.272727,0.436364
-Germany/Bundesliga 2,,Holstein Kiel,Magdeburg,A,1,2,0.3,0.281818,0.418182
-Germany/Bundesliga 2,,Holstein Kiel,Nurnberg,D,1,1,0.422727,0.336364,0.240909
-Germany/Bundesliga 2,,Holstein Kiel,Preußen Münster,A,1,2,0.1,0.363636,0.536364
-Germany/Bundesliga 2,,Kaiserslautern,Bielefeld,H,3,2,0.35,0.381818,0.268182
-Germany/Bundesliga 2,,Kaiserslautern,Braunschweig,D,2,2,0.568182,0.25,0.181818
-Germany/Bundesliga 2,,Kaiserslautern,Fortuna Dusseldorf,A,2,3,0.522727,0.209091,0.268182
-Germany/Bundesliga 2,,Kaiserslautern,Karlsruhe,A,2,3,0.540909,0.259091,0.2
-Germany/Bundesliga 2,,Kaiserslautern,Paderborn,D,1,1,0.436364,0.295455,0.268182
-Germany/Bundesliga 2,,Karlsruhe,Bielefeld,A,2,3,0.3,0.268182,0.431818
-Germany/Bundesliga 2,,Karlsruhe,Bochum,D,2,2,0.304545,0.318182,0.377273
-Germany/Bundesliga 2,,Karlsruhe,Darmstadt,D,2,2,0.259091,0.327273,0.413636
-Germany/Bundesliga 2,,Karlsruhe,Dresden,A,2,3,0.304545,0.35,0.345455
-Germany/Bundesliga 2,,Karlsruhe,Greuther Furth,H,3,2,0.631818,0.2,0.168182
-Germany/Bundesliga 2,,Karlsruhe,Hannover,H,3,2,0.290909,0.290909,0.418182
-Germany/Bundesliga 2,,Karlsruhe,Holstein Kiel,D,2,2,0.277273,0.404545,0.318182
-Germany/Bundesliga 2,,Magdeburg,Bochum,A,1,2,0.1,0.327273,0.572727
-Germany/Bundesliga 2,,Magdeburg,Darmstadt,H,3,2,0.209091,0.268182,0.522727
-Germany/Bundesliga 2,,Magdeburg,Fortuna Dusseldorf,H,2,1,0.313636,0.377273,0.309091
-Germany/Bundesliga 2,,Magdeburg,Hertha,D,1,1,0.218182,0.281818,0.5
-Germany/Bundesliga 2,,Magdeburg,Kaiserslautern,H,2,1,0.45,0.277273,0.272727
-Germany/Bundesliga 2,,Magdeburg,Karlsruhe,A,2,3,0.154545,0.377273,0.468182
-Germany/Bundesliga 2,,Nurnberg,Dresden,H,2,1,0.7,0.140909,0.159091
-Germany/Bundesliga 2,,Nurnberg,Fortuna Dusseldorf,H,2,1,0.55,0.268182,0.181818
-Germany/Bundesliga 2,,Nurnberg,Kaiserslautern,H,2,1,0.445455,0.318182,0.236364
-Germany/Bundesliga 2,,Nurnberg,Magdeburg,A,1,2,0.436364,0.195455,0.368182
-Germany/Bundesliga 2,,Nurnberg,Schalke 04,A,1,2,0.222727,0.309091,0.468182
-Germany/Bundesliga 2,,Paderborn,Braunschweig,D,2,2,0.459091,0.290909,0.25
-Germany/Bundesliga 2,,Paderborn,Dresden,H,2,1,0.663636,0.177273,0.159091
-Germany/Bundesliga 2,,Paderborn,Hertha,D,1,1,0.254545,0.263636,0.481818
-Germany/Bundesliga 2,,Paderborn,Karlsruhe,A,3,4,0.577273,0.245455,0.177273
-Germany/Bundesliga 2,,Paderborn,Magdeburg,H,3,2,0.409091,0.345455,0.245455
-Germany/Bundesliga 2,,Paderborn,Schalke 04,H,3,2,0.218182,0.359091,0.422727
-Germany/Bundesliga 2,,Preußen Münster,Bielefeld,H,2,1,0.790909,0.127273,0.081818
-Germany/Bundesliga 2,,Preußen Münster,Darmstadt,D,1,1,0.131818,0.486364,0.381818
-Germany/Bundesliga 2,,Preußen Münster,Greuther Furth,H,3,2,0.372727,0.245455,0.381818
-Germany/Bundesliga 2,,Preußen Münster,Hertha,D,1,1,0.436364,0.268182,0.295455
-Germany/Bundesliga 2,,Preußen Münster,Kaiserslautern,D,1,1,0.068182,0.240909,0.690909
-Germany/Bundesliga 2,,Preußen Münster,Magdeburg,H,2,1,0.427273,0.318182,0.254545
-Germany/Bundesliga 2,,Schalke 04,Bielefeld,A,1,2,0.713636,0.209091,0.077273
-Germany/Bundesliga 2,,Schalke 04,Braunschweig,A,1,2,0.654545,0.236364,0.109091
-Germany/Bundesliga 2,,Schalke 04,Fortuna Dusseldorf,D,1,1,0.481818,0.272727,0.245455
-Germany/Bundesliga 2,,Schalke 04,Hannover,H,2,1,0.568182,0.236364,0.195455
-Germany/Bundesliga 2,,Schalke 04,Karlsruhe,D,2,2,0.422727,0.295455,0.281818
-Germany/Bundesliga 2,,Schalke 04,Magdeburg,D,2,2,0.431818,0.281818,0.286364
-Germany/Bundesliga 2,,Schalke 04,Preußen Münster,D,1,1,0.731818,0.172727,0.095455
-Italy/Serie A,,Atalanta,Bologna,A,1,2,0.568182,0.263636,0.168182
-Italy/Serie A,,Atalanta,Genoa,A,2,3,0.618182,0.254545,0.127273
-Italy/Serie A,,Atalanta,Juventus,A,1,2,0.25,0.409091,0.340909
-Italy/Serie A,,Atalanta,Napoli,H,2,1,0.386364,0.327273,0.286364
-Italy/Serie A,,Atalanta,Udinese,H,2,1,0.531818,0.254545,0.213636
-Italy/Serie A,,Atalanta,Verona,H,2,1,0.677273,0.218182,0.104545
-Italy/Serie A,,Bologna,Cagliari,H,2,1,0.409091,0.4,0.190909
-Italy/Serie A,,Bologna,Inter,D,1,1,0.181818,0.159091,0.659091
-Italy/Serie A,,Bologna,Lazio,D,1,1,0.254545,0.372727,0.372727
-Italy/Serie A,,Bologna,Lecce,D,1,1,0.545455,0.290909,0.163636
-Italy/Serie A,,Bologna,Roma,D,1,1,0.25,0.327273,0.422727
-Italy/Serie A,,Bologna,Udinese,H,2,1,0.372727,0.381818,0.245455
-Italy/Serie A,,Bologna,Verona,H,2,1,0.481818,0.322727,0.195455
-Italy/Serie A,,Cagliari,Atalanta,H,2,1,0.418182,0.240909,0.340909
-Italy/Serie A,,Cagliari,Como,D,1,1,0.2,0.4,0.4
-Italy/Serie A,,Cagliari,Cremonese,H,2,1,0.2,0.586364,0.213636
-Italy/Serie A,,Cagliari,Lazio,A,1,2,0.2,0.318182,0.481818
-Italy/Serie A,,Cagliari,Napoli,D,1,1,0.204545,0.25,0.545455
-Italy/Serie A,,Cagliari,Torino,H,2,1,0.468182,0.3,0.231818
-Italy/Serie A,,Cagliari,Udinese,D,1,1,0.322727,0.263636,0.413636
-Italy/Serie A,,Como,Inter,A,1,2,0.127273,0.304545,0.568182
-Italy/Serie A,,Como,Lecce,H,2,0,0.822727,0.122727,0.054545
-Italy/Serie A,,Como,Napoli,D,1,1,0.463636,0.259091,0.277273
-Italy/Serie A,,Como,Parma,H,1,0,0.427273,0.372727,0.2
-Italy/Serie A,,Como,Pisa,D,2,2,0.6,0.3,0.1
-Italy/Serie A,,Como,Roma,D,1,1,0.440909,0.372727,0.186364
-Italy/Serie A,,Cremonese,Bologna,H,3,2,0.277273,0.3,0.422727
-Italy/Serie A,,Cremonese,Como,D,2,2,0.454545,0.3,0.245455
-Italy/Serie A,,Cremonese,Fiorentina,D,1,1,0.136364,0.354545,0.509091
-Italy/Serie A,,Cremonese,Lazio,A,1,2,0.118182,0.345455,0.536364
-Italy/Serie A,,Cremonese,Milan,A,1,2,0.231818,0.372727,0.395455
-Italy/Serie A,,Cremonese,Pisa,D,1,1,0.240909,0.395455,0.363636
-Italy/Serie A,,Cremonese,Torino,H,3,2,0.1,0.481818,0.418182
-Italy/Serie A,,Fiorentina,Atalanta,A,1,2,0.318182,0.268182,0.413636
-Italy/Serie A,,Fiorentina,Genoa,A,2,3,0.422727,0.322727,0.254545
-Italy/Serie A,,Fiorentina,Inter,A,1,2,0.177273,0.231818,0.590909
-Italy/Serie A,,Fiorentina,Lazio,D,1,1,0.318182,0.322727,0.359091
-Italy/Serie A,,Fiorentina,Parma,H,2,1,0.318182,0.363636,0.318182
-Italy/Serie A,,Fiorentina,Pisa,D,2,2,0.195455,0.604545,0.2
-Italy/Serie A,,Fiorentina,Sassuolo,D,1,1,0.295455,0.322727,0.381818
-Italy/Serie A,,Genoa,Como,D,1,1,0.1,0.472727,0.427273
-Italy/Serie A,,Genoa,Milan,A,1,2,0.109091,0.290909,0.6
-Italy/Serie A,,Genoa,Roma,H,2,1,0.240909,0.231818,0.527273
-Italy/Serie A,,Genoa,Sassuolo,A,1,2,0.35,0.240909,0.409091
-Italy/Serie A,,Genoa,Torino,H,2,1,0.35,0.372727,0.277273
-Italy/Serie A,,Genoa,Udinese,A,1,2,0.395455,0.35,0.254545
-Italy/Serie A,,Inter,Atalanta,H,2,1,0.622727,0.227273,0.15
-Italy/Serie A,,Inter,Cagliari,H,3,1,0.754545,0.177273,0.068182
-Italy/Serie A,,Inter,Genoa,D,3,3,0.827273,0.118182,0.054545
-Italy/Serie A,,Inter,Parma,H,2,1,0.695455,0.218182,0.086364
-Italy/Serie A,,Inter,Roma,D,1,1,0.431818,0.35,0.218182
-Italy/Serie A,,Inter,Verona,H,3,0,0.881818,0.1,0.018182
-Italy/Serie A,,Juventus,Bologna,H,2,1,0.663636,0.263636,0.072727
-Italy/Serie A,,Juventus,Como,H,2,1,0.518182,0.363636,0.118182
-Italy/Serie A,,Juventus,Fiorentina,H,2,1,0.686364,0.172727,0.140909
-Italy/Serie A,,Juventus,Genoa,A,2,3,0.713636,0.213636,0.072727
-Italy/Serie A,,Juventus,Pisa,H,3,1,0.85,0.113636,0.036364
-Italy/Serie A,,Juventus,Sassuolo,H,2,1,0.786364,0.118182,0.095455
-Italy/Serie A,,Juventus,Verona,H,2,0,0.7,0.236364,0.063636
-Italy/Serie A,,Lazio,Inter,A,1,2,0.154545,0.213636,0.631818
-Italy/Serie A,,Lazio,Milan,A,1,2,0.136364,0.286364,0.577273
-Italy/Serie A,,Lazio,Parma,D,2,2,0.55,0.3,0.15
-Italy/Serie A,,Lazio,Pisa,D,2,2,0.218182,0.545455,0.236364
-Italy/Serie A,,Lazio,Sassuolo,H,2,1,0.413636,0.313636,0.272727
-Italy/Serie A,,Lazio,Udinese,A,2,3,0.445455,0.309091,0.245455
-Italy/Serie A,,Lecce,Atalanta,A,0,2,0.213636,0.213636,0.572727
-Italy/Serie A,,Lecce,Cremonese,D,1,1,0.359091,0.327273,0.313636
-Italy/Serie A,,Lecce,Fiorentina,H,2,1,0.45,0.277273,0.272727
-Italy/Serie A,,Lecce,Genoa,D,1,1,0.154545,0.477273,0.368182
-Italy/Serie A,,Lecce,Inter,A,0,2,0.072727,0.1,0.827273
-Italy/Serie A,,Lecce,Juventus,A,1,2,0.127273,0.290909,0.581818
-Italy/Serie A,,Milan,Atalanta,A,1,2,0.459091,0.309091,0.231818
-Italy/Serie A,,Milan,Cagliari,H,2,1,0.772727,0.190909,0.036364
-Italy/Serie A,,Milan,Inter,A,1,2,0.2,0.318182,0.481818
-Italy/Serie A,,Milan,Juventus,D,1,1,0.381818,0.390909,0.227273
-Italy/Serie A,,Milan,Parma,H,2,0,0.645455,0.277273,0.077273
-Italy/Serie A,,Milan,Torino,H,2,1,0.595455,0.277273,0.127273
-Italy/Serie A,,Milan,Udinese,D,1,1,0.540909,0.336364,0.122727
-Italy/Serie A,,Napoli,Bologna,H,2,1,0.645455,0.25,0.104545
-Italy/Serie A,,Napoli,Cremonese,D,3,3,0.795455,0.136364,0.068182
-Italy/Serie A,,Napoli,Lazio,D,1,1,0.504545,0.4,0.095455
-Italy/Serie A,,Napoli,Lecce,D,2,2,0.663636,0.295455,0.040909
-Italy/Serie A,,Napoli,Milan,D,1,1,0.263636,0.377273,0.359091
-Italy/Serie A,,Napoli,Torino,H,2,1,0.736364,0.172727,0.090909
-Italy/Serie A,,Napoli,Udinese,H,2,1,0.636364,0.254545,0.109091
-Italy/Serie A,,Parma,Cagliari,D,1,1,0.286364,0.354545,0.359091
-Italy/Serie A,,Parma,Cremonese,D,1,1,0.336364,0.35,0.313636
-Italy/Serie A,,Parma,Napoli,A,1,2,0.272727,0.181818,0.545455
-Italy/Serie A,,Parma,Pisa,H,2,1,0.427273,0.35,0.222727
-Italy/Serie A,,Parma,Roma,A,1,2,0.186364,0.209091,0.604545
-Italy/Serie A,,Parma,Sassuolo,A,1,2,0.340909,0.272727,0.386364
-Italy/Serie A,,Pisa,Bologna,A,1,3,0.045455,0.281818,0.672727
-Italy/Serie A,,Pisa,Cagliari,H,2,1,0.131818,0.604545,0.263636
-Italy/Serie A,,Pisa,Genoa,D,1,1,0.077273,0.481818,0.440909
-Italy/Serie A,,Pisa,Lecce,H,2,1,0.259091,0.295455,0.445455
-Italy/Serie A,,Pisa,Napoli,A,0,2,0.081818,0.190909,0.727273
-Italy/Serie A,,Pisa,Torino,A,1,2,0.136364,0.627273,0.236364
-Italy/Serie A,,Roma,Atalanta,H,2,1,0.386364,0.313636,0.3
-Italy/Serie A,,Roma,Cremonese,D,1,1,0.636364,0.231818,0.131818
-Italy/Serie A,,Roma,Fiorentina,H,2,1,0.645455,0.218182,0.136364
-Italy/Serie A,,Roma,Juventus,H,2,1,0.3,0.418182,0.281818
-Italy/Serie A,,Roma,Lazio,H,1,0,0.518182,0.363636,0.118182
-Italy/Serie A,,Roma,Lecce,H,2,0,0.818182,0.136364,0.045455
-Italy/Serie A,,Roma,Pisa,H,2,1,0.731818,0.154545,0.113636
-Italy/Serie A,,Sassuolo,Atalanta,A,1,2,0.277273,0.213636,0.509091
-Italy/Serie A,,Sassuolo,Bologna,A,1,2,0.195455,0.309091,0.495455
-Italy/Serie A,,Sassuolo,Cagliari,A,1,2,0.172727,0.440909,0.386364
-Italy/Serie A,,Sassuolo,Como,D,1,1,0.1,0.240909,0.659091
-Italy/Serie A,,Sassuolo,Lecce,D,1,1,0.322727,0.222727,0.454545
+England/Championship,,Birmingham,Blackburn,H,2,1,0.445455,0.3,0.254545
+England/Championship,,Birmingham,Bristol City,A,2,3,0.640909,0.227273,0.131818
+England/Championship,,Birmingham,Middlesbrough,A,2,3,0.422727,0.3,0.277273
+England/Championship,,Birmingham,Preston,A,1,2,0.404545,0.422727,0.172727
+England/Championship,,Birmingham,QPR,D,2,2,0.427273,0.340909,0.231818
+England/Championship,,Birmingham,Sheffield United,H,2,1,0.509091,0.277273,0.213636
+England/Championship,,Birmingham,Wrexham,D,1,1,0.313636,0.495455,0.190909
+England/Championship,,Blackburn,Bristol City,D,1,1,0.281818,0.363636,0.354545
+England/Championship,,Blackburn,Coventry,H,3,2,0.136364,0.318182,0.545455
+England/Championship,,Blackburn,Leicester,A,1,2,0.340909,0.245455,0.413636
+England/Championship,,Blackburn,Middlesbrough,D,1,1,0.277273,0.3,0.422727
+England/Championship,,Blackburn,Portsmouth,A,1,2,0.418182,0.327273,0.254545
+England/Championship,,Blackburn,West Brom,A,1,2,0.459091,0.263636,0.277273
+England/Championship,,Bristol City,Coventry,H,3,2,0.440909,0.340909,0.218182
+England/Championship,,Bristol City,Norwich,D,2,2,0.413636,0.272727,0.313636
+England/Championship,,Bristol City,Sheffield United,D,2,2,0.472727,0.222727,0.304545
+England/Championship,,Bristol City,Stoke,A,1,2,0.436364,0.218182,0.345455
+England/Championship,,Bristol City,Watford,A,1,2,0.386364,0.363636,0.25
+England/Championship,,Bristol City,West Brom,A,2,3,0.418182,0.259091,0.322727
+England/Championship,,Charlton,Birmingham,H,2,1,0.413636,0.322727,0.263636
+England/Championship,,Charlton,Bristol City,D,1,1,0.359091,0.363636,0.277273
+England/Championship,,Charlton,Hull,A,1,2,0.277273,0.263636,0.459091
+England/Championship,,Charlton,Ipswich,H,2,1,0.354545,0.268182,0.377273
+England/Championship,,Charlton,Norwich,H,2,1,0.504545,0.236364,0.259091
+England/Championship,,Charlton,Preston,A,1,2,0.113636,0.304545,0.581818
+England/Championship,,Charlton,Wrexham,D,1,1,0.1,0.390909,0.509091
+England/Championship,,Coventry,Derby,D,2,2,0.654545,0.245455,0.1
+England/Championship,,Coventry,Portsmouth,H,2,1,0.709091,0.163636,0.127273
+England/Championship,,Coventry,Preston,D,1,1,0.377273,0.340909,0.281818
+England/Championship,,Coventry,Sheffield Weds,H,3,1,0.7,0.231818,0.068182
+England/Championship,,Coventry,Southampton,D,2,2,0.404545,0.368182,0.227273
+England/Championship,,Coventry,Stoke,A,1,2,0.595455,0.259091,0.145455
+England/Championship,,Coventry,Wrexham,D,1,1,0.154545,0.495455,0.35
+England/Championship,,Derby,Birmingham,D,1,1,0.368182,0.336364,0.295455
+England/Championship,,Derby,Blackburn,H,2,1,0.272727,0.277273,0.45
+England/Championship,,Derby,Oxford,A,1,2,0.181818,0.331818,0.486364
+England/Championship,,Derby,Sheffield United,A,2,3,0.468182,0.245455,0.286364
+England/Championship,,Derby,Sheffield Weds,D,2,2,0.65,0.209091,0.140909
+England/Championship,,Derby,Stoke,H,2,1,0.409091,0.286364,0.304545
+England/Championship,,Hull,Birmingham,H,2,1,0.631818,0.195455,0.172727
+England/Championship,,Hull,Coventry,H,3,2,0.268182,0.309091,0.422727
+England/Championship,,Hull,Derby,H,4,3,0.322727,0.2,0.477273
+England/Championship,,Hull,Millwall,A,1,2,0.404545,0.263636,0.331818
+England/Championship,,Hull,Norwich,D,1,1,0.295455,0.268182,0.436364
+England/Championship,,Hull,Sheffield Weds,D,2,2,0.559091,0.259091,0.181818
+England/Championship,,Ipswich,Birmingham,H,2,1,0.604545,0.263636,0.131818
+England/Championship,,Ipswich,Hull,A,2,3,0.409091,0.359091,0.231818
+England/Championship,,Ipswich,Leicester,D,2,2,0.568182,0.245455,0.186364
+England/Championship,,Ipswich,Middlesbrough,H,2,1,0.477273,0.240909,0.281818
+England/Championship,,Ipswich,Millwall,D,2,2,0.677273,0.177273,0.145455
+England/Championship,,Ipswich,QPR,D,2,2,0.722727,0.172727,0.104545
+England/Championship,,Ipswich,Swansea,D,2,2,0.604545,0.272727,0.122727
+England/Championship,,Leicester,Bristol City,H,2,1,0.35,0.25,0.4
+England/Championship,,Leicester,Hull,A,1,2,0.277273,0.236364,0.486364
+England/Championship,,Leicester,Millwall,H,2,1,0.336364,0.268182,0.395455
+England/Championship,,Leicester,Norwich,A,1,2,0.363636,0.263636,0.372727
+England/Championship,,Leicester,Preston,D,1,1,0.413636,0.222727,0.363636
+England/Championship,,Leicester,QPR,D,1,1,0.354545,0.286364,0.359091
+England/Championship,,Leicester,Swansea,A,2,3,0.631818,0.177273,0.190909
+England/Championship,,Middlesbrough,Bristol City,H,2,1,0.368182,0.340909,0.290909
+England/Championship,,Middlesbrough,Charlton,D,1,1,0.636364,0.222727,0.140909
+England/Championship,,Middlesbrough,Leicester,D,2,2,0.395455,0.386364,0.218182
+England/Championship,,Middlesbrough,Millwall,H,2,1,0.659091,0.172727,0.168182
+England/Championship,,Middlesbrough,Portsmouth,A,1,2,0.304545,0.431818,0.263636
+England/Championship,,Middlesbrough,Sheffield Weds,D,2,2,0.545455,0.3,0.154545
+England/Championship,,Middlesbrough,Watford,H,2,1,0.422727,0.363636,0.213636
+England/Championship,,Millwall,Birmingham,A,1,2,0.345455,0.268182,0.386364
+England/Championship,,Millwall,Blackburn,A,1,2,0.2,0.286364,0.513636
+England/Championship,,Millwall,Derby,D,1,1,0.404545,0.254545,0.340909
+England/Championship,,Millwall,Norwich,A,1,2,0.309091,0.263636,0.427273
+England/Championship,,Millwall,Oxford,A,1,2,0.177273,0.409091,0.413636
+England/Championship,,Millwall,QPR,D,1,1,0.4,0.295455,0.304545
+England/Championship,,Norwich,Derby,H,3,2,0.268182,0.181818,0.55
+England/Championship,,Norwich,Ipswich,H,2,1,0.5,0.145455,0.354545
+England/Championship,,Norwich,Portsmouth,H,2,1,0.372727,0.277273,0.35
+England/Championship,,Norwich,Preston,A,1,2,0.272727,0.195455,0.531818
+England/Championship,,Norwich,Sheffield United,D,1,1,0.336364,0.3,0.363636
+England/Championship,,Norwich,Sheffield Weds,D,1,1,0.445455,0.263636,0.290909
+England/Championship,,Norwich,Swansea,D,1,1,0.395455,0.181818,0.422727
+England/Championship,,Oxford,Blackburn,D,1,1,0.404545,0.309091,0.286364
+England/Championship,,Oxford,Charlton,D,1,1,0.05,0.259091,0.690909
+England/Championship,,Oxford,Hull,A,1,2,0.268182,0.272727,0.459091
+England/Championship,,Oxford,Sheffield Weds,D,1,1,0.577273,0.186364,0.236364
+England/Championship,,Oxford,Watford,H,2,1,0.313636,0.263636,0.422727
+England/Championship,,Oxford,West Brom,A,1,2,0.090909,0.340909,0.568182
+England/Championship,,Oxford,Wrexham,A,1,2,0.095455,0.395455,0.509091
+England/Championship,,Portsmouth,Birmingham,A,1,2,0.313636,0.263636,0.422727
+England/Championship,,Portsmouth,Derby,A,1,2,0.245455,0.263636,0.490909
+England/Championship,,Portsmouth,Hull,D,1,1,0.336364,0.381818,0.281818
+England/Championship,,Portsmouth,Ipswich,D,1,1,0.168182,0.386364,0.445455
+England/Championship,,Portsmouth,Leicester,D,2,2,0.327273,0.395455,0.277273
+England/Championship,,Portsmouth,Oxford,H,2,1,0.622727,0.295455,0.081818
+England/Championship,,Portsmouth,Swansea,D,1,1,0.540909,0.290909,0.168182
+England/Championship,,Preston,Millwall,D,1,1,0.259091,0.372727,0.368182
+England/Championship,,Preston,Oxford,A,1,2,0.395455,0.304545,0.3
+England/Championship,,Preston,QPR,A,1,2,0.345455,0.331818,0.322727
+England/Championship,,Preston,Southampton,H,2,1,0.363636,0.286364,0.35
+England/Championship,,Preston,Stoke,D,1,1,0.4,0.295455,0.304545
+England/Championship,,Preston,West Brom,A,1,2,0.413636,0.281818,0.304545
+England/Championship,,QPR,Bristol City,H,2,1,0.390909,0.286364,0.322727
+England/Championship,,QPR,Derby,H,3,2,0.368182,0.304545,0.327273
+England/Championship,,QPR,Middlesbrough,A,2,3,0.336364,0.195455,0.468182
+England/Championship,,QPR,Portsmouth,A,2,3,0.336364,0.336364,0.327273
+England/Championship,,QPR,Sheffield United,H,2,1,0.440909,0.327273,0.231818
+England/Championship,,QPR,Swansea,A,2,3,0.413636,0.25,0.336364
+England/Championship,,QPR,Watford,A,2,3,0.418182,0.222727,0.359091
+England/Championship,,Sheffield United,Blackburn,H,2,1,0.495455,0.359091,0.145455
+England/Championship,,Sheffield United,Coventry,H,3,2,0.45,0.240909,0.309091
+England/Championship,,Sheffield United,Hull,H,3,2,0.513636,0.181818,0.304545
+England/Championship,,Sheffield United,Preston,D,2,2,0.509091,0.259091,0.231818
+England/Championship,,Sheffield United,Swansea,D,1,1,0.568182,0.195455,0.236364
+England/Championship,,Sheffield United,West Brom,H,2,1,0.536364,0.245455,0.218182
+England/Championship,,Sheffield United,Wrexham,A,1,2,0.145455,0.359091,0.495455
+England/Championship,,Sheffield Weds,Charlton,D,1,1,0.272727,0.309091,0.418182
+England/Championship,,Sheffield Weds,Ipswich,A,1,2,0.163636,0.254545,0.581818
+England/Championship,,Sheffield Weds,Leicester,A,1,2,0.240909,0.236364,0.522727
+England/Championship,,Sheffield Weds,Southampton,A,1,3,0.159091,0.240909,0.6
+England/Championship,,Sheffield Weds,Watford,A,1,2,0.1,0.259091,0.640909
+England/Championship,,Sheffield Weds,West Brom,H,2,1,0.131818,0.331818,0.536364
+England/Championship,,Southampton,Blackburn,A,1,2,0.454545,0.318182,0.227273
+England/Championship,,Southampton,Bristol City,A,1,2,0.245455,0.236364,0.518182
+England/Championship,,Southampton,Derby,D,1,1,0.3,0.390909,0.309091
+England/Championship,,Southampton,Ipswich,H,2,1,0.363636,0.372727,0.263636
+England/Championship,,Southampton,Norwich,D,1,1,0.422727,0.318182,0.259091
+England/Championship,,Southampton,Oxford,A,1,2,0.113636,0.381818,0.504545
+England/Championship,,Southampton,QPR,H,2,1,0.572727,0.231818,0.195455
+England/Championship,,Stoke,Blackburn,H,2,1,0.581818,0.186364,0.231818
+England/Championship,,Stoke,Ipswich,H,2,1,0.413636,0.227273,0.359091
+England/Championship,,Stoke,Millwall,D,1,1,0.327273,0.368182,0.304545
+England/Championship,,Stoke,Oxford,D,2,2,0.377273,0.45,0.172727
+England/Championship,,Stoke,Portsmouth,H,2,1,0.545455,0.25,0.204545
+England/Championship,,Stoke,Sheffield Weds,D,2,2,0.595455,0.236364,0.168182
+England/Championship,,Stoke,Watford,H,2,1,0.372727,0.318182,0.309091
+England/Championship,,Swansea,Charlton,H,2,1,0.531818,0.259091,0.209091
+England/Championship,,Swansea,Coventry,A,2,3,0.35,0.318182,0.331818
+England/Championship,,Swansea,Middlesbrough,A,2,3,0.268182,0.222727,0.509091
+England/Championship,,Swansea,Preston,H,2,1,0.618182,0.15,0.231818
+England/Championship,,Swansea,Southampton,D,2,2,0.272727,0.263636,0.463636
+England/Championship,,Swansea,Stoke,A,1,2,0.304545,0.368182,0.327273
+England/Championship,,Watford,Charlton,H,2,1,0.359091,0.409091,0.231818
+England/Championship,,Watford,Coventry,D,2,2,0.336364,0.377273,0.286364
+England/Championship,,Watford,Ipswich,H,2,1,0.545455,0.159091,0.295455
+England/Championship,,Watford,Leicester,A,1,2,0.436364,0.277273,0.286364
+England/Championship,,Watford,Sheffield United,H,2,1,0.440909,0.309091,0.25
+England/Championship,,Watford,Wrexham,D,1,1,0.245455,0.522727,0.231818
+England/Championship,,West Brom,Charlton,D,1,1,0.263636,0.386364,0.35
+England/Championship,,West Brom,Hull,A,1,2,0.272727,0.2,0.527273
+England/Championship,,West Brom,Ipswich,D,2,2,0.486364,0.209091,0.304545
+England/Championship,,West Brom,Millwall,D,1,1,0.263636,0.322727,0.413636
+England/Championship,,West Brom,Southampton,A,1,2,0.322727,0.309091,0.368182
+England/Championship,,West Brom,Watford,H,2,1,0.290909,0.4,0.309091
+England/Championship,,West Brom,Wrexham,H,2,1,0.595455,0.209091,0.195455
+England/Championship,,Wrexham,Hull,H,4,3,0.145455,0.295455,0.559091
+England/Championship,,Wrexham,Middlesbrough,A,2,3,0.272727,0.431818,0.295455
+England/Championship,,Wrexham,Portsmouth,H,3,2,0.268182,0.5,0.231818
+England/Championship,,Wrexham,Southampton,A,1,2,0.163636,0.318182,0.518182
+England/Championship,,Wrexham,Stoke,H,3,2,0.204545,0.254545,0.540909
+England/Championship,,Wrexham,Swansea,H,3,2,0.168182,0.281818,0.55
+England/Premier League,,Arsenal,Bournemouth,A,3,4,0.768182,0.090909,0.140909
+England/Premier League,,Arsenal,Burnley,H,4,1,0.804545,0.145455,0.05
+England/Premier League,,Arsenal,Chelsea,D,1,1,0.490909,0.313636,0.195455
+England/Premier League,,Arsenal,Everton,H,1,0,0.659091,0.272727,0.068182
+England/Premier League,,Arsenal,Fulham,A,3,4,0.777273,0.177273,0.045455
+England/Premier League,,Arsenal,Newcastle,H,3,1,0.718182,0.213636,0.068182
+England/Premier League,,Aston Villa,Chelsea,H,2,1,0.422727,0.240909,0.336364
+England/Premier League,,Aston Villa,Liverpool,A,1,2,0.481818,0.2,0.318182
+England/Premier League,,Aston Villa,Sunderland,D,2,2,0.595455,0.286364,0.118182
+England/Premier League,,Aston Villa,Tottenham,D,2,2,0.5,0.25,0.25
+England/Premier League,,Aston Villa,West Ham,H,2,1,0.454545,0.4,0.145455
+England/Premier League,,Bournemouth,Brentford,D,1,1,0.227273,0.309091,0.463636
+England/Premier League,,Bournemouth,Crystal Palace,D,1,1,0.218182,0.4,0.381818
+England/Premier League,,Bournemouth,Leeds,D,2,2,0.445455,0.372727,0.181818
+England/Premier League,,Bournemouth,Man City,H,3,2,0.209091,0.213636,0.577273
+England/Premier League,,Bournemouth,Man United,D,2,2,0.418182,0.336364,0.245455
+England/Premier League,,Bournemouth,Sunderland,H,2,1,0.413636,0.290909,0.295455
+England/Premier League,,Brentford,Crystal Palace,A,1,2,0.272727,0.359091,0.368182
+England/Premier League,,Brentford,Everton,H,2,1,0.313636,0.377273,0.309091
+England/Premier League,,Brentford,Fulham,H,2,1,0.577273,0.218182,0.204545
+England/Premier League,,Brentford,West Ham,H,2,1,0.686364,0.181818,0.131818
+England/Premier League,,Brentford,Wolves,D,1,1,0.613636,0.254545,0.131818
+England/Premier League,,Brighton,Arsenal,A,1,2,0.159091,0.336364,0.504545
+England/Premier League,,Brighton,Chelsea,D,1,1,0.290909,0.331818,0.377273
+England/Premier League,,Brighton,Liverpool,D,2,2,0.395455,0.218182,0.386364
+England/Premier League,,Brighton,Man United,D,1,1,0.459091,0.227273,0.313636
+England/Premier League,,Brighton,Nott'm Forest,A,1,2,0.563636,0.218182,0.218182
+England/Premier League,,Brighton,Wolves,H,2,0,0.604545,0.281818,0.113636
+England/Premier League,,Burnley,Aston Villa,A,1,2,0.181818,0.245455,0.572727
+England/Premier League,,Burnley,Bournemouth,H,3,2,0.4,0.209091,0.390909
+England/Premier League,,Burnley,Brentford,H,3,2,0.377273,0.190909,0.431818
+England/Premier League,,Burnley,Brighton,H,2,1,0.159091,0.418182,0.422727
+England/Premier League,,Burnley,Man City,H,4,3,0.081818,0.072727,0.845455
+England/Premier League,,Burnley,Wolves,H,2,1,0.413636,0.345455,0.240909
+England/Premier League,,Chelsea,Man City,H,3,2,0.309091,0.359091,0.331818
+England/Premier League,,Chelsea,Man United,D,2,2,0.4,0.313636,0.286364
+England/Premier League,,Chelsea,Newcastle,D,2,2,0.531818,0.236364,0.231818
+England/Premier League,,Chelsea,Nott'm Forest,A,2,3,0.513636,0.3,0.186364
+England/Premier League,,Chelsea,Tottenham,A,2,3,0.581818,0.281818,0.136364
+England/Premier League,,Crystal Palace,Arsenal,D,0,0,0.063636,0.236364,0.7
+England/Premier League,,Crystal Palace,Everton,D,1,1,0.118182,0.35,0.531818
+England/Premier League,,Crystal Palace,Leeds,D,1,1,0.440909,0.359091,0.2
+England/Premier League,,Crystal Palace,Newcastle,D,1,1,0.240909,0.377273,0.381818
+England/Premier League,,Crystal Palace,West Ham,A,1,2,0.381818,0.354545,0.263636
+England/Premier League,,Everton,Burnley,D,2,2,0.590909,0.268182,0.140909
+England/Premier League,,Everton,Chelsea,A,1,2,0.272727,0.277273,0.45
+England/Premier League,,Everton,Liverpool,D,1,1,0.227273,0.363636,0.409091
+England/Premier League,,Everton,Man City,D,1,1,0.259091,0.222727,0.518182
+England/Premier League,,Everton,Man United,A,1,2,0.331818,0.190909,0.477273
+England/Premier League,,Everton,Sunderland,H,2,1,0.690909,0.159091,0.15
+England/Premier League,,Fulham,Aston Villa,A,1,2,0.231818,0.240909,0.527273
+England/Premier League,,Fulham,Bournemouth,H,3,2,0.35,0.304545,0.345455
+England/Premier League,,Fulham,Burnley,H,3,2,0.413636,0.331818,0.254545
+England/Premier League,,Fulham,Newcastle,H,2,1,0.481818,0.290909,0.227273
+England/Premier League,,Fulham,Tottenham,D,2,2,0.490909,0.227273,0.281818
+England/Premier League,,Fulham,West Ham,H,2,1,0.304545,0.445455,0.25
+England/Premier League,,Leeds,Brentford,D,2,2,0.4,0.327273,0.272727
+England/Premier League,,Leeds,Brighton,H,3,2,0.186364,0.290909,0.522727
+England/Premier League,,Leeds,Burnley,A,2,3,0.622727,0.190909,0.186364
+England/Premier League,,Leeds,Man City,D,2,2,0.359091,0.222727,0.418182
+England/Premier League,,Leeds,Sunderland,D,1,1,0.472727,0.309091,0.218182
+England/Premier League,,Leeds,Wolves,D,2,2,0.636364,0.227273,0.136364
+England/Premier League,,Liverpool,Brentford,H,2,1,0.672727,0.204545,0.122727
+England/Premier League,,Liverpool,Chelsea,A,2,3,0.404545,0.263636,0.331818
+England/Premier League,,Liverpool,Crystal Palace,H,2,1,0.472727,0.3,0.227273
+England/Premier League,,Liverpool,Fulham,H,2,1,0.663636,0.204545,0.131818
+England/Premier League,,Liverpool,Tottenham,A,2,3,0.654545,0.231818,0.113636
+England/Premier League,,Liverpool,West Ham,D,2,2,0.613636,0.272727,0.113636
+England/Premier League,,Man City,Arsenal,H,2,1,0.35,0.431818,0.218182
+England/Premier League,,Man City,Aston Villa,H,2,1,0.745455,0.145455,0.109091
+England/Premier League,,Man City,Brentford,D,2,2,0.759091,0.145455,0.095455
+England/Premier League,,Man City,Crystal Palace,H,2,1,0.709091,0.195455,0.095455
+England/Premier League,,Man City,Nott'm Forest,H,3,1,0.868182,0.104545,0.027273
+England/Premier League,,Man United,Aston Villa,H,2,1,0.659091,0.154545,0.186364
+England/Premier League,,Man United,Brentford,A,2,3,0.622727,0.168182,0.209091
+England/Premier League,,Man United,Crystal Palace,H,2,1,0.459091,0.290909,0.25
+England/Premier League,,Man United,Leeds,D,2,2,0.613636,0.290909,0.095455
+England/Premier League,,Man United,Liverpool,H,2,1,0.55,0.186364,0.263636
+England/Premier League,,Man United,Nott'm Forest,H,2,1,0.577273,0.190909,0.231818
+England/Premier League,,Newcastle,Bournemouth,A,2,3,0.35,0.368182,0.281818
+England/Premier League,,Newcastle,Brighton,D,2,2,0.327273,0.318182,0.354545
+England/Premier League,,Newcastle,Everton,A,1,2,0.304545,0.3,0.395455
+England/Premier League,,Newcastle,Man United,D,2,2,0.268182,0.354545,0.377273
+England/Premier League,,Newcastle,Sunderland,D,2,2,0.468182,0.286364,0.245455
+England/Premier League,,Newcastle,West Ham,H,3,2,0.55,0.272727,0.177273
+England/Premier League,,Nott'm Forest,Aston Villa,D,1,1,0.177273,0.254545,0.568182
+England/Premier League,,Nott'm Forest,Bournemouth,D,1,1,0.140909,0.268182,0.590909
+England/Premier League,,Nott'm Forest,Burnley,H,3,2,0.309091,0.327273,0.363636
+England/Premier League,,Nott'm Forest,Fulham,H,2,1,0.304545,0.240909,0.454545
+England/Premier League,,Nott'm Forest,Newcastle,A,1,2,0.245455,0.218182,0.536364
+England/Premier League,,Sunderland,Brighton,D,1,1,0.209091,0.563636,0.227273
+England/Premier League,,Sunderland,Chelsea,A,1,2,0.209091,0.295455,0.495455
+England/Premier League,,Sunderland,Man United,D,1,1,0.268182,0.295455,0.436364
+England/Premier League,,Sunderland,Nott'm Forest,H,2,1,0.713636,0.172727,0.113636
+England/Premier League,,Sunderland,Tottenham,D,1,1,0.286364,0.340909,0.372727
+England/Premier League,,Tottenham,Brighton,H,3,2,0.3,0.195455,0.504545
+England/Premier League,,Tottenham,Crystal Palace,D,1,1,0.440909,0.227273,0.331818
+England/Premier League,,Tottenham,Everton,A,1,2,0.445455,0.240909,0.313636
+England/Premier League,,Tottenham,Leeds,H,2,1,0.654545,0.159091,0.186364
+England/Premier League,,Tottenham,Nott'm Forest,A,1,2,0.445455,0.186364,0.368182
+England/Premier League,,West Ham,Arsenal,A,1,3,0.063636,0.236364,0.7
+England/Premier League,,West Ham,Everton,A,1,2,0.268182,0.345455,0.386364
+England/Premier League,,West Ham,Leeds,H,2,1,0.454545,0.290909,0.254545
+England/Premier League,,West Ham,Man City,A,1,3,0.077273,0.109091,0.813636
+England/Premier League,,West Ham,Wolves,H,2,1,0.522727,0.245455,0.231818
+England/Premier League,,Wolves,Aston Villa,A,1,2,0.145455,0.190909,0.663636
+England/Premier League,,Wolves,Fulham,A,1,2,0.359091,0.227273,0.413636
+England/Premier League,,Wolves,Liverpool,A,1,2,0.063636,0.204545,0.731818
+England/Premier League,,Wolves,Sunderland,A,1,2,0.190909,0.218182,0.590909
+England/Premier League,,Wolves,Tottenham,H,3,2,0.263636,0.286364,0.45
+France/Ligue 1,,Angers,Le Havre,H,2,1,0.504545,0.318182,0.177273
+France/Ligue 1,,Angers,Lyon,A,1,2,0.122727,0.218182,0.659091
+France/Ligue 1,,Angers,Nice,D,2,2,0.381818,0.327273,0.290909
+France/Ligue 1,,Angers,Paris SG,A,1,2,0.081818,0.140909,0.777273
+France/Ligue 1,,Angers,Strasbourg,A,1,2,0.354545,0.227273,0.418182
+France/Ligue 1,,Auxerre,Angers,H,2,1,0.254545,0.340909,0.404545
+France/Ligue 1,,Auxerre,Brest,D,1,1,0.286364,0.354545,0.359091
+France/Ligue 1,,Auxerre,Nantes,H,2,1,0.359091,0.331818,0.309091
+France/Ligue 1,,Auxerre,Nice,A,2,3,0.463636,0.25,0.286364
+France/Ligue 1,,Auxerre,Strasbourg,H,3,2,0.181818,0.213636,0.604545
+France/Ligue 1,,Brest,Angers,H,1,0,0.536364,0.227273,0.236364
+France/Ligue 1,,Brest,Le Havre,D,2,2,0.65,0.240909,0.109091
+France/Ligue 1,,Brest,Lens,A,2,3,0.218182,0.381818,0.4
+France/Ligue 1,,Brest,Rennes,H,2,1,0.3,0.4,0.3
+France/Ligue 1,,Brest,Strasbourg,D,2,2,0.627273,0.172727,0.2
+France/Ligue 1,,Le Havre,Auxerre,H,2,1,0.631818,0.236364,0.131818
+France/Ligue 1,,Le Havre,Lyon,H,2,1,0.227273,0.259091,0.513636
+France/Ligue 1,,Le Havre,Marseille,D,1,1,0.090909,0.259091,0.65
+France/Ligue 1,,Le Havre,Metz,H,2,1,0.55,0.254545,0.195455
+France/Ligue 1,,Le Havre,Paris SG,A,1,2,0.077273,0.15,0.772727
+France/Ligue 1,,Lens,Angers,D,2,2,0.736364,0.181818,0.081818
+France/Ligue 1,,Lens,Metz,H,3,1,0.486364,0.345455,0.168182
+France/Ligue 1,,Lens,Nantes,D,2,2,0.822727,0.109091,0.068182
+France/Ligue 1,,Lens,Paris SG,A,2,3,0.377273,0.318182,0.304545
+France/Ligue 1,,Lens,Toulouse,D,1,1,0.613636,0.209091,0.177273
+France/Ligue 1,,Lille,Auxerre,A,2,3,0.468182,0.381818,0.15
+France/Ligue 1,,Lille,Le Havre,H,2,1,0.813636,0.109091,0.077273
+France/Ligue 1,,Lille,Lens,D,1,1,0.531818,0.186364,0.281818
+France/Ligue 1,,Lille,Lorient,H,2,1,0.681818,0.222727,0.095455
+France/Ligue 1,,Lille,Nantes,H,2,1,0.772727,0.163636,0.063636
+France/Ligue 1,,Lille,Nice,A,2,3,0.436364,0.359091,0.204545
+France/Ligue 1,,Lorient,Auxerre,H,2,1,0.35,0.327273,0.322727
+France/Ligue 1,,Lorient,Le Havre,D,2,2,0.536364,0.268182,0.195455
+France/Ligue 1,,Lorient,Lens,A,2,3,0.290909,0.227273,0.481818
+France/Ligue 1,,Lorient,Marseille,A,2,3,0.304545,0.209091,0.486364
+France/Ligue 1,,Lorient,Paris FC,D,2,2,0.509091,0.359091,0.131818
+France/Ligue 1,,Lorient,Strasbourg,D,2,2,0.477273,0.268182,0.254545
+France/Ligue 1,,Lyon,Auxerre,H,2,0,0.813636,0.122727,0.063636
+France/Ligue 1,,Lyon,Lens,D,2,2,0.481818,0.25,0.268182
+France/Ligue 1,,Lyon,Lorient,H,2,0,0.740909,0.159091,0.1
+France/Ligue 1,,Lyon,Monaco,H,2,1,0.659091,0.2,0.140909
+France/Ligue 1,,Lyon,Paris FC,D,1,1,0.386364,0.445455,0.168182
+France/Ligue 1,,Lyon,Rennes,H,2,1,0.613636,0.195455,0.190909
+France/Ligue 1,,Marseille,Auxerre,D,2,2,0.645455,0.136364,0.218182
+France/Ligue 1,,Marseille,Lille,H,2,1,0.495455,0.263636,0.240909
+France/Ligue 1,,Marseille,Lyon,A,2,3,0.4,0.290909,0.309091
+France/Ligue 1,,Marseille,Metz,A,4,5,0.731818,0.204545,0.063636
+France/Ligue 1,,Marseille,Nice,H,3,1,0.7,0.127273,0.172727
+France/Ligue 1,,Marseille,Rennes,H,3,1,0.604545,0.190909,0.204545
+France/Ligue 1,,Metz,Brest,A,1,2,0.281818,0.209091,0.509091
+France/Ligue 1,,Metz,Lorient,D,1,1,0.231818,0.290909,0.477273
+France/Ligue 1,,Metz,Monaco,A,1,2,0.140909,0.181818,0.677273
+France/Ligue 1,,Metz,Nantes,D,1,1,0.359091,0.422727,0.218182
+France/Ligue 1,,Metz,Paris FC,H,2,1,0.463636,0.3,0.236364
+France/Ligue 1,,Metz,Toulouse,A,1,2,0.081818,0.195455,0.722727
+France/Ligue 1,,Monaco,Angers,A,2,3,0.627273,0.245455,0.127273
+France/Ligue 1,,Monaco,Auxerre,H,3,1,0.7,0.181818,0.118182
+France/Ligue 1,,Monaco,Brest,D,3,3,0.65,0.163636,0.186364
+France/Ligue 1,,Monaco,Lille,D,2,2,0.431818,0.295455,0.272727
+France/Ligue 1,,Monaco,Marseille,D,2,2,0.477273,0.245455,0.277273
+France/Ligue 1,,Nantes,Angers,A,1,2,0.463636,0.245455,0.290909
+France/Ligue 1,,Nantes,Brest,A,1,2,0.286364,0.209091,0.504545
+France/Ligue 1,,Nantes,Marseille,A,1,2,0.154545,0.277273,0.568182
+France/Ligue 1,,Nantes,Strasbourg,D,1,1,0.286364,0.177273,0.536364
+France/Ligue 1,,Nantes,Toulouse,D,1,1,0.236364,0.372727,0.390909
+France/Ligue 1,,Nice,Le Havre,H,2,1,0.490909,0.322727,0.186364
+France/Ligue 1,,Nice,Lens,D,1,1,0.209091,0.409091,0.381818
+France/Ligue 1,,Nice,Metz,H,3,1,0.613636,0.236364,0.15
+France/Ligue 1,,Nice,Paris SG,A,2,3,0.2,0.15,0.65
+France/Ligue 1,,Nice,Rennes,A,2,3,0.304545,0.377273,0.318182
+France/Ligue 1,,Paris FC,Brest,A,2,3,0.35,0.390909,0.259091
+France/Ligue 1,,Paris FC,Le Havre,A,2,3,0.368182,0.427273,0.204545
+France/Ligue 1,,Paris FC,Lille,A,1,3,0.090909,0.259091,0.65
+France/Ligue 1,,Paris FC,Monaco,D,2,2,0.631818,0.181818,0.186364
+France/Ligue 1,,Paris FC,Nice,D,2,2,0.240909,0.513636,0.245455
+France/Ligue 1,,Paris FC,Paris SG,A,1,3,0.086364,0.204545,0.709091
+France/Ligue 1,,Paris SG,Brest,H,3,0,0.895455,0.063636,0.040909
+France/Ligue 1,,Paris SG,Lorient,H,3,1,0.713636,0.177273,0.109091
+France/Ligue 1,,Paris SG,Lyon,H,3,1,0.740909,0.140909,0.118182
+France/Ligue 1,,Paris SG,Monaco,H,3,1,0.477273,0.372727,0.15
+France/Ligue 1,,Paris SG,Nantes,H,3,0,0.790909,0.15,0.059091
+France/Ligue 1,,Paris SG,Toulouse,H,2,1,0.75,0.159091,0.090909
+France/Ligue 1,,Rennes,Angers,H,2,0,0.777273,0.113636,0.109091
+France/Ligue 1,,Rennes,Lille,D,2,2,0.440909,0.318182,0.240909
+France/Ligue 1,,Rennes,Metz,H,4,1,0.845455,0.095455,0.059091
+France/Ligue 1,,Rennes,Nantes,H,2,1,0.781818,0.140909,0.077273
+France/Ligue 1,,Rennes,Paris FC,H,2,1,0.754545,0.127273,0.118182
+France/Ligue 1,,Rennes,Toulouse,H,2,1,0.431818,0.281818,0.286364
+France/Ligue 1,,Strasbourg,Lens,H,2,1,0.372727,0.304545,0.322727
+France/Ligue 1,,Strasbourg,Monaco,H,2,1,0.463636,0.227273,0.309091
+France/Ligue 1,,Strasbourg,Nice,H,3,1,0.6,0.231818,0.168182
+France/Ligue 1,,Strasbourg,Paris FC,H,2,1,0.709091,0.172727,0.118182
+France/Ligue 1,,Strasbourg,Rennes,H,2,1,0.586364,0.168182,0.245455
+France/Ligue 1,,Strasbourg,Toulouse,H,2,1,0.659091,0.190909,0.15
+France/Ligue 1,,Toulouse,Lille,H,3,2,0.418182,0.25,0.331818
+France/Ligue 1,,Toulouse,Lorient,D,2,2,0.495455,0.272727,0.231818
+France/Ligue 1,,Toulouse,Lyon,D,1,1,0.290909,0.327273,0.381818
+France/Ligue 1,,Toulouse,Marseille,D,1,1,0.236364,0.340909,0.422727
+France/Ligue 1,,Toulouse,Monaco,D,2,2,0.459091,0.336364,0.204545
+France/Ligue 2,,Amiens,Le Mans,A,1,2,0.068182,0.277273,0.654545
+France/Ligue 2,,Amiens,Montpellier,A,1,2,0.095455,0.404545,0.5
+France/Ligue 2,,Amiens,Pau FC,H,3,2,0.372727,0.318182,0.309091
+France/Ligue 2,,Amiens,Red Star,A,1,2,0.495455,0.240909,0.263636
+France/Ligue 2,,Amiens,Troyes,A,1,2,0.063636,0.227273,0.709091
+France/Ligue 2,,Annecy,Guingamp,D,2,2,0.527273,0.231818,0.240909
+France/Ligue 2,,Annecy,Montpellier,H,2,1,0.145455,0.359091,0.495455
+France/Ligue 2,,Annecy,Pau FC,D,2,2,0.445455,0.313636,0.240909
+France/Ligue 2,,Annecy,Rodez,H,3,2,0.236364,0.318182,0.445455
+France/Ligue 2,,Annecy,Troyes,H,2,1,0.545455,0.245455,0.209091
+France/Ligue 2,,Bastia,Amiens,D,1,1,0.086364,0.436364,0.477273
+France/Ligue 2,,Bastia,Annecy,D,1,1,0.327273,0.363636,0.309091
+France/Ligue 2,,Bastia,Boulogne,H,3,2,0.068182,0.404545,0.527273
+France/Ligue 2,,Bastia,Le Mans,A,1,2,0.109091,0.272727,0.618182
+France/Ligue 2,,Bastia,Red Star,H,2,1,0.290909,0.372727,0.336364
+France/Ligue 2,,Bastia,St Etienne,D,1,1,0.145455,0.272727,0.581818
+France/Ligue 2,,Boulogne,Amiens,H,2,1,0.7,0.163636,0.136364
+France/Ligue 2,,Boulogne,Annecy,A,1,2,0.213636,0.513636,0.272727
+France/Ligue 2,,Boulogne,Dunkerque,D,1,1,0.195455,0.45,0.354545
+France/Ligue 2,,Boulogne,Le Mans,A,1,2,0.063636,0.281818,0.654545
+France/Ligue 2,,Boulogne,Nancy,A,2,3,0.363636,0.35,0.286364
+France/Ligue 2,,Clermont,Bastia,A,1,2,0.113636,0.540909,0.345455
+France/Ligue 2,,Clermont,Dunkerque,D,1,1,0.204545,0.340909,0.454545
+France/Ligue 2,,Clermont,Guingamp,A,2,3,0.7,0.15,0.15
+France/Ligue 2,,Clermont,Nancy,H,2,1,0.5,0.272727,0.227273
+France/Ligue 2,,Clermont,Pau FC,D,1,1,0.25,0.436364,0.313636
+France/Ligue 2,,Clermont,Red Star,A,1,2,0.186364,0.5,0.313636
+France/Ligue 2,,Dunkerque,Grenoble,A,2,3,0.372727,0.340909,0.286364
+France/Ligue 2,,Dunkerque,Laval,A,2,3,0.509091,0.263636,0.227273
+France/Ligue 2,,Dunkerque,Reims,H,2,1,0.681818,0.181818,0.136364
+France/Ligue 2,,Dunkerque,Rodez,A,2,3,0.322727,0.381818,0.295455
+France/Ligue 2,,Grenoble,Boulogne,D,1,1,0.318182,0.327273,0.354545
+France/Ligue 2,,Grenoble,Clermont,H,2,1,0.381818,0.422727,0.195455
+France/Ligue 2,,Grenoble,Le Mans,A,1,2,0.190909,0.418182,0.390909
+France/Ligue 2,,Grenoble,St Etienne,A,1,2,0.204545,0.368182,0.427273
+France/Ligue 2,,Grenoble,Troyes,A,0,1,0.195455,0.472727,0.331818
+France/Ligue 2,,Guingamp,Amiens,A,1,2,0.3,0.318182,0.381818
+France/Ligue 2,,Guingamp,Bastia,D,1,1,0.440909,0.340909,0.218182
+France/Ligue 2,,Guingamp,Grenoble,H,3,2,0.272727,0.531818,0.195455
+France/Ligue 2,,Guingamp,Reims,H,3,2,0.295455,0.304545,0.4
+France/Ligue 2,,Guingamp,Rodez,H,2,1,0.45,0.372727,0.177273
+France/Ligue 2,,Laval,Boulogne,A,1,2,0.609091,0.236364,0.154545
+France/Ligue 2,,Laval,Grenoble,D,1,1,0.145455,0.463636,0.390909
+France/Ligue 2,,Laval,Guingamp,D,1,1,0.104545,0.209091,0.686364
+France/Ligue 2,,Laval,Nancy,H,2,1,0.768182,0.136364,0.095455
+France/Ligue 2,,Laval,Reims,A,1,3,0.027273,0.140909,0.831818
+France/Ligue 2,,Laval,Rodez,D,2,2,0.518182,0.272727,0.209091
+France/Ligue 2,,Le Mans,Annecy,H,2,1,0.772727,0.131818,0.095455
+France/Ligue 2,,Le Mans,Clermont,H,1,0,0.581818,0.259091,0.159091
+France/Ligue 2,,Le Mans,Guingamp,H,2,1,0.395455,0.295455,0.309091
+France/Ligue 2,,Le Mans,Pau FC,H,2,1,0.704545,0.204545,0.090909
+France/Ligue 2,,Le Mans,Reims,H,2,1,0.122727,0.340909,0.536364
+France/Ligue 2,,Montpellier,Clermont,D,2,2,0.409091,0.418182,0.172727
+France/Ligue 2,,Montpellier,Grenoble,H,2,1,0.718182,0.172727,0.109091
+France/Ligue 2,,Montpellier,Laval,H,2,1,0.790909,0.136364,0.072727
+France/Ligue 2,,Montpellier,Reims,A,1,2,0.295455,0.3,0.404545
+France/Ligue 2,,Montpellier,Troyes,A,1,2,0.4,0.35,0.25
+France/Ligue 2,,Nancy,Annecy,H,2,1,0.645455,0.209091,0.145455
+France/Ligue 2,,Nancy,Dunkerque,H,2,1,0.513636,0.227273,0.259091
+France/Ligue 2,,Nancy,Le Mans,A,1,2,0.140909,0.318182,0.540909
+France/Ligue 2,,Nancy,Montpellier,A,0,1,0.236364,0.209091,0.554545
+France/Ligue 2,,Nancy,St Etienne,D,1,1,0.186364,0.25,0.563636
+France/Ligue 2,,Pau FC,Bastia,D,1,1,0.395455,0.313636,0.290909
+France/Ligue 2,,Pau FC,Guingamp,A,2,3,0.309091,0.245455,0.445455
+France/Ligue 2,,Pau FC,Montpellier,H,2,1,0.713636,0.145455,0.140909
+France/Ligue 2,,Pau FC,Nancy,A,2,3,0.445455,0.331818,0.222727
+France/Ligue 2,,Pau FC,St Etienne,D,1,1,0.177273,0.254545,0.568182
+France/Ligue 2,,Red Star,Bastia,H,2,1,0.172727,0.477273,0.35
+France/Ligue 2,,Red Star,Dunkerque,A,1,3,0.081818,0.218182,0.7
+France/Ligue 2,,Red Star,Guingamp,H,3,1,0.786364,0.122727,0.090909
+France/Ligue 2,,Red Star,Laval,H,3,2,0.345455,0.309091,0.345455
+France/Ligue 2,,Red Star,Le Mans,H,3,2,0.168182,0.568182,0.263636
+France/Ligue 2,,Red Star,Montpellier,A,1,2,0.25,0.513636,0.236364
+France/Ligue 2,,Reims,Boulogne,H,2,1,0.818182,0.127273,0.054545
+France/Ligue 2,,Reims,Nancy,H,2,0,0.9,0.054545,0.045455
+France/Ligue 2,,Reims,Pau FC,H,2,1,0.168182,0.35,0.481818
+France/Ligue 2,,Reims,Red Star,D,1,1,0.227273,0.531818,0.240909
+France/Ligue 2,,Reims,Rodez,D,1,1,0.286364,0.490909,0.222727
+France/Ligue 2,,Rodez,Amiens,H,2,1,0.236364,0.472727,0.290909
+France/Ligue 2,,Rodez,Bastia,H,1,0,0.527273,0.318182,0.154545
+France/Ligue 2,,Rodez,Grenoble,D,1,1,0.295455,0.427273,0.277273
+France/Ligue 2,,Rodez,St Etienne,H,2,1,0.327273,0.263636,0.409091
+France/Ligue 2,,Rodez,Troyes,H,2,1,0.522727,0.295455,0.181818
+France/Ligue 2,,St Etienne,Amiens,H,3,2,0.5,0.336364,0.163636
+France/Ligue 2,,St Etienne,Annecy,H,2,1,0.418182,0.254545,0.327273
+France/Ligue 2,,St Etienne,Dunkerque,H,3,2,0.386364,0.286364,0.327273
+France/Ligue 2,,St Etienne,Red Star,A,1,2,0.163636,0.277273,0.559091
+France/Ligue 2,,St Etienne,Troyes,H,2,1,0.677273,0.181818,0.140909
+France/Ligue 2,,Troyes,Boulogne,H,2,1,0.713636,0.145455,0.140909
+France/Ligue 2,,Troyes,Clermont,A,2,3,0.518182,0.222727,0.259091
+France/Ligue 2,,Troyes,Dunkerque,H,3,2,0.35,0.272727,0.377273
+France/Ligue 2,,Troyes,Laval,H,2,1,0.727273,0.172727,0.1
+Germany/Bundesliga,,Augsburg,Ein Frankfurt,D,2,2,0.222727,0.431818,0.345455
+Germany/Bundesliga,,Augsburg,FC Koln,D,1,1,0.327273,0.368182,0.304545
+Germany/Bundesliga,,Augsburg,Hoffenheim,H,3,2,0.118182,0.263636,0.618182
+Germany/Bundesliga,,Augsburg,M'gladbach,H,2,1,0.445455,0.295455,0.259091
+Germany/Bundesliga,,Augsburg,Stuttgart,D,1,1,0.222727,0.240909,0.536364
+Germany/Bundesliga,,Bayern Munich,FC Koln,H,4,1,0.690909,0.222727,0.086364
+Germany/Bundesliga,,Bayern Munich,Heidenheim,H,5,1,0.872727,0.113636,0.013636
+Germany/Bundesliga,,Bayern Munich,M'gladbach,D,3,3,0.55,0.240909,0.209091
+Germany/Bundesliga,,Bayern Munich,Stuttgart,H,3,2,0.75,0.113636,0.136364
+Germany/Bundesliga,,Bayern Munich,Union Berlin,H,4,1,0.681818,0.181818,0.136364
+Germany/Bundesliga,,Dortmund,Augsburg,D,3,3,0.772727,0.113636,0.113636
+Germany/Bundesliga,,Dortmund,Bayern Munich,A,1,2,0.231818,0.327273,0.440909
+Germany/Bundesliga,,Dortmund,Ein Frankfurt,H,3,1,0.631818,0.190909,0.177273
+Germany/Bundesliga,,Dortmund,Freiburg,H,3,0,0.904545,0.068182,0.027273
+Germany/Bundesliga,,Dortmund,Hamburg,H,2,1,0.759091,0.140909,0.1
+Germany/Bundesliga,,Dortmund,Leverkusen,D,3,3,0.722727,0.15,0.127273
+Germany/Bundesliga,,Ein Frankfurt,FC Koln,A,2,3,0.336364,0.368182,0.295455
+Germany/Bundesliga,,Ein Frankfurt,Freiburg,H,3,2,0.45,0.331818,0.218182
+Germany/Bundesliga,,Ein Frankfurt,Hamburg,A,2,3,0.531818,0.268182,0.2
+Germany/Bundesliga,,Ein Frankfurt,Heidenheim,D,3,3,0.763636,0.190909,0.045455
+Germany/Bundesliga,,Ein Frankfurt,RB Leipzig,D,2,2,0.295455,0.340909,0.363636
+Germany/Bundesliga,,Ein Frankfurt,Stuttgart,D,2,2,0.281818,0.286364,0.431818
+Germany/Bundesliga,,FC Koln,Dortmund,A,1,2,0.095455,0.240909,0.663636
+Germany/Bundesliga,,FC Koln,Heidenheim,A,2,3,0.386364,0.377273,0.236364
+Germany/Bundesliga,,FC Koln,Leverkusen,A,2,3,0.231818,0.209091,0.559091
+Germany/Bundesliga,,FC Koln,M'gladbach,D,1,1,0.322727,0.336364,0.340909
+Germany/Bundesliga,,FC Koln,Werder Bremen,D,2,2,0.522727,0.304545,0.172727
+Germany/Bundesliga,,Freiburg,Bayern Munich,A,1,3,0.1,0.204545,0.695455
+Germany/Bundesliga,,Freiburg,Heidenheim,H,2,1,0.663636,0.213636,0.122727
+Germany/Bundesliga,,Freiburg,Leverkusen,A,2,3,0.395455,0.286364,0.318182
+Germany/Bundesliga,,Freiburg,RB Leipzig,H,2,1,0.331818,0.313636,0.354545
+Germany/Bundesliga,,Freiburg,Union Berlin,A,2,3,0.313636,0.368182,0.318182
+Germany/Bundesliga,,Freiburg,Wolfsburg,H,3,2,0.636364,0.159091,0.204545
+Germany/Bundesliga,,Hamburg,Augsburg,A,2,3,0.413636,0.295455,0.290909
+Germany/Bundesliga,,Hamburg,FC Koln,D,2,2,0.540909,0.218182,0.240909
+Germany/Bundesliga,,Hamburg,Freiburg,D,2,2,0.395455,0.368182,0.236364
+Germany/Bundesliga,,Hamburg,Hoffenheim,H,3,2,0.277273,0.268182,0.454545
+Germany/Bundesliga,,Hamburg,Leverkusen,A,1,2,0.259091,0.3,0.440909
+Germany/Bundesliga,,Hamburg,RB Leipzig,A,1,2,0.268182,0.322727,0.409091
+Germany/Bundesliga,,Heidenheim,Hoffenheim,D,1,1,0.104545,0.336364,0.559091
+Germany/Bundesliga,,Heidenheim,Leverkusen,D,1,1,0.05,0.145455,0.804545
+Germany/Bundesliga,,Heidenheim,Mainz,H,3,2,0.486364,0.227273,0.286364
+Germany/Bundesliga,,Heidenheim,St Pauli,A,1,2,0.259091,0.331818,0.409091
+Germany/Bundesliga,,Heidenheim,Union Berlin,H,2,1,0.627273,0.240909,0.131818
+Germany/Bundesliga,,Hoffenheim,Dortmund,H,3,2,0.304545,0.313636,0.381818
+Germany/Bundesliga,,Hoffenheim,Mainz,D,2,2,0.5,0.304545,0.195455
+Germany/Bundesliga,,Hoffenheim,St Pauli,H,3,1,0.672727,0.204545,0.122727
+Germany/Bundesliga,,Hoffenheim,Stuttgart,D,2,2,0.404545,0.227273,0.368182
+Germany/Bundesliga,,Hoffenheim,Werder Bremen,H,3,1,0.645455,0.195455,0.159091
+Germany/Bundesliga,,Hoffenheim,Wolfsburg,H,3,2,0.436364,0.340909,0.222727
+Germany/Bundesliga,,Leverkusen,Augsburg,H,3,1,0.804545,0.131818,0.063636
+Germany/Bundesliga,,Leverkusen,Bayern Munich,H,4,3,0.154545,0.259091,0.586364
+Germany/Bundesliga,,Leverkusen,Hamburg,D,3,3,0.745455,0.190909,0.063636
+Germany/Bundesliga,,Leverkusen,Mainz,H,2,1,0.768182,0.140909,0.090909
+Germany/Bundesliga,,Leverkusen,RB Leipzig,H,2,1,0.545455,0.213636,0.240909
+Germany/Bundesliga,,Leverkusen,Wolfsburg,H,2,1,0.640909,0.236364,0.122727
+Germany/Bundesliga,,M'gladbach,Dortmund,A,1,2,0.136364,0.263636,0.6
+Germany/Bundesliga,,M'gladbach,Heidenheim,H,2,1,0.709091,0.181818,0.109091
+Germany/Bundesliga,,M'gladbach,Hoffenheim,H,3,2,0.222727,0.422727,0.354545
+Germany/Bundesliga,,M'gladbach,Mainz,D,2,2,0.390909,0.290909,0.318182
+Germany/Bundesliga,,M'gladbach,St Pauli,H,2,1,0.468182,0.263636,0.268182
+Germany/Bundesliga,,M'gladbach,Union Berlin,D,1,1,0.322727,0.322727,0.354545
+Germany/Bundesliga,,Mainz,Bayern Munich,A,1,3,0.159091,0.15,0.690909
+Germany/Bundesliga,,Mainz,Ein Frankfurt,A,2,3,0.286364,0.431818,0.281818
+Germany/Bundesliga,,Mainz,Freiburg,A,2,3,0.395455,0.286364,0.318182
+Germany/Bundesliga,,Mainz,Stuttgart,A,1,2,0.263636,0.222727,0.513636
+Germany/Bundesliga,,Mainz,Union Berlin,D,1,1,0.163636,0.409091,0.427273
+Germany/Bundesliga,,RB Leipzig,Augsburg,H,3,1,0.772727,0.136364,0.090909
+Germany/Bundesliga,,RB Leipzig,Hoffenheim,D,2,2,0.381818,0.186364,0.431818
+Germany/Bundesliga,,RB Leipzig,M'gladbach,H,2,1,0.559091,0.236364,0.204545
+Germany/Bundesliga,,RB Leipzig,St Pauli,H,3,1,0.554545,0.277273,0.168182
+Germany/Bundesliga,,RB Leipzig,Union Berlin,H,3,2,0.586364,0.195455,0.218182
+Germany/Bundesliga,,St Pauli,Bayern Munich,A,1,4,0.022727,0.145455,0.831818
+Germany/Bundesliga,,St Pauli,Ein Frankfurt,D,1,1,0.140909,0.322727,0.536364
+Germany/Bundesliga,,St Pauli,FC Koln,A,1,2,0.340909,0.340909,0.318182
+Germany/Bundesliga,,St Pauli,Freiburg,D,2,2,0.381818,0.327273,0.290909
+Germany/Bundesliga,,St Pauli,Mainz,A,1,2,0.1,0.263636,0.636364
+Germany/Bundesliga,,St Pauli,Wolfsburg,D,1,1,0.25,0.45,0.3
+Germany/Bundesliga,,Stuttgart,Dortmund,D,1,1,0.281818,0.331818,0.386364
+Germany/Bundesliga,,Stuttgart,Hamburg,D,1,1,0.554545,0.25,0.195455
+Germany/Bundesliga,,Stuttgart,Leverkusen,D,1,1,0.490909,0.227273,0.281818
+Germany/Bundesliga,,Stuttgart,RB Leipzig,H,2,1,0.454545,0.245455,0.3
+Germany/Bundesliga,,Stuttgart,Werder Bremen,D,2,2,0.622727,0.186364,0.190909
+Germany/Bundesliga,,Stuttgart,Wolfsburg,H,3,2,0.5,0.268182,0.231818
+Germany/Bundesliga,,Union Berlin,Augsburg,D,2,2,0.240909,0.372727,0.386364
+Germany/Bundesliga,,Union Berlin,FC Koln,H,2,1,0.718182,0.204545,0.077273
+Germany/Bundesliga,,Union Berlin,St Pauli,H,2,1,0.636364,0.218182,0.145455
+Germany/Bundesliga,,Union Berlin,Werder Bremen,H,2,1,0.490909,0.227273,0.281818
+Germany/Bundesliga,,Union Berlin,Wolfsburg,H,3,2,0.354545,0.263636,0.381818
+Germany/Bundesliga,,Werder Bremen,Augsburg,A,1,2,0.431818,0.231818,0.336364
+Germany/Bundesliga,,Werder Bremen,Dortmund,A,1,3,0.077273,0.213636,0.709091
+Germany/Bundesliga,,Werder Bremen,Hamburg,H,2,1,0.431818,0.259091,0.309091
+Germany/Bundesliga,,Werder Bremen,Heidenheim,H,2,1,0.395455,0.4,0.204545
+Germany/Bundesliga,,Werder Bremen,Mainz,D,2,2,0.422727,0.295455,0.281818
+Germany/Bundesliga,,Werder Bremen,RB Leipzig,D,1,1,0.090909,0.304545,0.604545
+Germany/Bundesliga,,Wolfsburg,Bayern Munich,A,1,4,0.045455,0.154545,0.8
+Germany/Bundesliga,,Wolfsburg,Ein Frankfurt,D,3,3,0.309091,0.313636,0.377273
+Germany/Bundesliga,,Wolfsburg,Hamburg,D,1,1,0.4,0.345455,0.254545
+Germany/Bundesliga,,Wolfsburg,M'gladbach,A,2,3,0.372727,0.340909,0.286364
+Germany/Bundesliga,,Wolfsburg,Werder Bremen,H,3,2,0.345455,0.381818,0.272727
+Germany/Bundesliga 2,,Bielefeld,Bochum,H,2,1,0.372727,0.363636,0.263636
+Germany/Bundesliga 2,,Bielefeld,Darmstadt,H,2,1,0.613636,0.181818,0.204545
+Germany/Bundesliga 2,,Bielefeld,Hannover,A,2,3,0.354545,0.190909,0.454545
+Germany/Bundesliga 2,,Bielefeld,Hertha,D,2,2,0.277273,0.409091,0.313636
+Germany/Bundesliga 2,,Bielefeld,Nurnberg,H,2,1,0.568182,0.231818,0.2
+Germany/Bundesliga 2,,Bielefeld,Paderborn,H,2,1,0.372727,0.290909,0.336364
+Germany/Bundesliga 2,,Bochum,Braunschweig,H,2,1,0.627273,0.213636,0.159091
+Germany/Bundesliga 2,,Bochum,Greuther Furth,D,2,2,0.490909,0.304545,0.204545
+Germany/Bundesliga 2,,Bochum,Hannover,A,2,3,0.431818,0.272727,0.295455
+Germany/Bundesliga 2,,Bochum,Holstein Kiel,D,2,2,0.272727,0.363636,0.363636
+Germany/Bundesliga 2,,Bochum,Kaiserslautern,D,2,2,0.359091,0.381818,0.259091
+Germany/Bundesliga 2,,Braunschweig,Dresden,A,2,3,0.409091,0.409091,0.181818
+Germany/Bundesliga 2,,Braunschweig,Fortuna Dusseldorf,A,1,2,0.122727,0.313636,0.563636
+Germany/Bundesliga 2,,Braunschweig,Hertha,A,1,3,0.040909,0.236364,0.722727
+Germany/Bundesliga 2,,Braunschweig,Nurnberg,A,1,2,0.168182,0.327273,0.504545
+Germany/Bundesliga 2,,Braunschweig,Preußen Münster,D,1,1,0.086364,0.55,0.363636
+Germany/Bundesliga 2,,Darmstadt,Elversberg,H,2,1,0.209091,0.281818,0.509091
+Germany/Bundesliga 2,,Darmstadt,Hannover,H,2,1,0.627273,0.227273,0.145455
+Germany/Bundesliga 2,,Darmstadt,Holstein Kiel,H,2,1,0.713636,0.181818,0.104545
+Germany/Bundesliga 2,,Darmstadt,Paderborn,H,2,1,0.468182,0.240909,0.290909
+Germany/Bundesliga 2,,Darmstadt,Schalke 04,H,2,1,0.472727,0.327273,0.2
+Germany/Bundesliga 2,,Dresden,Bochum,H,2,1,0.345455,0.395455,0.259091
+Germany/Bundesliga 2,,Dresden,Darmstadt,A,1,2,0.159091,0.313636,0.527273
+Germany/Bundesliga 2,,Dresden,Hertha,A,1,3,0.072727,0.172727,0.754545
+Germany/Bundesliga 2,,Dresden,Holstein Kiel,D,1,1,0.1,0.277273,0.622727
+Germany/Bundesliga 2,,Dresden,Kaiserslautern,A,2,3,0.313636,0.236364,0.45
+Germany/Bundesliga 2,,Dresden,Preußen Münster,D,1,1,0.181818,0.563636,0.254545
+Germany/Bundesliga 2,,Elversberg,Bielefeld,D,1,1,0.163636,0.436364,0.4
+Germany/Bundesliga 2,,Elversberg,Karlsruhe,D,2,2,0.413636,0.327273,0.259091
+Germany/Bundesliga 2,,Elversberg,Magdeburg,H,3,2,0.536364,0.309091,0.154545
+Germany/Bundesliga 2,,Elversberg,Paderborn,H,2,1,0.431818,0.313636,0.254545
+Germany/Bundesliga 2,,Elversberg,Preußen Münster,H,2,1,0.263636,0.409091,0.327273
+Germany/Bundesliga 2,,Elversberg,Schalke 04,A,1,2,0.354545,0.327273,0.318182
+Germany/Bundesliga 2,,Fortuna Dusseldorf,Bochum,A,1,2,0.218182,0.268182,0.513636
+Germany/Bundesliga 2,,Fortuna Dusseldorf,Dresden,A,1,2,0.222727,0.277273,0.5
+Germany/Bundesliga 2,,Fortuna Dusseldorf,Elversberg,D,1,1,0.163636,0.445455,0.390909
+Germany/Bundesliga 2,,Fortuna Dusseldorf,Hertha,H,3,2,0.436364,0.272727,0.290909
+Germany/Bundesliga 2,,Fortuna Dusseldorf,Holstein Kiel,A,1,2,0.240909,0.381818,0.377273
+Germany/Bundesliga 2,,Greuther Furth,Darmstadt,A,2,3,0.186364,0.318182,0.495455
+Germany/Bundesliga 2,,Greuther Furth,Elversberg,A,1,3,0.059091,0.136364,0.804545
+Germany/Bundesliga 2,,Greuther Furth,Fortuna Dusseldorf,D,2,2,0.386364,0.213636,0.4
+Germany/Bundesliga 2,,Greuther Furth,Nurnberg,D,2,2,0.381818,0.213636,0.404545
+Germany/Bundesliga 2,,Greuther Furth,Paderborn,A,1,2,0.368182,0.309091,0.322727
+Germany/Bundesliga 2,,Greuther Furth,Schalke 04,D,1,1,0.327273,0.259091,0.413636
+Germany/Bundesliga 2,,Hannover,Braunschweig,H,2,1,0.459091,0.35,0.190909
+Germany/Bundesliga 2,,Hannover,Elversberg,D,1,1,0.168182,0.327273,0.504545
+Germany/Bundesliga 2,,Hannover,Greuther Furth,H,2,1,0.604545,0.259091,0.136364
+Germany/Bundesliga 2,,Hannover,Nurnberg,H,2,1,0.659091,0.172727,0.168182
+Germany/Bundesliga 2,,Hannover,Paderborn,D,1,1,0.186364,0.322727,0.490909
+Germany/Bundesliga 2,,Hannover,Preußen Münster,A,1,2,0.227273,0.577273,0.195455
+Germany/Bundesliga 2,,Hertha,Bochum,H,2,1,0.35,0.431818,0.218182
+Germany/Bundesliga 2,,Hertha,Greuther Furth,H,2,1,0.581818,0.281818,0.136364
+Germany/Bundesliga 2,,Hertha,Holstein Kiel,A,2,3,0.572727,0.25,0.177273
+Germany/Bundesliga 2,,Hertha,Kaiserslautern,H,2,1,0.477273,0.304545,0.218182
+Germany/Bundesliga 2,,Hertha,Nurnberg,D,1,1,0.454545,0.304545,0.240909
+Germany/Bundesliga 2,,Holstein Kiel,Braunschweig,H,2,1,0.518182,0.209091,0.272727
+Germany/Bundesliga 2,,Holstein Kiel,Elversberg,D,1,1,0.209091,0.368182,0.422727
+Germany/Bundesliga 2,,Holstein Kiel,Kaiserslautern,A,1,2,0.254545,0.272727,0.472727
+Germany/Bundesliga 2,,Holstein Kiel,Magdeburg,A,1,2,0.236364,0.340909,0.422727
+Germany/Bundesliga 2,,Holstein Kiel,Nurnberg,D,1,1,0.440909,0.331818,0.227273
+Germany/Bundesliga 2,,Holstein Kiel,Preußen Münster,A,1,2,0.118182,0.309091,0.572727
+Germany/Bundesliga 2,,Kaiserslautern,Bielefeld,A,2,3,0.336364,0.327273,0.336364
+Germany/Bundesliga 2,,Kaiserslautern,Braunschweig,H,2,1,0.490909,0.309091,0.2
+Germany/Bundesliga 2,,Kaiserslautern,Fortuna Dusseldorf,H,2,1,0.518182,0.213636,0.268182
+Germany/Bundesliga 2,,Kaiserslautern,Karlsruhe,D,2,2,0.586364,0.231818,0.181818
+Germany/Bundesliga 2,,Kaiserslautern,Paderborn,H,2,1,0.440909,0.263636,0.295455
+Germany/Bundesliga 2,,Karlsruhe,Bielefeld,D,2,2,0.286364,0.318182,0.395455
+Germany/Bundesliga 2,,Karlsruhe,Bochum,A,1,2,0.281818,0.331818,0.386364
+Germany/Bundesliga 2,,Karlsruhe,Darmstadt,D,2,2,0.290909,0.259091,0.45
+Germany/Bundesliga 2,,Karlsruhe,Dresden,H,3,2,0.340909,0.377273,0.281818
+Germany/Bundesliga 2,,Karlsruhe,Greuther Furth,H,3,2,0.686364,0.177273,0.136364
+Germany/Bundesliga 2,,Karlsruhe,Hannover,A,2,3,0.259091,0.286364,0.454545
+Germany/Bundesliga 2,,Magdeburg,Bochum,A,1,2,0.072727,0.3,0.627273
+Germany/Bundesliga 2,,Magdeburg,Darmstadt,H,3,2,0.227273,0.281818,0.490909
+Germany/Bundesliga 2,,Magdeburg,Fortuna Dusseldorf,H,2,1,0.322727,0.336364,0.340909
+Germany/Bundesliga 2,,Magdeburg,Hertha,A,1,3,0.322727,0.304545,0.372727
+Germany/Bundesliga 2,,Magdeburg,Kaiserslautern,A,2,3,0.513636,0.222727,0.263636
+Germany/Bundesliga 2,,Magdeburg,Karlsruhe,A,1,2,0.177273,0.227273,0.595455
+Germany/Bundesliga 2,,Nurnberg,Dresden,H,2,1,0.7,0.2,0.1
+Germany/Bundesliga 2,,Nurnberg,Fortuna Dusseldorf,A,2,3,0.559091,0.227273,0.213636
+Germany/Bundesliga 2,,Nurnberg,Kaiserslautern,D,2,2,0.413636,0.386364,0.2
+Germany/Bundesliga 2,,Nurnberg,Magdeburg,A,2,3,0.409091,0.218182,0.372727
+Germany/Bundesliga 2,,Nurnberg,Schalke 04,D,1,1,0.181818,0.35,0.468182
+Germany/Bundesliga 2,,Paderborn,Braunschweig,H,3,2,0.504545,0.268182,0.227273
+Germany/Bundesliga 2,,Paderborn,Dresden,H,2,1,0.709091,0.172727,0.118182
+Germany/Bundesliga 2,,Paderborn,Karlsruhe,A,2,3,0.545455,0.281818,0.172727
+Germany/Bundesliga 2,,Paderborn,Magdeburg,H,3,2,0.513636,0.268182,0.218182
+Germany/Bundesliga 2,,Paderborn,Schalke 04,A,1,2,0.245455,0.345455,0.409091
+Germany/Bundesliga 2,,Preußen Münster,Bielefeld,A,2,3,0.809091,0.090909,0.1
+Germany/Bundesliga 2,,Preußen Münster,Darmstadt,D,1,1,0.113636,0.518182,0.368182
+Germany/Bundesliga 2,,Preußen Münster,Greuther Furth,A,2,3,0.422727,0.209091,0.368182
+Germany/Bundesliga 2,,Preußen Münster,Hertha,D,2,2,0.527273,0.25,0.222727
+Germany/Bundesliga 2,,Preußen Münster,Magdeburg,D,2,2,0.395455,0.277273,0.327273
+Germany/Bundesliga 2,,Schalke 04,Bielefeld,H,2,1,0.718182,0.204545,0.077273
+Germany/Bundesliga 2,,Schalke 04,Braunschweig,A,2,3,0.654545,0.231818,0.113636
+Germany/Bundesliga 2,,Schalke 04,Fortuna Dusseldorf,H,2,1,0.586364,0.240909,0.172727
+Germany/Bundesliga 2,,Schalke 04,Hannover,D,2,2,0.513636,0.236364,0.25
+Germany/Bundesliga 2,,Schalke 04,Karlsruhe,A,2,3,0.454545,0.286364,0.259091
+Germany/Bundesliga 2,,Schalke 04,Preußen Münster,H,2,1,0.822727,0.118182,0.059091
+Italy/Serie A,,Atalanta,Bologna,A,1,2,0.65,0.145455,0.204545
+Italy/Serie A,,Atalanta,Genoa,A,2,3,0.659091,0.2,0.140909
+Italy/Serie A,,Atalanta,Juventus,D,1,1,0.240909,0.490909,0.268182
+Italy/Serie A,,Atalanta,Udinese,H,2,1,0.55,0.263636,0.186364
+Italy/Serie A,,Atalanta,Verona,H,2,0,0.686364,0.240909,0.072727
+Italy/Serie A,,Bologna,Cagliari,H,2,1,0.427273,0.381818,0.190909
+Italy/Serie A,,Bologna,Inter,D,1,1,0.154545,0.145455,0.7
+Italy/Serie A,,Bologna,Lazio,H,2,1,0.3,0.422727,0.277273
+Italy/Serie A,,Bologna,Lecce,A,1,2,0.540909,0.304545,0.154545
+Italy/Serie A,,Bologna,Roma,H,2,1,0.259091,0.304545,0.436364
+Italy/Serie A,,Bologna,Udinese,H,2,1,0.309091,0.440909,0.25
+Italy/Serie A,,Bologna,Verona,H,2,1,0.504545,0.327273,0.168182
+Italy/Serie A,,Cagliari,Atalanta,A,1,2,0.336364,0.286364,0.377273
+Italy/Serie A,,Cagliari,Como,A,1,2,0.177273,0.363636,0.459091
+Italy/Serie A,,Cagliari,Cremonese,A,1,2,0.163636,0.6,0.236364
+Italy/Serie A,,Cagliari,Napoli,A,1,2,0.195455,0.2,0.604545
+Italy/Serie A,,Cagliari,Torino,H,2,1,0.413636,0.340909,0.245455
+Italy/Serie A,,Cagliari,Udinese,A,1,2,0.313636,0.231818,0.454545
+Italy/Serie A,,Como,Inter,D,1,1,0.15,0.277273,0.572727
+Italy/Serie A,,Como,Lecce,H,2,0,0.772727,0.172727,0.054545
+Italy/Serie A,,Como,Napoli,D,1,1,0.445455,0.254545,0.3
+Italy/Serie A,,Como,Parma,D,1,1,0.377273,0.459091,0.163636
+Italy/Serie A,,Como,Pisa,H,2,1,0.513636,0.363636,0.122727
+Italy/Serie A,,Como,Roma,H,2,1,0.445455,0.327273,0.227273
+Italy/Serie A,,Cremonese,Bologna,A,1,2,0.277273,0.331818,0.390909
+Italy/Serie A,,Cremonese,Como,H,2,1,0.472727,0.295455,0.231818
+Italy/Serie A,,Cremonese,Fiorentina,A,1,2,0.118182,0.422727,0.459091
+Italy/Serie A,,Cremonese,Lazio,H,2,1,0.072727,0.377273,0.55
+Italy/Serie A,,Cremonese,Milan,A,1,2,0.236364,0.409091,0.354545
+Italy/Serie A,,Cremonese,Pisa,A,1,2,0.213636,0.395455,0.390909
+Italy/Serie A,,Cremonese,Torino,A,1,2,0.145455,0.527273,0.327273
+Italy/Serie A,,Fiorentina,Atalanta,A,1,2,0.281818,0.313636,0.404545
+Italy/Serie A,,Fiorentina,Genoa,H,2,1,0.327273,0.4,0.272727
+Italy/Serie A,,Fiorentina,Inter,A,1,2,0.122727,0.209091,0.668182
+Italy/Serie A,,Fiorentina,Lazio,D,1,1,0.277273,0.313636,0.409091
+Italy/Serie A,,Fiorentina,Parma,H,2,1,0.286364,0.381818,0.331818
+Italy/Serie A,,Fiorentina,Pisa,D,2,2,0.231818,0.595455,0.172727
+Italy/Serie A,,Fiorentina,Sassuolo,A,1,2,0.281818,0.354545,0.363636
+Italy/Serie A,,Genoa,Como,H,3,2,0.122727,0.422727,0.454545
+Italy/Serie A,,Genoa,Milan,H,3,2,0.15,0.272727,0.577273
+Italy/Serie A,,Genoa,Roma,D,1,1,0.204545,0.281818,0.513636
+Italy/Serie A,,Genoa,Sassuolo,D,1,1,0.322727,0.259091,0.418182
+Italy/Serie A,,Genoa,Udinese,A,1,2,0.436364,0.286364,0.277273
+Italy/Serie A,,Inter,Atalanta,H,2,1,0.554545,0.290909,0.154545
+Italy/Serie A,,Inter,Cagliari,H,2,1,0.768182,0.163636,0.068182
+Italy/Serie A,,Inter,Genoa,H,3,1,0.781818,0.104545,0.113636
+Italy/Serie A,,Inter,Parma,H,2,1,0.618182,0.263636,0.118182
+Italy/Serie A,,Inter,Roma,D,1,1,0.327273,0.390909,0.281818
+Italy/Serie A,,Inter,Verona,H,3,1,0.895455,0.095455,0.009091
+Italy/Serie A,,Juventus,Bologna,H,2,1,0.577273,0.331818,0.090909
+Italy/Serie A,,Juventus,Fiorentina,H,2,1,0.654545,0.190909,0.154545
+Italy/Serie A,,Juventus,Genoa,H,2,1,0.7,0.227273,0.072727
+Italy/Serie A,,Juventus,Pisa,H,3,2,0.859091,0.122727,0.018182
+Italy/Serie A,,Juventus,Sassuolo,D,2,2,0.727273,0.172727,0.1
+Italy/Serie A,,Juventus,Verona,D,2,2,0.681818,0.277273,0.040909
+Italy/Serie A,,Lazio,Inter,D,1,1,0.145455,0.168182,0.686364
+Italy/Serie A,,Lazio,Milan,D,1,1,0.15,0.290909,0.559091
+Italy/Serie A,,Lazio,Parma,A,2,3,0.445455,0.345455,0.209091
+Italy/Serie A,,Lazio,Pisa,D,1,1,0.245455,0.527273,0.227273
+Italy/Serie A,,Lazio,Sassuolo,D,1,1,0.454545,0.259091,0.286364
+Italy/Serie A,,Lazio,Udinese,D,2,2,0.45,0.263636,0.286364
+Italy/Serie A,,Lecce,Atalanta,A,0,2,0.172727,0.231818,0.595455
+Italy/Serie A,,Lecce,Cremonese,A,1,2,0.345455,0.345455,0.309091
+Italy/Serie A,,Lecce,Fiorentina,A,1,2,0.340909,0.231818,0.427273
+Italy/Serie A,,Lecce,Genoa,A,1,2,0.086364,0.513636,0.4
+Italy/Serie A,,Lecce,Juventus,H,3,2,0.159091,0.231818,0.609091
+Italy/Serie A,,Milan,Atalanta,A,1,2,0.490909,0.368182,0.140909
+Italy/Serie A,,Milan,Cagliari,D,2,2,0.672727,0.263636,0.063636
+Italy/Serie A,,Milan,Inter,H,3,2,0.236364,0.331818,0.431818
+Italy/Serie A,,Milan,Juventus,H,2,1,0.322727,0.427273,0.25
+Italy/Serie A,,Milan,Torino,A,2,3,0.55,0.304545,0.145455
+Italy/Serie A,,Milan,Udinese,A,2,3,0.5,0.331818,0.168182
+Italy/Serie A,,Napoli,Bologna,H,2,1,0.604545,0.227273,0.168182
+Italy/Serie A,,Napoli,Cremonese,H,3,1,0.795455,0.163636,0.040909
+Italy/Serie A,,Napoli,Lazio,D,1,1,0.445455,0.413636,0.140909
+Italy/Serie A,,Napoli,Lecce,H,2,1,0.581818,0.345455,0.072727
+Italy/Serie A,,Napoli,Milan,A,1,2,0.3,0.390909,0.309091
+Italy/Serie A,,Napoli,Torino,H,2,1,0.7,0.181818,0.118182
+Italy/Serie A,,Napoli,Udinese,H,2,1,0.659091,0.259091,0.081818
+Italy/Serie A,,Parma,Cagliari,H,2,1,0.227273,0.322727,0.45
+Italy/Serie A,,Parma,Cremonese,D,1,1,0.336364,0.368182,0.295455
+Italy/Serie A,,Parma,Napoli,D,1,1,0.259091,0.227273,0.513636
+Italy/Serie A,,Parma,Pisa,H,2,1,0.395455,0.377273,0.227273
+Italy/Serie A,,Parma,Roma,A,0,2,0.177273,0.213636,0.609091
+Italy/Serie A,,Parma,Sassuolo,D,1,1,0.331818,0.281818,0.386364
+Italy/Serie A,,Pisa,Bologna,A,1,2,0.063636,0.222727,0.713636
+Italy/Serie A,,Pisa,Cagliari,H,2,1,0.177273,0.640909,0.181818
+Italy/Serie A,,Pisa,Genoa,A,1,2,0.131818,0.418182,0.45
+Italy/Serie A,,Pisa,Lecce,H,2,1,0.35,0.272727,0.377273
+Italy/Serie A,,Pisa,Napoli,D,1,1,0.086364,0.263636,0.65
+Italy/Serie A,,Pisa,Torino,A,1,2,0.15,0.604545,0.245455
+Italy/Serie A,,Roma,Atalanta,A,1,2,0.459091,0.290909,0.25
+Italy/Serie A,,Roma,Fiorentina,H,2,1,0.586364,0.25,0.163636
+Italy/Serie A,,Roma,Juventus,A,1,2,0.259091,0.468182,0.272727
+Italy/Serie A,,Roma,Lazio,D,1,1,0.468182,0.345455,0.186364
+Italy/Serie A,,Roma,Lecce,A,2,3,0.709091,0.227273,0.063636
+Italy/Serie A,,Roma,Pisa,H,2,1,0.645455,0.240909,0.113636
+Italy/Serie A,,Sassuolo,Atalanta,A,1,2,0.268182,0.290909,0.440909
+Italy/Serie A,,Sassuolo,Bologna,A,1,2,0.245455,0.268182,0.486364
+Italy/Serie A,,Sassuolo,Cagliari,H,2,1,0.327273,0.359091,0.313636
+Italy/Serie A,,Sassuolo,Como,H,4,3,0.072727,0.227273,0.7
+Italy/Serie A,,Sassuolo,Lecce,H,2,1,0.35,0.259091,0.390909
 Italy/Serie A,,Sassuolo,Milan,A,1,2,0.186364,0.309091,0.504545
-Italy/Serie A,,Sassuolo,Verona,H,2,1,0.504545,0.272727,0.222727
-Italy/Serie A,,Torino,Inter,A,0,3,0.022727,0.122727,0.854545
-Italy/Serie A,,Torino,Juventus,H,3,2,0.109091,0.222727,0.668182
-Italy/Serie A,,Torino,Lazio,A,1,2,0.168182,0.331818,0.5
-Italy/Serie A,,Torino,Parma,A,1,2,0.209091,0.472727,0.318182
-Italy/Serie A,,Torino,Sassuolo,A,1,2,0.336364,0.3,0.363636
-Italy/Serie A,,Torino,Verona,H,2,1,0.459091,0.377273,0.163636
-Italy/Serie A,,Udinese,Como,A,1,2,0.254545,0.190909,0.554545
-Italy/Serie A,,Udinese,Cremonese,D,1,1,0.359091,0.35,0.290909
-Italy/Serie A,,Udinese,Fiorentina,A,1,2,0.372727,0.240909,0.386364
-Italy/Serie A,,Udinese,Juventus,H,3,2,0.245455,0.186364,0.568182
-Italy/Serie A,,Udinese,Parma,H,2,1,0.490909,0.318182,0.190909
-Italy/Serie A,,Udinese,Torino,H,2,1,0.318182,0.295455,0.386364
-Italy/Serie A,,Verona,Como,A,1,2,0.072727,0.227273,0.7
-Italy/Serie A,,Verona,Fiorentina,D,1,1,0.263636,0.327273,0.409091
-Italy/Serie A,,Verona,Genoa,A,1,2,0.140909,0.25,0.609091
-Italy/Serie A,,Verona,Lecce,H,2,1,0.4,0.277273,0.322727
-Italy/Serie A,,Verona,Milan,A,1,2,0.131818,0.25,0.618182
-Italy/Serie A,,Verona,Napoli,A,1,2,0.168182,0.304545,0.527273
-Italy/Serie A,,Verona,Roma,D,1,1,0.154545,0.272727,0.572727
-Italy/Serie B,,Avellino,Bari,A,1,2,0.177273,0.354545,0.468182
-Italy/Serie B,,Avellino,Catanzaro,D,1,1,0.113636,0.368182,0.518182
-Italy/Serie B,,Avellino,Juve Stabia,D,1,1,0.086364,0.327273,0.586364
-Italy/Serie B,,Avellino,Modena,D,1,1,0.181818,0.518182,0.3
-Italy/Serie B,,Avellino,Padova,D,1,1,0.154545,0.636364,0.209091
-Italy/Serie B,,Avellino,Sudtirol,H,2,1,0.704545,0.190909,0.104545
-Italy/Serie B,,Bari,Carrarese,D,1,1,0.068182,0.536364,0.395455
-Italy/Serie B,,Bari,Empoli,H,4,3,0.05,0.218182,0.731818
-Italy/Serie B,,Bari,Modena,D,1,1,0.154545,0.313636,0.531818
-Italy/Serie B,,Bari,Reggiana,D,1,1,0.118182,0.454545,0.427273
-Italy/Serie B,,Bari,Venezia,A,1,2,0.131818,0.204545,0.663636
-Italy/Serie B,,Bari,Virtus Entella,A,1,2,0.281818,0.331818,0.386364
-Italy/Serie B,,Carrarese,Catanzaro,D,1,1,0.145455,0.554545,0.3
-Italy/Serie B,,Carrarese,Cesena,D,1,1,0.454545,0.3,0.245455
-Italy/Serie B,,Carrarese,Monza,A,1,2,0.081818,0.286364,0.631818
-Italy/Serie B,,Carrarese,Palermo,H,2,1,0.290909,0.259091,0.45
-Italy/Serie B,,Carrarese,Pescara,A,1,2,0.213636,0.609091,0.177273
-Italy/Serie B,,Carrarese,Sampdoria,A,1,2,0.504545,0.327273,0.168182
-Italy/Serie B,,Carrarese,Spezia,H,2,1,0.336364,0.231818,0.431818
-Italy/Serie B,,Catanzaro,Bari,H,2,0,0.686364,0.227273,0.086364
-Italy/Serie B,,Catanzaro,Empoli,D,1,1,0.118182,0.390909,0.490909
-Italy/Serie B,,Catanzaro,Frosinone,D,1,1,0.15,0.436364,0.413636
-Italy/Serie B,,Catanzaro,Modena,D,1,1,0.386364,0.390909,0.222727
-Italy/Serie B,,Catanzaro,Monza,H,2,1,0.136364,0.331818,0.531818
-Italy/Serie B,,Catanzaro,Spezia,H,2,0,0.645455,0.227273,0.127273
-Italy/Serie B,,Cesena,Catanzaro,H,2,1,0.336364,0.218182,0.445455
-Italy/Serie B,,Cesena,Frosinone,H,3,2,0.172727,0.222727,0.604545
-Italy/Serie B,,Cesena,Monza,D,1,1,0.063636,0.322727,0.613636
-Italy/Serie B,,Cesena,Padova,H,2,1,0.1,0.736364,0.163636
-Italy/Serie B,,Cesena,Sampdoria,H,2,1,0.536364,0.213636,0.25
-Italy/Serie B,,Cesena,Spezia,D,2,2,0.559091,0.245455,0.195455
-Italy/Serie B,,Cesena,Sudtirol,H,2,1,0.631818,0.213636,0.154545
-Italy/Serie B,,Empoli,Avellino,H,2,1,0.468182,0.418182,0.113636
-Italy/Serie B,,Empoli,Cesena,H,2,1,0.777273,0.131818,0.090909
-Italy/Serie B,,Empoli,Mantova,H,2,1,0.85,0.109091,0.040909
-Italy/Serie B,,Empoli,Pescara,D,2,2,0.563636,0.231818,0.204545
-Italy/Serie B,,Empoli,Virtus Entella,H,2,1,0.572727,0.290909,0.136364
-Italy/Serie B,,Frosinone,Bari,H,2,1,0.631818,0.195455,0.172727
-Italy/Serie B,,Frosinone,Carrarese,H,3,1,0.836364,0.077273,0.086364
-Italy/Serie B,,Frosinone,Empoli,D,2,2,0.645455,0.231818,0.122727
-Italy/Serie B,,Frosinone,Mantova,A,2,3,0.836364,0.113636,0.05
-Italy/Serie B,,Frosinone,Padova,H,2,1,0.845455,0.109091,0.045455
-Italy/Serie B,,Frosinone,Palermo,D,1,1,0.263636,0.368182,0.368182
-Italy/Serie B,,Frosinone,Pescara,D,3,3,0.786364,0.136364,0.077273
-Italy/Serie B,,Frosinone,Sampdoria,H,2,1,0.695455,0.190909,0.113636
-Italy/Serie B,,Juve Stabia,Carrarese,H,2,1,0.55,0.227273,0.222727
-Italy/Serie B,,Juve Stabia,Catanzaro,D,1,1,0.45,0.359091,0.190909
-Italy/Serie B,,Juve Stabia,Cesena,A,2,3,0.677273,0.140909,0.181818
-Italy/Serie B,,Juve Stabia,Frosinone,H,2,1,0.1,0.427273,0.472727
-Italy/Serie B,,Juve Stabia,Modena,H,2,1,0.35,0.290909,0.359091
-Italy/Serie B,,Juve Stabia,Sampdoria,H,1,0,0.495455,0.345455,0.159091
-Italy/Serie B,,Juve Stabia,Spezia,H,1,0,0.495455,0.286364,0.218182
-Italy/Serie B,,Mantova,Avellino,D,1,1,0.163636,0.581818,0.254545
-Italy/Serie B,,Mantova,Carrarese,A,2,3,0.395455,0.418182,0.186364
-Italy/Serie B,,Mantova,Cesena,A,2,3,0.313636,0.327273,0.359091
-Italy/Serie B,,Mantova,Juve Stabia,D,1,1,0.136364,0.427273,0.436364
-Italy/Serie B,,Mantova,Monza,D,1,1,0.077273,0.259091,0.663636
-Italy/Serie B,,Mantova,Sampdoria,H,2,1,0.395455,0.359091,0.245455
-Italy/Serie B,,Mantova,Virtus Entella,A,1,2,0.140909,0.363636,0.495455
-Italy/Serie B,,Modena,Cesena,D,1,1,0.140909,0.436364,0.422727
-Italy/Serie B,,Modena,Frosinone,A,1,2,0.159091,0.504545,0.336364
-Italy/Serie B,,Modena,Mantova,H,2,0,0.840909,0.118182,0.040909
-Italy/Serie B,,Modena,Padova,H,3,2,0.1,0.331818,0.568182
-Italy/Serie B,,Modena,Reggiana,A,2,3,0.581818,0.204545,0.213636
-Italy/Serie B,,Modena,Spezia,D,1,1,0.286364,0.477273,0.236364
-Italy/Serie B,,Monza,Bari,A,2,3,0.322727,0.522727,0.154545
-Italy/Serie B,,Monza,Empoli,H,2,1,0.55,0.286364,0.163636
-Italy/Serie B,,Monza,Modena,H,2,1,0.490909,0.359091,0.15
-Italy/Serie B,,Monza,Palermo,H,2,1,0.590909,0.236364,0.172727
-Italy/Serie B,,Monza,Venezia,A,1,2,0.245455,0.304545,0.45
-Italy/Serie B,,Monza,Virtus Entella,D,2,2,0.6,0.263636,0.136364
-Italy/Serie B,,Padova,Bari,A,1,2,0.1,0.313636,0.586364
-Italy/Serie B,,Padova,Catanzaro,H,2,1,0.681818,0.177273,0.140909
-Italy/Serie B,,Padova,Empoli,A,1,2,0.054545,0.272727,0.672727
-Italy/Serie B,,Padova,Palermo,A,1,2,0.068182,0.277273,0.654545
-Italy/Serie B,,Padova,Pescara,H,3,2,0.431818,0.340909,0.227273
-Italy/Serie B,,Padova,Reggiana,A,2,3,0.831818,0.127273,0.040909
-Italy/Serie B,,Padova,Spezia,D,1,1,0.336364,0.440909,0.222727
-Italy/Serie B,,Palermo,Avellino,H,2,1,0.809091,0.118182,0.072727
-Italy/Serie B,,Palermo,Catanzaro,D,2,2,0.359091,0.354545,0.286364
-Italy/Serie B,,Palermo,Cesena,D,2,2,0.427273,0.381818,0.190909
-Italy/Serie B,,Palermo,Juve Stabia,H,2,1,0.772727,0.127273,0.1
-Italy/Serie B,,Palermo,Mantova,A,1,2,0.272727,0.5,0.227273
-Italy/Serie B,,Palermo,Sudtirol,D,1,1,0.668182,0.204545,0.127273
-Italy/Serie B,,Pescara,Bari,D,1,1,0.136364,0.65,0.213636
-Italy/Serie B,,Pescara,Juve Stabia,D,2,2,0.290909,0.436364,0.272727
-Italy/Serie B,,Pescara,Palermo,A,1,2,0.159091,0.245455,0.595455
-Italy/Serie B,,Pescara,Sampdoria,A,1,2,0.045455,0.245455,0.709091
-Italy/Serie B,,Pescara,Spezia,A,1,2,0.390909,0.286364,0.322727
-Italy/Serie B,,Pescara,Virtus Entella,A,1,2,0.095455,0.477273,0.427273
-Italy/Serie B,,Reggiana,Avellino,A,1,2,0.036364,0.281818,0.681818
-Italy/Serie B,,Reggiana,Carrarese,D,2,2,0.163636,0.7,0.136364
-Italy/Serie B,,Reggiana,Monza,D,1,1,0.331818,0.213636,0.454545
-Italy/Serie B,,Reggiana,Palermo,D,1,1,0.318182,0.159091,0.522727
-Italy/Serie B,,Reggiana,Pescara,D,1,1,0.072727,0.359091,0.568182
-Italy/Serie B,,Reggiana,Sampdoria,A,1,2,0.272727,0.468182,0.259091
-Italy/Serie B,,Reggiana,Sudtirol,H,2,1,0.177273,0.368182,0.454545
-Italy/Serie B,,Sampdoria,Avellino,D,1,1,0.090909,0.422727,0.486364
-Italy/Serie B,,Sampdoria,Bari,D,2,2,0.504545,0.354545,0.140909
-Italy/Serie B,,Sampdoria,Empoli,D,2,2,0.518182,0.318182,0.163636
-Italy/Serie B,,Sampdoria,Monza,D,1,1,0.063636,0.281818,0.654545
-Italy/Serie B,,Sampdoria,Sudtirol,A,1,2,0.268182,0.327273,0.404545
-Italy/Serie B,,Sampdoria,Venezia,A,1,2,0.163636,0.254545,0.581818
-Italy/Serie B,,Spezia,Empoli,D,1,1,0.295455,0.436364,0.268182
-Italy/Serie B,,Spezia,Mantova,A,1,2,0.1,0.404545,0.495455
-Italy/Serie B,,Spezia,Monza,A,0,2,0.059091,0.213636,0.727273
-Italy/Serie B,,Spezia,Reggiana,A,1,2,0.2,0.463636,0.336364
-Italy/Serie B,,Spezia,Sudtirol,A,1,2,0.386364,0.359091,0.254545
-Italy/Serie B,,Spezia,Venezia,A,1,2,0.140909,0.309091,0.55
-Italy/Serie B,,Sudtirol,Frosinone,D,1,1,0.209091,0.6,0.190909
-Italy/Serie B,,Sudtirol,Juve Stabia,D,1,1,0.436364,0.295455,0.268182
-Italy/Serie B,,Sudtirol,Mantova,D,1,1,0.15,0.454545,0.395455
-Italy/Serie B,,Sudtirol,Modena,D,1,1,0.263636,0.504545,0.231818
-Italy/Serie B,,Sudtirol,Pescara,H,2,1,0.181818,0.640909,0.177273
-Italy/Serie B,,Sudtirol,Venezia,A,1,2,0.268182,0.213636,0.518182
-Italy/Serie B,,Sudtirol,Virtus Entella,A,1,2,0.218182,0.618182,0.163636
-Italy/Serie B,,Venezia,Avellino,H,2,1,0.686364,0.222727,0.090909
-Italy/Serie B,,Venezia,Empoli,H,2,1,0.668182,0.240909,0.090909
-Italy/Serie B,,Venezia,Juve Stabia,H,2,1,0.536364,0.231818,0.231818
-Italy/Serie B,,Venezia,Padova,H,2,1,0.8,0.140909,0.059091
-Italy/Serie B,,Venezia,Palermo,H,2,1,0.559091,0.231818,0.209091
-Italy/Serie B,,Venezia,Pescara,H,3,1,0.627273,0.268182,0.104545
-Italy/Serie B,,Venezia,Reggiana,H,2,1,0.704545,0.145455,0.15
-Italy/Serie B,,Virtus Entella,Avellino,D,1,1,0.086364,0.45,0.463636
-Italy/Serie B,,Virtus Entella,Carrarese,A,1,2,0.109091,0.309091,0.581818
-Italy/Serie B,,Virtus Entella,Catanzaro,D,1,1,0.090909,0.427273,0.481818
-Italy/Serie B,,Virtus Entella,Modena,A,1,2,0.054545,0.313636,0.631818
-Italy/Serie B,,Virtus Entella,Padova,D,1,1,0.077273,0.381818,0.540909
-Italy/Serie B,,Virtus Entella,Reggiana,D,1,1,0.081818,0.422727,0.495455
-Italy/Serie B,,Virtus Entella,Venezia,A,1,2,0.109091,0.440909,0.45
-Portugal/Liga Portugal,,AVS,Estrela,H,4,3,0.240909,0.295455,0.463636
-Portugal/Liga Portugal,,AVS,Guimaraes,H,3,2,0.309091,0.204545,0.486364
-Portugal/Liga Portugal,,AVS,Porto,A,0,4,0.009091,0.25,0.740909
-Portugal/Liga Portugal,,AVS,Santa Clara,A,1,2,0.081818,0.313636,0.604545
-Portugal/Liga Portugal,,AVS,Sp Lisbon,A,1,3,0.004545,0.331818,0.663636
-Portugal/Liga Portugal,,Alverca,AVS,H,3,1,0.768182,0.168182,0.063636
-Portugal/Liga Portugal,,Alverca,Arouca,A,1,2,0.05,0.290909,0.659091
-Portugal/Liga Portugal,,Alverca,Casa Pia,H,3,1,0.795455,0.127273,0.077273
-Portugal/Liga Portugal,,Alverca,Estoril,A,1,3,0.081818,0.304545,0.613636
-Portugal/Liga Portugal,,Alverca,Santa Clara,D,1,1,0.127273,0.4,0.472727
-Portugal/Liga Portugal,,Alverca,Sp Lisbon,H,4,3,0.027273,0.059091,0.913636
-Portugal/Liga Portugal,,Arouca,Benfica,A,1,3,0.018182,0.018182,0.963636
-Portugal/Liga Portugal,,Arouca,Estoril,A,2,3,0.318182,0.263636,0.418182
-Portugal/Liga Portugal,,Arouca,Estrela,A,2,3,0.4,0.304545,0.295455
-Portugal/Liga Portugal,,Arouca,Nacional,H,2,1,0.7,0.195455,0.104545
-Portugal/Liga Portugal,,Arouca,Santa Clara,H,2,1,0.304545,0.35,0.345455
-Portugal/Liga Portugal,,Arouca,Tondela,H,2,1,0.409091,0.318182,0.272727
-Portugal/Liga Portugal,,Benfica,AVS,H,4,1,0.85,0.131818,0.018182
-Portugal/Liga Portugal,,Benfica,Guimaraes,H,3,1,0.918182,0.072727,0.009091
-Portugal/Liga Portugal,,Benfica,Moreirense,H,2,1,0.709091,0.213636,0.077273
-Portugal/Liga Portugal,,Benfica,Nacional,H,3,1,0.736364,0.131818,0.131818
-Portugal/Liga Portugal,,Benfica,Porto,A,2,3,0.277273,0.363636,0.359091
-Portugal/Liga Portugal,,Benfica,Sp Braga,H,2,1,0.65,0.163636,0.186364
-Portugal/Liga Portugal,,Casa Pia,Benfica,H,3,2,0.222727,0.154545,0.622727
-Portugal/Liga Portugal,,Casa Pia,Moreirense,A,1,2,0.395455,0.263636,0.340909
-Portugal/Liga Portugal,,Casa Pia,Rio Ave,A,2,3,0.313636,0.35,0.336364
-Portugal/Liga Portugal,,Casa Pia,Santa Clara,H,2,1,0.236364,0.390909,0.372727
-Portugal/Liga Portugal,,Casa Pia,Sp Braga,A,1,3,0.277273,0.209091,0.513636
-Portugal/Liga Portugal,,Casa Pia,Tondela,H,2,1,0.827273,0.109091,0.063636
-Portugal/Liga Portugal,,Estoril,Benfica,A,1,2,0.068182,0.177273,0.754545
-Portugal/Liga Portugal,,Estoril,Casa Pia,H,3,1,0.590909,0.263636,0.145455
-Portugal/Liga Portugal,,Estoril,Famalicao,H,2,1,0.404545,0.222727,0.372727
-Portugal/Liga Portugal,,Estoril,Gil Vicente,D,1,1,0.268182,0.340909,0.390909
-Portugal/Liga Portugal,,Estoril,Porto,A,1,2,0.25,0.2,0.55
-Portugal/Liga Portugal,,Estoril,Rio Ave,H,3,1,0.527273,0.322727,0.15
-Portugal/Liga Portugal,,Estrela,Casa Pia,H,2,1,0.636364,0.231818,0.131818
-Portugal/Liga Portugal,,Estrela,Famalicao,H,2,1,0.395455,0.245455,0.359091
-Portugal/Liga Portugal,,Estrela,Gil Vicente,A,1,2,0.154545,0.240909,0.604545
-Portugal/Liga Portugal,,Estrela,Porto,A,1,2,0.145455,0.204545,0.65
-Portugal/Liga Portugal,,Estrela,Sp Lisbon,A,1,3,0.027273,0.027273,0.945455
-Portugal/Liga Portugal,,Estrela,Tondela,A,1,2,0.186364,0.640909,0.172727
-Portugal/Liga Portugal,,Famalicao,Alverca,D,1,1,0.131818,0.459091,0.409091
-Portugal/Liga Portugal,,Famalicao,Arouca,H,2,1,0.454545,0.336364,0.209091
-Portugal/Liga Portugal,,Famalicao,Benfica,H,2,1,0.195455,0.213636,0.590909
-Portugal/Liga Portugal,,Famalicao,Casa Pia,H,2,1,0.590909,0.254545,0.154545
-Portugal/Liga Portugal,,Famalicao,Moreirense,A,2,3,0.372727,0.409091,0.218182
-Portugal/Liga Portugal,,Famalicao,Nacional,H,2,1,0.395455,0.409091,0.195455
-Portugal/Liga Portugal,,Gil Vicente,AVS,D,2,2,0.595455,0.227273,0.177273
-Portugal/Liga Portugal,,Gil Vicente,Alverca,H,4,0,0.913636,0.059091,0.027273
-Portugal/Liga Portugal,,Gil Vicente,Arouca,D,1,1,0.240909,0.504545,0.254545
-Portugal/Liga Portugal,,Gil Vicente,Benfica,A,1,2,0.195455,0.331818,0.472727
-Portugal/Liga Portugal,,Gil Vicente,Casa Pia,H,2,1,0.718182,0.154545,0.127273
-Portugal/Liga Portugal,,Gil Vicente,Guimaraes,H,2,1,0.654545,0.231818,0.113636
-Portugal/Liga Portugal,,Guimaraes,Alverca,A,1,2,0.145455,0.318182,0.536364
-Portugal/Liga Portugal,,Guimaraes,Casa Pia,D,1,1,0.25,0.409091,0.340909
-Portugal/Liga Portugal,,Guimaraes,Famalicao,H,2,1,0.609091,0.213636,0.177273
-Portugal/Liga Portugal,,Guimaraes,Rio Ave,A,2,3,0.640909,0.222727,0.136364
-Portugal/Liga Portugal,,Guimaraes,Tondela,H,2,1,0.795455,0.145455,0.059091
-Portugal/Liga Portugal,,Moreirense,AVS,D,3,3,0.75,0.213636,0.036364
-Portugal/Liga Portugal,,Moreirense,Arouca,H,3,1,0.740909,0.140909,0.118182
-Portugal/Liga Portugal,,Moreirense,Estoril,H,3,2,0.440909,0.331818,0.227273
-Portugal/Liga Portugal,,Moreirense,Estrela,D,2,2,0.327273,0.413636,0.259091
-Portugal/Liga Portugal,,Moreirense,Nacional,D,1,1,0.431818,0.3,0.268182
-Portugal/Liga Portugal,,Moreirense,Sp Braga,A,1,3,0.159091,0.272727,0.568182
-Portugal/Liga Portugal,,Moreirense,Sp Lisbon,A,1,3,0.122727,0.195455,0.681818
-Portugal/Liga Portugal,,Nacional,AVS,H,3,1,0.540909,0.345455,0.113636
-Portugal/Liga Portugal,,Nacional,Alverca,D,1,1,0.095455,0.3,0.604545
-Portugal/Liga Portugal,,Nacional,Estoril,D,2,2,0.131818,0.590909,0.277273
-Portugal/Liga Portugal,,Nacional,Estrela,A,1,2,0.077273,0.304545,0.618182
-Portugal/Liga Portugal,,Nacional,Guimaraes,H,2,1,0.395455,0.222727,0.381818
-Portugal/Liga Portugal,,Nacional,Sp Braga,D,1,1,0.131818,0.222727,0.645455
-Portugal/Liga Portugal,,Porto,Alverca,H,3,0,0.868182,0.104545,0.027273
-Portugal/Liga Portugal,,Porto,Arouca,H,3,0,0.845455,0.104545,0.05
-Portugal/Liga Portugal,,Porto,Famalicao,H,2,0,0.636364,0.272727,0.090909
-Portugal/Liga Portugal,,Porto,Moreirense,H,3,0,0.809091,0.131818,0.059091
-Portugal/Liga Portugal,,Porto,Rio Ave,H,2,0,0.804545,0.154545,0.040909
-Portugal/Liga Portugal,,Porto,Santa Clara,H,2,0,0.722727,0.231818,0.045455
-Portugal/Liga Portugal,,Porto,Tondela,H,3,0,0.918182,0.077273,0.004545
-Portugal/Liga Portugal,,Rio Ave,AVS,D,2,2,0.409091,0.381818,0.209091
-Portugal/Liga Portugal,,Rio Ave,Alverca,D,1,1,0.172727,0.609091,0.218182
-Portugal/Liga Portugal,,Rio Ave,Estrela,H,3,2,0.436364,0.3,0.263636
-Portugal/Liga Portugal,,Rio Ave,Famalicao,D,1,1,0.090909,0.463636,0.445455
-Portugal/Liga Portugal,,Rio Ave,Gil Vicente,D,1,1,0.222727,0.372727,0.404545
-Portugal/Liga Portugal,,Rio Ave,Sp Lisbon,A,0,3,0.027273,0.05,0.922727
-Portugal/Liga Portugal,,Santa Clara,Gil Vicente,D,1,1,0.286364,0.309091,0.404545
-Portugal/Liga Portugal,,Santa Clara,Guimaraes,H,2,1,0.2,0.318182,0.481818
-Portugal/Liga Portugal,,Santa Clara,Nacional,A,1,2,0.55,0.286364,0.163636
-Portugal/Liga Portugal,,Santa Clara,Rio Ave,D,1,1,0.336364,0.327273,0.336364
-Portugal/Liga Portugal,,Santa Clara,Sp Braga,A,1,2,0.2,0.227273,0.572727
-Portugal/Liga Portugal,,Sp Braga,Arouca,H,3,1,0.863636,0.081818,0.054545
-Portugal/Liga Portugal,,Sp Braga,Estoril,H,3,1,0.686364,0.204545,0.109091
-Portugal/Liga Portugal,,Sp Braga,Estrela,H,3,1,0.772727,0.172727,0.054545
-Portugal/Liga Portugal,,Sp Braga,Famalicao,H,2,0,0.472727,0.313636,0.213636
-Portugal/Liga Portugal,,Sp Braga,Guimaraes,D,2,2,0.740909,0.159091,0.1
-Portugal/Liga Portugal,,Sp Braga,Porto,D,1,1,0.290909,0.322727,0.386364
-Portugal/Liga Portugal,,Sp Braga,Sp Lisbon,A,1,2,0.204545,0.290909,0.504545
-Portugal/Liga Portugal,,Sp Lisbon,Benfica,H,2,1,0.368182,0.327273,0.304545
-Portugal/Liga Portugal,,Sp Lisbon,Estoril,H,4,1,0.886364,0.081818,0.031818
-Portugal/Liga Portugal,,Sp Lisbon,Gil Vicente,H,2,1,0.727273,0.154545,0.118182
-Portugal/Liga Portugal,,Sp Lisbon,Guimaraes,H,4,0,0.909091,0.072727,0.018182
-Portugal/Liga Portugal,,Sp Lisbon,Santa Clara,D,3,3,0.768182,0.168182,0.063636
-Portugal/Liga Portugal,,Sp Lisbon,Tondela,H,3,0,0.886364,0.104545,0.009091
-Portugal/Liga Portugal,,Tondela,AVS,D,1,1,0.2,0.531818,0.268182
-Portugal/Liga Portugal,,Tondela,Gil Vicente,D,1,1,0.136364,0.327273,0.536364
-Portugal/Liga Portugal,,Tondela,Moreirense,D,1,1,0.422727,0.245455,0.331818
-Portugal/Liga Portugal,,Tondela,Nacional,D,1,1,0.154545,0.277273,0.568182
-Portugal/Liga Portugal,,Tondela,Rio Ave,A,1,2,0.090909,0.427273,0.481818
-Portugal/Liga Portugal,,Tondela,Santa Clara,H,2,1,0.45,0.331818,0.218182
-Spain/La Liga,,Alaves,Ath Bilbao,H,2,1,0.454545,0.363636,0.181818
-Spain/La Liga,,Alaves,Barcelona,A,1,3,0.068182,0.209091,0.722727
-Spain/La Liga,,Alaves,Girona,H,2,1,0.45,0.231818,0.318182
-Spain/La Liga,,Alaves,Mallorca,H,2,1,0.331818,0.459091,0.209091
-Spain/La Liga,,Alaves,Osasuna,D,1,1,0.122727,0.340909,0.536364
-Spain/La Liga,,Alaves,Vallecano,A,2,3,0.390909,0.263636,0.345455
-Spain/La Liga,,Alaves,Villarreal,A,1,2,0.436364,0.2,0.363636
-Spain/La Liga,,Ath Bilbao,Barcelona,A,2,3,0.163636,0.277273,0.559091
-Spain/La Liga,,Ath Bilbao,Betis,A,1,2,0.309091,0.281818,0.409091
-Spain/La Liga,,Ath Bilbao,Celta,A,1,2,0.336364,0.268182,0.395455
-Spain/La Liga,,Ath Bilbao,Elche,H,2,1,0.436364,0.290909,0.272727
-Spain/La Liga,,Ath Bilbao,Osasuna,A,1,2,0.409091,0.290909,0.3
-Spain/La Liga,,Ath Bilbao,Valencia,D,2,2,0.427273,0.336364,0.236364
-Spain/La Liga,,Ath Bilbao,Villarreal,A,1,2,0.236364,0.245455,0.518182
-Spain/La Liga,,Ath Madrid,Ath Bilbao,H,2,1,0.804545,0.095455,0.1
-Spain/La Liga,,Ath Madrid,Barcelona,D,2,2,0.2,0.163636,0.636364
-Spain/La Liga,,Ath Madrid,Celta,H,2,1,0.622727,0.236364,0.140909
-Spain/La Liga,,Ath Madrid,Espanol,D,2,2,0.6,0.25,0.15
-Spain/La Liga,,Ath Madrid,Getafe,D,2,2,0.745455,0.181818,0.072727
-Spain/La Liga,,Ath Madrid,Girona,H,3,1,0.763636,0.113636,0.122727
-Spain/La Liga,,Ath Madrid,Sociedad,H,2,1,0.672727,0.190909,0.136364
-Spain/La Liga,,Barcelona,Betis,H,3,1,0.745455,0.154545,0.1
-Spain/La Liga,,Barcelona,Celta,D,2,2,0.672727,0.127273,0.2
-Spain/La Liga,,Barcelona,Espanol,H,3,1,0.859091,0.1,0.040909
-Spain/La Liga,,Barcelona,Levante,H,3,1,0.877273,0.077273,0.045455
-Spain/La Liga,,Barcelona,Real Madrid,D,2,2,0.404545,0.313636,0.281818
-Spain/La Liga,,Barcelona,Sevilla,A,4,5,0.909091,0.072727,0.018182
-Spain/La Liga,,Barcelona,Vallecano,A,3,4,0.85,0.113636,0.036364
-Spain/La Liga,,Barcelona,Villarreal,A,3,4,0.75,0.086364,0.163636
-Spain/La Liga,,Betis,Celta,A,1,2,0.409091,0.254545,0.336364
-Spain/La Liga,,Betis,Elche,H,2,1,0.663636,0.204545,0.131818
-Spain/La Liga,,Betis,Espanol,H,2,1,0.572727,0.240909,0.186364
-Spain/La Liga,,Betis,Levante,H,2,1,0.695455,0.190909,0.113636
-Spain/La Liga,,Betis,Oviedo,D,2,2,0.309091,0.540909,0.15
-Spain/La Liga,,Betis,Real Madrid,D,1,1,0.313636,0.204545,0.481818
-Spain/La Liga,,Betis,Sevilla,D,2,2,0.545455,0.304545,0.15
-Spain/La Liga,,Betis,Vallecano,H,2,1,0.572727,0.204545,0.222727
-Spain/La Liga,,Celta,Alaves,H,2,1,0.654545,0.186364,0.159091
-Spain/La Liga,,Celta,Elche,H,2,1,0.522727,0.259091,0.218182
-Spain/La Liga,,Celta,Levante,A,1,2,0.640909,0.218182,0.140909
-Spain/La Liga,,Celta,Mallorca,H,3,2,0.486364,0.295455,0.218182
-Spain/La Liga,,Celta,Oviedo,A,1,2,0.336364,0.486364,0.177273
-Spain/La Liga,,Celta,Real Madrid,A,1,3,0.113636,0.186364,0.7
-Spain/La Liga,,Celta,Sevilla,D,2,2,0.563636,0.227273,0.209091
-Spain/La Liga,,Elche,Alaves,A,2,3,0.477273,0.254545,0.268182
-Spain/La Liga,,Elche,Ath Madrid,D,1,1,0.190909,0.327273,0.481818
-Spain/La Liga,,Elche,Espanol,H,2,1,0.404545,0.286364,0.309091
-Spain/La Liga,,Elche,Getafe,D,1,1,0.440909,0.368182,0.190909
-Spain/La Liga,,Elche,Mallorca,D,2,2,0.454545,0.340909,0.204545
-Spain/La Liga,,Elche,Valencia,D,2,2,0.322727,0.363636,0.313636
-Spain/La Liga,,Espanol,Ath Bilbao,A,2,3,0.490909,0.25,0.259091
-Spain/La Liga,,Espanol,Getafe,D,1,1,0.404545,0.222727,0.372727
-Spain/La Liga,,Espanol,Levante,H,3,2,0.363636,0.313636,0.322727
-Spain/La Liga,,Espanol,Oviedo,D,2,2,0.713636,0.154545,0.131818
-Spain/La Liga,,Espanol,Real Madrid,A,1,3,0.122727,0.140909,0.736364
-Spain/La Liga,,Espanol,Sociedad,H,2,1,0.422727,0.304545,0.272727
-Spain/La Liga,,Getafe,Ath Bilbao,D,1,1,0.227273,0.463636,0.309091
-Spain/La Liga,,Getafe,Barcelona,A,1,2,0.163636,0.318182,0.518182
-Spain/La Liga,,Getafe,Betis,D,1,1,0.272727,0.309091,0.418182
-Spain/La Liga,,Getafe,Mallorca,H,1,0,0.627273,0.186364,0.186364
-Spain/La Liga,,Getafe,Osasuna,H,1,0,0.459091,0.313636,0.227273
-Spain/La Liga,,Getafe,Sevilla,D,1,1,0.436364,0.240909,0.322727
-Spain/La Liga,,Getafe,Vallecano,A,1,2,0.245455,0.359091,0.395455
-Spain/La Liga,,Girona,Ath Bilbao,H,3,2,0.340909,0.272727,0.386364
-Spain/La Liga,,Girona,Betis,A,1,2,0.131818,0.3,0.568182
-Spain/La Liga,,Girona,Celta,A,1,2,0.245455,0.386364,0.368182
-Spain/La Liga,,Girona,Elche,A,1,2,0.336364,0.236364,0.427273
-Spain/La Liga,,Girona,Mallorca,H,2,1,0.440909,0.268182,0.290909
-Spain/La Liga,,Girona,Sociedad,H,3,2,0.122727,0.454545,0.422727
-Spain/La Liga,,Girona,Villarreal,D,1,1,0.127273,0.204545,0.668182
-Spain/La Liga,,Levante,Alaves,H,2,1,0.240909,0.363636,0.395455
-Spain/La Liga,,Levante,Getafe,H,2,1,0.340909,0.304545,0.354545
-Spain/La Liga,,Levante,Girona,H,2,1,0.472727,0.331818,0.195455
-Spain/La Liga,,Levante,Mallorca,A,1,2,0.227273,0.340909,0.431818
-Spain/La Liga,,Levante,Osasuna,A,1,2,0.209091,0.186364,0.604545
-Spain/La Liga,,Levante,Oviedo,D,1,1,0.395455,0.377273,0.227273
-Spain/La Liga,,Levante,Sevilla,H,3,2,0.172727,0.254545,0.572727
-Spain/La Liga,,Mallorca,Espanol,H,2,1,0.390909,0.327273,0.281818
-Spain/La Liga,,Mallorca,Oviedo,H,2,1,0.459091,0.4,0.140909
-Spain/La Liga,,Mallorca,Real Madrid,A,1,2,0.109091,0.259091,0.631818
-Spain/La Liga,,Mallorca,Sociedad,D,2,2,0.377273,0.313636,0.309091
-Spain/La Liga,,Mallorca,Valencia,D,2,2,0.513636,0.290909,0.195455
-Spain/La Liga,,Mallorca,Vallecano,H,2,1,0.618182,0.218182,0.163636
-Spain/La Liga,,Mallorca,Villarreal,A,2,3,0.245455,0.195455,0.559091
-Spain/La Liga,,Osasuna,Ath Madrid,A,1,2,0.272727,0.404545,0.322727
-Spain/La Liga,,Osasuna,Barcelona,A,2,3,0.313636,0.227273,0.459091
-Spain/La Liga,,Osasuna,Betis,A,2,3,0.272727,0.318182,0.409091
-Spain/La Liga,,Osasuna,Espanol,D,2,2,0.472727,0.295455,0.231818
-Spain/La Liga,,Osasuna,Girona,D,2,2,0.518182,0.231818,0.25
-Spain/La Liga,,Osasuna,Mallorca,H,2,1,0.540909,0.318182,0.140909
-Spain/La Liga,,Osasuna,Real Madrid,D,1,1,0.122727,0.322727,0.554545
-Spain/La Liga,,Osasuna,Sevilla,H,2,1,0.527273,0.268182,0.204545
-Spain/La Liga,,Oviedo,Alaves,A,1,2,0.286364,0.4,0.313636
-Spain/La Liga,,Oviedo,Ath Madrid,A,0,2,0.081818,0.309091,0.609091
-Spain/La Liga,,Oviedo,Elche,D,1,1,0.268182,0.35,0.381818
-Spain/La Liga,,Oviedo,Getafe,D,1,1,0.090909,0.372727,0.536364
-Spain/La Liga,,Oviedo,Sevilla,A,1,2,0.095455,0.290909,0.613636
-Spain/La Liga,,Oviedo,Valencia,H,2,1,0.681818,0.163636,0.154545
-Spain/La Liga,,Oviedo,Villarreal,A,1,2,0.109091,0.263636,0.627273
-Spain/La Liga,,Real Madrid,Alaves,H,3,0,0.922727,0.040909,0.036364
-Spain/La Liga,,Real Madrid,Ath Bilbao,H,3,1,0.872727,0.081818,0.045455
-Spain/La Liga,,Real Madrid,Ath Madrid,H,2,1,0.522727,0.345455,0.131818
-Spain/La Liga,,Real Madrid,Elche,H,3,1,0.836364,0.122727,0.040909
-Spain/La Liga,,Real Madrid,Getafe,H,3,1,0.863636,0.063636,0.072727
-Spain/La Liga,,Real Madrid,Girona,H,3,1,0.727273,0.177273,0.095455
-Spain/La Liga,,Real Madrid,Oviedo,H,4,0,0.9,0.081818,0.018182
-Spain/La Liga,,Sevilla,Ath Madrid,A,1,2,0.236364,0.354545,0.409091
-Spain/La Liga,,Sevilla,Espanol,A,1,2,0.422727,0.277273,0.3
-Spain/La Liga,,Sevilla,Real Madrid,A,1,2,0.159091,0.281818,0.559091
-Spain/La Liga,,Sevilla,Sociedad,A,2,3,0.359091,0.327273,0.313636
-Spain/La Liga,,Sevilla,Valencia,H,2,1,0.440909,0.340909,0.218182
-Spain/La Liga,,Sevilla,Vallecano,A,2,3,0.636364,0.222727,0.140909
-Spain/La Liga,,Sociedad,Alaves,H,2,1,0.545455,0.236364,0.218182
-Spain/La Liga,,Sociedad,Betis,H,3,2,0.331818,0.290909,0.377273
-Spain/La Liga,,Sociedad,Getafe,A,2,3,0.345455,0.345455,0.309091
-Spain/La Liga,,Sociedad,Levante,D,2,2,0.386364,0.422727,0.190909
-Spain/La Liga,,Sociedad,Osasuna,H,2,1,0.572727,0.136364,0.290909
-Spain/La Liga,,Sociedad,Oviedo,A,1,2,0.168182,0.372727,0.459091
-Spain/La Liga,,Sociedad,Valencia,H,2,1,0.613636,0.218182,0.168182
-Spain/La Liga,,Valencia,Alaves,H,2,1,0.363636,0.381818,0.254545
-Spain/La Liga,,Valencia,Ath Madrid,D,1,1,0.272727,0.263636,0.463636
-Spain/La Liga,,Valencia,Barcelona,H,3,2,0.218182,0.227273,0.554545
-Spain/La Liga,,Valencia,Celta,A,1,2,0.413636,0.231818,0.354545
-Spain/La Liga,,Valencia,Girona,A,1,2,0.481818,0.263636,0.254545
-Spain/La Liga,,Valencia,Osasuna,D,1,1,0.536364,0.309091,0.154545
-Spain/La Liga,,Valencia,Vallecano,D,1,1,0.422727,0.327273,0.25
-Spain/La Liga,,Vallecano,Ath Bilbao,A,1,2,0.218182,0.322727,0.459091
-Spain/La Liga,,Vallecano,Elche,H,2,1,0.395455,0.213636,0.390909
-Spain/La Liga,,Vallecano,Espanol,H,2,1,0.390909,0.245455,0.363636
-Spain/La Liga,,Vallecano,Girona,H,2,1,0.459091,0.309091,0.231818
-Spain/La Liga,,Vallecano,Levante,D,1,1,0.581818,0.240909,0.177273
-Spain/La Liga,,Vallecano,Oviedo,D,1,1,0.445455,0.427273,0.127273
-Spain/La Liga,,Vallecano,Sociedad,A,1,2,0.4,0.354545,0.245455
-Spain/La Liga,,Vallecano,Villarreal,A,1,2,0.259091,0.236364,0.504545
-Spain/La Liga,,Villarreal,Ath Madrid,D,2,2,0.409091,0.395455,0.195455
-Spain/La Liga,,Villarreal,Celta,H,2,1,0.654545,0.245455,0.1
-Spain/La Liga,,Villarreal,Elche,D,3,3,0.8,0.131818,0.068182
-Spain/La Liga,,Villarreal,Levante,H,2,1,0.822727,0.113636,0.063636
-Spain/La Liga,,Villarreal,Sevilla,H,2,1,0.659091,0.231818,0.109091
-Spain/La Liga,,Villarreal,Sociedad,H,2,1,0.763636,0.159091,0.077273
-Spain/La Liga,,Villarreal,Valencia,H,2,1,0.786364,0.154545,0.059091
-Spain/La Liga 2,,Albacete,Almeria,D,1,1,0.245455,0.281818,0.472727
-Spain/La Liga 2,,Albacete,Burgos,A,1,2,0.472727,0.254545,0.272727
-Spain/La Liga 2,,Albacete,Castellon,H,2,1,0.236364,0.322727,0.440909
-Spain/La Liga 2,,Albacete,Cultural Leonesa,D,1,1,0.15,0.645455,0.204545
-Spain/La Liga 2,,Albacete,Eibar,D,1,1,0.390909,0.381818,0.227273
-Spain/La Liga 2,,Albacete,Granada,A,1,2,0.213636,0.245455,0.540909
-Spain/La Liga 2,,Albacete,Las Palmas,D,1,1,0.186364,0.4,0.413636
-Spain/La Liga 2,,Albacete,Sociedad B,D,1,1,0.131818,0.722727,0.145455
-Spain/La Liga 2,,Almeria,Cordoba,H,3,2,0.622727,0.163636,0.213636
-Spain/La Liga 2,,Almeria,Cultural Leonesa,H,3,2,0.772727,0.109091,0.118182
-Spain/La Liga 2,,Almeria,Las Palmas,H,2,1,0.563636,0.227273,0.209091
-Spain/La Liga 2,,Almeria,Leganes,H,3,2,0.513636,0.295455,0.190909
-Spain/La Liga 2,,Almeria,Malaga,A,2,3,0.586364,0.181818,0.231818
-Spain/La Liga 2,,Almeria,Mirandes,A,3,4,0.781818,0.145455,0.072727
-Spain/La Liga 2,,Almeria,Sociedad B,H,3,1,0.763636,0.131818,0.104545
-Spain/La Liga 2,,Almeria,Valladolid,H,3,2,0.377273,0.331818,0.290909
-Spain/La Liga 2,,Andorra,Albacete,A,1,2,0.077273,0.218182,0.704545
-Spain/La Liga 2,,Andorra,Ceuta,A,1,2,0.081818,0.213636,0.704545
-Spain/La Liga 2,,Andorra,Eibar,D,1,1,0.268182,0.381818,0.35
-Spain/La Liga 2,,Andorra,Las Palmas,A,0,1,0.127273,0.527273,0.345455
-Spain/La Liga 2,,Andorra,Malaga,H,2,1,0.436364,0.154545,0.409091
-Spain/La Liga 2,,Andorra,Santander,A,1,2,0.231818,0.331818,0.436364
-Spain/La Liga 2,,Andorra,Sp Gijon,H,2,1,0.240909,0.209091,0.55
-Spain/La Liga 2,,Andorra,Valladolid,H,2,1,0.563636,0.245455,0.190909
-Spain/La Liga 2,,Andorra,Zaragoza,A,1,2,0.427273,0.281818,0.290909
-Spain/La Liga 2,,Burgos,Almeria,A,1,2,0.4,0.254545,0.345455
-Spain/La Liga 2,,Burgos,Andorra,H,2,1,0.486364,0.268182,0.245455
-Spain/La Liga 2,,Burgos,Ceuta,D,1,1,0.118182,0.390909,0.490909
-Spain/La Liga 2,,Burgos,Cordoba,A,1,2,0.318182,0.304545,0.377273
-Spain/La Liga 2,,Burgos,La Coruna,D,1,1,0.318182,0.395455,0.286364
-Spain/La Liga 2,,Burgos,Mirandes,H,2,1,0.368182,0.368182,0.263636
-Spain/La Liga 2,,Burgos,Sp Gijon,D,1,1,0.327273,0.309091,0.363636
-Spain/La Liga 2,,Cadiz,Andorra,D,1,1,0.140909,0.704545,0.154545
-Spain/La Liga 2,,Cadiz,Cordoba,A,1,2,0.495455,0.218182,0.286364
-Spain/La Liga 2,,Cadiz,La Coruna,D,1,1,0.140909,0.340909,0.518182
-Spain/La Liga 2,,Cadiz,Las Palmas,A,1,2,0.513636,0.318182,0.168182
-Spain/La Liga 2,,Cadiz,Leganes,A,1,2,0.122727,0.663636,0.213636
-Spain/La Liga 2,,Cadiz,Malaga,A,2,3,0.659091,0.231818,0.109091
-Spain/La Liga 2,,Cadiz,Sociedad B,D,1,1,0.1,0.731818,0.168182
-Spain/La Liga 2,,Cadiz,Zaragoza,D,1,1,0.540909,0.227273,0.231818
-Spain/La Liga 2,,Castellon,Almeria,D,2,2,0.55,0.231818,0.218182
-Spain/La Liga 2,,Castellon,Burgos,H,2,1,0.731818,0.104545,0.163636
-Spain/La Liga 2,,Castellon,Cadiz,A,1,2,0.168182,0.327273,0.504545
-Spain/La Liga 2,,Castellon,Cordoba,A,1,2,0.168182,0.459091,0.372727
-Spain/La Liga 2,,Castellon,Cultural Leonesa,H,3,1,0.868182,0.077273,0.054545
-Spain/La Liga 2,,Castellon,Eibar,D,2,2,0.622727,0.313636,0.063636
-Spain/La Liga 2,,Castellon,Granada,H,3,2,0.236364,0.486364,0.277273
-Spain/La Liga 2,,Castellon,Santander,D,1,1,0.159091,0.390909,0.45
-Spain/La Liga 2,,Ceuta,Albacete,D,1,1,0.163636,0.636364,0.2
-Spain/La Liga 2,,Ceuta,Cadiz,D,1,1,0.136364,0.677273,0.186364
-Spain/La Liga 2,,Ceuta,Castellon,A,1,2,0.168182,0.595455,0.236364
-Spain/La Liga 2,,Ceuta,Cordoba,A,1,2,0.059091,0.3,0.640909
-Spain/La Liga 2,,Ceuta,Granada,H,2,1,0.177273,0.659091,0.163636
-Spain/La Liga 2,,Ceuta,La Coruna,D,1,1,0.1,0.304545,0.595455
-Spain/La Liga 2,,Ceuta,Malaga,D,1,1,0.090909,0.327273,0.581818
-Spain/La Liga 2,,Ceuta,Santander,A,1,2,0.086364,0.263636,0.65
-Spain/La Liga 2,,Ceuta,Sociedad B,H,3,1,0.904545,0.068182,0.027273
-Spain/La Liga 2,,Cordoba,Albacete,H,2,1,0.481818,0.263636,0.254545
-Spain/La Liga 2,,Cordoba,Andorra,D,1,1,0.118182,0.331818,0.55
-Spain/La Liga 2,,Cordoba,Granada,H,2,1,0.345455,0.377273,0.277273
-Spain/La Liga 2,,Cordoba,Huesca,A,1,2,0.281818,0.286364,0.431818
-Spain/La Liga 2,,Cordoba,Mirandes,D,1,1,0.413636,0.313636,0.272727
-Spain/La Liga 2,,Cordoba,Sociedad B,A,1,2,0.218182,0.563636,0.218182
-Spain/La Liga 2,,Cordoba,Sp Gijon,D,1,1,0.186364,0.381818,0.431818
-Spain/La Liga 2,,Cordoba,Zaragoza,H,2,1,0.213636,0.331818,0.454545
-Spain/La Liga 2,,Cultural Leonesa,Andorra,H,2,1,0.127273,0.636364,0.236364
-Spain/La Liga 2,,Cultural Leonesa,Burgos,A,1,3,0.068182,0.186364,0.745455
-Spain/La Liga 2,,Cultural Leonesa,Cadiz,A,1,2,0.754545,0.118182,0.127273
-Spain/La Liga 2,,Cultural Leonesa,Cordoba,A,1,2,0.054545,0.3,0.645455
-Spain/La Liga 2,,Cultural Leonesa,Eibar,H,2,1,0.759091,0.15,0.090909
-Spain/La Liga 2,,Cultural Leonesa,Las Palmas,A,0,3,0.045455,0.131818,0.822727
-Spain/La Liga 2,,Cultural Leonesa,Santander,H,2,1,0.659091,0.168182,0.172727
-Spain/La Liga 2,,Cultural Leonesa,Valladolid,H,2,1,0.772727,0.159091,0.068182
-Spain/La Liga 2,,Eibar,Burgos,H,2,1,0.504545,0.213636,0.281818
-Spain/La Liga 2,,Eibar,Cadiz,H,2,1,0.345455,0.340909,0.313636
-Spain/La Liga 2,,Eibar,Ceuta,D,1,1,0.168182,0.359091,0.472727
-Spain/La Liga 2,,Eibar,Cordoba,A,2,3,0.490909,0.277273,0.231818
-Spain/La Liga 2,,Eibar,Huesca,H,2,1,0.513636,0.263636,0.222727
-Spain/La Liga 2,,Eibar,Las Palmas,A,1,2,0.390909,0.322727,0.286364
-Spain/La Liga 2,,Eibar,Malaga,H,2,1,0.568182,0.272727,0.159091
-Spain/La Liga 2,,Granada,Almeria,D,1,1,0.35,0.3,0.35
-Spain/La Liga 2,,Granada,Andorra,H,2,1,0.409091,0.436364,0.154545
-Spain/La Liga 2,,Granada,Burgos,D,2,2,0.454545,0.345455,0.2
-Spain/La Liga 2,,Granada,Cultural Leonesa,D,2,2,0.809091,0.140909,0.05
-Spain/La Liga 2,,Granada,Huesca,A,1,2,0.35,0.454545,0.195455
-Spain/La Liga 2,,Granada,Malaga,H,2,1,0.368182,0.290909,0.340909
-Spain/La Liga 2,,Granada,Sp Gijon,D,1,1,0.472727,0.295455,0.231818
-Spain/La Liga 2,,Huesca,Albacete,D,1,1,0.122727,0.609091,0.268182
-Spain/La Liga 2,,Huesca,Almeria,A,2,3,0.236364,0.509091,0.254545
-Spain/La Liga 2,,Huesca,Castellon,H,2,1,0.313636,0.322727,0.363636
-Spain/La Liga 2,,Huesca,Cultural Leonesa,H,3,1,0.859091,0.081818,0.059091
-Spain/La Liga 2,,Huesca,La Coruna,A,2,3,0.35,0.218182,0.431818
-Spain/La Liga 2,,Huesca,Mirandes,H,2,1,0.704545,0.172727,0.122727
-Spain/La Liga 2,,Huesca,Sociedad B,H,2,1,0.568182,0.145455,0.286364
-Spain/La Liga 2,,Huesca,Zaragoza,D,1,1,0.327273,0.45,0.222727
-Spain/La Liga 2,,La Coruna,Andorra,A,1,2,0.113636,0.295455,0.590909
-Spain/La Liga 2,,La Coruna,Cordoba,D,1,1,0.336364,0.336364,0.327273
-Spain/La Liga 2,,La Coruna,Eibar,D,2,2,0.640909,0.236364,0.122727
-Spain/La Liga 2,,La Coruna,Granada,D,1,1,0.345455,0.440909,0.213636
-Spain/La Liga 2,,La Coruna,Las Palmas,D,1,1,0.286364,0.45,0.263636
-Spain/La Liga 2,,La Coruna,Leganes,A,1,2,0.281818,0.263636,0.454545
-Spain/La Liga 2,,La Coruna,Malaga,H,2,1,0.377273,0.35,0.272727
-Spain/La Liga 2,,La Coruna,Mirandes,H,2,1,0.381818,0.422727,0.195455
-Spain/La Liga 2,,La Coruna,Zaragoza,D,1,1,0.395455,0.331818,0.272727
-Spain/La Liga 2,,Las Palmas,Castellon,H,2,1,0.345455,0.309091,0.345455
-Spain/La Liga 2,,Las Palmas,Ceuta,H,2,1,0.2,0.645455,0.154545
-Spain/La Liga 2,,Las Palmas,Granada,H,2,1,0.518182,0.359091,0.122727
-Spain/La Liga 2,,Las Palmas,Huesca,H,1,0,0.590909,0.245455,0.163636
-Spain/La Liga 2,,Las Palmas,Leganes,H,2,1,0.463636,0.25,0.286364
-Spain/La Liga 2,,Las Palmas,Sp Gijon,H,2,1,0.572727,0.204545,0.222727
-Spain/La Liga 2,,Las Palmas,Valladolid,H,2,1,0.668182,0.204545,0.127273
-Spain/La Liga 2,,Las Palmas,Zaragoza,D,1,1,0.190909,0.395455,0.413636
-Spain/La Liga 2,,Leganes,Albacete,H,2,1,0.545455,0.290909,0.163636
-Spain/La Liga 2,,Leganes,Andorra,D,1,1,0.531818,0.313636,0.154545
-Spain/La Liga 2,,Leganes,Ceuta,H,2,1,0.872727,0.095455,0.031818
-Spain/La Liga 2,,Leganes,Cultural Leonesa,D,1,1,0.213636,0.645455,0.140909
-Spain/La Liga 2,,Leganes,Eibar,D,1,1,0.286364,0.445455,0.268182
-Spain/La Liga 2,,Leganes,Huesca,H,2,1,0.754545,0.15,0.095455
-Spain/La Liga 2,,Leganes,Mirandes,H,2,1,0.718182,0.181818,0.1
-Spain/La Liga 2,,Leganes,Santander,D,1,1,0.290909,0.336364,0.372727
-Spain/La Liga 2,,Leganes,Zaragoza,D,1,1,0.686364,0.172727,0.140909
-Spain/La Liga 2,,Malaga,Albacete,A,2,3,0.536364,0.304545,0.159091
-Spain/La Liga 2,,Malaga,Castellon,D,2,2,0.472727,0.286364,0.240909
-Spain/La Liga 2,,Malaga,Huesca,H,2,1,0.268182,0.422727,0.309091
-Spain/La Liga 2,,Malaga,Las Palmas,H,2,1,0.318182,0.436364,0.245455
-Spain/La Liga 2,,Malaga,Leganes,D,1,1,0.377273,0.327273,0.295455
-Spain/La Liga 2,,Malaga,Santander,D,2,2,0.5,0.240909,0.259091
-Spain/La Liga 2,,Malaga,Sp Gijon,H,2,1,0.654545,0.231818,0.113636
-Spain/La Liga 2,,Malaga,Valladolid,D,2,2,0.518182,0.377273,0.104545
-Spain/La Liga 2,,Mirandes,Albacete,D,1,1,0.386364,0.259091,0.354545
-Spain/La Liga 2,,Mirandes,Cadiz,A,1,2,0.113636,0.295455,0.590909
-Spain/La Liga 2,,Mirandes,Castellon,H,2,1,0.277273,0.327273,0.395455
-Spain/La Liga 2,,Mirandes,Ceuta,A,0,2,0.090909,0.154545,0.754545
-Spain/La Liga 2,,Mirandes,Cultural Leonesa,A,1,2,0.063636,0.272727,0.663636
-Spain/La Liga 2,,Mirandes,Eibar,D,1,1,0.236364,0.322727,0.440909
-Spain/La Liga 2,,Mirandes,Granada,A,1,2,0.204545,0.327273,0.468182
-Spain/La Liga 2,,Mirandes,Valladolid,A,1,2,0.059091,0.340909,0.6
-Spain/La Liga 2,,Santander,Albacete,A,2,3,0.45,0.363636,0.186364
-Spain/La Liga 2,,Santander,Almeria,H,3,2,0.468182,0.236364,0.295455
-Spain/La Liga 2,,Santander,Burgos,H,2,1,0.490909,0.245455,0.263636
-Spain/La Liga 2,,Santander,Cadiz,A,2,3,0.481818,0.318182,0.2
-Spain/La Liga 2,,Santander,Cordoba,H,2,1,0.690909,0.181818,0.127273
-Spain/La Liga 2,,Santander,Huesca,H,3,1,0.672727,0.231818,0.095455
-Spain/La Liga 2,,Santander,Sp Gijon,H,3,1,0.640909,0.177273,0.181818
-Spain/La Liga 2,,Santander,Valladolid,H,2,1,0.468182,0.240909,0.290909
-Spain/La Liga 2,,Sociedad B,Burgos,D,1,1,0.168182,0.481818,0.35
-Spain/La Liga 2,,Sociedad B,Castellon,A,1,2,0.127273,0.390909,0.481818
-Spain/La Liga 2,,Sociedad B,Cultural Leonesa,D,1,1,0.15,0.7,0.15
-Spain/La Liga 2,,Sociedad B,Eibar,D,1,1,0.1,0.454545,0.445455
-Spain/La Liga 2,,Sociedad B,Granada,A,1,2,0.063636,0.218182,0.718182
-Spain/La Liga 2,,Sociedad B,La Coruna,H,2,1,0.654545,0.2,0.145455
-Spain/La Liga 2,,Sociedad B,Mirandes,D,1,1,0.086364,0.309091,0.604545
-Spain/La Liga 2,,Sociedad B,Santander,A,1,2,0.136364,0.368182,0.495455
-Spain/La Liga 2,,Sp Gijon,Almeria,A,2,3,0.413636,0.277273,0.309091
-Spain/La Liga 2,,Sp Gijon,Cadiz,H,2,1,0.5,0.236364,0.263636
-Spain/La Liga 2,,Sp Gijon,Castellon,A,1,2,0.340909,0.231818,0.427273
-Spain/La Liga 2,,Sp Gijon,Ceuta,H,2,1,0.877273,0.068182,0.054545
-Spain/La Liga 2,,Sp Gijon,La Coruna,H,3,2,0.404545,0.290909,0.304545
-Spain/La Liga 2,,Sp Gijon,Leganes,A,1,2,0.454545,0.327273,0.218182
-Spain/La Liga 2,,Sp Gijon,Sociedad B,H,2,1,0.5,0.290909,0.209091
-Spain/La Liga 2,,Sp Gijon,Valladolid,A,1,2,0.463636,0.240909,0.295455
-Spain/La Liga 2,,Valladolid,Burgos,H,2,1,0.518182,0.218182,0.263636
-Spain/La Liga 2,,Valladolid,Cadiz,D,1,1,0.136364,0.413636,0.45
-Spain/La Liga 2,,Valladolid,Eibar,D,1,1,0.422727,0.254545,0.322727
-Spain/La Liga 2,,Valladolid,Huesca,H,2,1,0.622727,0.227273,0.15
-Spain/La Liga 2,,Valladolid,La Coruna,A,2,3,0.409091,0.245455,0.345455
-Spain/La Liga 2,,Valladolid,Leganes,H,3,2,0.263636,0.268182,0.468182
-Spain/La Liga 2,,Valladolid,Sociedad B,D,1,1,0.313636,0.372727,0.313636
-Spain/La Liga 2,,Valladolid,Zaragoza,H,2,1,0.55,0.313636,0.136364
-Spain/La Liga 2,,Zaragoza,Almeria,D,1,1,0.181818,0.172727,0.645455
-Spain/La Liga 2,,Zaragoza,Burgos,D,1,1,0.136364,0.372727,0.490909
-Spain/La Liga 2,,Zaragoza,Ceuta,A,1,2,0.054545,0.281818,0.663636
-Spain/La Liga 2,,Zaragoza,Granada,D,1,1,0.295455,0.322727,0.381818
-Spain/La Liga 2,,Zaragoza,Malaga,A,1,2,0.222727,0.245455,0.531818
-Spain/La Liga 2,,Zaragoza,Mirandes,A,1,2,0.290909,0.327273,0.381818
-Spain/La Liga 2,,Zaragoza,Santander,A,1,2,0.236364,0.340909,0.422727
-Spain/La Liga 2,,Zaragoza,Sp Gijon,A,1,2,0.336364,0.263636,0.4
+Italy/Serie A,,Torino,Inter,D,0,0,0.081818,0.090909,0.827273
+Italy/Serie A,,Torino,Juventus,D,1,1,0.104545,0.240909,0.654545
+Italy/Serie A,,Torino,Lazio,D,1,1,0.172727,0.345455,0.481818
+Italy/Serie A,,Torino,Parma,A,1,2,0.168182,0.368182,0.463636
+Italy/Serie A,,Torino,Sassuolo,H,3,2,0.368182,0.304545,0.327273
+Italy/Serie A,,Torino,Verona,H,2,1,0.536364,0.3,0.163636
+Italy/Serie A,,Udinese,Como,H,3,2,0.272727,0.222727,0.504545
+Italy/Serie A,,Udinese,Cremonese,A,2,3,0.377273,0.363636,0.259091
+Italy/Serie A,,Udinese,Fiorentina,H,2,1,0.372727,0.227273,0.4
+Italy/Serie A,,Udinese,Juventus,H,3,2,0.218182,0.2,0.581818
+Italy/Serie A,,Udinese,Parma,D,1,1,0.4,0.268182,0.331818
+Italy/Serie A,,Udinese,Torino,D,1,1,0.427273,0.295455,0.277273
+Italy/Serie A,,Verona,Como,D,1,1,0.081818,0.263636,0.654545
+Italy/Serie A,,Verona,Fiorentina,H,2,1,0.231818,0.322727,0.445455
+Italy/Serie A,,Verona,Genoa,A,1,2,0.181818,0.313636,0.504545
+Italy/Serie A,,Verona,Lecce,H,2,1,0.372727,0.336364,0.290909
+Italy/Serie A,,Verona,Milan,A,1,2,0.109091,0.254545,0.636364
+Italy/Serie A,,Verona,Napoli,A,1,2,0.186364,0.245455,0.568182
+Italy/Serie A,,Verona,Roma,A,1,2,0.231818,0.268182,0.5
+Italy/Serie B,,Avellino,Bari,D,1,1,0.122727,0.5,0.377273
+Italy/Serie B,,Avellino,Catanzaro,D,1,1,0.081818,0.35,0.568182
+Italy/Serie B,,Avellino,Juve Stabia,D,1,1,0.059091,0.313636,0.627273
+Italy/Serie B,,Avellino,Modena,D,1,1,0.168182,0.545455,0.286364
+Italy/Serie B,,Avellino,Padova,A,1,2,0.195455,0.609091,0.195455
+Italy/Serie B,,Avellino,Sudtirol,D,2,2,0.686364,0.213636,0.1
+Italy/Serie B,,Bari,Carrarese,A,1,2,0.090909,0.468182,0.440909
+Italy/Serie B,,Bari,Empoli,A,0,3,0.045455,0.240909,0.713636
+Italy/Serie B,,Bari,Modena,A,1,2,0.131818,0.368182,0.5
+Italy/Serie B,,Bari,Reggiana,D,1,1,0.086364,0.513636,0.4
+Italy/Serie B,,Bari,Venezia,H,3,2,0.168182,0.2,0.631818
+Italy/Serie B,,Bari,Virtus Entella,D,1,1,0.318182,0.390909,0.290909
+Italy/Serie B,,Carrarese,Catanzaro,A,1,2,0.104545,0.527273,0.368182
+Italy/Serie B,,Carrarese,Cesena,A,1,2,0.468182,0.295455,0.236364
+Italy/Serie B,,Carrarese,Palermo,A,1,2,0.281818,0.177273,0.540909
+Italy/Serie B,,Carrarese,Pescara,H,2,1,0.195455,0.659091,0.145455
+Italy/Serie B,,Carrarese,Sampdoria,A,1,2,0.463636,0.359091,0.177273
+Italy/Serie B,,Carrarese,Spezia,A,2,3,0.359091,0.218182,0.422727
+Italy/Serie B,,Catanzaro,Bari,H,2,1,0.659091,0.231818,0.109091
+Italy/Serie B,,Catanzaro,Empoli,H,3,2,0.177273,0.445455,0.377273
+Italy/Serie B,,Catanzaro,Frosinone,D,1,1,0.190909,0.363636,0.445455
+Italy/Serie B,,Catanzaro,Modena,H,2,1,0.372727,0.386364,0.240909
+Italy/Serie B,,Catanzaro,Monza,A,1,2,0.136364,0.304545,0.559091
+Italy/Serie B,,Catanzaro,Spezia,D,2,2,0.595455,0.3,0.104545
+Italy/Serie B,,Cesena,Catanzaro,A,1,2,0.290909,0.281818,0.427273
+Italy/Serie B,,Cesena,Frosinone,A,1,2,0.145455,0.313636,0.540909
+Italy/Serie B,,Cesena,Monza,A,1,2,0.095455,0.368182,0.536364
+Italy/Serie B,,Cesena,Padova,A,1,2,0.172727,0.622727,0.204545
+Italy/Serie B,,Cesena,Sampdoria,H,2,1,0.540909,0.195455,0.263636
+Italy/Serie B,,Cesena,Sudtirol,H,2,1,0.6,0.195455,0.204545
+Italy/Serie B,,Empoli,Avellino,H,2,1,0.513636,0.295455,0.190909
+Italy/Serie B,,Empoli,Cesena,H,2,1,0.836364,0.095455,0.068182
+Italy/Serie B,,Empoli,Mantova,H,2,0,0.845455,0.095455,0.059091
+Italy/Serie B,,Empoli,Pescara,D,2,2,0.459091,0.286364,0.254545
+Italy/Serie B,,Empoli,Virtus Entella,D,2,2,0.55,0.236364,0.213636
+Italy/Serie B,,Frosinone,Bari,H,2,1,0.513636,0.263636,0.222727
+Italy/Serie B,,Frosinone,Carrarese,D,3,3,0.790909,0.131818,0.077273
+Italy/Serie B,,Frosinone,Mantova,H,2,0,0.827273,0.131818,0.040909
+Italy/Serie B,,Frosinone,Padova,H,2,1,0.872727,0.068182,0.059091
+Italy/Serie B,,Frosinone,Palermo,D,1,1,0.240909,0.404545,0.354545
+Italy/Serie B,,Frosinone,Pescara,H,3,1,0.75,0.195455,0.054545
+Italy/Serie B,,Frosinone,Sampdoria,H,2,1,0.75,0.154545,0.095455
+Italy/Serie B,,Juve Stabia,Carrarese,H,2,1,0.531818,0.272727,0.195455
+Italy/Serie B,,Juve Stabia,Catanzaro,H,2,1,0.522727,0.318182,0.159091
+Italy/Serie B,,Juve Stabia,Cesena,H,2,1,0.754545,0.104545,0.140909
+Italy/Serie B,,Juve Stabia,Frosinone,A,1,2,0.077273,0.427273,0.495455
+Italy/Serie B,,Juve Stabia,Sampdoria,D,1,1,0.459091,0.368182,0.172727
+Italy/Serie B,,Juve Stabia,Spezia,A,1,2,0.563636,0.236364,0.2
+Italy/Serie B,,Mantova,Avellino,D,1,1,0.2,0.622727,0.177273
+Italy/Serie B,,Mantova,Carrarese,H,3,2,0.445455,0.309091,0.245455
+Italy/Serie B,,Mantova,Cesena,D,2,2,0.35,0.313636,0.336364
+Italy/Serie B,,Mantova,Juve Stabia,A,1,2,0.154545,0.409091,0.436364
+Italy/Serie B,,Mantova,Monza,D,1,1,0.072727,0.304545,0.622727
+Italy/Serie B,,Mantova,Virtus Entella,D,1,1,0.086364,0.436364,0.477273
+Italy/Serie B,,Modena,Cesena,D,1,1,0.122727,0.463636,0.413636
+Italy/Serie B,,Modena,Frosinone,A,1,2,0.163636,0.459091,0.377273
+Italy/Serie B,,Modena,Mantova,D,2,2,0.804545,0.136364,0.059091
+Italy/Serie B,,Modena,Padova,A,1,2,0.086364,0.372727,0.540909
+Italy/Serie B,,Modena,Reggiana,H,2,1,0.618182,0.231818,0.15
+Italy/Serie B,,Modena,Spezia,D,1,1,0.331818,0.504545,0.163636
+Italy/Serie B,,Monza,Bari,D,2,2,0.268182,0.568182,0.163636
+Italy/Serie B,,Monza,Empoli,H,2,1,0.5,0.35,0.15
+Italy/Serie B,,Monza,Modena,D,2,2,0.563636,0.263636,0.172727
+Italy/Serie B,,Monza,Palermo,H,2,1,0.509091,0.345455,0.145455
+Italy/Serie B,,Monza,Venezia,D,1,1,0.309091,0.268182,0.422727
+Italy/Serie B,,Monza,Virtus Entella,A,2,3,0.613636,0.259091,0.127273
+Italy/Serie B,,Padova,Catanzaro,A,2,3,0.627273,0.195455,0.177273
+Italy/Serie B,,Padova,Empoli,A,1,2,0.068182,0.372727,0.559091
+Italy/Serie B,,Padova,Palermo,A,1,2,0.054545,0.309091,0.636364
+Italy/Serie B,,Padova,Pescara,D,2,2,0.331818,0.4,0.268182
+Italy/Serie B,,Padova,Reggiana,H,2,1,0.813636,0.095455,0.090909
+Italy/Serie B,,Padova,Spezia,D,1,1,0.313636,0.495455,0.190909
+Italy/Serie B,,Palermo,Avellino,H,3,0,0.836364,0.109091,0.054545
+Italy/Serie B,,Palermo,Catanzaro,D,2,2,0.440909,0.336364,0.222727
+Italy/Serie B,,Palermo,Cesena,H,2,1,0.431818,0.386364,0.181818
+Italy/Serie B,,Palermo,Juve Stabia,H,3,1,0.840909,0.086364,0.072727
+Italy/Serie B,,Palermo,Mantova,D,2,2,0.290909,0.518182,0.190909
+Italy/Serie B,,Pescara,Bari,D,1,1,0.131818,0.631818,0.236364
+Italy/Serie B,,Pescara,Juve Stabia,A,2,3,0.354545,0.413636,0.231818
+Italy/Serie B,,Pescara,Palermo,D,1,1,0.168182,0.277273,0.554545
+Italy/Serie B,,Pescara,Sampdoria,A,1,2,0.068182,0.236364,0.695455
+Italy/Serie B,,Pescara,Spezia,H,2,1,0.272727,0.295455,0.431818
+Italy/Serie B,,Pescara,Virtus Entella,H,2,1,0.104545,0.586364,0.309091
+Italy/Serie B,,Reggiana,Carrarese,D,2,2,0.122727,0.727273,0.15
+Italy/Serie B,,Reggiana,Monza,H,2,1,0.331818,0.172727,0.495455
+Italy/Serie B,,Reggiana,Palermo,D,1,1,0.327273,0.218182,0.454545
+Italy/Serie B,,Reggiana,Pescara,D,1,1,0.059091,0.418182,0.522727
+Italy/Serie B,,Reggiana,Sampdoria,D,1,1,0.254545,0.509091,0.236364
+Italy/Serie B,,Reggiana,Sudtirol,H,2,1,0.136364,0.368182,0.495455
+Italy/Serie B,,Sampdoria,Avellino,A,1,2,0.077273,0.468182,0.454545
+Italy/Serie B,,Sampdoria,Bari,H,2,1,0.486364,0.372727,0.140909
+Italy/Serie B,,Sampdoria,Empoli,D,2,2,0.636364,0.245455,0.118182
+Italy/Serie B,,Sampdoria,Monza,A,1,2,0.104545,0.259091,0.636364
+Italy/Serie B,,Sampdoria,Sudtirol,D,1,1,0.190909,0.377273,0.431818
+Italy/Serie B,,Sampdoria,Venezia,H,3,2,0.168182,0.272727,0.559091
+Italy/Serie B,,Spezia,Empoli,H,2,1,0.345455,0.427273,0.227273
+Italy/Serie B,,Spezia,Mantova,D,1,1,0.1,0.363636,0.536364
+Italy/Serie B,,Spezia,Monza,A,0,2,0.063636,0.145455,0.790909
+Italy/Serie B,,Spezia,Reggiana,A,1,2,0.236364,0.4,0.363636
+Italy/Serie B,,Spezia,Sudtirol,H,2,1,0.390909,0.395455,0.213636
+Italy/Serie B,,Spezia,Venezia,D,1,1,0.204545,0.286364,0.509091
+Italy/Serie B,,Sudtirol,Frosinone,A,1,2,0.259091,0.586364,0.154545
+Italy/Serie B,,Sudtirol,Juve Stabia,A,1,2,0.495455,0.304545,0.2
+Italy/Serie B,,Sudtirol,Mantova,A,1,2,0.118182,0.472727,0.409091
+Italy/Serie B,,Sudtirol,Modena,D,1,1,0.227273,0.431818,0.340909
+Italy/Serie B,,Sudtirol,Pescara,D,1,1,0.204545,0.604545,0.190909
+Italy/Serie B,,Sudtirol,Venezia,H,3,2,0.259091,0.240909,0.5
+Italy/Serie B,,Sudtirol,Virtus Entella,H,2,1,0.218182,0.618182,0.163636
+Italy/Serie B,,Venezia,Avellino,A,2,3,0.627273,0.254545,0.118182
+Italy/Serie B,,Venezia,Empoli,H,2,1,0.554545,0.309091,0.136364
+Italy/Serie B,,Venezia,Juve Stabia,H,2,1,0.586364,0.218182,0.195455
+Italy/Serie B,,Venezia,Padova,A,3,4,0.754545,0.145455,0.1
+Italy/Serie B,,Venezia,Palermo,D,2,2,0.454545,0.268182,0.277273
+Italy/Serie B,,Venezia,Reggiana,H,2,1,0.627273,0.213636,0.159091
+Italy/Serie B,,Virtus Entella,Avellino,A,1,2,0.1,0.490909,0.409091
+Italy/Serie B,,Virtus Entella,Carrarese,D,1,1,0.040909,0.35,0.609091
+Italy/Serie B,,Virtus Entella,Modena,D,1,1,0.054545,0.227273,0.718182
+Italy/Serie B,,Virtus Entella,Padova,A,1,2,0.072727,0.331818,0.595455
+Italy/Serie B,,Virtus Entella,Reggiana,A,1,2,0.095455,0.436364,0.468182
+Italy/Serie B,,Virtus Entella,Venezia,A,1,2,0.086364,0.372727,0.540909
+Portugal/Liga Portugal,,AVS,Estrela,A,1,3,0.213636,0.340909,0.445455
+Portugal/Liga Portugal,,AVS,Guimaraes,D,1,1,0.277273,0.172727,0.55
+Portugal/Liga Portugal,,AVS,Porto,D,1,1,0.05,0.281818,0.668182
+Portugal/Liga Portugal,,AVS,Santa Clara,H,3,2,0.077273,0.281818,0.640909
+Portugal/Liga Portugal,,AVS,Sp Lisbon,D,1,1,0.013636,0.336364,0.65
+Portugal/Liga Portugal,,Alverca,AVS,D,3,3,0.731818,0.195455,0.072727
+Portugal/Liga Portugal,,Alverca,Arouca,D,1,1,0.095455,0.268182,0.636364
+Portugal/Liga Portugal,,Alverca,Casa Pia,A,2,3,0.813636,0.131818,0.054545
+Portugal/Liga Portugal,,Alverca,Estoril,H,4,3,0.118182,0.277273,0.604545
+Portugal/Liga Portugal,,Alverca,Sp Lisbon,A,0,3,0.027273,0.05,0.922727
+Portugal/Liga Portugal,,Arouca,Benfica,A,1,3,0.05,0.045455,0.904545
+Portugal/Liga Portugal,,Arouca,Estoril,A,2,3,0.313636,0.304545,0.381818
+Portugal/Liga Portugal,,Arouca,Estrela,H,3,2,0.440909,0.25,0.309091
+Portugal/Liga Portugal,,Arouca,Santa Clara,H,2,1,0.372727,0.336364,0.290909
+Portugal/Liga Portugal,,Arouca,Tondela,A,1,2,0.35,0.318182,0.331818
+Portugal/Liga Portugal,,Benfica,Guimaraes,H,3,1,0.790909,0.172727,0.036364
+Portugal/Liga Portugal,,Benfica,Moreirense,A,2,3,0.631818,0.272727,0.095455
+Portugal/Liga Portugal,,Benfica,Nacional,H,3,1,0.840909,0.109091,0.05
+Portugal/Liga Portugal,,Benfica,Porto,A,2,3,0.336364,0.322727,0.340909
+Portugal/Liga Portugal,,Benfica,Sp Braga,D,2,2,0.6,0.159091,0.240909
+Portugal/Liga Portugal,,Casa Pia,Benfica,D,1,1,0.227273,0.218182,0.554545
+Portugal/Liga Portugal,,Casa Pia,Moreirense,A,2,3,0.445455,0.286364,0.268182
+Portugal/Liga Portugal,,Casa Pia,Rio Ave,H,3,2,0.35,0.345455,0.304545
+Portugal/Liga Portugal,,Casa Pia,Santa Clara,A,1,2,0.222727,0.372727,0.404545
+Portugal/Liga Portugal,,Casa Pia,Sp Braga,D,1,1,0.268182,0.195455,0.536364
+Portugal/Liga Portugal,,Casa Pia,Tondela,H,2,1,0.886364,0.095455,0.018182
+Portugal/Liga Portugal,,Estoril,Benfica,A,1,3,0.127273,0.131818,0.740909
+Portugal/Liga Portugal,,Estoril,Casa Pia,A,3,4,0.627273,0.231818,0.140909
+Portugal/Liga Portugal,,Estoril,Famalicao,A,2,3,0.422727,0.277273,0.3
+Portugal/Liga Portugal,,Estoril,Porto,A,1,2,0.172727,0.209091,0.618182
+Portugal/Liga Portugal,,Estoril,Rio Ave,H,3,1,0.509091,0.359091,0.131818
+Portugal/Liga Portugal,,Estrela,Casa Pia,H,2,1,0.640909,0.222727,0.136364
+Portugal/Liga Portugal,,Estrela,Famalicao,A,1,2,0.322727,0.281818,0.395455
+Portugal/Liga Portugal,,Estrela,Gil Vicente,A,1,2,0.159091,0.3,0.540909
+Portugal/Liga Portugal,,Estrela,Porto,H,3,2,0.186364,0.163636,0.65
+Portugal/Liga Portugal,,Estrela,Sp Lisbon,A,0,3,0.027273,0.054545,0.918182
+Portugal/Liga Portugal,,Famalicao,Alverca,A,1,2,0.122727,0.463636,0.413636
+Portugal/Liga Portugal,,Famalicao,Arouca,D,2,2,0.418182,0.377273,0.204545
+Portugal/Liga Portugal,,Famalicao,Benfica,A,1,2,0.168182,0.240909,0.590909
+Portugal/Liga Portugal,,Famalicao,Casa Pia,H,2,1,0.65,0.209091,0.140909
+Portugal/Liga Portugal,,Famalicao,Moreirense,H,2,1,0.381818,0.436364,0.181818
+Portugal/Liga Portugal,,Famalicao,Nacional,D,2,2,0.45,0.372727,0.177273
+Portugal/Liga Portugal,,Gil Vicente,AVS,D,3,3,0.536364,0.35,0.113636
+Portugal/Liga Portugal,,Gil Vicente,Alverca,H,4,0,0.913636,0.054545,0.031818
+Portugal/Liga Portugal,,Gil Vicente,Arouca,D,2,2,0.2,0.572727,0.227273
+Portugal/Liga Portugal,,Gil Vicente,Benfica,D,1,1,0.159091,0.309091,0.531818
+Portugal/Liga Portugal,,Gil Vicente,Casa Pia,H,2,1,0.709091,0.131818,0.159091
+Portugal/Liga Portugal,,Gil Vicente,Guimaraes,D,2,2,0.613636,0.222727,0.163636
+Portugal/Liga Portugal,,Guimaraes,Alverca,A,1,2,0.068182,0.304545,0.627273
+Portugal/Liga Portugal,,Guimaraes,Casa Pia,H,2,1,0.327273,0.354545,0.318182
+Portugal/Liga Portugal,,Guimaraes,Famalicao,D,1,1,0.522727,0.25,0.227273
+Portugal/Liga Portugal,,Guimaraes,Rio Ave,H,2,1,0.586364,0.277273,0.136364
+Portugal/Liga Portugal,,Guimaraes,Tondela,H,2,1,0.763636,0.177273,0.059091
+Portugal/Liga Portugal,,Moreirense,AVS,D,3,3,0.636364,0.309091,0.054545
+Portugal/Liga Portugal,,Moreirense,Arouca,H,2,1,0.713636,0.172727,0.113636
+Portugal/Liga Portugal,,Moreirense,Estoril,H,3,2,0.445455,0.327273,0.227273
+Portugal/Liga Portugal,,Moreirense,Estrela,A,2,3,0.322727,0.45,0.227273
+Portugal/Liga Portugal,,Moreirense,Nacional,D,1,1,0.404545,0.377273,0.218182
+Portugal/Liga Portugal,,Moreirense,Sp Braga,A,1,2,0.145455,0.209091,0.645455
+Portugal/Liga Portugal,,Nacional,AVS,H,3,1,0.545455,0.295455,0.159091
+Portugal/Liga Portugal,,Nacional,Alverca,A,1,2,0.072727,0.254545,0.672727
+Portugal/Liga Portugal,,Nacional,Estoril,D,2,2,0.2,0.490909,0.309091
+Portugal/Liga Portugal,,Nacional,Estrela,A,1,2,0.068182,0.318182,0.613636
+Portugal/Liga Portugal,,Nacional,Guimaraes,A,2,3,0.377273,0.236364,0.386364
+Portugal/Liga Portugal,,Nacional,Sp Braga,A,1,3,0.118182,0.172727,0.709091
+Portugal/Liga Portugal,,Porto,Alverca,H,3,0,0.9,0.068182,0.031818
+Portugal/Liga Portugal,,Porto,Arouca,D,3,3,0.822727,0.127273,0.05
+Portugal/Liga Portugal,,Porto,Famalicao,H,2,0,0.668182,0.231818,0.1
+Portugal/Liga Portugal,,Porto,Moreirense,H,3,1,0.777273,0.159091,0.063636
+Portugal/Liga Portugal,,Porto,Santa Clara,D,2,2,0.672727,0.263636,0.063636
+Portugal/Liga Portugal,,Porto,Tondela,H,2,0,0.931818,0.063636,0.004545
+Portugal/Liga Portugal,,Rio Ave,AVS,D,2,2,0.386364,0.409091,0.204545
+Portugal/Liga Portugal,,Rio Ave,Alverca,D,1,1,0.231818,0.572727,0.195455
+Portugal/Liga Portugal,,Rio Ave,Estrela,H,3,2,0.363636,0.4,0.236364
+Portugal/Liga Portugal,,Rio Ave,Famalicao,A,1,2,0.127273,0.427273,0.445455
+Portugal/Liga Portugal,,Rio Ave,Gil Vicente,D,1,1,0.204545,0.409091,0.386364
+Portugal/Liga Portugal,,Rio Ave,Sp Lisbon,A,0,3,0.045455,0.113636,0.840909
+Portugal/Liga Portugal,,Santa Clara,Gil Vicente,D,1,1,0.4,0.259091,0.340909
+Portugal/Liga Portugal,,Santa Clara,Guimaraes,H,2,1,0.204545,0.227273,0.568182
+Portugal/Liga Portugal,,Santa Clara,Nacional,A,1,2,0.55,0.295455,0.154545
+Portugal/Liga Portugal,,Santa Clara,Rio Ave,A,1,2,0.359091,0.318182,0.322727
+Portugal/Liga Portugal,,Santa Clara,Sp Braga,A,0,2,0.177273,0.240909,0.581818
+Portugal/Liga Portugal,,Sp Braga,Arouca,H,3,1,0.85,0.109091,0.040909
+Portugal/Liga Portugal,,Sp Braga,Estoril,D,3,3,0.668182,0.236364,0.095455
+Portugal/Liga Portugal,,Sp Braga,Estrela,H,3,1,0.740909,0.177273,0.081818
+Portugal/Liga Portugal,,Sp Braga,Famalicao,A,2,3,0.422727,0.368182,0.209091
+Portugal/Liga Portugal,,Sp Braga,Porto,A,1,2,0.281818,0.354545,0.363636
+Portugal/Liga Portugal,,Sp Braga,Sp Lisbon,A,1,2,0.090909,0.413636,0.495455
+Portugal/Liga Portugal,,Sp Lisbon,Benfica,H,2,1,0.359091,0.281818,0.359091
+Portugal/Liga Portugal,,Sp Lisbon,Estoril,H,4,1,0.890909,0.068182,0.040909
+Portugal/Liga Portugal,,Sp Lisbon,Gil Vicente,H,2,1,0.777273,0.068182,0.154545
+Portugal/Liga Portugal,,Sp Lisbon,Guimaraes,H,4,0,0.913636,0.072727,0.013636
+Portugal/Liga Portugal,,Sp Lisbon,Santa Clara,H,2,0,0.709091,0.236364,0.054545
+Portugal/Liga Portugal,,Sp Lisbon,Tondela,H,3,0,0.918182,0.059091,0.022727
+Portugal/Liga Portugal,,Tondela,AVS,A,1,2,0.263636,0.481818,0.254545
+Portugal/Liga Portugal,,Tondela,Gil Vicente,A,1,2,0.172727,0.277273,0.55
+Portugal/Liga Portugal,,Tondela,Moreirense,D,1,1,0.445455,0.240909,0.313636
+Portugal/Liga Portugal,,Tondela,Nacional,A,1,2,0.181818,0.322727,0.495455
+Portugal/Liga Portugal,,Tondela,Rio Ave,H,3,2,0.168182,0.390909,0.440909
+Portugal/Liga Portugal,,Tondela,Santa Clara,D,1,1,0.486364,0.268182,0.245455
+Spain/La Liga,,Alaves,Ath Bilbao,A,1,2,0.445455,0.35,0.204545
+Spain/La Liga,,Alaves,Barcelona,A,1,3,0.059091,0.204545,0.736364
+Spain/La Liga,,Alaves,Girona,D,1,1,0.409091,0.272727,0.318182
+Spain/La Liga,,Alaves,Mallorca,H,2,1,0.304545,0.477273,0.218182
+Spain/La Liga,,Alaves,Osasuna,D,1,1,0.081818,0.413636,0.504545
+Spain/La Liga,,Alaves,Vallecano,A,1,2,0.409091,0.281818,0.309091
+Spain/La Liga,,Alaves,Villarreal,D,1,1,0.422727,0.213636,0.363636
+Spain/La Liga,,Ath Bilbao,Barcelona,A,2,3,0.145455,0.272727,0.581818
+Spain/La Liga,,Ath Bilbao,Betis,H,2,1,0.354545,0.281818,0.363636
+Spain/La Liga,,Ath Bilbao,Celta,H,2,1,0.304545,0.295455,0.4
+Spain/La Liga,,Ath Bilbao,Osasuna,H,2,1,0.35,0.363636,0.286364
+Spain/La Liga,,Ath Bilbao,Valencia,H,2,1,0.481818,0.268182,0.25
+Spain/La Liga,,Ath Bilbao,Villarreal,A,1,2,0.245455,0.268182,0.486364
+Spain/La Liga,,Ath Madrid,Ath Bilbao,H,3,1,0.75,0.145455,0.104545
+Spain/La Liga,,Ath Madrid,Barcelona,H,3,2,0.3,0.172727,0.527273
+Spain/La Liga,,Ath Madrid,Celta,D,2,2,0.595455,0.218182,0.186364
+Spain/La Liga,,Ath Madrid,Getafe,H,3,0,0.795455,0.177273,0.027273
+Spain/La Liga,,Ath Madrid,Girona,D,3,3,0.731818,0.177273,0.090909
+Spain/La Liga,,Ath Madrid,Sociedad,H,2,1,0.763636,0.15,0.086364
+Spain/La Liga,,Barcelona,Betis,H,2,1,0.645455,0.218182,0.136364
+Spain/La Liga,,Barcelona,Celta,A,2,3,0.568182,0.163636,0.268182
+Spain/La Liga,,Barcelona,Espanol,H,3,1,0.722727,0.186364,0.090909
+Spain/La Liga,,Barcelona,Real Madrid,H,3,1,0.445455,0.259091,0.295455
+Spain/La Liga,,Barcelona,Sevilla,H,3,1,0.8,0.109091,0.090909
+Spain/La Liga,,Barcelona,Vallecano,H,3,0,0.786364,0.177273,0.036364
+Spain/La Liga,,Barcelona,Villarreal,H,3,1,0.663636,0.127273,0.209091
+Spain/La Liga,,Betis,Celta,H,2,1,0.45,0.209091,0.340909
+Spain/La Liga,,Betis,Elche,A,3,4,0.622727,0.240909,0.136364
+Spain/La Liga,,Betis,Espanol,H,2,1,0.572727,0.259091,0.168182
+Spain/La Liga,,Betis,Levante,H,2,1,0.631818,0.227273,0.140909
+Spain/La Liga,,Betis,Oviedo,A,2,3,0.277273,0.509091,0.213636
+Spain/La Liga,,Betis,Real Madrid,A,2,3,0.304545,0.222727,0.472727
+Spain/La Liga,,Betis,Sevilla,D,2,2,0.522727,0.290909,0.186364
+Spain/La Liga,,Celta,Alaves,D,1,1,0.622727,0.231818,0.145455
+Spain/La Liga,,Celta,Elche,H,2,1,0.5,0.272727,0.227273
+Spain/La Liga,,Celta,Levante,D,2,2,0.627273,0.236364,0.136364
+Spain/La Liga,,Celta,Oviedo,A,2,3,0.313636,0.45,0.236364
+Spain/La Liga,,Celta,Real Madrid,H,3,2,0.172727,0.168182,0.659091
+Spain/La Liga,,Celta,Sevilla,H,2,1,0.586364,0.231818,0.181818
+Spain/La Liga,,Elche,Alaves,A,2,3,0.5,0.268182,0.231818
+Spain/La Liga,,Elche,Ath Madrid,H,2,1,0.218182,0.327273,0.454545
+Spain/La Liga,,Elche,Espanol,H,2,1,0.340909,0.345455,0.313636
+Spain/La Liga,,Elche,Getafe,D,2,2,0.422727,0.368182,0.209091
+Spain/La Liga,,Elche,Mallorca,H,2,1,0.518182,0.336364,0.145455
+Spain/La Liga,,Elche,Valencia,A,2,3,0.281818,0.395455,0.322727
+Spain/La Liga,,Espanol,Ath Bilbao,D,2,2,0.468182,0.222727,0.309091
+Spain/La Liga,,Espanol,Getafe,H,2,1,0.463636,0.222727,0.313636
+Spain/La Liga,,Espanol,Levante,A,2,3,0.409091,0.345455,0.245455
+Spain/La Liga,,Espanol,Oviedo,A,2,3,0.590909,0.25,0.159091
+Spain/La Liga,,Espanol,Real Madrid,A,1,2,0.181818,0.140909,0.677273
+Spain/La Liga,,Espanol,Sociedad,H,2,1,0.427273,0.186364,0.386364
+Spain/La Liga,,Getafe,Ath Bilbao,D,1,1,0.240909,0.45,0.309091
+Spain/La Liga,,Getafe,Barcelona,A,1,2,0.177273,0.354545,0.468182
+Spain/La Liga,,Getafe,Betis,D,1,1,0.259091,0.368182,0.372727
+Spain/La Liga,,Getafe,Mallorca,H,2,1,0.518182,0.25,0.231818
+Spain/La Liga,,Getafe,Osasuna,H,2,1,0.377273,0.368182,0.254545
+Spain/La Liga,,Getafe,Vallecano,A,1,2,0.181818,0.45,0.368182
+Spain/La Liga,,Girona,Ath Bilbao,H,2,1,0.413636,0.25,0.336364
+Spain/La Liga,,Girona,Betis,A,1,2,0.104545,0.354545,0.540909
+Spain/La Liga,,Girona,Celta,D,1,1,0.277273,0.368182,0.354545
+Spain/La Liga,,Girona,Elche,A,1,2,0.327273,0.268182,0.404545
+Spain/La Liga,,Girona,Mallorca,D,1,1,0.472727,0.286364,0.240909
+Spain/La Liga,,Girona,Sociedad,A,1,2,0.159091,0.386364,0.454545
+Spain/La Liga,,Girona,Villarreal,D,1,1,0.2,0.2,0.6
+Spain/La Liga,,Levante,Alaves,A,1,2,0.25,0.413636,0.336364
+Spain/La Liga,,Levante,Getafe,D,1,1,0.272727,0.413636,0.313636
+Spain/La Liga,,Levante,Girona,D,2,2,0.436364,0.322727,0.240909
+Spain/La Liga,,Levante,Mallorca,A,1,2,0.231818,0.372727,0.395455
+Spain/La Liga,,Levante,Osasuna,A,1,2,0.163636,0.268182,0.568182
+Spain/La Liga,,Levante,Oviedo,H,2,1,0.313636,0.477273,0.209091
+Spain/La Liga,,Levante,Sevilla,D,1,1,0.104545,0.295455,0.6
+Spain/La Liga,,Mallorca,Espanol,A,2,3,0.372727,0.309091,0.318182
+Spain/La Liga,,Mallorca,Oviedo,A,2,3,0.372727,0.431818,0.195455
+Spain/La Liga,,Mallorca,Real Madrid,D,1,1,0.213636,0.218182,0.568182
+Spain/La Liga,,Mallorca,Sociedad,A,2,3,0.422727,0.295455,0.281818
+Spain/La Liga,,Mallorca,Valencia,H,2,1,0.568182,0.181818,0.25
+Spain/La Liga,,Mallorca,Vallecano,H,2,1,0.554545,0.213636,0.231818
+Spain/La Liga,,Mallorca,Villarreal,A,2,3,0.281818,0.204545,0.513636
+Spain/La Liga,,Osasuna,Ath Madrid,D,1,1,0.318182,0.286364,0.395455
+Spain/La Liga,,Osasuna,Barcelona,A,2,3,0.336364,0.186364,0.477273
+Spain/La Liga,,Osasuna,Betis,H,3,2,0.240909,0.313636,0.445455
+Spain/La Liga,,Osasuna,Espanol,H,2,1,0.504545,0.254545,0.240909
+Spain/La Liga,,Osasuna,Girona,H,2,1,0.468182,0.213636,0.318182
+Spain/La Liga,,Osasuna,Mallorca,H,2,1,0.590909,0.268182,0.140909
+Spain/La Liga,,Osasuna,Sevilla,H,2,1,0.477273,0.313636,0.209091
+Spain/La Liga,,Oviedo,Alaves,A,1,2,0.318182,0.395455,0.286364
+Spain/La Liga,,Oviedo,Ath Madrid,D,0,0,0.109091,0.254545,0.636364
+Spain/La Liga,,Oviedo,Elche,A,1,2,0.236364,0.313636,0.45
+Spain/La Liga,,Oviedo,Getafe,D,1,1,0.072727,0.318182,0.609091
+Spain/La Liga,,Oviedo,Sevilla,A,1,2,0.1,0.231818,0.668182
+Spain/La Liga,,Oviedo,Valencia,D,2,2,0.613636,0.227273,0.159091
+Spain/La Liga,,Oviedo,Villarreal,A,1,2,0.145455,0.263636,0.590909
+Spain/La Liga,,Real Madrid,Alaves,H,3,0,0.936364,0.027273,0.036364
+Spain/La Liga,,Real Madrid,Ath Bilbao,H,3,1,0.886364,0.05,0.063636
+Spain/La Liga,,Real Madrid,Ath Madrid,H,2,1,0.468182,0.395455,0.136364
+Spain/La Liga,,Real Madrid,Elche,H,3,1,0.795455,0.172727,0.031818
+Spain/La Liga,,Real Madrid,Getafe,H,2,0,0.931818,0.027273,0.040909
+Spain/La Liga,,Real Madrid,Girona,H,3,1,0.809091,0.127273,0.063636
+Spain/La Liga,,Real Madrid,Oviedo,H,4,1,0.886364,0.081818,0.031818
+Spain/La Liga,,Sevilla,Ath Madrid,H,2,1,0.263636,0.263636,0.472727
+Spain/La Liga,,Sevilla,Espanol,H,2,1,0.418182,0.331818,0.25
+Spain/La Liga,,Sevilla,Real Madrid,H,3,2,0.195455,0.209091,0.595455
+Spain/La Liga,,Sevilla,Sociedad,A,1,2,0.345455,0.272727,0.381818
+Spain/La Liga,,Sevilla,Valencia,H,2,1,0.422727,0.304545,0.272727
+Spain/La Liga,,Sevilla,Vallecano,H,2,1,0.659091,0.168182,0.172727
+Spain/La Liga,,Sociedad,Alaves,D,2,2,0.436364,0.295455,0.268182
+Spain/La Liga,,Sociedad,Betis,H,3,2,0.340909,0.236364,0.422727
+Spain/La Liga,,Sociedad,Getafe,A,2,3,0.413636,0.281818,0.304545
+Spain/La Liga,,Sociedad,Levante,H,3,2,0.472727,0.290909,0.236364
+Spain/La Liga,,Sociedad,Osasuna,D,2,2,0.495455,0.277273,0.227273
+Spain/La Liga,,Sociedad,Valencia,A,2,3,0.545455,0.240909,0.213636
+Spain/La Liga,,Valencia,Alaves,H,1,0,0.377273,0.381818,0.240909
+Spain/La Liga,,Valencia,Ath Madrid,A,1,2,0.281818,0.213636,0.504545
+Spain/La Liga,,Valencia,Barcelona,A,2,3,0.2,0.245455,0.554545
+Spain/La Liga,,Valencia,Celta,D,1,1,0.436364,0.231818,0.331818
+Spain/La Liga,,Valencia,Girona,A,1,2,0.463636,0.295455,0.240909
+Spain/La Liga,,Valencia,Osasuna,H,2,0,0.481818,0.322727,0.195455
+Spain/La Liga,,Valencia,Vallecano,A,1,2,0.372727,0.436364,0.190909
+Spain/La Liga,,Vallecano,Ath Bilbao,D,1,1,0.263636,0.340909,0.395455
+Spain/La Liga,,Vallecano,Elche,H,2,1,0.327273,0.254545,0.418182
+Spain/La Liga,,Vallecano,Espanol,D,1,1,0.354545,0.281818,0.363636
+Spain/La Liga,,Vallecano,Girona,A,1,2,0.327273,0.345455,0.327273
+Spain/La Liga,,Vallecano,Levante,D,1,1,0.545455,0.277273,0.177273
+Spain/La Liga,,Vallecano,Oviedo,A,1,2,0.404545,0.454545,0.140909
+Spain/La Liga,,Vallecano,Sociedad,D,1,1,0.359091,0.395455,0.245455
+Spain/La Liga,,Vallecano,Villarreal,D,1,1,0.231818,0.245455,0.522727
+Spain/La Liga,,Villarreal,Ath Madrid,A,2,3,0.440909,0.309091,0.25
+Spain/La Liga,,Villarreal,Celta,H,2,1,0.55,0.290909,0.159091
+Spain/La Liga,,Villarreal,Elche,H,3,1,0.75,0.168182,0.081818
+Spain/La Liga,,Villarreal,Levante,H,2,1,0.8,0.122727,0.077273
+Spain/La Liga,,Villarreal,Sevilla,H,2,1,0.677273,0.240909,0.081818
+Spain/La Liga,,Villarreal,Sociedad,H,2,1,0.731818,0.140909,0.127273
+Spain/La Liga 2,,Albacete,Almeria,H,3,2,0.222727,0.2,0.577273
+Spain/La Liga 2,,Albacete,Burgos,H,2,1,0.531818,0.245455,0.222727
+Spain/La Liga 2,,Albacete,Castellon,D,1,1,0.181818,0.281818,0.536364
+Spain/La Liga 2,,Albacete,Cultural Leonesa,D,1,1,0.159091,0.622727,0.218182
+Spain/La Liga 2,,Albacete,Eibar,H,2,1,0.313636,0.413636,0.272727
+Spain/La Liga 2,,Albacete,Granada,H,3,2,0.222727,0.322727,0.454545
+Spain/La Liga 2,,Albacete,Las Palmas,D,1,1,0.181818,0.354545,0.463636
+Spain/La Liga 2,,Albacete,Sociedad B,D,1,1,0.136364,0.640909,0.222727
+Spain/La Liga 2,,Almeria,Cultural Leonesa,H,3,2,0.736364,0.140909,0.122727
+Spain/La Liga 2,,Almeria,Las Palmas,D,1,1,0.540909,0.236364,0.222727
+Spain/La Liga 2,,Almeria,Leganes,H,3,2,0.554545,0.272727,0.172727
+Spain/La Liga 2,,Almeria,Malaga,H,3,2,0.545455,0.209091,0.245455
+Spain/La Liga 2,,Almeria,Mirandes,H,3,2,0.681818,0.15,0.168182
+Spain/La Liga 2,,Almeria,Sociedad B,D,3,3,0.822727,0.095455,0.081818
+Spain/La Liga 2,,Almeria,Valladolid,A,2,3,0.368182,0.340909,0.290909
+Spain/La Liga 2,,Andorra,Albacete,A,1,2,0.054545,0.286364,0.659091
+Spain/La Liga 2,,Andorra,Ceuta,A,1,2,0.090909,0.322727,0.586364
+Spain/La Liga 2,,Andorra,Eibar,A,1,2,0.277273,0.413636,0.309091
+Spain/La Liga 2,,Andorra,Las Palmas,A,1,2,0.109091,0.486364,0.404545
+Spain/La Liga 2,,Andorra,Malaga,H,2,1,0.331818,0.222727,0.445455
+Spain/La Liga 2,,Andorra,Santander,H,3,2,0.231818,0.281818,0.486364
+Spain/La Liga 2,,Andorra,Sp Gijon,A,1,2,0.240909,0.222727,0.536364
+Spain/La Liga 2,,Andorra,Valladolid,H,2,1,0.472727,0.268182,0.259091
+Spain/La Liga 2,,Burgos,Almeria,H,2,1,0.395455,0.231818,0.372727
+Spain/La Liga 2,,Burgos,Andorra,D,1,1,0.463636,0.277273,0.259091
+Spain/La Liga 2,,Burgos,Ceuta,H,2,1,0.168182,0.404545,0.427273
+Spain/La Liga 2,,Burgos,Cordoba,H,2,1,0.359091,0.304545,0.336364
+Spain/La Liga 2,,Burgos,La Coruna,H,2,1,0.35,0.468182,0.181818
+Spain/La Liga 2,,Burgos,Mirandes,H,2,1,0.468182,0.3,0.231818
+Spain/La Liga 2,,Burgos,Sp Gijon,A,1,2,0.345455,0.272727,0.381818
+Spain/La Liga 2,,Cadiz,Andorra,D,1,1,0.163636,0.677273,0.159091
+Spain/La Liga 2,,Cadiz,Cordoba,H,2,1,0.509091,0.245455,0.245455
+Spain/La Liga 2,,Cadiz,La Coruna,D,1,1,0.109091,0.413636,0.477273
+Spain/La Liga 2,,Cadiz,Las Palmas,D,1,1,0.545455,0.3,0.154545
+Spain/La Liga 2,,Cadiz,Leganes,D,1,1,0.190909,0.609091,0.2
+Spain/La Liga 2,,Cadiz,Malaga,H,2,1,0.595455,0.290909,0.113636
+Spain/La Liga 2,,Cadiz,Sociedad B,A,1,2,0.177273,0.659091,0.163636
+Spain/La Liga 2,,Cadiz,Zaragoza,D,2,2,0.554545,0.209091,0.236364
+Spain/La Liga 2,,Castellon,Almeria,H,2,1,0.609091,0.186364,0.204545
+Spain/La Liga 2,,Castellon,Burgos,H,2,1,0.740909,0.140909,0.118182
+Spain/La Liga 2,,Castellon,Cadiz,D,1,1,0.154545,0.295455,0.55
+Spain/La Liga 2,,Castellon,Cordoba,H,3,2,0.213636,0.386364,0.4
+Spain/La Liga 2,,Castellon,Cultural Leonesa,D,3,3,0.809091,0.127273,0.063636
+Spain/La Liga 2,,Castellon,Eibar,D,2,2,0.595455,0.272727,0.131818
+Spain/La Liga 2,,Castellon,Granada,D,1,1,0.222727,0.390909,0.386364
+Spain/La Liga 2,,Castellon,Santander,A,1,2,0.2,0.404545,0.395455
+Spain/La Liga 2,,Ceuta,Albacete,D,1,1,0.181818,0.554545,0.263636
+Spain/La Liga 2,,Ceuta,Cadiz,H,2,1,0.190909,0.581818,0.227273
+Spain/La Liga 2,,Ceuta,Castellon,D,1,1,0.195455,0.504545,0.3
+Spain/La Liga 2,,Ceuta,Cordoba,A,1,2,0.063636,0.345455,0.590909
+Spain/La Liga 2,,Ceuta,La Coruna,H,3,2,0.086364,0.3,0.613636
+Spain/La Liga 2,,Ceuta,Malaga,D,1,1,0.104545,0.368182,0.527273
+Spain/La Liga 2,,Ceuta,Santander,A,1,2,0.118182,0.286364,0.595455
+Spain/La Liga 2,,Ceuta,Sociedad B,A,3,4,0.890909,0.059091,0.05
+Spain/La Liga 2,,Cordoba,Albacete,D,1,1,0.504545,0.277273,0.218182
+Spain/La Liga 2,,Cordoba,Andorra,A,1,2,0.118182,0.290909,0.590909
+Spain/La Liga 2,,Cordoba,Granada,H,2,1,0.390909,0.359091,0.25
+Spain/La Liga 2,,Cordoba,Huesca,A,1,2,0.259091,0.363636,0.377273
+Spain/La Liga 2,,Cordoba,Mirandes,A,1,2,0.4,0.318182,0.281818
+Spain/La Liga 2,,Cordoba,Sociedad B,D,1,1,0.195455,0.586364,0.218182
+Spain/La Liga 2,,Cordoba,Sp Gijon,D,1,1,0.213636,0.327273,0.459091
+Spain/La Liga 2,,Cordoba,Zaragoza,H,3,2,0.281818,0.377273,0.340909
+Spain/La Liga 2,,Cultural Leonesa,Andorra,D,1,1,0.122727,0.731818,0.145455
+Spain/La Liga 2,,Cultural Leonesa,Burgos,A,0,3,0.045455,0.190909,0.763636
+Spain/La Liga 2,,Cultural Leonesa,Cadiz,D,1,1,0.681818,0.2,0.118182
+Spain/La Liga 2,,Cultural Leonesa,Cordoba,A,0,2,0.05,0.245455,0.704545
+Spain/La Liga 2,,Cultural Leonesa,Eibar,D,2,2,0.618182,0.263636,0.118182
+Spain/La Liga 2,,Cultural Leonesa,Las Palmas,H,4,3,0.054545,0.104545,0.840909
+Spain/La Liga 2,,Cultural Leonesa,Santander,A,2,3,0.613636,0.204545,0.181818
+Spain/La Liga 2,,Cultural Leonesa,Valladolid,H,2,1,0.713636,0.213636,0.072727
+Spain/La Liga 2,,Eibar,Burgos,A,1,2,0.522727,0.254545,0.222727
+Spain/La Liga 2,,Eibar,Cadiz,A,1,2,0.331818,0.35,0.318182
+Spain/La Liga 2,,Eibar,Ceuta,A,1,2,0.181818,0.35,0.468182
+Spain/La Liga 2,,Eibar,Cordoba,H,2,1,0.495455,0.313636,0.190909
+Spain/La Liga 2,,Eibar,Huesca,H,2,1,0.490909,0.281818,0.227273
+Spain/La Liga 2,,Eibar,Las Palmas,H,2,1,0.386364,0.322727,0.290909
+Spain/La Liga 2,,Eibar,Malaga,H,2,1,0.468182,0.322727,0.209091
+Spain/La Liga 2,,Granada,Almeria,A,1,2,0.290909,0.336364,0.372727
+Spain/La Liga 2,,Granada,Andorra,D,2,2,0.372727,0.418182,0.209091
+Spain/La Liga 2,,Granada,Burgos,D,1,1,0.572727,0.3,0.127273
+Spain/La Liga 2,,Granada,Cultural Leonesa,H,2,1,0.777273,0.145455,0.077273
+Spain/La Liga 2,,Granada,Huesca,H,2,1,0.3,0.418182,0.281818
+Spain/La Liga 2,,Granada,Malaga,D,2,2,0.363636,0.286364,0.35
+Spain/La Liga 2,,Granada,Sp Gijon,H,2,1,0.486364,0.272727,0.240909
+Spain/La Liga 2,,Huesca,Albacete,D,1,1,0.136364,0.540909,0.322727
+Spain/La Liga 2,,Huesca,Almeria,H,2,1,0.290909,0.481818,0.227273
+Spain/La Liga 2,,Huesca,Castellon,H,2,1,0.290909,0.254545,0.454545
+Spain/La Liga 2,,Huesca,Cultural Leonesa,H,3,1,0.781818,0.122727,0.095455
+Spain/La Liga 2,,Huesca,La Coruna,A,1,2,0.35,0.213636,0.436364
+Spain/La Liga 2,,Huesca,Sociedad B,D,2,2,0.518182,0.222727,0.259091
+Spain/La Liga 2,,Huesca,Zaragoza,D,1,1,0.4,0.368182,0.231818
+Spain/La Liga 2,,La Coruna,Andorra,A,1,2,0.122727,0.386364,0.490909
+Spain/La Liga 2,,La Coruna,Cordoba,H,2,1,0.413636,0.345455,0.240909
+Spain/La Liga 2,,La Coruna,Granada,D,1,1,0.327273,0.468182,0.204545
+Spain/La Liga 2,,La Coruna,Las Palmas,D,1,1,0.345455,0.422727,0.231818
+Spain/La Liga 2,,La Coruna,Leganes,D,1,1,0.286364,0.345455,0.368182
+Spain/La Liga 2,,La Coruna,Malaga,D,1,1,0.413636,0.286364,0.3
+Spain/La Liga 2,,La Coruna,Mirandes,A,1,2,0.372727,0.445455,0.181818
+Spain/La Liga 2,,La Coruna,Zaragoza,H,2,1,0.413636,0.327273,0.259091
+Spain/La Liga 2,,Las Palmas,Ceuta,D,1,1,0.209091,0.613636,0.177273
+Spain/La Liga 2,,Las Palmas,Granada,H,2,1,0.568182,0.331818,0.1
+Spain/La Liga 2,,Las Palmas,Huesca,H,1,0,0.527273,0.35,0.122727
+Spain/La Liga 2,,Las Palmas,Leganes,H,2,1,0.386364,0.322727,0.290909
+Spain/La Liga 2,,Las Palmas,Sp Gijon,H,2,1,0.522727,0.231818,0.245455
+Spain/La Liga 2,,Las Palmas,Valladolid,D,2,2,0.645455,0.231818,0.122727
+Spain/La Liga 2,,Las Palmas,Zaragoza,A,1,2,0.186364,0.440909,0.372727
+Spain/La Liga 2,,Leganes,Albacete,H,2,1,0.472727,0.309091,0.218182
+Spain/La Liga 2,,Leganes,Andorra,D,2,2,0.436364,0.331818,0.231818
+Spain/La Liga 2,,Leganes,Ceuta,H,2,1,0.777273,0.15,0.072727
+Spain/La Liga 2,,Leganes,Eibar,H,2,1,0.231818,0.472727,0.295455
+Spain/La Liga 2,,Leganes,Huesca,H,2,1,0.618182,0.254545,0.127273
+Spain/La Liga 2,,Leganes,Mirandes,H,2,1,0.686364,0.181818,0.131818
+Spain/La Liga 2,,Leganes,Santander,H,2,1,0.286364,0.368182,0.345455
+Spain/La Liga 2,,Leganes,Zaragoza,H,2,1,0.55,0.286364,0.163636
+Spain/La Liga 2,,Malaga,Castellon,H,2,1,0.509091,0.3,0.190909
+Spain/La Liga 2,,Malaga,Huesca,A,2,3,0.254545,0.422727,0.322727
+Spain/La Liga 2,,Malaga,Las Palmas,A,1,2,0.377273,0.445455,0.177273
+Spain/La Liga 2,,Malaga,Leganes,D,1,1,0.372727,0.395455,0.231818
+Spain/La Liga 2,,Malaga,Santander,D,2,2,0.490909,0.218182,0.290909
+Spain/La Liga 2,,Malaga,Sp Gijon,H,2,1,0.645455,0.209091,0.145455
+Spain/La Liga 2,,Malaga,Valladolid,D,2,2,0.504545,0.381818,0.113636
+Spain/La Liga 2,,Mirandes,Albacete,D,1,1,0.454545,0.227273,0.318182
+Spain/La Liga 2,,Mirandes,Cadiz,D,1,1,0.068182,0.359091,0.572727
+Spain/La Liga 2,,Mirandes,Castellon,D,1,1,0.3,0.277273,0.422727
+Spain/La Liga 2,,Mirandes,Ceuta,D,0,0,0.063636,0.213636,0.722727
+Spain/La Liga 2,,Mirandes,Cultural Leonesa,A,1,2,0.036364,0.213636,0.75
+Spain/La Liga 2,,Mirandes,Eibar,H,2,1,0.231818,0.4,0.368182
+Spain/La Liga 2,,Mirandes,Granada,H,2,1,0.218182,0.286364,0.495455
+Spain/La Liga 2,,Mirandes,Valladolid,D,1,1,0.104545,0.331818,0.563636
+Spain/La Liga 2,,Santander,Albacete,A,2,3,0.418182,0.340909,0.240909
+Spain/La Liga 2,,Santander,Almeria,D,2,2,0.504545,0.286364,0.209091
+Spain/La Liga 2,,Santander,Cadiz,H,2,1,0.5,0.277273,0.222727
+Spain/La Liga 2,,Santander,Cordoba,H,2,1,0.75,0.127273,0.122727
+Spain/La Liga 2,,Santander,Huesca,H,3,1,0.604545,0.25,0.145455
+Spain/La Liga 2,,Santander,Sp Gijon,H,2,1,0.690909,0.127273,0.181818
+Spain/La Liga 2,,Santander,Valladolid,D,2,2,0.5,0.25,0.25
+Spain/La Liga 2,,Sociedad B,Burgos,A,1,2,0.127273,0.490909,0.381818
+Spain/La Liga 2,,Sociedad B,Castellon,D,1,1,0.1,0.418182,0.481818
+Spain/La Liga 2,,Sociedad B,Cultural Leonesa,D,1,1,0.159091,0.686364,0.154545
+Spain/La Liga 2,,Sociedad B,Eibar,D,1,1,0.081818,0.454545,0.463636
+Spain/La Liga 2,,Sociedad B,Granada,H,3,2,0.068182,0.290909,0.640909
+Spain/La Liga 2,,Sociedad B,La Coruna,H,2,1,0.645455,0.209091,0.145455
+Spain/La Liga 2,,Sociedad B,Mirandes,A,1,2,0.081818,0.309091,0.609091
+Spain/La Liga 2,,Sociedad B,Santander,A,1,2,0.109091,0.359091,0.531818
+Spain/La Liga 2,,Sp Gijon,Almeria,H,2,1,0.368182,0.318182,0.313636
+Spain/La Liga 2,,Sp Gijon,Cadiz,D,1,1,0.404545,0.340909,0.254545
+Spain/La Liga 2,,Sp Gijon,Castellon,H,3,2,0.340909,0.263636,0.395455
+Spain/La Liga 2,,Sp Gijon,Ceuta,H,2,1,0.818182,0.113636,0.068182
+Spain/La Liga 2,,Sp Gijon,La Coruna,D,1,1,0.340909,0.286364,0.372727
+Spain/La Liga 2,,Sp Gijon,Leganes,D,1,1,0.404545,0.404545,0.190909
+Spain/La Liga 2,,Sp Gijon,Sociedad B,H,2,1,0.45,0.318182,0.231818
+Spain/La Liga 2,,Valladolid,Burgos,D,1,1,0.436364,0.277273,0.286364
+Spain/La Liga 2,,Valladolid,Cadiz,A,1,2,0.127273,0.463636,0.409091
+Spain/La Liga 2,,Valladolid,Eibar,H,2,1,0.445455,0.277273,0.277273
+Spain/La Liga 2,,Valladolid,Huesca,H,2,1,0.595455,0.209091,0.195455
+Spain/La Liga 2,,Valladolid,La Coruna,A,1,2,0.409091,0.290909,0.3
+Spain/La Liga 2,,Valladolid,Leganes,H,2,1,0.240909,0.3,0.459091
+Spain/La Liga 2,,Valladolid,Sociedad B,D,1,1,0.313636,0.281818,0.404545
+Spain/La Liga 2,,Valladolid,Zaragoza,D,2,2,0.6,0.268182,0.131818
+Spain/La Liga 2,,Zaragoza,Almeria,A,1,2,0.154545,0.25,0.595455
+Spain/La Liga 2,,Zaragoza,Burgos,A,1,2,0.1,0.386364,0.513636
+Spain/La Liga 2,,Zaragoza,Ceuta,A,1,2,0.081818,0.263636,0.654545
+Spain/La Liga 2,,Zaragoza,Granada,D,1,1,0.240909,0.372727,0.386364
+Spain/La Liga 2,,Zaragoza,Malaga,D,1,1,0.259091,0.318182,0.422727
+Spain/La Liga 2,,Zaragoza,Mirandes,A,1,2,0.236364,0.390909,0.372727
+Spain/La Liga 2,,Zaragoza,Santander,D,1,1,0.259091,0.381818,0.359091
+Spain/La Liga 2,,Zaragoza,Sp Gijon,D,1,1,0.422727,0.263636,0.313636

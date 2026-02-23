@@ -1,7 +1,7 @@
 {
     "season": "United States\\MLS\\mlsstat2025",
     "source_file": "United States\\MLS\\mlsstat2025.csv",
-    "generated_at_utc": "2026-02-22T05:39:50",
+    "generated_at_utc": "2026-02-23T17:43:49",
     "teams": {
         "Atlanta Utd": {
             "status": "club_not_found",
@@ -49,7 +49,7 @@
             "status": "ok",
             "club_id": "4078",
             "club_url": "https://www.transfermarkt.com/club-de-foot-montreal/startseite/verein/4078",
-            "injured_players_excluded": 3,
+            "injured_players_excluded": 1,
             "top_5_players": [
                 {
                     "player": "Iv\u00e1n Jaime",
@@ -125,7 +125,7 @@
             "status": "ok",
             "club_id": "432",
             "club_url": "https://www.transfermarkt.com/chicago-fire-fc/startseite/verein/432",
-            "injured_players_excluded": 4,
+            "injured_players_excluded": 2,
             "top_5_players": [
                 {
                     "player": "Hugo Cuypers",
@@ -146,14 +146,14 @@
                     "market_value_eur": 3500000
                 },
                 {
-                    "player": "Joel Waterman",
-                    "position_group": "defense",
+                    "player": "Chris Brady",
+                    "position_group": "goalkeeper",
                     "market_value": "\u20ac2.50m",
                     "market_value_eur": 2500000
                 },
                 {
-                    "player": "Chris Brady",
-                    "position_group": "goalkeeper",
+                    "player": "Anton Sal\u00e9tros",
+                    "position_group": "midfield",
                     "market_value": "\u20ac2.50m",
                     "market_value_eur": 2500000
                 }
@@ -201,7 +201,7 @@
             "status": "ok",
             "club_id": "813",
             "club_url": "https://www.transfermarkt.com/columbus-crew-sc/startseite/verein/813",
-            "injured_players_excluded": 2,
+            "injured_players_excluded": 1,
             "top_5_players": [
                 {
                     "player": "Diego Rossi",
@@ -353,13 +353,19 @@
             "status": "ok",
             "club_id": "9168",
             "club_url": "https://www.transfermarkt.com/houston-dynamo-fc/startseite/verein/9168",
-            "injured_players_excluded": 1,
+            "injured_players_excluded": 0,
             "top_5_players": [
                 {
                     "player": "Mateusz Bogusz",
                     "position_group": "midfield",
                     "market_value": "\u20ac6.00m",
                     "market_value_eur": 6000000
+                },
+                {
+                    "player": "Jack McGlynn",
+                    "position_group": "midfield",
+                    "market_value": "\u20ac5.00m",
+                    "market_value_eur": 5000000
                 },
                 {
                     "player": "Ezequiel Ponce",
@@ -378,12 +384,6 @@
                     "position_group": "midfield",
                     "market_value": "\u20ac3.00m",
                     "market_value_eur": 3000000
-                },
-                {
-                    "player": "Guilherme",
-                    "position_group": "attack",
-                    "market_value": "\u20ac2.50m",
-                    "market_value_eur": 2500000
                 }
             ]
         },
@@ -391,17 +391,17 @@
             "status": "ok",
             "club_id": "69261",
             "club_url": "https://www.transfermarkt.com/inter-miami-cf/startseite/verein/69261",
-            "injured_players_excluded": 1,
+            "injured_players_excluded": 0,
             "top_5_players": [
                 {
-                    "player": "Rodrigo De Paul",
-                    "position_group": "midfield",
+                    "player": "Lionel Messi",
+                    "position_group": "attack",
                     "market_value": "\u20ac15.00m",
                     "market_value_eur": 15000000
                 },
                 {
-                    "player": "Lionel Messi",
-                    "position_group": "attack",
+                    "player": "Rodrigo De Paul",
+                    "position_group": "midfield",
                     "market_value": "\u20ac15.00m",
                     "market_value_eur": 15000000
                 },
@@ -418,8 +418,8 @@
                     "market_value_eur": 6000000
                 },
                 {
-                    "player": "Tadeo Allende",
-                    "position_group": "attack",
+                    "player": "Sergio Reguil\u00f3n",
+                    "position_group": "defense",
                     "market_value": "\u20ac5.00m",
                     "market_value_eur": 5000000
                 }
@@ -505,7 +505,7 @@
             "status": "ok",
             "club_id": "56089",
             "club_url": "https://www.transfermarkt.com/minnesota-united-fc/startseite/verein/56089",
-            "injured_players_excluded": 1,
+            "injured_players_excluded": 0,
             "top_5_players": [
                 {
                     "player": "Kelvin Yeboah",
@@ -520,14 +520,14 @@
                     "market_value_eur": 5000000
                 },
                 {
-                    "player": "Bongokuhle Hlongwane",
-                    "position_group": "attack",
+                    "player": "Dominik Fitz",
+                    "position_group": "midfield",
                     "market_value": "\u20ac3.50m",
                     "market_value_eur": 3500000
                 },
                 {
-                    "player": "Dominik Fitz",
-                    "position_group": "midfield",
+                    "player": "Bongokuhle Hlongwane",
+                    "position_group": "attack",
                     "market_value": "\u20ac3.50m",
                     "market_value_eur": 3500000
                 },
@@ -602,16 +602,16 @@
                     "market_value_eur": 3000000
                 },
                 {
-                    "player": "Peyton Miller",
-                    "position_group": "defense",
-                    "market_value": "\u20ac3.00m",
-                    "market_value_eur": 3000000
-                },
-                {
                     "player": "Alhassan Yusuf",
                     "position_group": "midfield",
                     "market_value": "\u20ac3.00m",
                     "market_value_eur": 3000000
+                },
+                {
+                    "player": "Matt Turner",
+                    "position_group": "goalkeeper",
+                    "market_value": "\u20ac2.50m",
+                    "market_value_eur": 2500000
                 }
             ]
         },
@@ -619,7 +619,7 @@
             "status": "ok",
             "club_id": "40058",
             "club_url": "https://www.transfermarkt.com/new-york-city-fc/startseite/verein/40058",
-            "injured_players_excluded": 5,
+            "injured_players_excluded": 3,
             "top_5_players": [
                 {
                     "player": "Nicol\u00e1s Fern\u00e1ndez Mercau",
@@ -695,7 +695,7 @@
             "status": "ok",
             "club_id": "45604",
             "club_url": "https://www.transfermarkt.com/orlando-city-sc/startseite/verein/45604",
-            "injured_players_excluded": 2,
+            "injured_players_excluded": 3,
             "top_5_players": [
                 {
                     "player": "Mart\u00edn Ojeda",
@@ -710,14 +710,14 @@
                     "market_value_eur": 6500000
                 },
                 {
-                    "player": "Braian Ojeda",
-                    "position_group": "midfield",
+                    "player": "David Brekalo",
+                    "position_group": "defense",
                     "market_value": "\u20ac4.00m",
                     "market_value_eur": 4000000
                 },
                 {
-                    "player": "David Brekalo",
-                    "position_group": "defense",
+                    "player": "Braian Ojeda",
+                    "position_group": "midfield",
                     "market_value": "\u20ac4.00m",
                     "market_value_eur": 4000000
                 },
@@ -809,14 +809,8 @@
             "status": "ok",
             "club_id": "6643",
             "club_url": "https://www.transfermarkt.com/real-salt-lake-city/startseite/verein/6643",
-            "injured_players_excluded": 0,
+            "injured_players_excluded": 4,
             "top_5_players": [
-                {
-                    "player": "Diego Luna",
-                    "position_group": "midfield",
-                    "market_value": "\u20ac8.00m",
-                    "market_value_eur": 8000000
-                },
                 {
                     "player": "Juan Manuel Sanabria",
                     "position_group": "defense",
@@ -830,16 +824,22 @@
                     "market_value_eur": 4000000
                 },
                 {
-                    "player": "Lukas Engel",
+                    "player": "Justen Glad",
                     "position_group": "defense",
                     "market_value": "\u20ac3.00m",
                     "market_value_eur": 3000000
                 },
                 {
-                    "player": "Justen Glad",
-                    "position_group": "defense",
-                    "market_value": "\u20ac3.00m",
-                    "market_value_eur": 3000000
+                    "player": "Dominik Marczuk",
+                    "position_group": "attack",
+                    "market_value": "\u20ac1.50m",
+                    "market_value_eur": 1500000
+                },
+                {
+                    "player": "Zavier Gozo",
+                    "position_group": "attack",
+                    "market_value": "\u20ac1.50m",
+                    "market_value_eur": 1500000
                 }
             ]
         },
@@ -847,7 +847,7 @@
             "status": "ok",
             "club_id": "114977",
             "club_url": "https://www.transfermarkt.com/san-diego-fc/startseite/verein/114977",
-            "injured_players_excluded": 5,
+            "injured_players_excluded": 3,
             "top_5_players": [
                 {
                     "player": "Anders Dreyer",
@@ -868,14 +868,14 @@
                     "market_value_eur": 5000000
                 },
                 {
-                    "player": "Luca Bombino",
-                    "position_group": "defense",
+                    "player": "Marcus Ingvartsen",
+                    "position_group": "attack",
                     "market_value": "\u20ac2.50m",
                     "market_value_eur": 2500000
                 },
                 {
-                    "player": "Marcus Ingvartsen",
-                    "position_group": "attack",
+                    "player": "Luca Bombino",
+                    "position_group": "defense",
                     "market_value": "\u20ac2.50m",
                     "market_value_eur": 2500000
                 }
@@ -923,13 +923,19 @@
             "status": "ok",
             "club_id": "9636",
             "club_url": "https://www.transfermarkt.com/seattle-sounders-fc/startseite/verein/9636",
-            "injured_players_excluded": 2,
+            "injured_players_excluded": 1,
             "top_5_players": [
                 {
                     "player": "Jes\u00fas Ferreira",
                     "position_group": "attack",
                     "market_value": "\u20ac4.00m",
                     "market_value_eur": 4000000
+                },
+                {
+                    "player": "\u00c1lex Rold\u00e1n",
+                    "position_group": "defense",
+                    "market_value": "\u20ac3.50m",
+                    "market_value_eur": 3500000
                 },
                 {
                     "player": "Nouhou",
@@ -940,12 +946,6 @@
                 {
                     "player": "Cristian Rold\u00e1n",
                     "position_group": "midfield",
-                    "market_value": "\u20ac3.50m",
-                    "market_value_eur": 3500000
-                },
-                {
-                    "player": "\u00c1lex Rold\u00e1n",
-                    "position_group": "defense",
                     "market_value": "\u20ac3.50m",
                     "market_value_eur": 3500000
                 },
@@ -961,7 +961,7 @@
             "status": "ok",
             "club_id": "4284",
             "club_url": "https://www.transfermarkt.com/sporting-kansas-city/startseite/verein/4284",
-            "injured_players_excluded": 0,
+            "injured_players_excluded": 2,
             "top_5_players": [
                 {
                     "player": "Dejan Jovelji\u0107",
@@ -1037,7 +1037,7 @@
             "status": "ok",
             "club_id": "11141",
             "club_url": "https://www.transfermarkt.com/toronto-fc/startseite/verein/11141",
-            "injured_players_excluded": 3,
+            "injured_players_excluded": 5,
             "top_5_players": [
                 {
                     "player": "Djordje Mihailovic",
@@ -1058,16 +1058,16 @@
                     "market_value_eur": 3000000
                 },
                 {
-                    "player": "Matheus Pereira",
-                    "position_group": "defense",
-                    "market_value": "\u20ac2.50m",
-                    "market_value_eur": 2500000
-                },
-                {
                     "player": "Walker Zimmerman",
                     "position_group": "defense",
                     "market_value": "\u20ac2.00m",
                     "market_value_eur": 2000000
+                },
+                {
+                    "player": "Emilio Aristiz\u00e1bal",
+                    "position_group": "attack",
+                    "market_value": "\u20ac1.20m",
+                    "market_value_eur": 1200000
                 }
             ]
         },
