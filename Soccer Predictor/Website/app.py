@@ -754,6 +754,34 @@ def api_predict_mls():
     return jsonify({"ok": True, "prediction": result})
 
 
+@app.get("/api/h2h")
+def api_h2h():
+    """Return head-to-head and form data for two teams."""
+    team1 = request.args.get("team1", "").strip()
+    team2 = request.args.get("team2", "").strip()
+    mode = request.args.get("mode", "global").strip().lower()
+    
+    ctx = get_context(mode)
+    
+    if not team1 or not team2:
+        return jsonify({"ok": False, "error": "Missing teams"}), 400
+        
+    t1_data = ctx.overall_teams.get(team1, {})
+    t2_data = ctx.overall_teams.get(team2, {})
+    t1_form = ctx.current_form.get("teams", {}).get(team1, {})
+    t2_form = ctx.current_form.get("teams", {}).get(team2, {})
+    
+    return jsonify({
+        "ok": True,
+        "team1_stats": t1_data,
+        "team2_stats": t2_data,
+        "team1_form": t1_form,
+        "team2_form": t2_form,
+        "h2h_data": ctx.head_to_head.get(team1, {}).get(team2),
+        "h2h_data_reverse": ctx.head_to_head.get(team2, {}).get(team1)
+    })
+
+
 @app.get("/api/upcoming/global")
 def api_upcoming_global():
     """Return upcoming global fixtures and persistent accuracy stats."""
@@ -779,6 +807,12 @@ def api_league_tables():
     else:
         data = _load_projected_tables(GLOBAL_PROJECTED_TABLE_FILE)
     return jsonify({"ok": True, **data})
+
+
+@app.get("/tactics")
+def tactics():
+    """Render the tactics whiteboard page."""
+    return render_template("tactics.html")
 
 
 if __name__ == "__main__":

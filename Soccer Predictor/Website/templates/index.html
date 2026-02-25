@@ -5,12 +5,218 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Soccer Predictor</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <style>
+    /* Dark Mode Variables & Overrides */
+    :root {
+      --bg-color: #ffffff;
+      --text-color: #333333;
+      --card-bg: #ffffff;
+      --card-border: #ddd;
+      --accent-color: #d32f2f;
+    }
+    body.dark-mode {
+      --bg-color: #121212;
+      --text-color: #e0e0e0;
+      --card-bg: #1e1e1e;
+      --card-border: #333;
+      --accent-color: #ff5252;
+    }
+    /* Dark Mode Table Row Colors */
+    body.dark-mode .table-first { background-color: rgba(255, 215, 0, 0.15) !important; }
+    body.dark-mode .table-promo-blue { background-color: rgba(33, 150, 243, 0.15) !important; }
+    body.dark-mode .table-playoff-purple { background-color: rgba(156, 39, 176, 0.15) !important; }
+    body.dark-mode .table-playoff-orange { background-color: rgba(255, 152, 0, 0.15) !important; }
+    body.dark-mode .table-second-pink { background-color: rgba(233, 30, 99, 0.15) !important; }
+    body.dark-mode .table-bottom { background-color: rgba(244, 67, 54, 0.15) !important; }
+
+    body { background-color: var(--bg-color); color: var(--text-color); transition: background-color 0.3s, color 0.3s; }
+    .card { background-color: var(--card-bg); border-color: var(--card-border); color: var(--text-color); }
+    .match-card { background-color: var(--card-bg); border-color: var(--card-border); color: var(--text-color); }
+    .mls-cup-card { background-color: var(--card-bg); border-color: var(--accent-color); }
+    .mls-cup-card h4 { color: var(--text-color); }
+    .bracket-round h4 { color: var(--text-color); opacity: 0.8; }
+    .bracket-container { background-color: var(--bg-color); border: 1px solid var(--card-border); }
+    
+    /* Existing Styles */
+    /* Bracket Styles */
+    .bracket-container {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      overflow-x: auto;
+      padding: 10px;
+      border-radius: 8px;
+    }
+    .conference-section {
+      margin-bottom: 20px;
+    }
+    .conference-title {
+      text-align: center;
+      margin-bottom: 15px;
+      background: #333;
+      color: #fff;
+      padding: 8px;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+    .bracket-tree {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+    }
+    .bracket-round {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      flex: 1;
+      min-width: 160px;
+    }
+    .bracket-round h4 {
+      text-align: center;
+      font-size: 0.85rem;
+      margin: 0 0 10px 0;
+      text-transform: uppercase;
+    }
+    .match-card {
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      padding: 8px 10px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      font-size: 0.85rem;
+    }
+    .match-card .match-title {
+      font-size: 0.7rem;
+      color: #999;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+    .match-card .team {
+      padding: 3px 0;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .match-card .team:last-child {
+      border-bottom: none;
+    }
+    .match-card .team.winner {
+      font-weight: bold;
+      color: var(--accent-color);
+    }
+    .match-card .team.winner::after {
+      content: '✓';
+      margin-left: 5px;
+      font-size: 0.8em;
+    }
+    .mls-cup-container {
+      border-top: 4px solid #333;
+      padding-top: 20px;
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+    }
+    .mls-cup-card {
+      border: 2px solid var(--accent-color);
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      min-width: 280px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .mls-cup-card h4 { margin: 0 0 10px 0; }
+    .mls-cup-winner { 
+      font-size: 1.3rem; 
+      font-weight: bold; 
+      color: var(--accent-color); 
+      margin-top: 10px; 
+      padding-top: 10px;
+      border-top: 1px solid #eee;
+    }
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: 1px solid var(--text-color);
+      color: var(--text-color);
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    /* Player Tab Styles */
+    .player-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
+    }
+    .player-card {
+      border: 1px solid var(--card-border);
+      background: var(--card-bg);
+      border-radius: 8px;
+      padding: 15px;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+    .player-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .player-avatar {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+    .player-name { font-weight: bold; margin-bottom: 5px; color: var(--text-color); }
+    .player-team { font-size: 0.85rem; color: #777; margin-bottom: 10px; }
+    .player-stat-badge { background: #eee; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; display: inline-block; }
+    body.dark-mode .player-stat-badge { background: #333; color: #eee; }
+
+    /* H2H Styles */
+    .h2h-container { display: flex; gap: 20px; flex-wrap: wrap; }
+    .h2h-col { flex: 1; min-width: 250px; }
+    .stat-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid var(--card-border); }
+    .stat-label { font-weight: bold; color: #777; }
+    .stat-val { font-weight: bold; }
+    
+    /* Prediction League Styles */
+    .leaderboard-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .leaderboard-table th, .leaderboard-table td { padding: 8px; text-align: left; border-bottom: 1px solid var(--card-border); }
+    .prediction-card { border: 1px solid var(--card-border); padding: 10px; margin-bottom: 10px; border-radius: 6px; }
+    .pred-options { display: flex; gap: 10px; margin-top: 5px; }
+    .pred-btn { padding: 5px 10px; border: 1px solid #ccc; background: var(--card-bg); cursor: pointer; border-radius: 4px; }
+    .pred-btn.selected { background: var(--accent-color); color: white; border-color: var(--accent-color); }
+    .points-badge { background: #ffd700; color: #333; padding: 2px 6px; border-radius: 10px; font-size: 0.8em; font-weight: bold; }
+
+    /* Notifications */
+    .notification-area {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 2000;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .notification {
+        background: #333;
+        color: #fff;
+        padding: 12px 20px;
+        border-radius: 4px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        animation: fadeIn 0.3s forwards;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeOut { to { opacity: 0; transform: translateY(-10px); } }
+  </style>
 </head>
 <body>
   <main class="page">
+    <div id="notification-area" class="notification-area"></div>
+    <button id="theme-toggle" class="theme-toggle">🌙 Dark Mode</button>
     <div class="home-logo-wrap">
-      <a class="home-logo-btn" href="/" aria-label="Home">
-        <span class="home-logo-mark">SP</span>
+      <a href="/" style="text-decoration: none; display: flex; align-items: center; gap: 8px; color: var(--text-color); font-weight: bold; font-size: 1.2rem;" aria-label="Home">
+        <span style="background: var(--accent-color); color: #fff; padding: 4px 8px; border-radius: 4px;">SP</span>
         <span>Home</span>
       </a>
     </div>
@@ -21,8 +227,12 @@
       <button id="tab-home" class="tab-btn active" type="button">Home</button>
       <button id="tab-predictor" class="tab-btn" type="button">Predictor (European Leagues)</button>
       <button id="tab-global" class="tab-btn" type="button">Upcoming Matches</button>
+      <button id="tab-h2h" class="tab-btn" type="button">Head to Head</button>
+      <button id="tab-league" class="tab-btn" type="button">Prediction League</button>
+      <button id="tab-market" class="tab-btn" type="button">Market & Odds</button>
       <button id="tab-league-table" class="tab-btn" type="button">League Table</button>
       <button id="tab-players" class="tab-btn" type="button">Players (Coming Soon)</button>
+      <button id="tab-tactics" class="tab-btn" type="button">Tactics Board</button>
       <button id="tab-about" class="tab-btn" type="button">About</button>
     </div>
 
@@ -116,6 +326,60 @@
       <div id="global-list" class="card">Loading...</div>
     </section>
 
+    <section id="panel-h2h" class="hidden">
+      <div class="card">
+        <h3>Head to Head Comparison</h3>
+        <div class="controls" style="display: flex; gap: 10px; flex-wrap: wrap; align-items: end;">
+            <div style="flex: 1;">
+                <label for="h2h-team1">Team 1</label>
+                <input id="h2h-team1" list="teams" placeholder="Type team name..." style="width: 100%; padding: 8px; border: 1px solid var(--card-border); border-radius: 4px; background: var(--card-bg); color: var(--text-color);">
+            </div>
+            <div style="flex: 1;">
+                <label for="h2h-team2">Team 2</label>
+                <input id="h2h-team2" list="teams" placeholder="Type team name..." style="width: 100%; padding: 8px; border: 1px solid var(--card-border); border-radius: 4px; background: var(--card-bg); color: var(--text-color);">
+            </div>
+            <button id="btn-compare" class="tab-btn active" type="button" style="margin: 0; height: 38px;">Compare</button>
+        </div>
+      </div>
+      <div id="h2h-results" class="hidden">
+          <!-- Results injected here -->
+      </div>
+    </section>
+
+    <section id="panel-league" class="hidden">
+      <div class="card">
+        <h3>Prediction League</h3>
+        <p>Compete against the AI! Predict the outcome of upcoming matches.</p>
+        <div style="margin-bottom: 15px;">
+            <label>Your Name: <input id="league-username" type="text" placeholder="Enter name" style="padding: 5px; border-radius: 4px; border: 1px solid var(--card-border); background: var(--card-bg); color: var(--text-color);"></label>
+            <span id="user-points" style="margin-left: 10px; font-weight: bold;">Points: 0</span>
+        </div>
+      </div>
+      
+      <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+          <div class="card" style="flex: 2; min-width: 300px;">
+              <h4>Upcoming Fixtures to Predict</h4>
+              <div id="league-fixtures">Loading fixtures...</div>
+          </div>
+          <div class="card" style="flex: 1; min-width: 250px;">
+              <h4>Leaderboard</h4>
+              <table class="leaderboard-table">
+                  <thead><tr><th>Rank</th><th>User</th><th>Points</th></tr></thead>
+                  <tbody id="leaderboard-body">
+                      <!-- Mock Data -->
+                  </tbody>
+              </table>
+          </div>
+      </div>
+    </section>
+
+    <section id="panel-market" class="hidden">
+      <div class="card">
+        <h3>Prediction Market & Betting Odds</h3>
+        <p>Current estimates and betting odds will appear here.</p>
+      </div>
+    </section>
+
     <section id="panel-league-table" class="hidden">
       <div class="card">
         <h3>Projected League Table</h3>
@@ -135,8 +399,22 @@
 
     <section id="panel-players" class="hidden">
       <div class="card">
-        <h3>Players</h3>
-        <p>Temporary tab: player features are not completed yet.</p>
+        <h3>Player Database (Preview)</h3>
+        <div class="controls" style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+            <input type="text" id="player-search" placeholder="Search for a player..." style="flex: 1; padding: 8px; border: 1px solid var(--card-border); border-radius: 4px; background: var(--card-bg); color: var(--text-color);">
+            <select id="player-league-filter" style="padding: 8px; border: 1px solid var(--card-border); border-radius: 4px; background: var(--card-bg); color: var(--text-color);">
+                <option value="all">All Leagues</option>
+                <option value="premier">Premier League</option>
+                <option value="laliga">La Liga</option>
+                <option value="mls">MLS</option>
+            </select>
+            <button class="tab-btn active" type="button" style="margin: 0;">Search</button>
+        </div>
+        
+        <div class="player-grid">
+            <p style="grid-column: 1/-1; text-align: center; color: #777;">No player data loaded.</p>
+        </div>
+        <p class="note" style="margin-top: 20px;">* This is a preview of the upcoming player database feature.</p>
       </div>
     </section>
 
@@ -168,18 +446,21 @@
         <h3>Upcoming Features & Improvements</h3>
         <p>
           <ul>
-            <li>Player performance predictions (improved game predictions based on player data & player stat predictions)</li>
-            <li>Adding a live tracker for correct/incorrect predictions of upcoming matches</li>
-            <li>Creation of a new homepage for the website</li>
-            <li>Expansion of the website to support other sports</li>
-            <li>Inclusion of minigame style games based on team & player data</li>
-            <li>Adding additional features to the website to improve the user experience</li>
-            <li>Adding more leagues to the prediction model</li>
-            <li>Adding a color key to the league table tab</li>
-            <li>Adding experimental prediction features such as cup competitions, player transfers, and adjustments to the prediction model</li>
-            <li>Continued improvements to prediction accuracy and bug fixes</li>
+            <li><strong>Advanced Metrics (xG):</strong> Integrating Expected Goals and other advanced stats to reduce variance in predictions.</li>
+            <li><strong>Live Match Tracker:</strong> Real-time score updates and prediction status tracking.</li>
+            <li><strong>User Accounts:</strong> Save your tactics, prediction history, and join private leagues.</li>
+            <li><strong>Tactics Simulation:</strong> Simple physics-based simulation to test formations on the whiteboard.</li>
+            <li><strong>Multi-Sport Support:</strong> Expanding the platform to NBA and NFL predictions.</li>
+            <li><strong>Historical Archive:</strong> Searchable database of past model performance and match results.</li>
+            <li><strong>Squad Depth Analysis:</strong> Using Transfermarkt data to adjust for injuries and suspensions.</li>
           </ul>
         </p>
+      </div>
+      <div class="card">
+        <h3>Feedback</h3>
+        <p>Have an idea or found a bug? Let us know!</p>
+        <textarea id="feedback-text" placeholder="Type your feedback here..." style="width: 100%; padding: 10px; border: 1px solid var(--card-border); border-radius: 4px; background: var(--card-bg); color: var(--text-color); margin-bottom: 10px; min-height: 80px;"></textarea>
+        <button class="tab-btn active" type="button" onclick="showNotification('Feedback sent! Thank you.')" style="margin: 0;">Send Feedback</button>
       </div>
     </section>
     <section>
@@ -247,8 +528,12 @@
     const subtabPredictorEuro = document.getElementById("subtab-predictor-euro");
     const subtabPredictorMls = document.getElementById("subtab-predictor-mls");
     const tabGlobal = document.getElementById("tab-global");
+    const tabH2H = document.getElementById("tab-h2h");
+    const tabLeague = document.getElementById("tab-league");
+    const tabMarket = document.getElementById("tab-market");
     const tabLeagueTable = document.getElementById("tab-league-table");
     const tabPlayers = document.getElementById("tab-players");
+    const tabTactics = document.getElementById("tab-tactics");
     const tabAbout = document.getElementById("tab-about");
     const globalList = document.getElementById("global-list");
     const globalStats = document.getElementById("global-stats");
@@ -257,12 +542,42 @@
     const tableDataset = document.getElementById("table-dataset");
     const tableLeague = document.getElementById("table-league");
     const leagueTableView = document.getElementById("league-table-view");
+    const panelH2H = document.getElementById("panel-h2h");
+    const panelLeague = document.getElementById("panel-league");
+    const panelMarket = document.getElementById("panel-market");
+    const h2hResults = document.getElementById("h2h-results");
+    const leagueFixtures = document.getElementById("league-fixtures");
     const leagueTablesCache = { global: null, mls: null };
     const upcomingCache = { global: [], mls: [] };
     const upcomingStatsCache = {
       global: { stats: null, league_stats: [] },
       mls: { stats: null, league_stats: [] },
     };
+    
+    // Dark Mode Logic
+    const themeToggle = document.getElementById("theme-toggle");
+    themeToggle.addEventListener("click", () => {
+      document.body.classList.toggle("dark-mode");
+      const isDark = document.body.classList.contains("dark-mode");
+      themeToggle.textContent = isDark ? "☀️ Light Mode" : "🌙 Dark Mode";
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+    });
+    if (localStorage.getItem("theme") === "dark") {
+      document.body.classList.add("dark-mode");
+      themeToggle.textContent = "☀️ Light Mode";
+    }
+
+    function showNotification(message) {
+      const area = document.getElementById('notification-area');
+      const el = document.createElement('div');
+      el.className = 'notification';
+      el.textContent = message;
+      area.appendChild(el);
+      setTimeout(() => {
+        el.style.animation = 'fadeOut 0.3s forwards';
+        setTimeout(() => el.remove(), 300);
+      }, 3000);
+    }
 
     function showError(targetError, targetResult, message) {
       targetError.textContent = message;
@@ -284,7 +599,20 @@
         <h2>${p.home_team} vs ${p.away_team}</h2>
         <p><strong>Competition:</strong> ${p.competition}</p>
         <p>Winner: <span class="winner-line">${p.winner_label}</span></p>
-        <p><strong>Win probabilities:</strong> ${p.home_team} ${pctLabel(p.prob_home)}% | Draw ${pctLabel(p.prob_draw)}% | ${p.away_team} ${pctLabel(p.prob_away)}%</p>
+        
+        <div style="margin: 15px 0;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.9em; margin-bottom: 5px;">
+                <span>${p.home_team} (${pctLabel(p.prob_home)}%)</span>
+                <span>Draw (${pctLabel(p.prob_draw)}%)</span>
+                <span>${p.away_team} (${pctLabel(p.prob_away)}%)</span>
+            </div>
+            <div style="display: flex; height: 12px; width: 100%; border-radius: 6px; overflow: hidden; background: #eee;">
+                <div style="width: ${p.prob_home}%; background-color: #4caf50;" title="${p.home_team}"></div>
+                <div style="width: ${p.prob_draw}%; background-color: #9e9e9e;" title="Draw"></div>
+                <div style="width: ${p.prob_away}%; background-color: #f44336;" title="${p.away_team}"></div>
+            </div>
+        </div>
+
         <p><strong>Predicted score:</strong> ${p.home_team} ${p.pred_home_goals} - ${p.pred_away_goals} ${p.away_team}</p>
       `;
       if (includeShots) {
@@ -300,12 +628,18 @@
       tabHome.classList.remove("active");
       tabPredictor.classList.remove("active");
       tabGlobal.classList.remove("active");
+      tabH2H.classList.remove("active");
+      tabLeague.classList.remove("active");
+      tabMarket.classList.remove("active");
       tabLeagueTable.classList.remove("active");
       tabPlayers.classList.remove("active");
       tabAbout.classList.remove("active");
       panelHome.classList.add("hidden");
       panelPredictor.classList.add("hidden");
       panelGlobal.classList.add("hidden");
+      panelH2H.classList.add("hidden");
+      panelLeague.classList.add("hidden");
+      panelMarket.classList.add("hidden");
       panelLeagueTable.classList.add("hidden");
       panelPlayers.classList.add("hidden");
       panelAbout.classList.add("hidden");
@@ -319,6 +653,15 @@
       } else if (tab === "global") {
         tabGlobal.classList.add("active");
         panelGlobal.classList.remove("hidden");
+      } else if (tab === "h2h") {
+        tabH2H.classList.add("active");
+        panelH2H.classList.remove("hidden");
+      } else if (tab === "league") {
+        tabLeague.classList.add("active");
+        panelLeague.classList.remove("hidden");
+      } else if (tab === "market") {
+        tabMarket.classList.add("active");
+        panelMarket.classList.remove("hidden");
       } else if (tab === "league-table") {
         tabLeagueTable.classList.add("active");
         panelLeagueTable.classList.remove("hidden");
@@ -532,25 +875,25 @@
       for (const row of eastSeeds) eastBySeed[Number(row.seed)] = row.team;
       for (const row of westSeeds) westBySeed[Number(row.seed)] = row.team;
 
-      const e1 = eastBySeed[1] || "Seed 1";
-      const e2 = eastBySeed[2] || "Seed 2";
-      const e3 = eastBySeed[3] || "Seed 3";
-      const e4 = eastBySeed[4] || "Seed 4";
-      const e5 = eastBySeed[5] || "Seed 5";
-      const e6 = eastBySeed[6] || "Seed 6";
-      const e7 = eastBySeed[7] || "Seed 7";
-      const e8 = eastBySeed[8] || "Seed 8";
-      const e9 = eastBySeed[9] || "Seed 9";
+      const getSeed = (teamName, conf) => {
+          const map = conf === 'east' ? eastSeeds : westSeeds;
+          const found = map.find(r => r.team === teamName);
+          return found ? found.seed : '';
+      };
 
-      const w1 = westBySeed[1] || "Seed 1";
-      const w2 = westBySeed[2] || "Seed 2";
-      const w3 = westBySeed[3] || "Seed 3";
-      const w4 = westBySeed[4] || "Seed 4";
-      const w5 = westBySeed[5] || "Seed 5";
-      const w6 = westBySeed[6] || "Seed 6";
-      const w7 = westBySeed[7] || "Seed 7";
-      const w8 = westBySeed[8] || "Seed 8";
-      const w9 = westBySeed[9] || "Seed 9";
+      const renderMatch = (title, home, away, winner, conf) => {
+          const homeSeed = getSeed(home, conf);
+          const awaySeed = getSeed(away, conf);
+          const homeClass = home === winner ? "winner" : "";
+          const awayClass = away === winner ? "winner" : "";
+          return `
+            <div class="match-card">
+                <div class="match-title">${title}</div>
+                <div class="team ${homeClass}"><span>${homeSeed ? '#' + homeSeed + ' ' : ''}${home}</span></div>
+                <div class="team ${awayClass}"><span>${awaySeed ? '#' + awaySeed + ' ' : ''}${away}</span></div>
+            </div>
+          `;
+      };
 
       const wc = bracket.wildcard || {};
       const r1 = bracket.round_one || {};
@@ -558,84 +901,68 @@
       const cf = bracket.conference_finals || {};
       const cup = bracket.mls_cup || {};
 
-      const eWC = (wc.east || {}).winner || "TBD";
-      const wWC = (wc.west || {}).winner || "TBD";
-      const eR1A = ((r1.east || {}).A || {}).winner || "TBD";
-      const eR1B = ((r1.east || {}).B || {}).winner || "TBD";
-      const eR1C = ((r1.east || {}).C || {}).winner || "TBD";
-      const eR1D = ((r1.east || {}).D || {}).winner || "TBD";
-      const wR1A = ((r1.west || {}).A || {}).winner || "TBD";
-      const wR1B = ((r1.west || {}).B || {}).winner || "TBD";
-      const wR1C = ((r1.west || {}).C || {}).winner || "TBD";
-      const wR1D = ((r1.west || {}).D || {}).winner || "TBD";
+      const eWC = wc.east || {};
+      const eR1 = r1.east || {};
+      const eSF = sf.east || [];
+      const eCF = cf.east || {};
 
-      const eSF1 = ((sf.east || [])[0] || {}).winner || "TBD";
-      const eSF2 = ((sf.east || [])[1] || {}).winner || "TBD";
-      const wSF1 = ((sf.west || [])[0] || {}).winner || "TBD";
-      const wSF2 = ((sf.west || [])[1] || {}).winner || "TBD";
-      const eChamp = ((cf.east || {}).winner) || "TBD";
-      const wChamp = ((cf.west || {}).winner) || "TBD";
-      const mlsCupWinner = cup.winner || "TBD";
+      const wWC = wc.west || {};
+      const wR1 = r1.west || {};
+      const wSF = sf.west || [];
+      const wCF = cf.west || {};
 
-      leagueTableView.innerHTML = `
-        <h3>MLS Cup Playoff Bracket (Projected Seeds)</h3>
-        <p class="note">Predicted during MLS table generation using the same weighted model probabilities. No ties in playoff matches. Wildcard is single-game. Round One is best-of-3, with higher seed at home in Game 1 and Game 3.</p>
-        <div class="bracket-conference">
-          <div class="bracket-round">
-            <h4>Eastern Conference</h4>
-            <div class="bracket-card"><strong>Wildcard</strong><br>#8 ${e8} vs #9 ${e9}</div>
-            <div class="bracket-win">Winner: <strong>${eWC}</strong></div>
-          </div>
-          <div class="bracket-round">
-            <h4>Round One</h4>
-            <div class="bracket-card"><strong>Round One (Best-of-3)</strong><br>#1 ${e1} vs ${eWC}</div>
-            <div class="bracket-win">Winner: <strong>${eR1A}</strong></div>
-            <div class="bracket-card"><strong>Round One (Best-of-3)</strong><br>#2 ${e2} vs #7 ${e7}</div>
-            <div class="bracket-win">Winner: <strong>${eR1B}</strong></div>
-            <div class="bracket-card"><strong>Round One (Best-of-3)</strong><br>#3 ${e3} vs #6 ${e6}</div>
-            <div class="bracket-win">Winner: <strong>${eR1C}</strong></div>
-            <div class="bracket-card"><strong>Round One (Best-of-3)</strong><br>#4 ${e4} vs #5 ${e5}</div>
-            <div class="bracket-win">Winner: <strong>${eR1D}</strong></div>
-          </div>
-          <div class="bracket-round">
-            <h4>Semifinals + Final</h4>
-            <div class="bracket-card"><strong>Semifinal 1</strong><br>${((sf.east || [])[0] || {}).home_team || eR1A} vs ${((sf.east || [])[0] || {}).away_team || eR1D}</div>
-            <div class="bracket-win">Winner: <strong>${eSF1}</strong></div>
-            <div class="bracket-card"><strong>Semifinal 2</strong><br>${((sf.east || [])[1] || {}).home_team || eR1B} vs ${((sf.east || [])[1] || {}).away_team || eR1C}</div>
-            <div class="bracket-win">Winner: <strong>${eSF2}</strong></div>
-            <div class="bracket-card"><strong>Conference Final</strong><br>${(cf.east || {}).home_team || eSF1} vs ${(cf.east || {}).away_team || eSF2}</div>
-            <div class="bracket-win">East Champion: <strong>${eChamp}</strong></div>
-          </div>
-        </div>
-        <div class="bracket-conference">
-          <div class="bracket-round">
-            <h4>Western Conference</h4>
-            <div class="bracket-card"><strong>Wildcard</strong><br>#8 ${w8} vs #9 ${w9}</div>
-            <div class="bracket-win">Winner: <strong>${wWC}</strong></div>
-          </div>
-          <div class="bracket-round">
-            <h4>Round One</h4>
-            <div class="bracket-card"><strong>Round One (Best-of-3)</strong><br>#1 ${w1} vs ${wWC}</div>
-            <div class="bracket-win">Winner: <strong>${wR1A}</strong></div>
-            <div class="bracket-card"><strong>Round One (Best-of-3)</strong><br>#2 ${w2} vs #7 ${w7}</div>
-            <div class="bracket-win">Winner: <strong>${wR1B}</strong></div>
-            <div class="bracket-card"><strong>Round One (Best-of-3)</strong><br>#3 ${w3} vs #6 ${w6}</div>
-            <div class="bracket-win">Winner: <strong>${wR1C}</strong></div>
-            <div class="bracket-card"><strong>Round One (Best-of-3)</strong><br>#4 ${w4} vs #5 ${w5}</div>
-            <div class="bracket-win">Winner: <strong>${wR1D}</strong></div>
-          </div>
-          <div class="bracket-round">
-            <h4>Semifinals + Final</h4>
-            <div class="bracket-card"><strong>Semifinal 1</strong><br>${((sf.west || [])[0] || {}).home_team || wR1A} vs ${((sf.west || [])[0] || {}).away_team || wR1D}</div>
-            <div class="bracket-win">Winner: <strong>${wSF1}</strong></div>
-            <div class="bracket-card"><strong>Semifinal 2</strong><br>${((sf.west || [])[1] || {}).home_team || wR1B} vs ${((sf.west || [])[1] || {}).away_team || wR1C}</div>
-            <div class="bracket-win">Winner: <strong>${wSF2}</strong></div>
-            <div class="bracket-card"><strong>Conference Final</strong><br>${(cf.west || {}).home_team || wSF1} vs ${(cf.west || {}).away_team || wSF2}</div>
-            <div class="bracket-win">West Champion: <strong>${wChamp}</strong></div>
-          </div>
-        </div>
-        <div class="bracket-card mls-cup-card"><strong>MLS Cup Final</strong><br>${cup.home_team || eChamp} vs ${cup.away_team || wChamp}<br>Winner: <strong>${mlsCupWinner}</strong></div>
+      let html = `
+        <h3>MLS Cup Playoff Bracket (Projected)</h3>
+        <p class="note">Projected based on current standings and model probabilities.</p>
+        <div class="bracket-container">
       `;
+
+      const buildConfBracket = (name, confCode, wcMatch, r1Matches, sfMatches, cfMatch) => {
+          return `
+            <div class="conference-section">
+                <div class="conference-title">${name} Conference</div>
+                <div class="bracket-tree">
+                    <div class="bracket-round">
+                        <h4>Wildcard</h4>
+                        ${renderMatch("Wildcard", wcMatch.home_team, wcMatch.away_team, wcMatch.winner, confCode)}
+                    </div>
+                    <div class="bracket-round">
+                        <h4>Round One</h4>
+                        ${renderMatch("Best of 3", r1Matches.A.high_seed_team, r1Matches.A.low_seed_team, r1Matches.A.winner, confCode)}
+                        ${renderMatch("Best of 3", r1Matches.D.high_seed_team, r1Matches.D.low_seed_team, r1Matches.D.winner, confCode)}
+                        ${renderMatch("Best of 3", r1Matches.B.high_seed_team, r1Matches.B.low_seed_team, r1Matches.B.winner, confCode)}
+                        ${renderMatch("Best of 3", r1Matches.C.high_seed_team, r1Matches.C.low_seed_team, r1Matches.C.winner, confCode)}
+                    </div>
+                    <div class="bracket-round">
+                        <h4>Semis</h4>
+                        ${renderMatch("Semis", sfMatches[0].home_team, sfMatches[0].away_team, sfMatches[0].winner, confCode)}
+                        ${renderMatch("Semis", sfMatches[1].home_team, sfMatches[1].away_team, sfMatches[1].winner, confCode)}
+                    </div>
+                    <div class="bracket-round">
+                        <h4>Conf. Final</h4>
+                        ${renderMatch("Final", cfMatch.home_team, cfMatch.away_team, cfMatch.winner, confCode)}
+                    </div>
+                </div>
+            </div>
+          `;
+      };
+
+      html += buildConfBracket("Eastern", "east", eWC, eR1, eSF, eCF);
+      html += buildConfBracket("Western", "west", wWC, wR1, wSF, wCF);
+
+      html += `
+        <div class="mls-cup-container">
+            <div class="mls-cup-card">
+                <h4>MLS Cup Final</h4>
+                <div class="team ${cup.home_team === cup.winner ? 'winner' : ''}">${cup.home_team}</div>
+                <div class="team ${cup.away_team === cup.winner ? 'winner' : ''}">${cup.away_team}</div>
+                <div class="mls-cup-winner">🏆 ${cup.winner}</div>
+            </div>
+        </div>
+      `;
+
+      html += `</div>`;
+      leagueTableView.innerHTML = html;
     }
 
     async function loadLeagueTables(mode) {
@@ -767,7 +1094,16 @@
                 <div class="matchup">${r.home_team} vs ${r.away_team}</div>
                 <div class="match-meta">Winner: <span class="winner-line">${r.winner_label}</span></div>
                 ${r.time_label ? `<div class="match-meta"><strong>Kickoff:</strong> ${escapeHtml(r.time_label)}</div>` : ""}
-                <div class="match-meta">H ${r.prob_home_text || pctLabel(r.prob_home)}% | D ${r.prob_draw_text || pctLabel(r.prob_draw)}% | A ${r.prob_away_text || pctLabel(r.prob_away)}%</div>
+                
+                <div style="display: flex; height: 6px; width: 100%; border-radius: 3px; overflow: hidden; background: #eee; margin: 6px 0;">
+                    <div style="width: ${r.prob_home}%; background-color: #4caf50;" title="${r.home_team}"></div>
+                    <div style="width: ${r.prob_draw}%; background-color: #9e9e9e;" title="Draw"></div>
+                    <div style="width: ${r.prob_away}%; background-color: #f44336;" title="${r.away_team}"></div>
+                </div>
+                <div class="match-meta" style="display: flex; justify-content: space-between; font-size: 0.75rem;">
+                    <span>H: ${r.prob_home_text || pctLabel(r.prob_home)}%</span> <span>D: ${r.prob_draw_text || pctLabel(r.prob_draw)}%</span> <span>A: ${r.prob_away_text || pctLabel(r.prob_away)}%</span>
+                </div>
+
                 <div class="match-meta"><strong>Status:</strong> ${statusText}</div>
               </button>
               <div id="${detailId}" class="match-details hidden">
@@ -836,6 +1172,128 @@
       renderStats(statsTarget, stats, leagueStats, selectedLeague);
     }
 
+    // H2H Logic
+    document.getElementById("btn-compare").addEventListener("click", async () => {
+        const t1 = document.getElementById("h2h-team1").value;
+        const t2 = document.getElementById("h2h-team2").value;
+        if(!t1 || !t2) return showNotification("Please select two teams.");
+        
+        h2hResults.innerHTML = "Loading...";
+        h2hResults.classList.remove("hidden");
+        
+        try {
+            const resp = await fetch(`/api/h2h?team1=${encodeURIComponent(t1)}&team2=${encodeURIComponent(t2)}`);
+            const data = await resp.json();
+            if(!data.ok) throw new Error(data.error);
+            
+            const s1 = data.team1_stats || {};
+            const s2 = data.team2_stats || {};
+            const f1 = data.team1_form || {};
+            const f2 = data.team2_form || {};
+            const h2h = data.h2h_data || {};
+            const h2hRev = data.h2h_data_reverse || {};
+            
+            const renderStatRow = (label, v1, v2) => `
+                <div class="stat-row">
+                    <span class="stat-val">${v1 !== undefined ? v1 : '-'}</span>
+                    <span class="stat-label">${label}</span>
+                    <span class="stat-val">${v2 !== undefined ? v2 : '-'}</span>
+                </div>`;
+
+            h2hResults.innerHTML = `
+                <div class="h2h-container">
+                    <div class="h2h-col card">
+                        <h3 style="text-align: center;">${t1}</h3>
+                        ${renderStatRow("Matches Played", s1.games, s2.games)}
+                        ${renderStatRow("Wins", s1.wins, s2.wins)}
+                        ${renderStatRow("Losses", s1.losses, s2.losses)}
+                        ${renderStatRow("Goals Scored", s1.goals_scored, s2.goals_scored)}
+                        ${renderStatRow("Goals Conceded", s1.goals_conceded, s2.goals_conceded)}
+                        ${renderStatRow("Avg Goals/Game", s1.avg_goals_scored, s2.avg_goals_scored)}
+                        <h4 style="margin-top: 15px; text-align: center;">Recent Form (Last 10)</h4>
+                        ${renderStatRow("Points", f1.points_last_10, f2.points_last_10)}
+                        ${renderStatRow("Wins", f1.wins_last_10, f2.wins_last_10)}
+                        ${renderStatRow("Goals For (Avg)", f1.avg_goals_for_last_10, f2.avg_goals_for_last_10)}
+                    </div>
+                    <div class="h2h-col card">
+                        <h3>Head to Head History</h3>
+                        <p><strong>${t1} vs ${t2}</strong></p>
+                        <p>Matches Recorded: ${(h2h.games || 0) + (h2hRev.games || 0)}</p>
+                        <div style="margin-top: 10px;">
+                            <p>When ${t1} is Home:</p>
+                            <ul>
+                                <li>${t1} Wins: ${h2h.home_wins || 0}</li>
+                                <li>Draws: ${h2h.home_draws || 0}</li>
+                                <li>${t2} Wins: ${h2h.home_losses || 0}</li>
+                            </ul>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <p>When ${t2} is Home:</p>
+                            <ul>
+                                <li>${t2} Wins: ${h2hRev.home_wins || 0}</li>
+                                <li>Draws: ${h2hRev.home_draws || 0}</li>
+                                <li>${t1} Wins: ${h2hRev.home_losses || 0}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            `;
+        } catch(e) {
+            h2hResults.innerHTML = `<p class="error">Error: ${e.message}</p>`;
+        }
+    });
+
+    // Prediction League Logic
+    function loadLeagueFixtures() {
+        // Use cached upcoming matches
+        const matches = [...upcomingCache.global, ...upcomingCache.mls].slice(0, 10); // Limit to 10
+        if(matches.length === 0) {
+            leagueFixtures.innerHTML = "No upcoming matches available to predict.";
+            return;
+        }
+        
+        let html = "";
+        matches.forEach((m, idx) => {
+            const id = `pred-${idx}`;
+            html += `
+                <div class="prediction-card">
+                    <div><strong>${m.home_team} vs ${m.away_team}</strong> <span style="font-size: 0.8em; color: #666;">(${m.competition})</span></div>
+                    <div class="pred-options" data-match-id="${id}">
+                        <button class="pred-btn" onclick="selectPrediction('${id}', 'H')">${m.home_team}</button>
+                        <button class="pred-btn" onclick="selectPrediction('${id}', 'D')">Draw</button>
+                        <button class="pred-btn" onclick="selectPrediction('${id}', 'A')">${m.away_team}</button>
+                    </div>
+                </div>
+            `;
+        });
+        html += `<button class="tab-btn active" onclick="savePredictions()">Submit Predictions</button>`;
+        leagueFixtures.innerHTML = html;
+        
+        // Load leaderboard
+        const leaderboard = [];
+        const tbody = document.getElementById("leaderboard-body");
+        tbody.innerHTML = leaderboard.map(r => `<tr><td>${r.rank}</td><td>${r.user}</td><td>${r.points}</td></tr>`).join("");
+    }
+    
+    window.selectPrediction = (id, val) => {
+        const container = document.querySelector(`.pred-options[data-match-id="${id}"]`);
+        container.querySelectorAll('.pred-btn').forEach(b => b.classList.remove('selected'));
+        // Find button by text content or index is tricky, let's assume order H, D, A
+        const idx = val === 'H' ? 0 : val === 'D' ? 1 : 2;
+        container.children[idx].classList.add('selected');
+        container.dataset.selection = val;
+    };
+    
+    window.savePredictions = () => {
+        const user = document.getElementById("league-username").value;
+        if(!user) return showNotification("Please enter a username.");
+        const preds = [];
+        document.querySelectorAll('.pred-options').forEach(el => {
+            if(el.dataset.selection) preds.push({id: el.dataset.matchId, pick: el.dataset.selection});
+        });
+        showNotification(`Submitted ${preds.length} predictions for ${user}! (This is a demo feature)`);
+    };
+
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const formData = new FormData(form);
@@ -888,6 +1346,15 @@
       const url = source === "mls" ? "/api/upcoming/mls" : "/api/upcoming/global";
       await loadUpcoming(source, url, globalList, globalStats, globalLeagueFilter);
     });
+    tabH2H.addEventListener("click", () => activateTab("h2h"));
+    tabLeague.addEventListener("click", async () => {
+        activateTab("league");
+        if(upcomingCache.global.length === 0 && upcomingCache.mls.length === 0) {
+            await loadUpcoming("global", "/api/upcoming/global", globalList, globalStats, globalLeagueFilter);
+        }
+        loadLeagueFixtures();
+    });
+    tabMarket.addEventListener("click", () => activateTab("market"));
     tabLeagueTable.addEventListener("click", async () => {
       activateTab("league-table");
       if (!leagueTablesCache[tableDataset.value]) {
@@ -932,6 +1399,9 @@
       }
     });
     tabPlayers.addEventListener("click", () => activateTab("players"));
+    tabTactics.addEventListener("click", () => {
+      window.location.href = "/tactics";
+    });
     tabAbout.addEventListener("click", () => activateTab("about"));
     tableDataset.addEventListener("change", async () => {
       await loadLeagueTables(tableDataset.value);
