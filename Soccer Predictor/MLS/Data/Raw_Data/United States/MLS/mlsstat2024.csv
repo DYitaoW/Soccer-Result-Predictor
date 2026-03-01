@@ -1,4 +1,4 @@
-Country,League,Season,Date,Time,Home,Away,HG,AG,Res,PSCH,PSCD,PSCA,MaxCH,MaxCD,MaxCA,AvgCH,AvgCD,AvgCA,BFECH,BFECD,BFECA,B365CH,B365CD,B36CA,SeasonInt
+Country,League,Season,Date,Time,Home,Away,HG,AG,Res,PSCH,PSCD,PSCA,MaxCH,MaxCD,MaxCA,AvgCH,AvgCD,AvgCA,BFECH,BFECD,BFECA,B365CH,B365CD,B365CA,SeasonInt
 USA,MLS,2024,22/02/2024,01:00,Inter Miami,Real Salt Lake,2,0,H,1.56,4.74,5.64,1.58,4.8,5.64,1.53,4.61,5.27,,,,,,,2024
 USA,MLS,2024,24/02/2024,19:00,Columbus Crew,Atlanta Utd,1,0,H,1.78,4.16,4.41,1.83,4.3,4.75,1.71,4.11,4.32,,,,,,,2024
 USA,MLS,2024,24/02/2024,21:45,Los Angeles FC,Seattle Sounders,2,1,H,1.62,4.11,5.88,1.7,4.33,5.88,1.63,3.9,5.31,,,,,,,2024

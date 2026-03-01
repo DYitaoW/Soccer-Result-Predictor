@@ -1,35 +1,50 @@
 {
-  "updated_at_utc": "2026-02-25T01:00:55+00:00",
+  "updated_at_utc": "2026-03-01T00:44:52+00:00",
   "overall": {
-    "correct_total": 4,
-    "total_predictions": 11,
-    "accuracy_pct": 36.4
+    "correct_total": 18,
+    "total_predictions": 38,
+    "accuracy_pct": 47.4
   },
   "by_league": {
     "Italy/Serie A": {
       "correct_total": 0,
-      "total_predictions": 2,
+      "total_predictions": 3,
       "accuracy_pct": 0.0
     },
     "England/Premier League": {
-      "correct_total": 1,
-      "total_predictions": 1,
-      "accuracy_pct": 100.0
+      "correct_total": 2,
+      "total_predictions": 4,
+      "accuracy_pct": 50.0
     },
     "Portugal/Liga Portugal": {
       "correct_total": 1,
-      "total_predictions": 1,
-      "accuracy_pct": 100.0
+      "total_predictions": 2,
+      "accuracy_pct": 50.0
     },
     "Spain/La Liga": {
-      "correct_total": 0,
-      "total_predictions": 1,
-      "accuracy_pct": 0.0
+      "correct_total": 1,
+      "total_predictions": 2,
+      "accuracy_pct": 50.0
     },
     "England/Championship": {
+      "correct_total": 7,
+      "total_predictions": 17,
+      "accuracy_pct": 41.2
+    },
+    "Germany/Bundesliga": {
       "correct_total": 2,
-      "total_predictions": 6,
-      "accuracy_pct": 33.3
+      "total_predictions": 3,
+      "accuracy_pct": 66.7
+    },
+    "France/Ligue 1": {
+      "correct_total": 2,
+      "total_predictions": 3,
+      "accuracy_pct": 66.7
+    },
+    "United States/MLS": {
+      "correct_total": 3,
+      "total_predictions": 4,
+      "accuracy_pct": 75.0
     }
   },
   "counted_prediction_keys": {
@@ -98,6 +113,168 @@
       "predicted_result": "D",
       "actual_result": "H",
       "is_correct": 0
+    },
+    "2026-02-27|England/Championship|bristolcity|watford": {
+      "competition": "England/Championship",
+      "predicted_result": "H",
+      "actual_result": "A",
+      "is_correct": 0
+    },
+    "2026-02-27|Germany/Bundesliga|augsburg|koln": {
+      "competition": "Germany/Bundesliga",
+      "predicted_result": "D",
+      "actual_result": "H",
+      "is_correct": 0
+    },
+    "2026-02-28|England/Championship|charlton|wrexham": {
+      "competition": "England/Championship",
+      "predicted_result": "A",
+      "actual_result": "A",
+      "is_correct": 1
+    },
+    "2026-02-28|England/Championship|coventry|stoke": {
+      "competition": "England/Championship",
+      "predicted_result": "H",
+      "actual_result": "H",
+      "is_correct": 1
+    },
+    "2026-02-28|England/Championship|blackburn|derby": {
+      "competition": "England/Championship",
+      "predicted_result": "A",
+      "actual_result": "H",
+      "is_correct": 0
+    },
+    "2026-02-28|England/Championship|ipswich|swansea": {
+      "competition": "England/Championship",
+      "predicted_result": "H",
+      "actual_result": "H",
+      "is_correct": 1
+    },
+    "2026-02-28|England/Championship|leicester|norwich": {
+      "competition": "England/Championship",
+      "predicted_result": "H",
+      "actual_result": "A",
+      "is_correct": 0
+    },
+    "2026-02-28|England/Championship|oxfordunited|westbrom": {
+      "competition": "England/Championship",
+      "predicted_result": "D",
+      "actual_result": "H",
+      "is_correct": 0
+    },
+    "2026-02-28|England/Championship|hull|portsmouth": {
+      "competition": "England/Championship",
+      "predicted_result": "A",
+      "actual_result": "A",
+      "is_correct": 1
+    },
+    "2026-02-28|England/Championship|millwall|preston": {
+      "competition": "England/Championship",
+      "predicted_result": "H",
+      "actual_result": "A",
+      "is_correct": 0
+    },
+    "2026-02-28|England/Championship|qpr|sheffieldunited": {
+      "competition": "England/Championship",
+      "predicted_result": "H",
+      "actual_result": "A",
+      "is_correct": 0
+    },
+    "2026-02-28|England/Championship|sheffieldweds|southampton": {
+      "competition": "England/Championship",
+      "predicted_result": "A",
+      "actual_result": "A",
+      "is_correct": 1
+    },
+    "2026-02-28|England/Premier League|bournemouth|sunderland": {
+      "competition": "England/Premier League",
+      "predicted_result": "H",
+      "actual_result": "D",
+      "is_correct": 0
+    },
+    "2026-02-28|England/Premier League|brentford|burnley": {
+      "competition": "England/Premier League",
+      "predicted_result": "D",
+      "actual_result": "A",
+      "is_correct": 0
+    },
+    "2026-02-28|England/Premier League|everton|newcastle": {
+      "competition": "England/Premier League",
+      "predicted_result": "A",
+      "actual_result": "A",
+      "is_correct": 1
+    },
+    "2026-02-28|France/Ligue 1|rennes|toulouse": {
+      "competition": "France/Ligue 1",
+      "predicted_result": "H",
+      "actual_result": "H",
+      "is_correct": 1
+    },
+    "2026-02-28|Germany/Bundesliga|mgladbach|unionberlin": {
+      "competition": "Germany/Bundesliga",
+      "predicted_result": "H",
+      "actual_result": "H",
+      "is_correct": 1
+    },
+    "2026-02-28|Germany/Bundesliga|heidenheim|werderbremen": {
+      "competition": "Germany/Bundesliga",
+      "predicted_result": "H",
+      "actual_result": "H",
+      "is_correct": 1
+    },
+    "2026-02-28|France/Ligue 1|angers|asmonaco": {
+      "competition": "France/Ligue 1",
+      "predicted_result": "D",
+      "actual_result": "H",
+      "is_correct": 0
+    },
+    "2026-02-28|France/Ligue 1|lehavre|parissg": {
+      "competition": "France/Ligue 1",
+      "predicted_result": "A",
+      "actual_result": "A",
+      "is_correct": 1
+    },
+    "2026-02-28|Italy/Serie A|hellasverona|napoli": {
+      "competition": "Italy/Serie A",
+      "predicted_result": "H",
+      "actual_result": "A",
+      "is_correct": 0
+    },
+    "2026-02-28|Portugal/Liga Portugal|cdnacional|spbraga": {
+      "competition": "Portugal/Liga Portugal",
+      "predicted_result": "D",
+      "actual_result": "A",
+      "is_correct": 0
+    },
+    "2026-02-28|Spain/La Liga|athmadrid|oviedo": {
+      "competition": "Spain/La Liga",
+      "predicted_result": "A",
+      "actual_result": "A",
+      "is_correct": 1
+    },
+    "2026-02-28|United States/MLS|chicagofire|montreal": {
+      "competition": "United States/MLS",
+      "predicted_result": "H",
+      "actual_result": "H",
+      "is_correct": 1
+    },
+    "2026-02-28|United States/MLS|coloradorapids|portlandtimbers": {
+      "competition": "United States/MLS",
+      "predicted_result": "H",
+      "actual_result": "H",
+      "is_correct": 1
+    },
+    "2026-02-28|United States/MLS|cincinnati|minnesota": {
+      "competition": "United States/MLS",
+      "predicted_result": "A",
+      "actual_result": "H",
+      "is_correct": 0
+    },
+    "2026-02-28|United States/MLS|newenglandrevolution|redbullnewyork": {
+      "competition": "United States/MLS",
+      "predicted_result": "H",
+      "actual_result": "H",
+      "is_correct": 1
     }
   }
 }

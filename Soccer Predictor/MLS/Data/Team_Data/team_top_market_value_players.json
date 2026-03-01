@@ -1,7 +1,7 @@
 {
     "season": "United States\\MLS\\mlsstat2025",
     "source_file": "United States\\MLS\\mlsstat2025.csv",
-    "generated_at_utc": "2026-02-23T17:43:49",
+    "generated_at_utc": "2026-02-28T18:15:39",
     "teams": {
         "Atlanta Utd": {
             "status": "club_not_found",
@@ -655,39 +655,39 @@
         },
         "New York Red Bulls": {
             "status": "ok",
-            "club_id": "623",
-            "club_url": "https://www.transfermarkt.com/new-york-red-bulls/startseite/verein/623",
-            "injured_players_excluded": 3,
+            "club_id": "39815",
+            "club_url": "https://www.transfermarkt.com/new-york-red-bulls-ii/startseite/verein/39815",
+            "injured_players_excluded": 0,
             "top_5_players": [
                 {
-                    "player": "Jorge Ruvalcaba",
-                    "position_group": "attack",
-                    "market_value": "\u20ac4.00m",
-                    "market_value_eur": 4000000
-                },
-                {
-                    "player": "Cade Cowell",
-                    "position_group": "attack",
-                    "market_value": "\u20ac3.80m",
-                    "market_value_eur": 3800000
-                },
-                {
-                    "player": "Gustav Berggren",
-                    "position_group": "midfield",
-                    "market_value": "\u20ac3.00m",
-                    "market_value_eur": 3000000
-                },
-                {
-                    "player": "Emil Forsberg",
-                    "position_group": "attack",
-                    "market_value": "\u20ac2.50m",
-                    "market_value_eur": 2500000
-                },
-                {
-                    "player": "Jahkeele Marshall-Rutty",
+                    "player": "Matthew Dos Santos",
                     "position_group": "defense",
-                    "market_value": "\u20ac1.50m",
-                    "market_value_eur": 1500000
+                    "market_value": "\u20ac500k",
+                    "market_value_eur": 500000
+                },
+                {
+                    "player": "Aimar S\u00e1nchez",
+                    "position_group": "defense",
+                    "market_value": "\u20ac350k",
+                    "market_value_eur": 350000
+                },
+                {
+                    "player": "Erick Londo\u00f1o",
+                    "position_group": "defense",
+                    "market_value": "\u20ac150k",
+                    "market_value_eur": 150000
+                },
+                {
+                    "player": "Nate Worth",
+                    "position_group": "midfield",
+                    "market_value": "\u20ac150k",
+                    "market_value_eur": 150000
+                },
+                {
+                    "player": "Aimar Modelo",
+                    "position_group": "defense",
+                    "market_value": "\u20ac100k",
+                    "market_value_eur": 100000
                 }
             ]
         },
@@ -760,8 +760,8 @@
                     "market_value_eur": 3000000
                 },
                 {
-                    "player": "Indiana Vassilev",
-                    "position_group": "attack",
+                    "player": "Jovan Luki\u0107",
+                    "position_group": "midfield",
                     "market_value": "\u20ac2.50m",
                     "market_value_eur": 2500000
                 }
@@ -798,7 +798,7 @@
                     "market_value_eur": 4000000
                 },
                 {
-                    "player": "Kevin Kelsy",
+                    "player": "Alexander Aravena",
                     "position_group": "attack",
                     "market_value": "\u20ac4.00m",
                     "market_value_eur": 4000000
@@ -1026,7 +1026,7 @@
                     "market_value_eur": 2500000
                 },
                 {
-                    "player": "Daniel Edelman",
+                    "player": "Conrad Wallem",
                     "position_group": "midfield",
                     "market_value": "\u20ac2.00m",
                     "market_value_eur": 2000000
@@ -1039,6 +1039,12 @@
             "club_url": "https://www.transfermarkt.com/toronto-fc/startseite/verein/11141",
             "injured_players_excluded": 5,
             "top_5_players": [
+                {
+                    "player": "Josh Sargent",
+                    "position_group": "attack",
+                    "market_value": "\u20ac20.00m",
+                    "market_value_eur": 20000000
+                },
                 {
                     "player": "Djordje Mihailovic",
                     "position_group": "midfield",
@@ -1062,12 +1068,6 @@
                     "position_group": "defense",
                     "market_value": "\u20ac2.00m",
                     "market_value_eur": 2000000
-                },
-                {
-                    "player": "Emilio Aristiz\u00e1bal",
-                    "position_group": "attack",
-                    "market_value": "\u20ac1.20m",
-                    "market_value_eur": 1200000
                 }
             ]
         },
@@ -1077,12 +1077,6 @@
             "club_url": "https://www.transfermarkt.com/vancouver-whitecaps-fc/startseite/verein/6321",
             "injured_players_excluded": 4,
             "top_5_players": [
-                {
-                    "player": "Sebastian Berhalter",
-                    "position_group": "midfield",
-                    "market_value": "\u20ac5.00m",
-                    "market_value_eur": 5000000
-                },
                 {
                     "player": "Brian White",
                     "position_group": "attack",
@@ -1096,14 +1090,20 @@
                     "market_value_eur": 5000000
                 },
                 {
+                    "player": "Sebastian Berhalter",
+                    "position_group": "midfield",
+                    "market_value": "\u20ac5.00m",
+                    "market_value_eur": 5000000
+                },
+                {
                     "player": "Andr\u00e9s Cubas",
                     "position_group": "midfield",
                     "market_value": "\u20ac4.00m",
                     "market_value_eur": 4000000
                 },
                 {
-                    "player": "Cheikh Sabaly",
-                    "position_group": "attack",
+                    "player": "Yohei Takaoka",
+                    "position_group": "goalkeeper",
                     "market_value": "\u20ac3.50m",
                     "market_value_eur": 3500000
                 }

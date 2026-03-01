@@ -87,6 +87,7 @@ class PredictorContext:
     latest_start_year: int
     team_competition_map: dict
     available_teams: list
+    market_value_data: dict
 
 
 _ctx_lock = threading.Lock()
@@ -115,6 +116,9 @@ def _load_context(pm_mod):
     head_to_head = pm_mod.load_json_if_exists(os.path.join(pm_mod.TEAM_DATA_DIR, "head_to_head.json"))
     current_form = pm_mod.load_json_if_exists(os.path.join(pm_mod.TEAM_DATA_DIR, "current_form.json"))
     league_strength = pm_mod.load_json_if_exists(os.path.join(pm_mod.TEAM_DATA_DIR, "league_strength.json")) or {}
+    market_value_data = pm_mod.load_json_if_exists(
+        os.path.join(pm_mod.TEAM_DATA_DIR, "team_top_market_value_players.json")
+    ) or {}
     dynamic_form = pm_mod.build_dynamic_form_from_matches(matches)
 
     if (
@@ -168,7 +172,26 @@ def _load_context(pm_mod):
         latest_start_year=latest_start_year,
         team_competition_map=team_competition_map,
         available_teams=available_teams,
+        market_value_data=market_value_data,
     )
+
+
+def _latest_season_for_competition(season_teams, competition, fallback, parse_start_year):
+    """Return latest season key for competition or fallback when unknown."""
+    competition = str(competition or "").strip()
+    if not competition:
+        return fallback
+    best_key = None
+    best_year = -1
+    prefix = f"{competition}/"
+    for season_key in season_teams.keys():
+        if not str(season_key).startswith(prefix):
+            continue
+        year = parse_start_year(season_key)
+        if year > best_year:
+            best_year = year
+            best_key = season_key
+    return best_key or fallback
 
 
 def get_context(mode="global"):
@@ -199,18 +222,28 @@ def _predict(home_raw, away_raw, mode="global"):
     if home_team == away_team:
         raise ValueError("Home and away teams must be different.")
 
-    prediction_season = pm.choose_season_for_teams(home_team, away_team, ctx.season_teams, ctx.latest_season)
+    home_comp = str(ctx.team_competition_map.get(home_team, "")).strip()
+    away_comp = str(ctx.team_competition_map.get(away_team, "")).strip()
+    competition_hint = home_comp if home_comp and home_comp == away_comp else (home_comp or away_comp)
+    competition_fallback = _latest_season_for_competition(
+        ctx.season_teams,
+        competition_hint,
+        ctx.latest_season,
+        pm.parse_start_year_from_key,
+    )
+    prediction_season = pm.choose_season_for_teams(home_team, away_team, ctx.season_teams, competition_fallback)
     competition_key = os.path.dirname(prediction_season).replace("\\", "/") or "Unknown"
+    feature_competition = competition_hint or competition_key
     prediction_start_year = pm.parse_start_year_from_key(prediction_season)
     season_coeff = pm.season_recency_coefficient(ctx.latest_start_year, prediction_start_year)
-    home_comp = ctx.team_competition_map.get(home_team, competition_key)
-    away_comp = ctx.team_competition_map.get(away_team, competition_key)
+    home_comp = ctx.team_competition_map.get(home_team, feature_competition)
+    away_comp = ctx.team_competition_map.get(away_team, feature_competition)
 
     match_input = pm.build_match_input(home_team, away_team)
     X_match = pm.build_features(
         match_input,
         prediction_season,
-        competition_key,
+        feature_competition,
         season_coeff,
         ctx.overall_teams,
         ctx.season_teams,
@@ -229,6 +262,12 @@ def _predict(home_raw, away_raw, mode="global"):
         label = ctx.result_label_encoder.inverse_transform([encoded_label])[0]
         probabilities[label] = float(proba_values[idx])
     if mode == "mls":
+        home_league_strength = float(ctx.league_strength.get(home_comp, 0.85))
+        away_league_strength = float(ctx.league_strength.get(away_comp, 0.85))
+        probabilities, _, _ = pm.apply_league_strength_adjustment(
+            probabilities, home_league_strength, away_league_strength
+        )
+
         home_adv_shift = pm.mls_home_advantage_shift(home_team, prediction_season, ctx.season_teams)
         transfer = min(home_adv_shift, probabilities.get("A", 0.0))
         probabilities["H"] = max(0.0, probabilities.get("H", 0.0) + transfer)
@@ -238,12 +277,41 @@ def _predict(home_raw, away_raw, mode="global"):
             probabilities["H"] /= total_prob
             probabilities["D"] /= total_prob
             probabilities["A"] /= total_prob
+
+        market_shift, _, _ = pm.market_value_probability_shift(
+            home_team, away_team, ctx.market_value_data
+        )
+        if market_shift != 0.0:
+            if market_shift > 0:
+                transfer = min(market_shift, probabilities.get("A", 0.0))
+                probabilities["H"] += transfer
+                probabilities["A"] -= transfer
+            else:
+                transfer = min(abs(market_shift), probabilities.get("H", 0.0))
+                probabilities["A"] += transfer
+                probabilities["H"] -= transfer
+            total_prob = probabilities.get("H", 0.0) + probabilities.get("D", 0.0) + probabilities.get("A", 0.0)
+            if total_prob > 0:
+                probabilities["H"] /= total_prob
+                probabilities["D"] /= total_prob
+                probabilities["A"] /= total_prob
+
         probabilities = pm.apply_home_advantage_boost(probabilities)
         probabilities = pm.reduce_draw_probability(probabilities)
-        probabilities = pm.apply_probability_randomizer(probabilities, pm.MLS_RANDOMIZER_MAX_DELTA)
+        seed = pm.prediction_randomizer_seed(home_team, away_team, feature_competition, prediction_season)
+        probabilities = pm.apply_probability_randomizer(
+            probabilities,
+            pm.MLS_RANDOMIZER_MAX_DELTA,
+            seed=seed,
+        )
     else:
         probabilities = pm.reduce_draw_probability(probabilities)
-        probabilities = pm.apply_probability_randomizer(probabilities, pm.EU_RANDOMIZER_MAX_DELTA)
+        seed = pm.prediction_randomizer_seed(home_team, away_team, feature_competition, prediction_season)
+        probabilities = pm.apply_probability_randomizer(
+            probabilities,
+            pm.EU_RANDOMIZER_MAX_DELTA,
+            seed=seed,
+        )
 
     prediction = max(probabilities, key=probabilities.get)
     home_goals = max(0.0, float(ctx.home_goal_reg.predict(X_match)[0]))
@@ -816,6 +884,25 @@ def tactics():
 
 
 if __name__ == "__main__":
+    import argparse
+    import socket
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--host", default="0.0.0.0", help="Host to bind to")
+    parser.add_argument("--port", type=int, default=5000, help="Port to bind to")
+    args = parser.parse_args()
+
     run_live_results_updater()
     update_accuracy_history_files()
-    app.run(host="127.0.0.1", port=5000, debug=True)
+
+    if args.host == "0.0.0.0":
+        try:
+            s = socket.socket(socket.AF_INET, socket.sock_dgram)
+            s.connect(("8.8.8.8", 80))
+            ip = s.getsockname()[0]
+            s.close()
+            print(f"\n * Connect from other devices at: http://{ip}:{args.port}\n")
+        except Exception:
+            pass
+
+    app.run(host=args.host, port=args.port, debug=True)

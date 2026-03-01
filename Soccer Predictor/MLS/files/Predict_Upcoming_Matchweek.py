@@ -883,7 +883,12 @@ def predict_fixture(row, context):
             probabilities["A"] /= total_prob
     probabilities = pm.apply_home_advantage_boost(probabilities)
     probabilities = pm.reduce_draw_probability(probabilities)
-    probabilities = pm.apply_probability_randomizer(probabilities, pm.MLS_RANDOMIZER_MAX_DELTA)
+    seed = pm.prediction_randomizer_seed(home_team, away_team, competition, prediction_season)
+    probabilities = pm.apply_probability_randomizer(
+        probabilities,
+        pm.MLS_RANDOMIZER_MAX_DELTA,
+        seed=seed,
+    )
 
     prediction = max(probabilities, key=probabilities.get)
     pred_home_goals = max(0.0, float(context["home_goal_reg"].predict(X_match)[0]))

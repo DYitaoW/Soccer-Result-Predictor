@@ -42,17 +42,17 @@
             "previous_match_lose_odds": 1.87
         },
         "Ceuta": {
-            "games_played": 26,
-            "form_last_10": "DDWWLLWLLW",
-            "wins_last_10": 4,
-            "draws_last_10": 2,
+            "games_played": 27,
+            "form_last_10": "DWWLLWLLWW",
+            "wins_last_10": 5,
+            "draws_last_10": 1,
             "losses_last_10": 4,
-            "points_last_10": 14,
-            "avg_goals_for_last_10": 1.5,
-            "avg_goals_against_last_10": 1.7,
-            "previous_match_win_odds": 2.47,
-            "previous_match_draw_odds": 3.02,
-            "previous_match_lose_odds": 2.82
+            "points_last_10": 16,
+            "avg_goals_for_last_10": 1.7,
+            "avg_goals_against_last_10": 1.8,
+            "previous_match_win_odds": 2.7,
+            "previous_match_draw_odds": 3.09,
+            "previous_match_lose_odds": 2.56
         },
         "Santander": {
             "games_played": 27,
@@ -133,17 +133,17 @@
             "previous_match_lose_odds": 4.14
         },
         "Sociedad B": {
-            "games_played": 26,
-            "form_last_10": "LWLDDDLDWW",
-            "wins_last_10": 3,
+            "games_played": 27,
+            "form_last_10": "WLDDDLDWWW",
+            "wins_last_10": 4,
             "draws_last_10": 4,
-            "losses_last_10": 3,
-            "points_last_10": 13,
-            "avg_goals_for_last_10": 1.1,
-            "avg_goals_against_last_10": 1.1,
-            "previous_match_win_odds": 2.78,
-            "previous_match_draw_odds": 3.16,
-            "previous_match_lose_odds": 2.4
+            "losses_last_10": 2,
+            "points_last_10": 16,
+            "avg_goals_for_last_10": 1.3,
+            "avg_goals_against_last_10": 1.0,
+            "previous_match_win_odds": 3.67,
+            "previous_match_draw_odds": 3.25,
+            "previous_match_lose_odds": 1.98
         },
         "Zaragoza": {
             "games_played": 27,
@@ -159,17 +159,17 @@
             "previous_match_lose_odds": 1.89
         },
         "Cadiz": {
-            "games_played": 26,
-            "form_last_10": "LWWDWLLLLD",
+            "games_played": 27,
+            "form_last_10": "WWDWLLLLDL",
             "wins_last_10": 3,
             "draws_last_10": 2,
             "losses_last_10": 5,
             "points_last_10": 11,
-            "avg_goals_for_last_10": 1.4,
-            "avg_goals_against_last_10": 1.5,
-            "previous_match_win_odds": 3.61,
-            "previous_match_draw_odds": 2.96,
-            "previous_match_lose_odds": 2.1
+            "avg_goals_for_last_10": 1.2,
+            "avg_goals_against_last_10": 1.4,
+            "previous_match_win_odds": 1.98,
+            "previous_match_draw_odds": 3.25,
+            "previous_match_lose_odds": 3.67
         },
         "Mirandes": {
             "games_played": 27,
@@ -250,17 +250,17 @@
             "previous_match_lose_odds": 3.99
         },
         "Cordoba": {
-            "games_played": 26,
-            "form_last_10": "DDWWWLWWWL",
+            "games_played": 27,
+            "form_last_10": "DWWWLWWWLL",
             "wins_last_10": 6,
-            "draws_last_10": 2,
-            "losses_last_10": 2,
-            "points_last_10": 20,
-            "avg_goals_for_last_10": 1.4,
-            "avg_goals_against_last_10": 0.8,
-            "previous_match_win_odds": 3.33,
-            "previous_match_draw_odds": 3.48,
-            "previous_match_lose_odds": 1.99
+            "draws_last_10": 1,
+            "losses_last_10": 3,
+            "points_last_10": 19,
+            "avg_goals_for_last_10": 1.6,
+            "avg_goals_against_last_10": 1.1,
+            "previous_match_win_odds": 2.56,
+            "previous_match_draw_odds": 3.09,
+            "previous_match_lose_odds": 2.7
         },
         "Almeria": {
             "games_played": 27,

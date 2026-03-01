@@ -734,7 +734,20 @@ def format_percent_text(probability):
     return f"{pct:.1f}%"
 
 
-def apply_probability_randomizer(probabilities, max_delta):
+def prediction_randomizer_seed(home_team, away_team, competition_key, season_key=""):
+    payload = "||".join(
+        [
+            str(home_team).strip().lower(),
+            str(away_team).strip().lower(),
+            str(competition_key).strip().lower(),
+            str(season_key).strip().lower(),
+        ]
+    )
+    digest = hashlib.sha256(payload.encode("utf-8")).hexdigest()
+    return int(digest[:16], 16)
+
+
+def apply_probability_randomizer(probabilities, max_delta, seed=None):
     h = max(0.0, float(probabilities.get("H", 0.0)))
     d = max(0.0, float(probabilities.get("D", 0.0)))
     a = max(0.0, float(probabilities.get("A", 0.0)))
@@ -745,12 +758,14 @@ def apply_probability_randomizer(probabilities, max_delta):
     d /= total
     a /= total
 
-    # Randomly push H and A in opposite directions, then re-balance draw slightly.
-    delta = random.uniform(-max_delta, max_delta)
+    rng = random.Random(seed) if seed is not None else random
+
+    # Push H and A in opposite directions, then re-balance draw slightly.
+    delta = rng.uniform(-max_delta, max_delta)
     h = max(0.0, min(1.0, h + delta))
     a = max(0.0, min(1.0, a - delta))
     rem = max(0.0, 1.0 - (h + a))
-    d_target = max(0.0, min(1.0, d + random.uniform(-max_delta * 0.35, max_delta * 0.35)))
+    d_target = max(0.0, min(1.0, d + rng.uniform(-max_delta * 0.35, max_delta * 0.35)))
     d = min(rem, d_target)
     spill = max(0.0, rem - d)
     denom = h + a
@@ -1236,7 +1251,8 @@ def main():
                 probabilities["D"] /= total_prob
                 probabilities["A"] /= total_prob
         probabilities = reduce_draw_probability(probabilities)
-        probabilities = apply_probability_randomizer(probabilities, EU_RANDOMIZER_MAX_DELTA)
+        seed = prediction_randomizer_seed(home_team, away_team, competition_key, prediction_season)
+        probabilities = apply_probability_randomizer(probabilities, EU_RANDOMIZER_MAX_DELTA, seed=seed)
         final_probabilities = dict(probabilities)
 
         prediction = max(probabilities, key=probabilities.get)
