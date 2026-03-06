@@ -17,6 +17,12 @@ DEFAULT_LEAGUE_STRENGTH = {
     "United States/MLS": 0.84,
 }
 H2H_RECENT_YEARS = 2
+USE_GPU_DF = os.getenv("SOCCER_USE_GPU_DF", "1").strip().lower() not in {"0", "false", "no"}
+
+try:
+    import cudf  # type: ignore
+except Exception:
+    cudf = None
 TEAM_NAME_ALIASES = {
     "man utd": "Man United",
     "manchester utd": "Man United",
@@ -66,6 +72,16 @@ PLAYER_POSITION_SUFFIXES = [
     "Centre-Forward",
     "Striker",
 ]
+
+
+def read_csv_fast(path):
+    if USE_GPU_DF and cudf is not None:
+        try:
+            gdf = cudf.read_csv(path)
+            return gdf.to_pandas()
+        except Exception:
+            pass
+    return pd.read_csv(path)
 
 # the basic storage for all of the stats to be stored
 def blank_team_stats():
@@ -524,7 +540,7 @@ def build_top_market_value_players_file():
     latest_file = files[-1]
     latest_path = os.path.join(PROCESSED_DIR, latest_file)
     latest_start_year = parse_season_start_year(os.path.basename(latest_file)) or datetime.now().year
-    df = pd.read_csv(latest_path)
+    df = read_csv_fast(latest_path)
     teams = sorted(set(df["HomeTeam"].dropna()) | set(df["AwayTeam"].dropna()))
 
     output = {
@@ -581,7 +597,7 @@ def build_current_form_file():
 
     latest_file = files[-1]
     latest_path = os.path.join(PROCESSED_DIR, latest_file)
-    df = pd.read_csv(latest_path)
+    df = read_csv_fast(latest_path)
 
     if "Date" in df.columns:
         df["Date"] = pd.to_datetime(df["Date"], errors="coerce")
@@ -589,19 +605,19 @@ def build_current_form_file():
 
     team_matches = defaultdict(list)
 
-    for _, row in df.iterrows():
-        home = canonical_team_name(row["HomeTeam"])
-        away = canonical_team_name(row["AwayTeam"])
+    for row in df.itertuples(index=False):
+        home = canonical_team_name(row.HomeTeam)
+        away = canonical_team_name(row.AwayTeam)
         if not is_valid_team_name(home) or not is_valid_team_name(away):
             continue
 
-        hg = row["FTHG"]
-        ag = row["FTAG"]
-        result = row["FTR"]
+        hg = row.FTHG
+        ag = row.FTAG
+        result = row.FTR
 
-        avg_h = row.get("AvgH")
-        avg_d = row.get("AvgD")
-        avg_a = row.get("AvgA")
+        avg_h = getattr(row, "AvgH", None)
+        avg_d = getattr(row, "AvgD", None)
+        avg_a = getattr(row, "AvgA", None)
 
         if result == "H":
             home_res = "W"
@@ -688,7 +704,7 @@ def sort_all_seasons():
         competition = os.path.dirname(rel_path).replace("\\", "/") or "Unknown"
         competitions.add(competition)
         path = os.path.join(PROCESSED_DIR, rel_path)
-        df = pd.read_csv(path)
+        df = read_csv_fast(path)
         season_start_year = parse_season_start_year(os.path.basename(rel_path))
         age = max(0, latest_year - season_start_year)
         coeff = season_recency_coefficient(age)
@@ -696,22 +712,22 @@ def sort_all_seasons():
 
         season_teams = defaultdict(blank_team_stats)
 
-        for _, row in df.iterrows():
-            home = canonical_team_name(row["HomeTeam"])
-            away = canonical_team_name(row["AwayTeam"])
+        for row in df.itertuples(index=False):
+            home = canonical_team_name(row.HomeTeam)
+            away = canonical_team_name(row.AwayTeam)
             if not is_valid_team_name(home) or not is_valid_team_name(away):
                 continue
 
-            hg = row["FTHG"]
-            ag = row["FTAG"]
+            hg = row.FTHG
+            ag = row.FTAG
 
-            hs = 0 if pd.isna(row["HS"]) else row["HS"]
-            ass = 0 if pd.isna(row["AS"]) else row["AS"]
+            hs = 0 if pd.isna(row.HS) else row.HS
+            ass = 0 if pd.isna(row.AS) else row.AS
 
-            hst = 0 if pd.isna(row["HST"]) else row["HST"]
-            ast = 0 if pd.isna(row["AST"]) else row["AST"]
+            hst = 0 if pd.isna(row.HST) else row.HST
+            ast = 0 if pd.isna(row.AST) else row.AST
 
-            result = row["FTR"]
+            result = row.FTR
 
             if result == "H":
                 home_res = "W"

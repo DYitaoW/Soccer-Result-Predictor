@@ -1,6 +1,7 @@
 import os
 import re
 from datetime import datetime
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import pandas as pd
 
@@ -12,6 +13,13 @@ SEASON_PATTERN = re.compile(r"^(?:[a-z0-9]+stat)(\d{4})\.csv$", re.IGNORECASE)
 MIN_START_YEAR = 2002
 MIN_ROWS = 100
 CURRENT_SEASON_MIN_ROWS = 20
+PROCESS_WORKERS = int(os.getenv("SOCCER_PROCESS_WORKERS", str(max(1, (os.cpu_count() or 2) // 2))))
+USE_GPU_DF = os.getenv("SOCCER_USE_GPU_DF", "1").strip().lower() not in {"0", "false", "no"}
+
+try:
+    import cudf  # type: ignore
+except Exception:
+    cudf = None
 
 REQUIRED_RAW_COLUMNS = {"Date", "Home", "Away", "HG", "AG", "Res"}
 
@@ -40,6 +48,19 @@ OUTPUT_COLUMNS = [
     "AwayLeaguePosBefore",
     "ResultNum",
 ]
+
+
+def read_csv_fast(path):
+    if USE_GPU_DF and cudf is not None:
+        try:
+            gdf = cudf.read_csv(path)
+            return gdf.to_pandas()
+        except Exception:
+            pass
+    try:
+        return pd.read_csv(path)
+    except Exception:
+        return pd.read_csv(path, encoding="latin-1", engine="python", on_bad_lines="skip")
 
 
 def parse_season_start_year(file_name):
@@ -109,18 +130,18 @@ def add_table_context_columns(df):
         )
         return {team: idx + 1 for idx, team in enumerate(ranked)}
 
-    for _, row in df.iterrows():
-        home = row["HomeTeam"]
-        away = row["AwayTeam"]
+    for row in df.itertuples(index=False):
+        home = row.HomeTeam
+        away = row.AwayTeam
 
         home_points_before.append(float(table.get(home, {}).get("points", 0.0)))
         away_points_before.append(float(table.get(away, {}).get("points", 0.0)))
         home_pos_before.append(float(position_map.get(home, len(teams))))
         away_pos_before.append(float(position_map.get(away, len(teams))))
 
-        hg = row.get("FTHG")
-        ag = row.get("FTAG")
-        ftr = row.get("FTR")
+        hg = row.FTHG
+        ag = row.FTAG
+        ftr = row.FTR
         if pd.isna(hg) or pd.isna(ag) or pd.isna(ftr):
             continue
 
@@ -187,6 +208,26 @@ def convert_mls_raw_to_standard(df):
     return out[OUTPUT_COLUMNS]
 
 
+def process_one_file(rel_path):
+    file_path = os.path.join(RAW_FOLDER, rel_path)
+    season_start_year = parse_season_start_year(os.path.basename(rel_path))
+    if season_start_year is None:
+        return False, rel_path, "skipped_invalid_name"
+
+    raw_df = read_csv_fast(file_path)
+    if not has_minimum_rows(raw_df, season_start_year):
+        return False, rel_path, "skipped_insufficient_data"
+
+    processed_df = convert_mls_raw_to_standard(raw_df)
+    if processed_df.empty:
+        return False, rel_path, "skipped_empty_processed"
+
+    output_path = os.path.join(PROCESSED_FOLDER, rel_path)
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    processed_df.to_csv(output_path, index=False)
+    return True, rel_path, "processed"
+
+
 def main():
     if not os.path.isdir(RAW_FOLDER):
         raise FileNotFoundError(f"Raw data folder not found: {RAW_FOLDER}")
@@ -196,28 +237,19 @@ def main():
     if not target_files:
         raise ValueError("No valid MLS season files were found in Raw_Data.")
 
-    for rel_path in target_files:
-        file_path = os.path.join(RAW_FOLDER, rel_path)
-        season_start_year = parse_season_start_year(os.path.basename(rel_path))
-        if season_start_year is None:
-            continue
-
-        print(f"Processing {rel_path}...")
-        try:
-            raw_df = pd.read_csv(file_path)
-        except Exception:
-            raw_df = pd.read_csv(file_path, encoding="latin-1", engine="python", on_bad_lines="skip")
-
-        if not has_minimum_rows(raw_df, season_start_year):
-            continue
-
-        processed_df = convert_mls_raw_to_standard(raw_df)
-        if processed_df.empty:
-            continue
-
-        output_path = os.path.join(PROCESSED_FOLDER, rel_path)
-        os.makedirs(os.path.dirname(output_path), exist_ok=True)
-        processed_df.to_csv(output_path, index=False)
+    workers = max(1, PROCESS_WORKERS)
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        futures = {pool.submit(process_one_file, rel_path): rel_path for rel_path in target_files}
+        for future in as_completed(futures):
+            _, rel_path, status = future.result()
+            if status == "processed":
+                print(f"Processed {rel_path}...")
+            elif status == "skipped_insufficient_data":
+                print(f"Skipped {rel_path} (insufficient data)...")
+            elif status == "skipped_empty_processed":
+                print(f"Skipped {rel_path} (no usable rows after normalization)...")
+            elif status == "skipped_invalid_name":
+                print(f"Skipped {rel_path} (invalid season name)...")
 
     print("All MLS files processed.")
 

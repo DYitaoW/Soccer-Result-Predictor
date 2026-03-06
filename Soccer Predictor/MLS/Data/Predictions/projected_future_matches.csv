@@ -1,500 +1,491 @@
 competition,match_date,home_team,away_team,predicted_result,pred_home_goals,pred_away_goals,prob_home,prob_draw,prob_away
-United States/MLS,,Atlanta Utd,Austin FC,A,1,3,0.248877,0.212776,0.538347
-United States/MLS,,Atlanta Utd,CF Montreal,H,3,2,0.571152,0.229868,0.19898
-United States/MLS,,Atlanta Utd,Charlotte,A,2,3,0.28876,0.168425,0.542815
-United States/MLS,,Atlanta Utd,Chicago Fire,A,2,3,0.292866,0.448632,0.258502
-United States/MLS,,Atlanta Utd,Columbus Crew,H,4,3,0.184854,0.159988,0.655158
-United States/MLS,,Atlanta Utd,DC United,D,2,2,0.348678,0.458316,0.193006
-United States/MLS,,Atlanta Utd,FC Cincinnati,H,3,2,0.450235,0.16345,0.386315
-United States/MLS,,Atlanta Utd,FC Dallas,A,2,3,0.359551,0.402813,0.237636
-United States/MLS,,Atlanta Utd,Inter Miami,A,2,3,0.192692,0.323005,0.484303
-United States/MLS,,Atlanta Utd,Los Angeles FC,A,2,3,0.229289,0.339447,0.431264
-United States/MLS,,Atlanta Utd,Nashville SC,A,2,3,0.328977,0.406763,0.26426
-United States/MLS,,Atlanta Utd,New England Revolution,D,2,2,0.233982,0.165829,0.600189
-United States/MLS,,Atlanta Utd,New York City,A,2,3,0.378383,0.251286,0.370331
-United States/MLS,,Atlanta Utd,New York Red Bulls,D,1,1,0.313594,0.467298,0.219108
-United States/MLS,,Atlanta Utd,Orlando City,A,2,3,0.508883,0.195901,0.295216
-United States/MLS,,Atlanta Utd,Philadelphia Union,A,1,2,0.193494,0.185733,0.620772
-United States/MLS,,Atlanta Utd,Toronto FC,D,1,1,0.289035,0.469945,0.24102
-United States/MLS,,Austin FC,Colorado Rapids,H,2,1,0.373917,0.234087,0.391996
-United States/MLS,,Austin FC,FC Dallas,D,1,1,0.428575,0.546403,0.025022
-United States/MLS,,Austin FC,Houston Dynamo,H,3,2,0.435968,0.564032,0.0
-United States/MLS,,Austin FC,Los Angeles FC,H,3,2,0.680727,0.206394,0.112878
-United States/MLS,,Austin FC,Los Angeles Galaxy,H,2,1,0.739091,0.18649,0.074418
-United States/MLS,,Austin FC,New York City,A,1,2,0.62938,0.220457,0.150164
-United States/MLS,,Austin FC,New York Red Bulls,D,1,1,0.759207,0.240793,0.0
-United States/MLS,,Austin FC,Orlando City,H,3,2,0.360802,0.300072,0.339125
-United States/MLS,,Austin FC,Philadelphia Union,A,1,2,0.408931,0.337608,0.253461
-United States/MLS,,Austin FC,Portland Timbers,D,1,1,0.430576,0.49127,0.078154
-United States/MLS,,Austin FC,Real Salt Lake,H,2,1,0.501963,0.498037,0.0
-United States/MLS,,Austin FC,San Diego FC,A,2,3,0.704074,0.11899,0.176936
-United States/MLS,,Austin FC,San Jose Earthquakes,H,2,1,0.774459,0.225541,0.0
-United States/MLS,,Austin FC,Seattle Sounders,H,2,1,0.648663,0.220889,0.130448
-United States/MLS,,Austin FC,Sporting Kansas City,D,2,2,0.821623,0.178377,0.0
-United States/MLS,,Austin FC,St. Louis City,A,1,2,0.425489,0.213209,0.361302
-United States/MLS,,Austin FC,Toronto FC,A,1,2,0.482236,0.316406,0.201357
-United States/MLS,,Austin FC,Vancouver Whitecaps,H,2,1,0.39801,0.449953,0.152037
-United States/MLS,,CF Montreal,Atlanta Utd,D,1,1,0.450034,0.518614,0.031352
-United States/MLS,,CF Montreal,Charlotte,A,1,2,0.299761,0.10601,0.59423
-United States/MLS,,CF Montreal,Chicago Fire,A,1,3,0.12791,0.196442,0.675648
-United States/MLS,,CF Montreal,Columbus Crew,A,1,2,0.208653,0.419955,0.371391
-United States/MLS,,CF Montreal,DC United,D,1,1,0.396805,0.525137,0.078058
-United States/MLS,,CF Montreal,FC Cincinnati,A,1,3,0.10005,0.164964,0.734986
-United States/MLS,,CF Montreal,FC Dallas,A,2,3,0.367897,0.274543,0.357559
-United States/MLS,,CF Montreal,Inter Miami,A,1,3,0.082789,0.187248,0.729963
-United States/MLS,,CF Montreal,Los Angeles FC,A,1,2,0.103983,0.463429,0.432588
-United States/MLS,,CF Montreal,Minnesota United,H,3,2,0.237241,0.282764,0.479995
-United States/MLS,,CF Montreal,Nashville SC,D,1,1,0.233355,0.393963,0.372682
-United States/MLS,,CF Montreal,New England Revolution,A,1,2,0.194222,0.18768,0.618098
-United States/MLS,,CF Montreal,New York City,H,3,2,0.468944,0.205204,0.325852
-United States/MLS,,CF Montreal,New York Red Bulls,H,3,2,0.355462,0.157716,0.486822
-United States/MLS,,CF Montreal,Orlando City,D,1,1,0.295625,0.430971,0.273403
-United States/MLS,,CF Montreal,Philadelphia Union,A,1,2,0.231695,0.18768,0.580625
-United States/MLS,,CF Montreal,Toronto FC,A,1,3,0.13436,0.179675,0.685965
-United States/MLS,,Charlotte,Atlanta Utd,H,2,1,0.886851,0.113149,0.0
-United States/MLS,,Charlotte,CF Montreal,A,1,2,0.326386,0.105577,0.568037
-United States/MLS,,Charlotte,Chicago Fire,H,3,2,0.43969,0.154579,0.405731
-United States/MLS,,Charlotte,Columbus Crew,H,3,2,0.706844,0.216887,0.076269
-United States/MLS,,Charlotte,DC United,H,2,1,0.871304,0.103305,0.02539
-United States/MLS,,Charlotte,FC Cincinnati,D,2,2,0.689171,0.179243,0.131586
-United States/MLS,,Charlotte,FC Dallas,H,3,2,0.467623,0.394408,0.137969
-United States/MLS,,Charlotte,Inter Miami,H,3,2,0.765171,0.125589,0.10924
-United States/MLS,,Charlotte,Los Angeles FC,D,2,2,0.486711,0.208882,0.304407
-United States/MLS,,Charlotte,Minnesota United,A,1,2,0.318745,0.255505,0.425751
-United States/MLS,,Charlotte,Nashville SC,D,2,2,0.813824,0.123425,0.06275
-United States/MLS,,Charlotte,New England Revolution,A,2,3,0.562296,0.158906,0.278798
-United States/MLS,,Charlotte,New York City,H,2,1,0.535558,0.14268,0.321762
-United States/MLS,,Charlotte,New York Red Bulls,D,1,1,0.865325,0.134675,0.0
-United States/MLS,,Charlotte,Orlando City,A,1,2,0.399106,0.537163,0.063731
+United States/MLS,,Atlanta Utd,Austin FC,A,1,3,0.353153,0.212776,0.434071
+United States/MLS,,Atlanta Utd,CF Montreal,H,3,2,0.629284,0.229868,0.140848
+United States/MLS,,Atlanta Utd,Charlotte,H,4,3,0.345573,0.168425,0.486001
+United States/MLS,,Atlanta Utd,Chicago Fire,D,2,2,0.357756,0.448632,0.193611
+United States/MLS,,Atlanta Utd,Columbus Crew,H,4,3,0.269911,0.159988,0.570101
+United States/MLS,,Atlanta Utd,DC United,D,2,2,0.450569,0.458316,0.091115
+United States/MLS,,Atlanta Utd,FC Cincinnati,A,2,3,0.491487,0.16345,0.345063
+United States/MLS,,Atlanta Utd,FC Dallas,A,2,3,0.437599,0.402813,0.159588
+United States/MLS,,Atlanta Utd,Inter Miami,A,2,3,0.282251,0.323005,0.394744
+United States/MLS,,Atlanta Utd,Los Angeles FC,A,2,3,0.290163,0.339447,0.370389
+United States/MLS,,Atlanta Utd,Nashville SC,H,3,2,0.365585,0.406763,0.227652
+United States/MLS,,Atlanta Utd,New England Revolution,H,3,2,0.277968,0.165829,0.556202
+United States/MLS,,Atlanta Utd,New York City,D,2,2,0.450276,0.251286,0.298438
+United States/MLS,,Atlanta Utd,New York Red Bulls,H,2,1,0.36945,0.467298,0.163252
+United States/MLS,,Atlanta Utd,Orlando City,A,2,3,0.604349,0.195901,0.19975
+United States/MLS,,Atlanta Utd,Philadelphia Union,A,1,2,0.268011,0.185733,0.546256
+United States/MLS,,Atlanta Utd,Toronto FC,D,1,1,0.329842,0.469945,0.200213
+United States/MLS,,Austin FC,Colorado Rapids,A,1,2,0.298416,0.234087,0.467498
+United States/MLS,,Austin FC,FC Dallas,H,2,1,0.383822,0.546403,0.069776
+United States/MLS,,Austin FC,Houston Dynamo,H,3,2,0.368694,0.564032,0.067274
+United States/MLS,,Austin FC,Los Angeles FC,H,3,2,0.663693,0.206394,0.129913
+United States/MLS,,Austin FC,Los Angeles Galaxy,D,1,1,0.737354,0.18649,0.076156
+United States/MLS,,Austin FC,New York City,H,2,1,0.582976,0.220457,0.196568
+United States/MLS,,Austin FC,New York Red Bulls,H,2,1,0.719919,0.240793,0.039288
+United States/MLS,,Austin FC,Orlando City,A,1,2,0.293845,0.300072,0.406083
+United States/MLS,,Austin FC,Philadelphia Union,D,1,1,0.412042,0.337608,0.25035
+United States/MLS,,Austin FC,Portland Timbers,H,2,1,0.411917,0.49127,0.096813
+United States/MLS,,Austin FC,Real Salt Lake,D,1,1,0.413346,0.498037,0.088617
+United States/MLS,,Austin FC,San Diego FC,H,3,2,0.744912,0.11899,0.136098
+United States/MLS,,Austin FC,San Jose Earthquakes,H,2,1,0.690615,0.225541,0.083844
+United States/MLS,,Austin FC,Seattle Sounders,H,2,1,0.609022,0.220889,0.170089
+United States/MLS,,Austin FC,Sporting Kansas City,H,2,1,0.816015,0.178377,0.005608
+United States/MLS,,Austin FC,St. Louis City,D,1,1,0.349658,0.213209,0.437133
+United States/MLS,,Austin FC,Toronto FC,H,3,2,0.496294,0.316406,0.1873
+United States/MLS,,Austin FC,Vancouver Whitecaps,H,2,1,0.335364,0.449953,0.214683
+United States/MLS,,CF Montreal,Atlanta Utd,H,2,1,0.374937,0.518614,0.106449
+United States/MLS,,CF Montreal,Charlotte,A,1,2,0.345982,0.10601,0.548008
+United States/MLS,,CF Montreal,Chicago Fire,A,1,3,0.162436,0.196442,0.641122
+United States/MLS,,CF Montreal,Columbus Crew,A,1,2,0.227844,0.419955,0.3522
+United States/MLS,,CF Montreal,DC United,D,1,1,0.431215,0.525137,0.043649
+United States/MLS,,CF Montreal,FC Cincinnati,A,1,3,0.154747,0.164964,0.680289
+United States/MLS,,CF Montreal,FC Dallas,H,3,2,0.398678,0.274543,0.326779
+United States/MLS,,CF Montreal,Inter Miami,A,1,3,0.149342,0.187248,0.663411
+United States/MLS,,CF Montreal,Los Angeles FC,D,1,1,0.179229,0.463429,0.357342
+United States/MLS,,CF Montreal,Minnesota United,A,1,2,0.28905,0.282764,0.428186
+United States/MLS,,CF Montreal,Nashville SC,D,1,1,0.234305,0.393963,0.371732
+United States/MLS,,CF Montreal,New England Revolution,A,1,2,0.219628,0.18768,0.592692
+United States/MLS,,CF Montreal,New York City,D,1,1,0.52826,0.205204,0.266535
+United States/MLS,,CF Montreal,New York Red Bulls,A,1,2,0.233898,0.157716,0.608386
+United States/MLS,,CF Montreal,Orlando City,H,3,2,0.33384,0.430971,0.235189
+United States/MLS,,CF Montreal,Philadelphia Union,A,1,2,0.287151,0.18768,0.525169
+United States/MLS,,CF Montreal,Toronto FC,A,1,3,0.225534,0.179675,0.59479
+United States/MLS,,Charlotte,Atlanta Utd,H,2,1,0.84978,0.113149,0.037071
+United States/MLS,,Charlotte,CF Montreal,A,1,2,0.266931,0.105577,0.627492
+United States/MLS,,Charlotte,Chicago Fire,A,2,3,0.417846,0.154579,0.427574
+United States/MLS,,Charlotte,Columbus Crew,D,2,2,0.737018,0.216887,0.046095
+United States/MLS,,Charlotte,DC United,H,2,1,0.842977,0.103305,0.053718
+United States/MLS,,Charlotte,FC Cincinnati,D,2,2,0.710158,0.179243,0.110599
+United States/MLS,,Charlotte,FC Dallas,H,3,2,0.465353,0.394408,0.140239
+United States/MLS,,Charlotte,Inter Miami,H,3,2,0.781481,0.125589,0.09293
+United States/MLS,,Charlotte,Los Angeles FC,H,3,2,0.512099,0.208882,0.279019
+United States/MLS,,Charlotte,Minnesota United,H,3,2,0.301062,0.255505,0.443433
+United States/MLS,,Charlotte,Nashville SC,H,2,1,0.799352,0.123425,0.077223
+United States/MLS,,Charlotte,New England Revolution,H,2,1,0.538278,0.158906,0.302816
+United States/MLS,,Charlotte,New York City,H,2,1,0.482909,0.14268,0.374411
+United States/MLS,,Charlotte,New York Red Bulls,H,2,1,0.817897,0.134675,0.047427
+United States/MLS,,Charlotte,Orlando City,H,3,2,0.375312,0.537163,0.087525
 United States/MLS,,Charlotte,Philadelphia Union,H,2,1,0.928389,0.071611,0.0
-United States/MLS,,Charlotte,Toronto FC,H,2,1,0.759165,0.147764,0.09307
-United States/MLS,,Chicago Fire,Atlanta Utd,H,2,1,0.826965,0.167776,0.005258
-United States/MLS,,Chicago Fire,CF Montreal,H,3,2,0.51743,0.474888,0.007682
-United States/MLS,,Chicago Fire,Charlotte,H,2,1,0.678559,0.170481,0.150961
-United States/MLS,,Chicago Fire,Columbus Crew,H,3,2,0.670558,0.151442,0.178
-United States/MLS,,Chicago Fire,DC United,D,2,2,0.546033,0.384023,0.069944
-United States/MLS,,Chicago Fire,FC Cincinnati,A,1,2,0.231601,0.191466,0.576933
-United States/MLS,,Chicago Fire,Inter Miami,H,2,1,0.341765,0.463671,0.194564
-United States/MLS,,Chicago Fire,Los Angeles FC,D,2,2,0.343158,0.502227,0.154614
-United States/MLS,,Chicago Fire,Minnesota United,D,1,1,0.538731,0.236142,0.225127
-United States/MLS,,Chicago Fire,Nashville SC,A,1,2,0.299989,0.115421,0.58459
-United States/MLS,,Chicago Fire,New England Revolution,H,3,2,0.600245,0.324411,0.075344
-United States/MLS,,Chicago Fire,New York City,A,1,2,0.298885,0.158906,0.542209
-United States/MLS,,Chicago Fire,New York Red Bulls,H,2,1,0.799204,0.195144,0.005651
-United States/MLS,,Chicago Fire,Orlando City,D,2,2,0.763315,0.234519,0.002166
-United States/MLS,,Chicago Fire,Philadelphia Union,A,1,2,0.271685,0.122668,0.605647
-United States/MLS,,Chicago Fire,Real Salt Lake,H,3,2,0.549997,0.252151,0.197851
-United States/MLS,,Chicago Fire,Toronto FC,H,3,2,0.450017,0.469064,0.08092
-United States/MLS,,Colorado Rapids,Atlanta Utd,H,2,1,0.850853,0.147224,0.001923
-United States/MLS,,Colorado Rapids,Austin FC,H,2,1,0.49719,0.139868,0.362942
-United States/MLS,,Colorado Rapids,CF Montreal,D,2,2,0.814393,0.123425,0.062181
-United States/MLS,,Colorado Rapids,FC Dallas,A,2,3,0.357262,0.494817,0.147921
-United States/MLS,,Colorado Rapids,Houston Dynamo,H,3,2,0.735726,0.178486,0.085788
-United States/MLS,,Colorado Rapids,Los Angeles FC,D,1,1,0.294729,0.456194,0.249077
-United States/MLS,,Colorado Rapids,Los Angeles Galaxy,H,2,1,0.766264,0.185841,0.047895
-United States/MLS,,Colorado Rapids,Minnesota United,H,3,2,0.378489,0.583522,0.037989
-United States/MLS,,Colorado Rapids,Portland Timbers,D,1,1,0.360469,0.28244,0.357091
-United States/MLS,,Colorado Rapids,Real Salt Lake,H,2,1,0.62605,0.212019,0.161931
-United States/MLS,,Colorado Rapids,San Diego FC,A,2,3,0.522309,0.189844,0.287847
-United States/MLS,,Colorado Rapids,San Jose Earthquakes,A,1,2,0.406419,0.184111,0.40947
-United States/MLS,,Colorado Rapids,Seattle Sounders,D,1,1,0.341785,0.44482,0.213395
-United States/MLS,,Colorado Rapids,Sporting Kansas City,D,2,2,0.493397,0.149495,0.357108
+United States/MLS,,Charlotte,Toronto FC,H,2,1,0.799081,0.147764,0.053155
+United States/MLS,,Chicago Fire,Atlanta Utd,H,2,1,0.73855,0.167776,0.093673
+United States/MLS,,Chicago Fire,Charlotte,D,2,2,0.677217,0.170481,0.152302
+United States/MLS,,Chicago Fire,Columbus Crew,H,3,2,0.647384,0.151442,0.201173
+United States/MLS,,Chicago Fire,DC United,D,2,2,0.551807,0.384023,0.06417
+United States/MLS,,Chicago Fire,FC Cincinnati,A,1,2,0.262681,0.191466,0.545852
+United States/MLS,,Chicago Fire,Inter Miami,A,2,3,0.361145,0.463671,0.175183
+United States/MLS,,Chicago Fire,Los Angeles FC,D,2,2,0.328625,0.502227,0.169147
+United States/MLS,,Chicago Fire,Minnesota United,A,1,2,0.544766,0.236142,0.219092
+United States/MLS,,Chicago Fire,Nashville SC,A,1,2,0.327101,0.115421,0.557479
+United States/MLS,,Chicago Fire,New England Revolution,D,2,2,0.564,0.324411,0.111589
+United States/MLS,,Chicago Fire,New York City,A,1,2,0.303825,0.158906,0.537269
+United States/MLS,,Chicago Fire,New York Red Bulls,A,1,2,0.767412,0.195144,0.037444
+United States/MLS,,Chicago Fire,Orlando City,D,2,2,0.726683,0.234519,0.038798
+United States/MLS,,Chicago Fire,Philadelphia Union,A,1,2,0.271434,0.122668,0.605898
+United States/MLS,,Chicago Fire,Real Salt Lake,H,3,2,0.524736,0.252151,0.223113
+United States/MLS,,Chicago Fire,Toronto FC,D,2,2,0.458569,0.469064,0.072367
+United States/MLS,,Colorado Rapids,Atlanta Utd,H,2,1,0.75914,0.147224,0.093636
+United States/MLS,,Colorado Rapids,Austin FC,H,2,1,0.535861,0.139868,0.324272
+United States/MLS,,Colorado Rapids,CF Montreal,D,2,2,0.783479,0.123425,0.093096
+United States/MLS,,Colorado Rapids,FC Dallas,D,2,2,0.399588,0.494817,0.105596
+United States/MLS,,Colorado Rapids,Houston Dynamo,H,3,2,0.745873,0.178486,0.075642
+United States/MLS,,Colorado Rapids,Los Angeles FC,D,1,1,0.330433,0.456194,0.213373
+United States/MLS,,Colorado Rapids,Los Angeles Galaxy,D,2,2,0.769251,0.185841,0.044908
+United States/MLS,,Colorado Rapids,Minnesota United,H,3,2,0.365397,0.583522,0.051081
+United States/MLS,,Colorado Rapids,Real Salt Lake,H,2,1,0.606166,0.212019,0.181814
+United States/MLS,,Colorado Rapids,San Diego FC,H,3,2,0.59515,0.189844,0.215006
+United States/MLS,,Colorado Rapids,San Jose Earthquakes,A,1,2,0.379412,0.184111,0.436478
+United States/MLS,,Colorado Rapids,Seattle Sounders,D,1,1,0.31417,0.44482,0.24101
+United States/MLS,,Colorado Rapids,Sporting Kansas City,A,2,3,0.540198,0.149495,0.310306
 United States/MLS,,Colorado Rapids,St. Louis City,H,2,1,0.890637,0.109363,0.0
-United States/MLS,,Colorado Rapids,Vancouver Whitecaps,H,2,1,0.613098,0.216346,0.170556
-United States/MLS,,Columbus Crew,Atlanta Utd,H,3,1,0.878197,0.121803,0.0
-United States/MLS,,Columbus Crew,CF Montreal,H,2,1,0.840337,0.159663,0.0
-United States/MLS,,Columbus Crew,Charlotte,H,2,1,0.738675,0.248041,0.013284
-United States/MLS,,Columbus Crew,Chicago Fire,A,3,4,0.796662,0.142356,0.060982
-United States/MLS,,Columbus Crew,DC United,H,2,1,0.875879,0.111635,0.012487
-United States/MLS,,Columbus Crew,FC Cincinnati,H,2,1,0.497547,0.369087,0.133366
-United States/MLS,,Columbus Crew,Inter Miami,A,2,3,0.287829,0.185517,0.526654
-United States/MLS,,Columbus Crew,Los Angeles FC,A,2,3,0.538352,0.264916,0.196732
-United States/MLS,,Columbus Crew,Minnesota United,A,1,2,0.531771,0.274651,0.193578
-United States/MLS,,Columbus Crew,Nashville SC,D,2,2,0.545595,0.408686,0.045719
-United States/MLS,,Columbus Crew,New England Revolution,A,2,3,0.576821,0.155661,0.267517
-United States/MLS,,Columbus Crew,New York City,H,2,1,0.546535,0.282981,0.170485
-United States/MLS,,Columbus Crew,New York Red Bulls,H,2,1,0.89345,0.10655,0.0
-United States/MLS,,Columbus Crew,Orlando City,H,3,2,0.511176,0.193413,0.29541
-United States/MLS,,Columbus Crew,Philadelphia Union,H,2,1,0.759173,0.190601,0.050226
-United States/MLS,,Columbus Crew,Real Salt Lake,H,2,1,0.835901,0.164099,0.0
-United States/MLS,,Columbus Crew,Toronto FC,H,2,1,0.556356,0.407987,0.035656
-United States/MLS,,DC United,Atlanta Utd,H,2,1,0.493202,0.506312,0.000486
-United States/MLS,,DC United,CF Montreal,D,1,1,0.347184,0.48121,0.171606
-United States/MLS,,DC United,Charlotte,A,1,2,0.224878,0.135757,0.639364
-United States/MLS,,DC United,Chicago Fire,A,1,4,0.130817,0.224784,0.6444
-United States/MLS,,DC United,Columbus Crew,A,1,2,0.173814,0.26762,0.558566
-United States/MLS,,DC United,FC Cincinnati,A,1,2,0.13622,0.192764,0.671015
-United States/MLS,,DC United,Inter Miami,A,1,2,0.168218,0.538727,0.293055
-United States/MLS,,DC United,Minnesota United,A,1,2,0.311107,0.272921,0.415972
-United States/MLS,,DC United,Nashville SC,A,1,2,0.213391,0.160096,0.626513
-United States/MLS,,DC United,New England Revolution,H,3,2,0.227652,0.451684,0.320664
-United States/MLS,,DC United,New York City,D,1,1,0.297956,0.428679,0.273364
-United States/MLS,,DC United,New York Red Bulls,A,1,2,0.308042,0.228029,0.46393
-United States/MLS,,DC United,Orlando City,A,1,2,0.193359,0.468101,0.33854
-United States/MLS,,DC United,Real Salt Lake,A,1,2,0.317541,0.31143,0.371029
-United States/MLS,,DC United,San Jose Earthquakes,H,4,3,0.338394,0.275192,0.386413
-United States/MLS,,DC United,Toronto FC,A,1,2,0.267871,0.482074,0.250055
-United States/MLS,,FC Cincinnati,CF Montreal,H,2,0,0.923091,0.076154,0.000755
-United States/MLS,,FC Cincinnati,Charlotte,A,1,2,0.364306,0.123209,0.512484
-United States/MLS,,FC Cincinnati,Chicago Fire,H,3,2,0.712875,0.121154,0.165971
-United States/MLS,,FC Cincinnati,Columbus Crew,H,2,1,0.630699,0.195577,0.173724
-United States/MLS,,FC Cincinnati,DC United,H,3,2,0.476063,0.14625,0.377687
-United States/MLS,,FC Cincinnati,Inter Miami,H,4,3,0.528397,0.126454,0.345148
-United States/MLS,,FC Cincinnati,Minnesota United,A,1,2,0.465344,0.202716,0.33194
-United States/MLS,,FC Cincinnati,Nashville SC,H,2,1,0.7581,0.106983,0.134917
-United States/MLS,,FC Cincinnati,New England Revolution,H,2,1,0.669646,0.206719,0.123635
-United States/MLS,,FC Cincinnati,New York City,H,2,1,0.400241,0.158582,0.441177
-United States/MLS,,FC Cincinnati,New York Red Bulls,H,2,1,0.786337,0.17881,0.034853
-United States/MLS,,FC Cincinnati,Orlando City,D,1,1,0.447694,0.552306,0.0
-United States/MLS,,FC Cincinnati,Philadelphia Union,D,1,1,0.318853,0.100276,0.58087
-United States/MLS,,FC Cincinnati,Real Salt Lake,D,2,2,0.803121,0.149603,0.047276
-United States/MLS,,FC Cincinnati,San Jose Earthquakes,D,3,3,0.87387,0.12613,0.0
-United States/MLS,,FC Cincinnati,Toronto FC,H,2,0,0.878566,0.118017,0.003417
-United States/MLS,,FC Dallas,Austin FC,H,2,1,0.841748,0.118233,0.040018
-United States/MLS,,FC Dallas,Colorado Rapids,H,2,1,0.750866,0.177079,0.072055
-United States/MLS,,FC Dallas,Houston Dynamo,H,3,2,0.434414,0.219483,0.346103
-United States/MLS,,FC Dallas,Los Angeles FC,D,1,1,0.283668,0.460674,0.255658
-United States/MLS,,FC Dallas,Los Angeles Galaxy,D,2,2,0.832656,0.167344,0.0
-United States/MLS,,FC Dallas,Minnesota United,D,1,1,0.344245,0.271947,0.383808
-United States/MLS,,FC Dallas,Orlando City,A,2,3,0.420991,0.204014,0.374994
-United States/MLS,,FC Dallas,Philadelphia Union,D,1,1,0.442286,0.399108,0.158607
-United States/MLS,,FC Dallas,Portland Timbers,H,2,1,0.84188,0.115421,0.042699
-United States/MLS,,FC Dallas,Real Salt Lake,D,2,2,0.576012,0.423988,0.0
-United States/MLS,,FC Dallas,San Diego FC,A,2,3,0.1139,0.125913,0.760186
-United States/MLS,,FC Dallas,San Jose Earthquakes,H,4,3,0.336312,0.157825,0.505863
-United States/MLS,,FC Dallas,Seattle Sounders,D,1,1,0.357855,0.243065,0.39908
-United States/MLS,,FC Dallas,Sporting Kansas City,D,2,2,0.891719,0.108281,0.0
+United States/MLS,,Colorado Rapids,Vancouver Whitecaps,H,2,1,0.626591,0.216346,0.157063
+United States/MLS,,Columbus Crew,Atlanta Utd,H,3,1,0.865715,0.121803,0.012482
+United States/MLS,,Columbus Crew,CF Montreal,A,2,3,0.814662,0.159663,0.025675
+United States/MLS,,Columbus Crew,Charlotte,H,2,1,0.708876,0.248041,0.043083
+United States/MLS,,Columbus Crew,Chicago Fire,H,3,1,0.79785,0.142356,0.059794
+United States/MLS,,Columbus Crew,DC United,H,2,1,0.873542,0.111635,0.014824
+United States/MLS,,Columbus Crew,FC Cincinnati,A,2,3,0.53369,0.369087,0.097224
+United States/MLS,,Columbus Crew,Inter Miami,A,2,3,0.375309,0.185517,0.439174
+United States/MLS,,Columbus Crew,Los Angeles FC,H,3,2,0.563923,0.264916,0.171161
+United States/MLS,,Columbus Crew,Minnesota United,A,1,2,0.515025,0.274651,0.210324
+United States/MLS,,Columbus Crew,Nashville SC,D,2,2,0.575428,0.408686,0.015885
+United States/MLS,,Columbus Crew,New England Revolution,H,2,1,0.534687,0.155661,0.309652
+United States/MLS,,Columbus Crew,New York City,H,2,1,0.531015,0.282981,0.186004
+United States/MLS,,Columbus Crew,New York Red Bulls,H,2,1,0.885835,0.10655,0.007615
+United States/MLS,,Columbus Crew,Orlando City,H,3,2,0.468608,0.193413,0.337978
+United States/MLS,,Columbus Crew,Philadelphia Union,H,2,1,0.743927,0.190601,0.065472
+United States/MLS,,Columbus Crew,Real Salt Lake,H,2,1,0.835461,0.164099,0.000441
+United States/MLS,,Columbus Crew,Toronto FC,D,1,1,0.554755,0.407987,0.037257
+United States/MLS,,DC United,Atlanta Utd,D,1,1,0.366689,0.506312,0.126999
+United States/MLS,,DC United,CF Montreal,H,2,1,0.345165,0.482467,0.172368
+United States/MLS,,DC United,Charlotte,H,3,2,0.252981,0.135757,0.611262
+United States/MLS,,DC United,Chicago Fire,A,1,4,0.198405,0.224784,0.576811
+United States/MLS,,DC United,Columbus Crew,H,3,2,0.165471,0.26762,0.566909
+United States/MLS,,DC United,FC Cincinnati,H,3,2,0.205368,0.192764,0.601867
+United States/MLS,,DC United,Inter Miami,H,3,2,0.220002,0.538727,0.241271
+United States/MLS,,DC United,Minnesota United,H,3,2,0.347074,0.272921,0.380005
+United States/MLS,,DC United,Nashville SC,D,1,1,0.231163,0.160096,0.608741
+United States/MLS,,DC United,New England Revolution,D,1,1,0.25837,0.451684,0.289947
+United States/MLS,,DC United,New York City,D,1,1,0.322976,0.428679,0.248344
+United States/MLS,,DC United,New York Red Bulls,A,1,2,0.233169,0.228029,0.538802
+United States/MLS,,DC United,Orlando City,A,1,2,0.188424,0.468101,0.343475
+United States/MLS,,DC United,Real Salt Lake,H,3,2,0.326611,0.31143,0.361958
+United States/MLS,,DC United,San Jose Earthquakes,D,2,2,0.326582,0.275192,0.398226
+United States/MLS,,DC United,Toronto FC,D,1,1,0.317539,0.482074,0.200387
+United States/MLS,,FC Cincinnati,CF Montreal,H,2,0,0.861318,0.076154,0.062528
+United States/MLS,,FC Cincinnati,Charlotte,H,2,1,0.335378,0.123209,0.541413
+United States/MLS,,FC Cincinnati,Chicago Fire,H,3,2,0.665783,0.121154,0.213063
+United States/MLS,,FC Cincinnati,Columbus Crew,H,2,1,0.642773,0.195577,0.16165
+United States/MLS,,FC Cincinnati,DC United,A,2,3,0.459752,0.14625,0.393998
+United States/MLS,,FC Cincinnati,Inter Miami,H,4,3,0.5528,0.126454,0.320746
+United States/MLS,,FC Cincinnati,Minnesota United,D,1,1,0.43498,0.202716,0.362303
+United States/MLS,,FC Cincinnati,Nashville SC,H,2,1,0.786745,0.106983,0.106272
+United States/MLS,,FC Cincinnati,New England Revolution,H,2,1,0.678519,0.206719,0.114763
+United States/MLS,,FC Cincinnati,New York City,H,2,1,0.402729,0.158582,0.43869
+United States/MLS,,FC Cincinnati,New York Red Bulls,H,2,1,0.734753,0.17881,0.086437
+United States/MLS,,FC Cincinnati,Orlando City,D,1,1,0.421794,0.552306,0.0259
+United States/MLS,,FC Cincinnati,Philadelphia Union,H,2,1,0.298637,0.100276,0.601087
+United States/MLS,,FC Cincinnati,Real Salt Lake,A,2,3,0.718316,0.149603,0.132081
+United States/MLS,,FC Cincinnati,San Jose Earthquakes,D,3,3,0.812135,0.12613,0.061735
+United States/MLS,,FC Cincinnati,Toronto FC,H,2,0,0.881983,0.118017,0.0
+United States/MLS,,FC Dallas,Austin FC,H,2,1,0.881767,0.118233,0.0
+United States/MLS,,FC Dallas,Colorado Rapids,H,2,1,0.734221,0.177079,0.0887
+United States/MLS,,FC Dallas,Houston Dynamo,D,1,1,0.444473,0.219483,0.336044
+United States/MLS,,FC Dallas,Los Angeles FC,A,1,2,0.294205,0.460674,0.245121
+United States/MLS,,FC Dallas,Los Angeles Galaxy,H,2,1,0.832656,0.167344,0.0
+United States/MLS,,FC Dallas,Minnesota United,A,1,2,0.32962,0.271947,0.398433
+United States/MLS,,FC Dallas,Orlando City,A,2,3,0.44128,0.204014,0.354706
+United States/MLS,,FC Dallas,Philadelphia Union,H,2,1,0.397328,0.399108,0.203564
+United States/MLS,,FC Dallas,Portland Timbers,H,2,1,0.884579,0.115421,0.0
+United States/MLS,,FC Dallas,Real Salt Lake,D,2,2,0.559335,0.423988,0.016677
+United States/MLS,,FC Dallas,San Diego FC,A,2,3,0.116074,0.125913,0.758013
+United States/MLS,,FC Dallas,San Jose Earthquakes,D,2,2,0.283965,0.157825,0.558211
+United States/MLS,,FC Dallas,Seattle Sounders,H,3,2,0.319819,0.243065,0.437116
+United States/MLS,,FC Dallas,Sporting Kansas City,H,2,1,0.891719,0.108281,0.0
 United States/MLS,,FC Dallas,St. Louis City,H,2,1,0.901887,0.098113,0.0
-United States/MLS,,FC Dallas,Vancouver Whitecaps,D,1,1,0.289233,0.258101,0.452666
-United States/MLS,,Houston Dynamo,Atlanta Utd,H,2,1,0.564367,0.262644,0.172989
-United States/MLS,,Houston Dynamo,Austin FC,H,3,2,0.650603,0.129483,0.219914
-United States/MLS,,Houston Dynamo,CF Montreal,H,3,2,0.426678,0.1403,0.433021
-United States/MLS,,Houston Dynamo,Charlotte,D,1,1,0.475581,0.162151,0.362268
-United States/MLS,,Houston Dynamo,Colorado Rapids,D,2,2,0.439267,0.407813,0.152921
-United States/MLS,,Houston Dynamo,FC Dallas,A,1,2,0.321609,0.231599,0.446793
-United States/MLS,,Houston Dynamo,Los Angeles FC,A,1,2,0.502836,0.246851,0.250313
-United States/MLS,,Houston Dynamo,Los Angeles Galaxy,D,1,1,0.505542,0.426977,0.06748
-United States/MLS,,Houston Dynamo,Minnesota United,D,1,1,0.490406,0.274219,0.235375
-United States/MLS,,Houston Dynamo,Portland Timbers,H,2,1,0.760054,0.144411,0.095535
-United States/MLS,,Houston Dynamo,Real Salt Lake,A,1,2,0.396787,0.213534,0.389679
-United States/MLS,,Houston Dynamo,San Diego FC,D,2,2,0.229582,0.152308,0.61811
-United States/MLS,,Houston Dynamo,San Jose Earthquakes,H,3,2,0.388813,0.137163,0.474023
-United States/MLS,,Houston Dynamo,Seattle Sounders,A,1,2,0.211627,0.155012,0.633361
-United States/MLS,,Houston Dynamo,Sporting Kansas City,A,1,2,0.362967,0.185625,0.451408
-United States/MLS,,Houston Dynamo,St. Louis City,H,2,1,0.765671,0.147548,0.086781
-United States/MLS,,Houston Dynamo,Vancouver Whitecaps,A,1,2,0.256542,0.233437,0.51002
-United States/MLS,,Inter Miami,Atlanta Utd,H,3,1,0.906214,0.093786,0.0
-United States/MLS,,Inter Miami,CF Montreal,H,3,2,0.89308,0.094651,0.012269
+United States/MLS,,FC Dallas,Vancouver Whitecaps,D,1,1,0.270574,0.258101,0.471325
+United States/MLS,,Houston Dynamo,Atlanta Utd,A,1,2,0.51737,0.262644,0.219985
+United States/MLS,,Houston Dynamo,Austin FC,A,2,3,0.667809,0.129483,0.202708
+United States/MLS,,Houston Dynamo,CF Montreal,A,1,2,0.40289,0.1403,0.456809
+United States/MLS,,Houston Dynamo,Charlotte,H,3,2,0.498789,0.162151,0.339059
+United States/MLS,,Houston Dynamo,Colorado Rapids,A,2,3,0.483129,0.407813,0.109059
+United States/MLS,,Houston Dynamo,FC Dallas,D,1,1,0.320968,0.231599,0.447434
+United States/MLS,,Houston Dynamo,Los Angeles Galaxy,H,2,1,0.527781,0.426977,0.045242
+United States/MLS,,Houston Dynamo,Minnesota United,H,2,1,0.469309,0.274219,0.256472
+United States/MLS,,Houston Dynamo,Portland Timbers,H,2,1,0.799201,0.144411,0.056388
+United States/MLS,,Houston Dynamo,Real Salt Lake,H,2,1,0.34052,0.213534,0.445946
+United States/MLS,,Houston Dynamo,San Diego FC,H,4,3,0.281701,0.152308,0.565991
+United States/MLS,,Houston Dynamo,San Jose Earthquakes,A,2,3,0.380687,0.137163,0.482149
+United States/MLS,,Houston Dynamo,Seattle Sounders,A,1,2,0.207597,0.155012,0.637391
+United States/MLS,,Houston Dynamo,Sporting Kansas City,A,1,2,0.3774,0.185625,0.436975
+United States/MLS,,Houston Dynamo,St. Louis City,H,2,1,0.754511,0.147548,0.097941
+United States/MLS,,Houston Dynamo,Vancouver Whitecaps,H,3,2,0.282962,0.233438,0.4836
+United States/MLS,,Inter Miami,Atlanta Utd,H,3,1,0.902387,0.093786,0.003827
+United States/MLS,,Inter Miami,CF Montreal,H,3,2,0.816559,0.094651,0.08879
 United States/MLS,,Inter Miami,Charlotte,H,3,2,0.803233,0.196767,0.0
-United States/MLS,,Inter Miami,Chicago Fire,H,4,3,0.489051,0.170156,0.340792
-United States/MLS,,Inter Miami,Columbus Crew,H,4,1,0.87863,0.12137,0.0
+United States/MLS,,Inter Miami,Chicago Fire,H,4,3,0.476953,0.170156,0.352891
+United States/MLS,,Inter Miami,Columbus Crew,D,4,4,0.87863,0.12137,0.0
 United States/MLS,,Inter Miami,DC United,H,3,2,0.902428,0.097572,0.0
 United States/MLS,,Inter Miami,FC Cincinnati,H,3,1,0.599302,0.400698,0.0
 United States/MLS,,Inter Miami,Nashville SC,H,3,1,0.916599,0.083401,0.0
-United States/MLS,,Inter Miami,New England Revolution,H,3,2,0.853425,0.146575,0.0
-United States/MLS,,Inter Miami,New York City,D,4,4,0.780409,0.219591,0.0
-United States/MLS,,Inter Miami,New York Red Bulls,H,3,1,0.86738,0.13262,0.0
-United States/MLS,,Inter Miami,Orlando City,H,3,2,0.533016,0.162584,0.304399
-United States/MLS,,Inter Miami,Philadelphia Union,H,3,2,0.83244,0.16756,0.0
+United States/MLS,,Inter Miami,New England Revolution,H,3,2,0.839999,0.146575,0.013427
+United States/MLS,,Inter Miami,New York City,H,4,2,0.772246,0.219591,0.008162
+United States/MLS,,Inter Miami,New York Red Bulls,H,3,1,0.82645,0.13262,0.04093
+United States/MLS,,Inter Miami,Orlando City,H,3,2,0.49428,0.162584,0.343136
+United States/MLS,,Inter Miami,Philadelphia Union,H,3,2,0.768285,0.16756,0.064155
 United States/MLS,,Inter Miami,Real Salt Lake,H,4,1,0.853966,0.146034,0.0
-United States/MLS,,Inter Miami,San Jose Earthquakes,H,3,2,0.847584,0.152416,0.0
-United States/MLS,,Inter Miami,Sporting Kansas City,H,3,2,0.823678,0.176322,0.0
+United States/MLS,,Inter Miami,San Jose Earthquakes,H,3,2,0.769776,0.152416,0.077808
+United States/MLS,,Inter Miami,Sporting Kansas City,D,3,3,0.823678,0.176322,0.0
 United States/MLS,,Inter Miami,Toronto FC,H,3,1,0.575413,0.424587,0.0
-United States/MLS,,Los Angeles FC,Austin FC,H,2,1,0.874627,0.125373,0.0
+United States/MLS,,Los Angeles FC,Austin FC,H,2,1,0.826727,0.125373,0.0479
 United States/MLS,,Los Angeles FC,Colorado Rapids,H,3,0,0.892692,0.107308,0.0
-United States/MLS,,Los Angeles FC,FC Dallas,H,2,1,0.894423,0.105577,0.0
-United States/MLS,,Los Angeles FC,Houston Dynamo,H,2,1,0.828944,0.134459,0.036597
-United States/MLS,,Los Angeles FC,Los Angeles Galaxy,H,3,2,0.575584,0.424416,0.0
-United States/MLS,,Los Angeles FC,Minnesota United,A,1,2,0.703966,0.181514,0.114519
-United States/MLS,,Los Angeles FC,Portland Timbers,H,2,1,0.549204,0.195469,0.255327
+United States/MLS,,Los Angeles FC,FC Dallas,H,2,1,0.849229,0.105577,0.045194
+United States/MLS,,Los Angeles FC,Houston Dynamo,H,2,1,0.74455,0.134459,0.12099
+United States/MLS,,Los Angeles FC,Los Angeles Galaxy,D,3,3,0.575584,0.424416,0.0
+United States/MLS,,Los Angeles FC,Minnesota United,H,2,1,0.675865,0.181514,0.142621
+United States/MLS,,Los Angeles FC,Portland Timbers,A,1,2,0.568966,0.195469,0.235565
 United States/MLS,,Los Angeles FC,Real Salt Lake,H,2,1,0.842825,0.157175,0.0
-United States/MLS,,Los Angeles FC,San Diego FC,A,2,3,0.289181,0.148413,0.562406
+United States/MLS,,Los Angeles FC,San Diego FC,D,2,2,0.285836,0.148413,0.565751
 United States/MLS,,Los Angeles FC,San Jose Earthquakes,H,2,1,0.859375,0.140625,0.0
-United States/MLS,,Los Angeles FC,Seattle Sounders,H,3,1,0.861322,0.138678,0.0
-United States/MLS,,Los Angeles FC,Sporting Kansas City,D,3,3,0.6903,0.3097,0.0
-United States/MLS,,Los Angeles FC,St. Louis City,H,3,1,0.562784,0.437216,0.0
-United States/MLS,,Los Angeles FC,Toronto FC,H,2,1,0.738001,0.257993,0.004006
-United States/MLS,,Los Angeles FC,Vancouver Whitecaps,A,1,2,0.497138,0.196226,0.306636
-United States/MLS,,Los Angeles Galaxy,Atlanta Utd,A,2,3,0.722432,0.212776,0.064792
-United States/MLS,,Los Angeles Galaxy,Austin FC,H,2,1,0.42934,0.134243,0.436417
-United States/MLS,,Los Angeles Galaxy,CF Montreal,H,2,1,0.745715,0.164856,0.08943
-United States/MLS,,Los Angeles Galaxy,Charlotte,A,2,3,0.453646,0.233762,0.312592
-United States/MLS,,Los Angeles Galaxy,Chicago Fire,H,3,2,0.52208,0.241334,0.236586
-United States/MLS,,Los Angeles Galaxy,Colorado Rapids,A,2,3,0.816851,0.09768,0.085468
-United States/MLS,,Los Angeles Galaxy,Columbus Crew,A,2,3,0.295034,0.156094,0.548872
-United States/MLS,,Los Angeles Galaxy,DC United,D,2,2,0.746969,0.186815,0.066216
-United States/MLS,,Los Angeles Galaxy,FC Dallas,H,2,1,0.774569,0.120505,0.104926
-United States/MLS,,Los Angeles Galaxy,Houston Dynamo,H,2,1,0.385272,0.422789,0.191939
-United States/MLS,,Los Angeles Galaxy,Los Angeles FC,A,2,3,0.315371,0.433678,0.25095
-United States/MLS,,Los Angeles Galaxy,Minnesota United,A,2,3,0.742697,0.096815,0.160488
-United States/MLS,,Los Angeles Galaxy,Portland Timbers,H,3,2,0.340362,0.14387,0.515768
-United States/MLS,,Los Angeles Galaxy,Real Salt Lake,H,2,1,0.716398,0.198281,0.08532
-United States/MLS,,Los Angeles Galaxy,San Diego FC,A,1,3,0.10771,0.164099,0.728192
-United States/MLS,,Los Angeles Galaxy,San Jose Earthquakes,D,2,2,0.450131,0.142031,0.407838
-United States/MLS,,Los Angeles Galaxy,Seattle Sounders,D,1,1,0.280038,0.184219,0.535743
-United States/MLS,,Los Angeles Galaxy,Sporting Kansas City,H,3,2,0.826953,0.167452,0.005595
-United States/MLS,,Los Angeles Galaxy,St. Louis City,A,1,2,0.26779,0.165288,0.566921
-United States/MLS,,Los Angeles Galaxy,Vancouver Whitecaps,H,2,1,0.689091,0.094111,0.216798
-United States/MLS,,Minnesota United,Austin FC,H,2,1,0.526665,0.3428,0.130534
-United States/MLS,,Minnesota United,Colorado Rapids,H,2,1,0.537241,0.104495,0.358264
-United States/MLS,,Minnesota United,FC Dallas,A,1,2,0.485567,0.390484,0.123948
-United States/MLS,,Minnesota United,Houston Dynamo,D,2,2,0.726673,0.201959,0.071368
-United States/MLS,,Minnesota United,Los Angeles FC,A,1,2,0.228047,0.295421,0.476533
-United States/MLS,,Minnesota United,Los Angeles Galaxy,D,2,2,0.468038,0.4575,0.074461
-United States/MLS,,Minnesota United,Portland Timbers,D,2,2,0.54517,0.45423,0.000601
-United States/MLS,,Minnesota United,Real Salt Lake,A,2,3,0.733964,0.201851,0.064185
-United States/MLS,,Minnesota United,San Diego FC,A,2,3,0.289544,0.159014,0.551442
-United States/MLS,,Minnesota United,San Jose Earthquakes,H,3,1,0.904159,0.095841,0.0
-United States/MLS,,Minnesota United,Seattle Sounders,D,1,1,0.420371,0.555471,0.024158
-United States/MLS,,Minnesota United,Sporting Kansas City,H,3,1,0.86795,0.125048,0.007002
+United States/MLS,,Los Angeles FC,Seattle Sounders,H,3,1,0.813494,0.138678,0.047828
+United States/MLS,,Los Angeles FC,Sporting Kansas City,H,3,1,0.6903,0.3097,0.0
+United States/MLS,,Los Angeles FC,St. Louis City,D,3,3,0.562784,0.437216,0.0
+United States/MLS,,Los Angeles FC,Toronto FC,H,2,1,0.728089,0.257993,0.013918
+United States/MLS,,Los Angeles FC,Vancouver Whitecaps,H,2,1,0.461703,0.196226,0.342071
+United States/MLS,,Los Angeles Galaxy,Atlanta Utd,D,2,2,0.626352,0.212776,0.160871
+United States/MLS,,Los Angeles Galaxy,Austin FC,A,2,3,0.467122,0.134243,0.398636
+United States/MLS,,Los Angeles Galaxy,CF Montreal,H,2,1,0.688708,0.164856,0.146436
+United States/MLS,,Los Angeles Galaxy,Chicago Fire,A,3,4,0.495484,0.241334,0.263182
+United States/MLS,,Los Angeles Galaxy,Colorado Rapids,D,2,2,0.821147,0.09768,0.081172
+United States/MLS,,Los Angeles Galaxy,Columbus Crew,H,3,2,0.297823,0.156094,0.546084
+United States/MLS,,Los Angeles Galaxy,DC United,H,2,1,0.734837,0.186815,0.078348
+United States/MLS,,Los Angeles Galaxy,FC Dallas,D,2,2,0.75917,0.120505,0.120326
+United States/MLS,,Los Angeles Galaxy,Houston Dynamo,A,1,2,0.359133,0.422789,0.218078
+United States/MLS,,Los Angeles Galaxy,Los Angeles FC,D,2,2,0.347749,0.433678,0.218572
+United States/MLS,,Los Angeles Galaxy,Minnesota United,H,3,2,0.763245,0.096815,0.13994
+United States/MLS,,Los Angeles Galaxy,Portland Timbers,H,3,2,0.386035,0.14387,0.470095
+United States/MLS,,Los Angeles Galaxy,Real Salt Lake,H,2,1,0.695705,0.198281,0.106014
+United States/MLS,,Los Angeles Galaxy,San Diego FC,D,1,1,0.139049,0.164099,0.696853
+United States/MLS,,Los Angeles Galaxy,San Jose Earthquakes,H,2,1,0.386428,0.142031,0.471541
+United States/MLS,,Los Angeles Galaxy,Seattle Sounders,D,1,1,0.27521,0.184219,0.540571
+United States/MLS,,Los Angeles Galaxy,Sporting Kansas City,H,3,2,0.821371,0.167452,0.011177
+United States/MLS,,Los Angeles Galaxy,St. Louis City,H,3,2,0.233888,0.165288,0.600824
+United States/MLS,,Los Angeles Galaxy,Vancouver Whitecaps,A,2,3,0.679119,0.094111,0.226771
+United States/MLS,,Minnesota United,Austin FC,H,2,1,0.557454,0.3428,0.099745
+United States/MLS,,Minnesota United,Colorado Rapids,H,2,1,0.559618,0.104495,0.335887
+United States/MLS,,Minnesota United,FC Dallas,D,1,1,0.449832,0.390484,0.159683
+United States/MLS,,Minnesota United,Houston Dynamo,D,2,2,0.686574,0.201959,0.111467
+United States/MLS,,Minnesota United,Los Angeles FC,A,1,2,0.292985,0.295421,0.411594
+United States/MLS,,Minnesota United,Los Angeles Galaxy,D,2,2,0.50076,0.4575,0.04174
+United States/MLS,,Minnesota United,Portland Timbers,D,2,2,0.54577,0.45423,0.0
+United States/MLS,,Minnesota United,Real Salt Lake,H,2,1,0.749962,0.201851,0.048187
+United States/MLS,,Minnesota United,San Diego FC,A,2,3,0.318262,0.159014,0.522723
+United States/MLS,,Minnesota United,San Jose Earthquakes,H,3,1,0.885746,0.095841,0.018412
+United States/MLS,,Minnesota United,Seattle Sounders,H,2,1,0.392159,0.555471,0.05237
+United States/MLS,,Minnesota United,Sporting Kansas City,H,3,1,0.846034,0.125048,0.028918
 United States/MLS,,Minnesota United,St. Louis City,H,3,1,0.917031,0.082969,0.0
-United States/MLS,,Minnesota United,Vancouver Whitecaps,H,3,2,0.333853,0.228786,0.437361
-United States/MLS,,Nashville SC,Atlanta Utd,H,2,1,0.572821,0.160745,0.266433
+United States/MLS,,Minnesota United,Vancouver Whitecaps,H,3,2,0.33123,0.228786,0.439984
+United States/MLS,,Nashville SC,Atlanta Utd,A,2,3,0.525395,0.160745,0.31386
 United States/MLS,,Nashville SC,CF Montreal,H,2,1,0.846611,0.153389,0.0
-United States/MLS,,Nashville SC,Charlotte,H,2,1,0.867812,0.132187,0.0
-United States/MLS,,Nashville SC,Chicago Fire,H,4,1,0.848139,0.140733,0.011128
-United States/MLS,,Nashville SC,Columbus Crew,H,2,1,0.787653,0.191683,0.020664
-United States/MLS,,Nashville SC,DC United,D,2,2,0.557877,0.394319,0.047804
-United States/MLS,,Nashville SC,FC Cincinnati,A,2,3,0.402471,0.214399,0.38313
-United States/MLS,,Nashville SC,Inter Miami,A,2,3,0.518131,0.100493,0.381376
-United States/MLS,,Nashville SC,New York City,H,2,1,0.493987,0.327981,0.178032
-United States/MLS,,Nashville SC,New York Red Bulls,H,2,1,0.820757,0.179243,0.0
-United States/MLS,,Nashville SC,Orlando City,H,3,2,0.726398,0.213101,0.060501
-United States/MLS,,Nashville SC,Philadelphia Union,H,2,1,0.870207,0.118341,0.011452
+United States/MLS,,Nashville SC,Charlotte,H,2,1,0.857334,0.132187,0.010478
+United States/MLS,,Nashville SC,Chicago Fire,H,4,1,0.859267,0.140733,0.0
+United States/MLS,,Nashville SC,Columbus Crew,H,2,1,0.772128,0.191683,0.036189
+United States/MLS,,Nashville SC,DC United,H,2,1,0.522936,0.394319,0.082746
+United States/MLS,,Nashville SC,FC Cincinnati,H,2,1,0.42558,0.214399,0.360021
+United States/MLS,,Nashville SC,Inter Miami,A,2,3,0.556472,0.100493,0.343035
+United States/MLS,,Nashville SC,New York City,H,2,1,0.511036,0.327981,0.160983
+United States/MLS,,Nashville SC,New York Red Bulls,H,2,1,0.797898,0.179243,0.022859
+United States/MLS,,Nashville SC,Orlando City,D,2,2,0.688063,0.213101,0.098836
+United States/MLS,,Nashville SC,Philadelphia Union,A,1,2,0.81297,0.118341,0.068688
 United States/MLS,,Nashville SC,Real Salt Lake,H,2,1,0.90351,0.09649,0.0
-United States/MLS,,Nashville SC,San Jose Earthquakes,D,2,2,0.606294,0.353618,0.040088
-United States/MLS,,Nashville SC,Sporting Kansas City,H,3,1,0.797876,0.187031,0.015092
+United States/MLS,,Nashville SC,San Jose Earthquakes,D,2,2,0.534026,0.353618,0.112356
+United States/MLS,,Nashville SC,Sporting Kansas City,H,3,1,0.76628,0.187031,0.046689
 United States/MLS,,Nashville SC,Toronto FC,H,2,1,0.800096,0.199904,0.0
-United States/MLS,,New England Revolution,Atlanta Utd,H,2,0,0.840986,0.159014,0.0
-United States/MLS,,New England Revolution,CF Montreal,A,1,2,0.421057,0.173293,0.405649
-United States/MLS,,New England Revolution,Charlotte,A,1,2,0.245076,0.126671,0.628253
-United States/MLS,,New England Revolution,Chicago Fire,H,3,2,0.234925,0.48176,0.283315
-United States/MLS,,New England Revolution,Columbus Crew,H,3,2,0.225755,0.251286,0.522959
-United States/MLS,,New England Revolution,DC United,H,2,1,0.813766,0.138029,0.048205
-United States/MLS,,New England Revolution,FC Cincinnati,H,2,1,0.194273,0.172536,0.633191
-United States/MLS,,New England Revolution,Inter Miami,A,1,2,0.190205,0.195361,0.614435
-United States/MLS,,New England Revolution,Nashville SC,A,2,3,0.302043,0.198173,0.499784
-United States/MLS,,New England Revolution,New York City,H,3,2,0.457395,0.211154,0.331451
-United States/MLS,,New England Revolution,New York Red Bulls,H,2,1,0.704192,0.217103,0.078705
-United States/MLS,,New England Revolution,Orlando City,A,1,2,0.250496,0.17524,0.574264
-United States/MLS,,New England Revolution,Philadelphia Union,H,3,2,0.216245,0.180757,0.602997
-United States/MLS,,New England Revolution,San Jose Earthquakes,D,1,1,0.425056,0.402989,0.171955
-United States/MLS,,New England Revolution,Sporting Kansas City,H,2,1,0.728522,0.185084,0.086393
-United States/MLS,,New England Revolution,Toronto FC,H,2,1,0.415958,0.386542,0.1975
-United States/MLS,,New England Revolution,Vancouver Whitecaps,H,2,1,0.480289,0.172212,0.3475
-United States/MLS,,New York City,Atlanta Utd,H,2,1,0.824976,0.175024,0.0
-United States/MLS,,New York City,CF Montreal,D,1,1,0.403514,0.113149,0.483337
-United States/MLS,,New York City,Charlotte,H,2,1,0.678982,0.235276,0.085741
-United States/MLS,,New York City,Chicago Fire,H,2,1,0.731557,0.167127,0.101316
-United States/MLS,,New York City,Columbus Crew,H,3,2,0.634589,0.216887,0.148524
-United States/MLS,,New York City,DC United,H,2,1,0.456602,0.120721,0.422677
-United States/MLS,,New York City,FC Cincinnati,H,2,1,0.658975,0.177837,0.163188
-United States/MLS,,New York City,Inter Miami,H,4,3,0.273567,0.15274,0.573692
-United States/MLS,,New York City,Nashville SC,H,2,1,0.723878,0.1628,0.113321
-United States/MLS,,New York City,New England Revolution,H,2,1,0.631144,0.214075,0.154781
-United States/MLS,,New York City,New York Red Bulls,H,2,1,0.839038,0.160962,0.0
-United States/MLS,,New York City,Orlando City,H,2,1,0.632491,0.207368,0.160141
-United States/MLS,,New York City,Philadelphia Union,H,2,1,0.662721,0.122019,0.21526
-United States/MLS,,New York City,San Jose Earthquakes,H,3,1,0.83672,0.136082,0.027198
-United States/MLS,,New York City,Sporting Kansas City,D,2,2,0.638904,0.234411,0.126685
-United States/MLS,,New York City,Toronto FC,A,2,3,0.630198,0.237981,0.131821
-United States/MLS,,New York City,Vancouver Whitecaps,D,1,1,0.497998,0.228894,0.273108
+United States/MLS,,New England Revolution,Atlanta Utd,H,2,0,0.755983,0.159014,0.085003
+United States/MLS,,New England Revolution,CF Montreal,A,1,2,0.418094,0.173293,0.408613
+United States/MLS,,New England Revolution,Charlotte,A,1,2,0.262902,0.126671,0.610428
+United States/MLS,,New England Revolution,Chicago Fire,A,2,3,0.274515,0.48176,0.243724
+United States/MLS,,New England Revolution,Columbus Crew,A,1,2,0.296334,0.251286,0.45238
+United States/MLS,,New England Revolution,DC United,H,2,1,0.810512,0.138029,0.051459
+United States/MLS,,New England Revolution,FC Cincinnati,H,2,1,0.234808,0.172536,0.592656
+United States/MLS,,New England Revolution,Inter Miami,A,1,2,0.218356,0.195361,0.586283
+United States/MLS,,New England Revolution,Nashville SC,H,3,2,0.354201,0.198173,0.447626
+United States/MLS,,New England Revolution,New York City,D,1,1,0.487464,0.211154,0.301382
+United States/MLS,,New England Revolution,New York Red Bulls,H,2,1,0.626949,0.217103,0.155948
+United States/MLS,,New England Revolution,Orlando City,A,1,2,0.249922,0.17524,0.574838
+United States/MLS,,New England Revolution,Philadelphia Union,A,1,2,0.179558,0.180757,0.639684
+United States/MLS,,New England Revolution,San Jose Earthquakes,H,2,1,0.368695,0.402989,0.228316
+United States/MLS,,New England Revolution,Sporting Kansas City,D,2,2,0.738834,0.185084,0.076082
+United States/MLS,,New England Revolution,Toronto FC,H,2,1,0.410551,0.386542,0.202907
+United States/MLS,,New England Revolution,Vancouver Whitecaps,A,1,2,0.508491,0.172212,0.319298
+United States/MLS,,New York City,Atlanta Utd,H,2,1,0.763394,0.175024,0.061582
+United States/MLS,,New York City,CF Montreal,H,2,1,0.385286,0.113149,0.501565
+United States/MLS,,New York City,Charlotte,A,1,2,0.680934,0.235276,0.08379
+United States/MLS,,New York City,Chicago Fire,H,2,1,0.705855,0.167127,0.127017
+United States/MLS,,New York City,Columbus Crew,H,3,2,0.687811,0.216887,0.095302
+United States/MLS,,New York City,DC United,H,2,1,0.413522,0.120721,0.465757
+United States/MLS,,New York City,FC Cincinnati,A,1,2,0.671006,0.177837,0.151157
+United States/MLS,,New York City,Inter Miami,H,4,3,0.333513,0.15274,0.513747
+United States/MLS,,New York City,Nashville SC,H,2,1,0.758376,0.1628,0.078823
+United States/MLS,,New York City,New England Revolution,H,2,1,0.624305,0.214075,0.16162
+United States/MLS,,New York City,New York Red Bulls,H,2,1,0.749831,0.160962,0.089207
+United States/MLS,,New York City,Orlando City,H,2,1,0.649695,0.207368,0.142937
+United States/MLS,,New York City,Philadelphia Union,A,1,2,0.614837,0.122019,0.263144
+United States/MLS,,New York City,San Jose Earthquakes,H,3,1,0.822507,0.136082,0.041412
+United States/MLS,,New York City,Sporting Kansas City,A,2,3,0.587636,0.234411,0.177953
+United States/MLS,,New York City,Toronto FC,H,2,1,0.685084,0.237981,0.076935
+United States/MLS,,New York City,Vancouver Whitecaps,H,2,1,0.517663,0.228894,0.253443
 United States/MLS,,New York Red Bulls,Atlanta Utd,H,2,1,0.88869,0.11131,0.0
-United States/MLS,,New York Red Bulls,CF Montreal,H,2,1,0.766241,0.126671,0.107088
-United States/MLS,,New York Red Bulls,Charlotte,D,2,2,0.745062,0.170156,0.084782
-United States/MLS,,New York Red Bulls,Chicago Fire,H,3,2,0.606918,0.173401,0.21968
-United States/MLS,,New York Red Bulls,Colorado Rapids,D,2,2,0.571714,0.267512,0.160774
-United States/MLS,,New York Red Bulls,Columbus Crew,H,2,1,0.32464,0.451519,0.223841
-United States/MLS,,New York Red Bulls,DC United,H,2,1,0.591702,0.144303,0.263995
-United States/MLS,,New York Red Bulls,FC Cincinnati,A,2,3,0.319707,0.21905,0.461242
-United States/MLS,,New York Red Bulls,Inter Miami,A,2,3,0.321513,0.149495,0.528992
-United States/MLS,,New York Red Bulls,Nashville SC,H,3,1,0.663818,0.202716,0.133466
-United States/MLS,,New York Red Bulls,New England Revolution,H,3,2,0.696152,0.1575,0.146348
-United States/MLS,,New York Red Bulls,New York City,A,2,3,0.240346,0.181298,0.578356
-United States/MLS,,New York Red Bulls,Orlando City,A,2,3,0.397973,0.374171,0.227856
-United States/MLS,,New York Red Bulls,Philadelphia Union,H,2,1,0.615908,0.144195,0.239898
-United States/MLS,,New York Red Bulls,Sporting Kansas City,H,2,1,0.665034,0.188978,0.145988
-United States/MLS,,New York Red Bulls,Toronto FC,A,2,3,0.771786,0.136623,0.091591
-United States/MLS,,New York Red Bulls,Vancouver Whitecaps,H,2,1,0.410898,0.324736,0.264367
-United States/MLS,,Orlando City,Atlanta Utd,D,2,2,0.781877,0.18649,0.031633
+United States/MLS,,New York Red Bulls,CF Montreal,H,2,1,0.807281,0.126671,0.066048
+United States/MLS,,New York Red Bulls,Charlotte,D,2,2,0.775014,0.170156,0.05483
+United States/MLS,,New York Red Bulls,Chicago Fire,H,3,2,0.677328,0.173401,0.14927
+United States/MLS,,New York Red Bulls,Colorado Rapids,H,3,2,0.62088,0.267512,0.111608
+United States/MLS,,New York Red Bulls,Columbus Crew,D,2,2,0.431659,0.451519,0.116822
+United States/MLS,,New York Red Bulls,DC United,D,2,2,0.69163,0.144303,0.164067
+United States/MLS,,New York Red Bulls,FC Cincinnati,H,2,1,0.374554,0.21905,0.406396
+United States/MLS,,New York Red Bulls,Inter Miami,A,2,3,0.377767,0.149495,0.472738
+United States/MLS,,New York Red Bulls,Nashville SC,H,3,1,0.734341,0.202716,0.062942
+United States/MLS,,New York Red Bulls,New York City,A,2,3,0.305478,0.181298,0.513224
+United States/MLS,,New York Red Bulls,Orlando City,H,3,2,0.518078,0.374171,0.107751
+United States/MLS,,New York Red Bulls,Philadelphia Union,H,2,1,0.723781,0.144195,0.132024
+United States/MLS,,New York Red Bulls,Sporting Kansas City,A,2,3,0.7553,0.188978,0.055721
+United States/MLS,,New York Red Bulls,Toronto FC,H,2,1,0.830617,0.136623,0.03276
+United States/MLS,,New York Red Bulls,Vancouver Whitecaps,A,2,3,0.441355,0.324736,0.233909
+United States/MLS,,Orlando City,Atlanta Utd,H,2,1,0.728629,0.18649,0.08488
 United States/MLS,,Orlando City,CF Montreal,D,2,2,0.511133,0.488867,0.0
-United States/MLS,,Orlando City,Charlotte,H,2,1,0.799458,0.135865,0.064677
-United States/MLS,,Orlando City,Chicago Fire,A,2,3,0.292411,0.146358,0.56123
-United States/MLS,,Orlando City,Colorado Rapids,H,2,1,0.798365,0.201635,0.0
-United States/MLS,,Orlando City,Columbus Crew,H,2,1,0.535001,0.335877,0.129122
-United States/MLS,,Orlando City,DC United,H,3,2,0.825138,0.170264,0.004597
-United States/MLS,,Orlando City,FC Cincinnati,D,2,2,0.254358,0.138137,0.607505
-United States/MLS,,Orlando City,Inter Miami,H,3,1,0.708452,0.137488,0.15406
-United States/MLS,,Orlando City,Nashville SC,H,3,1,0.905132,0.094868,0.0
-United States/MLS,,Orlando City,New England Revolution,H,3,2,0.416656,0.552858,0.030486
-United States/MLS,,Orlando City,New York City,H,3,2,0.358473,0.190276,0.451251
-United States/MLS,,Orlando City,Philadelphia Union,A,2,3,0.369298,0.143546,0.487157
+United States/MLS,,Orlando City,Charlotte,H,2,1,0.784125,0.135865,0.080009
+United States/MLS,,Orlando City,Chicago Fire,A,2,3,0.349456,0.146358,0.504186
+United States/MLS,,Orlando City,Colorado Rapids,H,2,1,0.790895,0.201635,0.00747
+United States/MLS,,Orlando City,Columbus Crew,H,2,1,0.500339,0.335877,0.163783
+United States/MLS,,Orlando City,DC United,H,3,2,0.786404,0.170264,0.043331
+United States/MLS,,Orlando City,FC Cincinnati,D,2,2,0.287933,0.138137,0.57393
+United States/MLS,,Orlando City,Nashville SC,D,3,3,0.905132,0.094868,0.0
+United States/MLS,,Orlando City,New England Revolution,D,2,2,0.414673,0.552858,0.032468
+United States/MLS,,Orlando City,New York City,A,2,3,0.359639,0.190276,0.450085
+United States/MLS,,Orlando City,Philadelphia Union,A,2,3,0.328587,0.143546,0.527868
 United States/MLS,,Orlando City,Sporting Kansas City,H,3,2,0.891935,0.108065,0.0
-United States/MLS,,Orlando City,Toronto FC,A,2,3,0.670723,0.283954,0.045322
-United States/MLS,,Orlando City,Vancouver Whitecaps,A,1,2,0.202824,0.067284,0.729892
-United States/MLS,,Philadelphia Union,Atlanta Utd,H,2,1,0.870409,0.129591,0.0
-United States/MLS,,Philadelphia Union,CF Montreal,H,2,1,0.781199,0.183245,0.035556
-United States/MLS,,Philadelphia Union,Charlotte,H,2,1,0.747587,0.164856,0.087558
-United States/MLS,,Philadelphia Union,Chicago Fire,D,3,3,0.509103,0.482702,0.008195
+United States/MLS,,Orlando City,Toronto FC,D,2,2,0.683386,0.283954,0.032659
+United States/MLS,,Orlando City,Vancouver Whitecaps,A,1,2,0.215934,0.067284,0.716782
+United States/MLS,,Philadelphia Union,Atlanta Utd,H,2,1,0.840936,0.129591,0.029473
+United States/MLS,,Philadelphia Union,CF Montreal,H,2,1,0.816755,0.183245,0.0
+United States/MLS,,Philadelphia Union,Charlotte,H,2,1,0.7688,0.164856,0.066344
+United States/MLS,,Philadelphia Union,Chicago Fire,D,3,3,0.517298,0.482702,0.0
 United States/MLS,,Philadelphia Union,Colorado Rapids,H,2,1,0.889663,0.110337,0.0
-United States/MLS,,Philadelphia Union,Columbus Crew,D,2,2,0.419191,0.580809,0.0
+United States/MLS,,Philadelphia Union,Columbus Crew,H,3,2,0.419191,0.580809,0.0
 United States/MLS,,Philadelphia Union,DC United,H,3,1,0.922332,0.077668,0.0
-United States/MLS,,Philadelphia Union,FC Cincinnati,H,2,1,0.562013,0.272813,0.165175
-United States/MLS,,Philadelphia Union,Houston Dynamo,H,2,1,0.675381,0.249663,0.074955
-United States/MLS,,Philadelphia Union,Inter Miami,H,4,3,0.343634,0.430632,0.225734
-United States/MLS,,Philadelphia Union,Nashville SC,H,3,1,0.587079,0.23982,0.173101
+United States/MLS,,Philadelphia Union,FC Cincinnati,A,2,3,0.596717,0.272813,0.130471
+United States/MLS,,Philadelphia Union,Houston Dynamo,H,2,1,0.710912,0.249663,0.039424
+United States/MLS,,Philadelphia Union,Inter Miami,A,2,3,0.355945,0.430632,0.213423
+United States/MLS,,Philadelphia Union,Nashville SC,H,3,1,0.608039,0.23982,0.152142
 United States/MLS,,Philadelphia Union,New England Revolution,H,2,1,0.902428,0.097572,0.0
-United States/MLS,,Philadelphia Union,New York City,H,2,1,0.602892,0.103738,0.29337
-United States/MLS,,Philadelphia Union,New York Red Bulls,H,2,1,0.813293,0.186707,0.0
-United States/MLS,,Philadelphia Union,Orlando City,H,2,1,0.439212,0.537803,0.022985
-United States/MLS,,Philadelphia Union,Toronto FC,H,2,1,0.432044,0.519424,0.048532
-United States/MLS,,Philadelphia Union,Vancouver Whitecaps,D,1,1,0.42527,0.284495,0.290234
-United States/MLS,,Portland Timbers,Austin FC,H,2,1,0.837725,0.112175,0.0501
-United States/MLS,,Portland Timbers,Charlotte,H,3,2,0.342507,0.244363,0.41313
-United States/MLS,,Portland Timbers,Chicago Fire,H,3,2,0.438578,0.303642,0.25778
-United States/MLS,,Portland Timbers,Colorado Rapids,D,2,2,0.860565,0.139435,0.0
-United States/MLS,,Portland Timbers,DC United,H,2,1,0.7684,0.207692,0.023908
-United States/MLS,,Portland Timbers,FC Cincinnati,D,2,2,0.204449,0.184111,0.61144
-United States/MLS,,Portland Timbers,FC Dallas,D,2,2,0.433006,0.513428,0.053565
-United States/MLS,,Portland Timbers,Houston Dynamo,A,2,3,0.714504,0.195036,0.09046
-United States/MLS,,Portland Timbers,Inter Miami,D,2,2,0.324755,0.289147,0.386099
-United States/MLS,,Portland Timbers,Los Angeles FC,H,3,2,0.338494,0.449128,0.212378
-United States/MLS,,Portland Timbers,Los Angeles Galaxy,H,2,1,0.673902,0.324952,0.001146
-United States/MLS,,Portland Timbers,Minnesota United,D,1,1,0.325822,0.501468,0.17271
-United States/MLS,,Portland Timbers,Real Salt Lake,D,2,2,0.811474,0.129483,0.059043
-United States/MLS,,Portland Timbers,San Diego FC,D,1,1,0.170596,0.29726,0.532145
-United States/MLS,,Portland Timbers,San Jose Earthquakes,H,2,1,0.540177,0.4203,0.039523
-United States/MLS,,Portland Timbers,Seattle Sounders,A,2,3,0.495467,0.343233,0.1613
+United States/MLS,,Philadelphia Union,New York Red Bulls,H,2,1,0.799984,0.186707,0.01331
+United States/MLS,,Philadelphia Union,Orlando City,D,1,1,0.458862,0.537803,0.003335
+United States/MLS,,Philadelphia Union,Toronto FC,H,2,1,0.480576,0.519424,0.0
+United States/MLS,,Philadelphia Union,Vancouver Whitecaps,D,1,1,0.422452,0.284495,0.293052
+United States/MLS,,Portland Timbers,Austin FC,H,2,1,0.851632,0.112175,0.036192
+United States/MLS,,Portland Timbers,Charlotte,A,1,2,0.337683,0.244363,0.417954
+United States/MLS,,Portland Timbers,Chicago Fire,D,2,2,0.450837,0.303642,0.245521
+United States/MLS,,Portland Timbers,Colorado Rapids,H,2,1,0.851274,0.139435,0.009291
+United States/MLS,,Portland Timbers,DC United,H,2,1,0.721717,0.207692,0.070591
+United States/MLS,,Portland Timbers,FC Cincinnati,A,2,3,0.220581,0.184111,0.595309
+United States/MLS,,Portland Timbers,FC Dallas,D,2,2,0.405895,0.513428,0.080677
+United States/MLS,,Portland Timbers,Houston Dynamo,A,2,3,0.664224,0.195036,0.14074
+United States/MLS,,Portland Timbers,Inter Miami,D,2,2,0.38381,0.289147,0.327044
+United States/MLS,,Portland Timbers,Los Angeles FC,D,2,2,0.334854,0.449128,0.216018
+United States/MLS,,Portland Timbers,Los Angeles Galaxy,H,2,1,0.675048,0.324952,0.0
+United States/MLS,,Portland Timbers,Minnesota United,A,1,2,0.283207,0.501468,0.215325
+United States/MLS,,Portland Timbers,Real Salt Lake,A,2,3,0.807605,0.129483,0.062911
+United States/MLS,,Portland Timbers,San Diego FC,A,1,3,0.187357,0.29726,0.515383
+United States/MLS,,Portland Timbers,San Jose Earthquakes,D,2,2,0.500174,0.4203,0.079526
+United States/MLS,,Portland Timbers,Seattle Sounders,H,3,2,0.462381,0.343233,0.194386
 United States/MLS,,Portland Timbers,Sporting Kansas City,D,2,2,0.905998,0.094002,0.0
-United States/MLS,,Portland Timbers,St. Louis City,D,2,2,0.784265,0.190493,0.025242
-United States/MLS,,Portland Timbers,Vancouver Whitecaps,H,3,2,0.356248,0.19601,0.447743
-United States/MLS,,Real Salt Lake,Austin FC,H,2,1,0.810571,0.080481,0.108948
-United States/MLS,,Real Salt Lake,Colorado Rapids,H,2,1,0.83234,0.116611,0.051049
-United States/MLS,,Real Salt Lake,FC Dallas,A,1,2,0.257231,0.241334,0.501435
-United States/MLS,,Real Salt Lake,Houston Dynamo,H,2,1,0.752597,0.166803,0.0806
-United States/MLS,,Real Salt Lake,Los Angeles FC,A,1,3,0.153146,0.215697,0.631157
-United States/MLS,,Real Salt Lake,Los Angeles Galaxy,H,2,1,0.77334,0.154255,0.072405
-United States/MLS,,Real Salt Lake,Minnesota United,H,3,2,0.147378,0.192981,0.659641
-United States/MLS,,Real Salt Lake,Portland Timbers,H,2,1,0.491377,0.359459,0.149164
-United States/MLS,,Real Salt Lake,San Diego FC,A,2,3,0.251642,0.167344,0.581014
-United States/MLS,,Real Salt Lake,San Jose Earthquakes,A,2,3,0.66491,0.165937,0.169153
-United States/MLS,,Real Salt Lake,Seattle Sounders,H,2,1,0.732069,0.16345,0.104481
-United States/MLS,,Real Salt Lake,Sporting Kansas City,H,2,1,0.915502,0.069988,0.01451
+United States/MLS,,Portland Timbers,St. Louis City,H,2,1,0.727527,0.190493,0.08198
+United States/MLS,,Portland Timbers,Vancouver Whitecaps,A,1,2,0.345457,0.19601,0.458533
+United States/MLS,,Real Salt Lake,Austin FC,H,2,1,0.886727,0.080481,0.032792
+United States/MLS,,Real Salt Lake,Colorado Rapids,D,2,2,0.842835,0.116611,0.040554
+United States/MLS,,Real Salt Lake,FC Dallas,D,1,1,0.269465,0.241334,0.489201
+United States/MLS,,Real Salt Lake,Houston Dynamo,H,2,1,0.763823,0.166803,0.069374
+United States/MLS,,Real Salt Lake,Los Angeles FC,H,4,3,0.24146,0.215697,0.542843
+United States/MLS,,Real Salt Lake,Los Angeles Galaxy,H,2,1,0.80438,0.154255,0.041366
+United States/MLS,,Real Salt Lake,Minnesota United,A,1,2,0.180371,0.192981,0.626649
+United States/MLS,,Real Salt Lake,Portland Timbers,H,2,1,0.493665,0.359459,0.146876
+United States/MLS,,Real Salt Lake,San Diego FC,H,3,2,0.33073,0.167344,0.501926
+United States/MLS,,Real Salt Lake,San Jose Earthquakes,H,2,1,0.593467,0.165938,0.240595
+United States/MLS,,Real Salt Lake,Sporting Kansas City,H,2,1,0.918937,0.069988,0.011075
 United States/MLS,,Real Salt Lake,St. Louis City,H,2,1,0.919303,0.080697,0.0
-United States/MLS,,Real Salt Lake,Vancouver Whitecaps,D,2,2,0.292281,0.20488,0.502839
-United States/MLS,,San Diego FC,Austin FC,H,2,1,0.80909,0.082861,0.108049
-United States/MLS,,San Diego FC,Colorado Rapids,D,2,2,0.779582,0.088161,0.132257
-United States/MLS,,San Diego FC,Columbus Crew,H,3,2,0.460359,0.462053,0.077588
-United States/MLS,,San Diego FC,DC United,H,3,2,0.474616,0.269784,0.255601
-United States/MLS,,San Diego FC,FC Cincinnati,A,1,2,0.324863,0.326575,0.348563
-United States/MLS,,San Diego FC,FC Dallas,H,3,1,0.889339,0.110661,0.0
-United States/MLS,,San Diego FC,Houston Dynamo,A,2,3,0.485461,0.121587,0.392952
-United States/MLS,,San Diego FC,Inter Miami,A,2,3,0.374604,0.353726,0.27167
-United States/MLS,,San Diego FC,Los Angeles FC,H,3,2,0.729238,0.160204,0.110558
+United States/MLS,,Real Salt Lake,Vancouver Whitecaps,A,2,3,0.339829,0.20488,0.455292
+United States/MLS,,San Diego FC,Austin FC,H,2,1,0.831347,0.082861,0.085792
+United States/MLS,,San Diego FC,Colorado Rapids,H,2,1,0.73132,0.088161,0.180519
+United States/MLS,,San Diego FC,Columbus Crew,D,2,2,0.398068,0.462053,0.139879
+United States/MLS,,San Diego FC,DC United,A,2,3,0.430446,0.269784,0.299771
+United States/MLS,,San Diego FC,FC Cincinnati,D,1,1,0.332979,0.326575,0.340446
+United States/MLS,,San Diego FC,FC Dallas,D,3,3,0.88331,0.110661,0.006029
+United States/MLS,,San Diego FC,Houston Dynamo,H,3,2,0.461395,0.121587,0.417018
+United States/MLS,,San Diego FC,Inter Miami,H,3,2,0.371356,0.353726,0.274918
+United States/MLS,,San Diego FC,Los Angeles FC,H,3,2,0.75973,0.160204,0.080065
 United States/MLS,,San Diego FC,Los Angeles Galaxy,H,2,1,0.833089,0.166911,0.0
-United States/MLS,,San Diego FC,Minnesota United,H,2,1,0.742828,0.069123,0.188049
-United States/MLS,,San Diego FC,Nashville SC,H,2,1,0.84766,0.094976,0.057364
-United States/MLS,,San Diego FC,New England Revolution,D,1,1,0.434035,0.285793,0.280172
-United States/MLS,,San Diego FC,Portland Timbers,H,2,1,0.859267,0.140733,0.0
-United States/MLS,,San Diego FC,Real Salt Lake,A,2,3,0.564977,0.114231,0.320792
-United States/MLS,,San Diego FC,San Jose Earthquakes,H,2,1,0.464767,0.09119,0.444043
-United States/MLS,,San Diego FC,Seattle Sounders,D,2,2,0.823382,0.095733,0.080885
-United States/MLS,,San Diego FC,Sporting Kansas City,H,2,1,0.597011,0.402989,0.0
-United States/MLS,,San Diego FC,St. Louis City,H,2,1,0.604723,0.348101,0.047176
-United States/MLS,,San Diego FC,Vancouver Whitecaps,D,1,1,0.274423,0.282764,0.442813
-United States/MLS,,San Jose Earthquakes,Austin FC,H,3,2,0.692622,0.180325,0.127053
-United States/MLS,,San Jose Earthquakes,Colorado Rapids,H,2,1,0.512468,0.160529,0.327003
-United States/MLS,,San Jose Earthquakes,FC Dallas,D,2,2,0.428512,0.481839,0.08965
-United States/MLS,,San Jose Earthquakes,Houston Dynamo,D,2,2,0.29275,0.512981,0.194269
-United States/MLS,,San Jose Earthquakes,Los Angeles FC,A,2,3,0.320944,0.139002,0.540054
-United States/MLS,,San Jose Earthquakes,Los Angeles Galaxy,H,2,1,0.374271,0.468101,0.157628
-United States/MLS,,San Jose Earthquakes,Minnesota United,A,1,2,0.195424,0.133377,0.671199
-United States/MLS,,San Jose Earthquakes,Portland Timbers,D,2,2,0.613344,0.24155,0.145105
-United States/MLS,,San Jose Earthquakes,Real Salt Lake,H,3,1,0.80638,0.158798,0.034822
-United States/MLS,,San Jose Earthquakes,San Diego FC,A,2,3,0.214116,0.070637,0.715247
-United States/MLS,,San Jose Earthquakes,Seattle Sounders,D,2,2,0.384708,0.41278,0.202512
-United States/MLS,,San Jose Earthquakes,St. Louis City,H,4,3,0.162026,0.142248,0.695727
-United States/MLS,,San Jose Earthquakes,Vancouver Whitecaps,H,3,2,0.718074,0.100493,0.181433
-United States/MLS,,Seattle Sounders,Austin FC,H,3,1,0.7877,0.192007,0.020293
-United States/MLS,,Seattle Sounders,FC Cincinnati,D,2,2,0.442411,0.30256,0.255029
-United States/MLS,,Seattle Sounders,FC Dallas,D,2,2,0.759602,0.194495,0.045903
-United States/MLS,,Seattle Sounders,Houston Dynamo,D,2,2,0.677428,0.322572,0.0
-United States/MLS,,Seattle Sounders,Inter Miami,A,2,3,0.308146,0.254423,0.437431
-United States/MLS,,Seattle Sounders,Los Angeles FC,D,3,3,0.547571,0.293798,0.158631
+United States/MLS,,San Diego FC,Minnesota United,H,2,1,0.693825,0.069123,0.237052
+United States/MLS,,San Diego FC,Nashville SC,H,2,1,0.832656,0.094976,0.072368
+United States/MLS,,San Diego FC,New England Revolution,H,3,2,0.40847,0.285793,0.305737
+United States/MLS,,San Diego FC,Portland Timbers,H,2,1,0.848489,0.140733,0.010778
+United States/MLS,,San Diego FC,Real Salt Lake,H,3,2,0.525194,0.114231,0.360575
+United States/MLS,,San Diego FC,San Jose Earthquakes,A,1,2,0.413017,0.09119,0.495793
+United States/MLS,,San Diego FC,Seattle Sounders,H,2,1,0.788166,0.095733,0.116101
+United States/MLS,,San Diego FC,Sporting Kansas City,D,2,2,0.549407,0.402989,0.047604
+United States/MLS,,San Diego FC,Vancouver Whitecaps,H,3,2,0.243165,0.282764,0.474071
+United States/MLS,,San Jose Earthquakes,Austin FC,H,3,2,0.776105,0.180325,0.043571
+United States/MLS,,San Jose Earthquakes,Colorado Rapids,H,2,1,0.554353,0.160529,0.285118
+United States/MLS,,San Jose Earthquakes,FC Dallas,H,3,2,0.425081,0.481839,0.09308
+United States/MLS,,San Jose Earthquakes,Houston Dynamo,A,2,3,0.34467,0.512981,0.142349
+United States/MLS,,San Jose Earthquakes,Los Angeles FC,A,2,3,0.351462,0.139002,0.509536
+United States/MLS,,San Jose Earthquakes,Los Angeles Galaxy,A,2,3,0.448331,0.468101,0.083567
+United States/MLS,,San Jose Earthquakes,Minnesota United,A,1,2,0.251855,0.133377,0.614768
+United States/MLS,,San Jose Earthquakes,Portland Timbers,D,2,2,0.641478,0.24155,0.116972
+United States/MLS,,San Jose Earthquakes,Real Salt Lake,A,3,4,0.819901,0.158798,0.021301
+United States/MLS,,San Jose Earthquakes,San Diego FC,A,2,3,0.259905,0.070637,0.669458
+United States/MLS,,San Jose Earthquakes,Seattle Sounders,A,2,3,0.362927,0.41278,0.224293
+United States/MLS,,San Jose Earthquakes,St. Louis City,D,1,1,0.178687,0.142248,0.679066
+United States/MLS,,San Jose Earthquakes,Vancouver Whitecaps,H,3,2,0.77517,0.100493,0.124337
+United States/MLS,,Seattle Sounders,Austin FC,H,3,1,0.807993,0.192007,0.0
+United States/MLS,,Seattle Sounders,FC Cincinnati,D,2,2,0.491012,0.30256,0.206428
+United States/MLS,,Seattle Sounders,FC Dallas,H,2,1,0.787485,0.194495,0.018019
+United States/MLS,,Seattle Sounders,Houston Dynamo,H,2,1,0.677428,0.322572,0.0
+United States/MLS,,Seattle Sounders,Inter Miami,H,4,3,0.348418,0.254423,0.397159
+United States/MLS,,Seattle Sounders,Los Angeles FC,H,3,2,0.570953,0.293798,0.135249
 United States/MLS,,Seattle Sounders,Los Angeles Galaxy,D,3,3,0.537137,0.462863,0.0
-United States/MLS,,Seattle Sounders,Minnesota United,H,3,2,0.637415,0.164531,0.198054
-United States/MLS,,Seattle Sounders,Nashville SC,A,3,4,0.802618,0.151983,0.045399
-United States/MLS,,Seattle Sounders,New England Revolution,D,2,2,0.563936,0.290986,0.145078
-United States/MLS,,Seattle Sounders,New York City,H,3,2,0.549499,0.250312,0.200189
+United States/MLS,,Seattle Sounders,Minnesota United,H,3,2,0.639839,0.164531,0.19563
+United States/MLS,,Seattle Sounders,Nashville SC,D,3,3,0.815155,0.151983,0.032862
+United States/MLS,,Seattle Sounders,New England Revolution,H,3,2,0.57243,0.290986,0.136585
+United States/MLS,,Seattle Sounders,New York City,H,3,2,0.603179,0.250312,0.146509
 United States/MLS,,Seattle Sounders,New York Red Bulls,H,2,1,0.80875,0.19125,0.0
-United States/MLS,,Seattle Sounders,Portland Timbers,H,2,1,0.67484,0.226839,0.098321
-United States/MLS,,Seattle Sounders,Real Salt Lake,H,2,1,0.861073,0.135,0.003927
-United States/MLS,,Seattle Sounders,San Diego FC,H,3,2,0.591301,0.13619,0.272509
-United States/MLS,,Seattle Sounders,San Jose Earthquakes,H,3,2,0.820433,0.179567,0.0
-United States/MLS,,Seattle Sounders,Sporting Kansas City,H,4,2,0.867912,0.127644,0.004443
+United States/MLS,,Seattle Sounders,Portland Timbers,H,2,1,0.716204,0.226839,0.056957
+United States/MLS,,Seattle Sounders,Real Salt Lake,H,2,1,0.865,0.135,0.0
+United States/MLS,,Seattle Sounders,San Diego FC,H,3,2,0.677346,0.13619,0.186464
+United States/MLS,,Seattle Sounders,San Jose Earthquakes,H,3,2,0.814773,0.179567,0.00566
+United States/MLS,,Seattle Sounders,Sporting Kansas City,H,4,2,0.872356,0.127644,0.0
 United States/MLS,,Seattle Sounders,St. Louis City,H,3,1,0.881875,0.118125,0.0
-United States/MLS,,Seattle Sounders,Vancouver Whitecaps,D,2,2,0.396423,0.438559,0.165019
-United States/MLS,,Sporting Kansas City,Austin FC,D,1,1,0.37784,0.152632,0.469528
-United States/MLS,,Sporting Kansas City,Colorado Rapids,H,3,1,0.866514,0.133486,0.0
-United States/MLS,,Sporting Kansas City,FC Dallas,A,2,3,0.406917,0.220673,0.37241
-United States/MLS,,Sporting Kansas City,Houston Dynamo,H,2,1,0.301469,0.572303,0.126228
-United States/MLS,,Sporting Kansas City,Los Angeles FC,A,1,3,0.139556,0.163341,0.697103
-United States/MLS,,Sporting Kansas City,Los Angeles Galaxy,H,2,1,0.763517,0.173618,0.062865
-United States/MLS,,Sporting Kansas City,Minnesota United,A,2,3,0.327775,0.30256,0.369665
-United States/MLS,,Sporting Kansas City,Portland Timbers,H,3,2,0.335905,0.230733,0.433362
-United States/MLS,,Sporting Kansas City,Real Salt Lake,H,2,1,0.322179,0.399903,0.277918
-United States/MLS,,Sporting Kansas City,San Diego FC,A,1,2,0.095904,0.107091,0.797004
-United States/MLS,,Sporting Kansas City,San Jose Earthquakes,A,2,3,0.494211,0.164964,0.340825
-United States/MLS,,Sporting Kansas City,Seattle Sounders,A,2,3,0.335264,0.132945,0.531792
-United States/MLS,,Sporting Kansas City,St. Louis City,D,2,2,0.710317,0.244038,0.045645
-United States/MLS,,Sporting Kansas City,Vancouver Whitecaps,A,1,2,0.249675,0.105144,0.64518
-United States/MLS,,St. Louis City,Austin FC,A,2,3,0.49375,0.090974,0.415277
-United States/MLS,,St. Louis City,Colorado Rapids,A,1,2,0.281744,0.480817,0.237439
-United States/MLS,,St. Louis City,FC Dallas,D,1,1,0.228347,0.50291,0.268743
-United States/MLS,,St. Louis City,Houston Dynamo,H,3,2,0.324556,0.284171,0.391273
-United States/MLS,,St. Louis City,Los Angeles FC,A,1,3,0.059979,0.122236,0.817785
-United States/MLS,,St. Louis City,Los Angeles Galaxy,H,3,2,0.486097,0.497961,0.015943
-United States/MLS,,St. Louis City,Minnesota United,A,1,3,0.141044,0.085349,0.773608
-United States/MLS,,St. Louis City,Nashville SC,H,2,1,0.790005,0.080913,0.129082
-United States/MLS,,St. Louis City,New England Revolution,H,3,2,0.263979,0.460918,0.275103
-United States/MLS,,St. Louis City,New York City,H,3,2,0.608072,0.141923,0.250005
-United States/MLS,,St. Louis City,New York Red Bulls,D,1,1,0.468631,0.421331,0.110038
-United States/MLS,,St. Louis City,Orlando City,A,1,3,0.106034,0.082969,0.810997
-United States/MLS,,St. Louis City,Philadelphia Union,H,3,2,0.186751,0.217103,0.596145
-United States/MLS,,St. Louis City,Portland Timbers,H,2,1,0.63715,0.173401,0.189448
-United States/MLS,,St. Louis City,Real Salt Lake,H,2,1,0.298809,0.593191,0.108
-United States/MLS,,St. Louis City,San Diego FC,A,1,2,0.101372,0.133702,0.764926
-United States/MLS,,St. Louis City,San Jose Earthquakes,H,2,1,0.911128,0.069339,0.019533
-United States/MLS,,St. Louis City,Seattle Sounders,D,1,1,0.378421,0.128077,0.493502
-United States/MLS,,St. Louis City,Sporting Kansas City,D,2,2,0.482352,0.45382,0.063828
-United States/MLS,,St. Louis City,Vancouver Whitecaps,A,1,2,0.187053,0.40825,0.404698
-United States/MLS,,Toronto FC,Atlanta Utd,D,1,1,0.574217,0.425783,0.0
-United States/MLS,,Toronto FC,CF Montreal,D,1,1,0.443617,0.494047,0.062336
-United States/MLS,,Toronto FC,Charlotte,A,1,2,0.278258,0.26232,0.459422
-United States/MLS,,Toronto FC,Chicago Fire,A,1,2,0.275442,0.274651,0.449907
-United States/MLS,,Toronto FC,Colorado Rapids,H,2,1,0.45692,0.286442,0.256638
-United States/MLS,,Toronto FC,Columbus Crew,H,2,1,0.296953,0.46108,0.241967
-United States/MLS,,Toronto FC,DC United,H,2,1,0.786156,0.159123,0.054721
-United States/MLS,,Toronto FC,FC Cincinnati,D,1,1,0.183639,0.264808,0.551553
-United States/MLS,,Toronto FC,Houston Dynamo,D,1,1,0.445383,0.331875,0.222742
-United States/MLS,,Toronto FC,Inter Miami,D,1,1,0.213897,0.449871,0.336232
-United States/MLS,,Toronto FC,Nashville SC,A,1,2,0.269819,0.218942,0.511239
-United States/MLS,,Toronto FC,New England Revolution,A,1,2,0.34714,0.289796,0.363065
-United States/MLS,,Toronto FC,New York City,H,2,1,0.327468,0.254531,0.418001
-United States/MLS,,Toronto FC,New York Red Bulls,D,1,1,0.423042,0.506011,0.070948
-United States/MLS,,Toronto FC,Orlando City,D,2,2,0.64958,0.220565,0.129855
-United States/MLS,,Toronto FC,Philadelphia Union,D,1,1,0.335027,0.23149,0.433483
-United States/MLS,,Toronto FC,Vancouver Whitecaps,D,1,1,0.345432,0.452588,0.20198
-United States/MLS,,Vancouver Whitecaps,Austin FC,H,3,1,0.840574,0.154904,0.004522
-United States/MLS,,Vancouver Whitecaps,Colorado Rapids,H,2,1,0.834817,0.128618,0.036565
-United States/MLS,,Vancouver Whitecaps,FC Dallas,H,2,1,0.434813,0.086647,0.47854
-United States/MLS,,Vancouver Whitecaps,Houston Dynamo,D,2,2,0.618539,0.30613,0.075331
-United States/MLS,,Vancouver Whitecaps,Los Angeles FC,H,3,2,0.306529,0.601401,0.09207
-United States/MLS,,Vancouver Whitecaps,Los Angeles Galaxy,H,3,1,0.749744,0.180325,0.069931
-United States/MLS,,Vancouver Whitecaps,Minnesota United,D,2,2,0.430722,0.505105,0.064173
-United States/MLS,,Vancouver Whitecaps,Portland Timbers,D,2,2,0.538677,0.461323,0.0
-United States/MLS,,Vancouver Whitecaps,San Diego FC,A,3,4,0.239453,0.171779,0.588768
-United States/MLS,,Vancouver Whitecaps,San Jose Earthquakes,H,3,1,0.822296,0.123642,0.054062
-United States/MLS,,Vancouver Whitecaps,Seattle Sounders,A,2,3,0.751486,0.18,0.068514
-United States/MLS,,Vancouver Whitecaps,Sporting Kansas City,H,3,1,0.882308,0.117692,0.0
+United States/MLS,,Seattle Sounders,Vancouver Whitecaps,A,2,3,0.392167,0.438559,0.169274
+United States/MLS,,Sporting Kansas City,Austin FC,A,1,2,0.398026,0.152632,0.449342
+United States/MLS,,Sporting Kansas City,Colorado Rapids,H,3,1,0.829718,0.133486,0.036796
+United States/MLS,,Sporting Kansas City,FC Dallas,H,3,2,0.40399,0.220673,0.375337
+United States/MLS,,Sporting Kansas City,Houston Dynamo,D,1,1,0.356117,0.572303,0.07158
+United States/MLS,,Sporting Kansas City,Los Angeles FC,A,1,3,0.152256,0.163341,0.684403
+United States/MLS,,Sporting Kansas City,Los Angeles Galaxy,H,2,1,0.778205,0.173618,0.048178
+United States/MLS,,Sporting Kansas City,Minnesota United,D,2,2,0.318434,0.30256,0.379005
+United States/MLS,,Sporting Kansas City,Portland Timbers,H,3,2,0.347501,0.230733,0.421766
+United States/MLS,,Sporting Kansas City,Real Salt Lake,H,2,1,0.312187,0.399903,0.28791
+United States/MLS,,Sporting Kansas City,San Diego FC,A,1,2,0.102012,0.107091,0.790897
+United States/MLS,,Sporting Kansas City,San Jose Earthquakes,A,2,3,0.469657,0.164964,0.365379
+United States/MLS,,Sporting Kansas City,Seattle Sounders,D,2,2,0.284325,0.132945,0.58273
+United States/MLS,,Sporting Kansas City,St. Louis City,H,2,1,0.681874,0.244038,0.074087
+United States/MLS,,Sporting Kansas City,Vancouver Whitecaps,H,3,2,0.217107,0.105144,0.677749
+United States/MLS,,St. Louis City,Austin FC,D,2,2,0.527886,0.090974,0.381141
+United States/MLS,,St. Louis City,Colorado Rapids,H,2,1,0.310944,0.480817,0.20824
+United States/MLS,,St. Louis City,FC Dallas,D,1,1,0.246479,0.50291,0.250611
+United States/MLS,,St. Louis City,Houston Dynamo,A,1,2,0.333578,0.284171,0.382251
+United States/MLS,,St. Louis City,Los Angeles FC,H,4,3,0.14595,0.122236,0.731814
+United States/MLS,,St. Louis City,Los Angeles Galaxy,D,3,3,0.502039,0.497961,0.0
+United States/MLS,,St. Louis City,Minnesota United,H,4,3,0.163646,0.085349,0.751006
+United States/MLS,,St. Louis City,Nashville SC,H,2,1,0.847825,0.080913,0.071261
+United States/MLS,,St. Louis City,New England Revolution,A,1,2,0.305754,0.460918,0.233328
+United States/MLS,,St. Louis City,New York City,H,3,2,0.655732,0.141923,0.202345
+United States/MLS,,St. Louis City,New York Red Bulls,A,1,2,0.365181,0.421331,0.213489
+United States/MLS,,St. Louis City,Orlando City,A,1,3,0.1621,0.082969,0.754931
+United States/MLS,,St. Louis City,Philadelphia Union,A,1,2,0.170095,0.217103,0.612802
+United States/MLS,,St. Louis City,Portland Timbers,H,2,1,0.682437,0.173401,0.144162
+United States/MLS,,St. Louis City,Real Salt Lake,D,2,2,0.279128,0.593191,0.127682
+United States/MLS,,St. Louis City,San Diego FC,D,1,1,0.120304,0.133702,0.745994
+United States/MLS,,St. Louis City,San Jose Earthquakes,H,2,1,0.887434,0.069339,0.043227
+United States/MLS,,St. Louis City,Seattle Sounders,H,3,2,0.377011,0.128077,0.494912
+United States/MLS,,St. Louis City,Sporting Kansas City,D,2,2,0.506027,0.45382,0.040154
+United States/MLS,,St. Louis City,Vancouver Whitecaps,D,1,1,0.225222,0.40825,0.366528
+United States/MLS,,Toronto FC,Atlanta Utd,D,1,1,0.48888,0.425783,0.085337
+United States/MLS,,Toronto FC,CF Montreal,H,2,1,0.371315,0.494047,0.134638
+United States/MLS,,Toronto FC,Charlotte,A,1,2,0.259134,0.26232,0.478546
+United States/MLS,,Toronto FC,Chicago Fire,H,3,2,0.236196,0.274651,0.489152
+United States/MLS,,Toronto FC,Colorado Rapids,H,2,1,0.423991,0.286442,0.289567
+United States/MLS,,Toronto FC,Columbus Crew,D,1,1,0.320503,0.46108,0.218417
+United States/MLS,,Toronto FC,DC United,H,2,1,0.782688,0.159123,0.05819
+United States/MLS,,Toronto FC,FC Cincinnati,A,1,2,0.204773,0.264808,0.530419
+United States/MLS,,Toronto FC,Houston Dynamo,H,2,1,0.406325,0.331875,0.2618
+United States/MLS,,Toronto FC,Inter Miami,D,1,1,0.258609,0.449871,0.29152
+United States/MLS,,Toronto FC,Nashville SC,A,1,2,0.287857,0.218942,0.4932
+United States/MLS,,Toronto FC,New England Revolution,D,1,1,0.307353,0.289796,0.402851
+United States/MLS,,Toronto FC,New York City,H,2,1,0.287452,0.254531,0.458017
+United States/MLS,,Toronto FC,New York Red Bulls,H,2,1,0.374407,0.506011,0.119582
+United States/MLS,,Toronto FC,Orlando City,H,3,2,0.647482,0.220565,0.131953
+United States/MLS,,Toronto FC,Philadelphia Union,A,1,2,0.238487,0.23149,0.530022
+United States/MLS,,Toronto FC,Vancouver Whitecaps,H,2,1,0.300043,0.452588,0.247369
+United States/MLS,,Vancouver Whitecaps,Austin FC,H,3,1,0.844395,0.154904,0.000701
+United States/MLS,,Vancouver Whitecaps,Colorado Rapids,H,2,1,0.780997,0.128618,0.090386
+United States/MLS,,Vancouver Whitecaps,FC Dallas,H,2,1,0.434331,0.086647,0.479023
+United States/MLS,,Vancouver Whitecaps,Houston Dynamo,D,2,2,0.603353,0.30613,0.090517
+United States/MLS,,Vancouver Whitecaps,Los Angeles FC,D,2,2,0.398599,0.601401,0.0
+United States/MLS,,Vancouver Whitecaps,Los Angeles Galaxy,H,3,1,0.765991,0.180325,0.053685
+United States/MLS,,Vancouver Whitecaps,Minnesota United,H,2,1,0.37306,0.505105,0.121835
+United States/MLS,,Vancouver Whitecaps,Portland Timbers,H,2,1,0.538677,0.461323,0.0
+United States/MLS,,Vancouver Whitecaps,San Diego FC,A,3,4,0.2448,0.171779,0.583422
+United States/MLS,,Vancouver Whitecaps,San Jose Earthquakes,H,3,1,0.77075,0.123642,0.105608
+United States/MLS,,Vancouver Whitecaps,Seattle Sounders,H,2,1,0.715629,0.18,0.104371
+United States/MLS,,Vancouver Whitecaps,Sporting Kansas City,H,3,1,0.867815,0.117692,0.014493
 United States/MLS,,Vancouver Whitecaps,St. Louis City,H,3,1,0.893341,0.106659,0.0

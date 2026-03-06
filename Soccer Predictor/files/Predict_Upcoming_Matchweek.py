@@ -369,7 +369,7 @@ def update_team_mapping_from_fixtures(fixtures, context, mapping):
                 cleaned[api_key] = mapped_value
             else:
                 resolved = resolve_live_team_name(api_key, competition, context)
-                cleaned[api_key] = resolved if resolved else api_key
+                cleaned[api_key] = resolved if resolved else ""
         updated[competition] = cleaned
 
     for _, row in fixtures.iterrows():
@@ -383,7 +383,7 @@ def update_team_mapping_from_fixtures(fixtures, context, mapping):
             if not api_name:
                 continue
             resolved = resolve_live_team_name(api_name, competition, context)
-            target = resolved if resolved else api_name
+            target = resolved if resolved else ""
 
             existing = str(updated[competition].get(api_name, "")).strip()
             if not existing:
@@ -792,8 +792,8 @@ def predict_fixture(row, context):
     competition = row["competition"]
     match_date = row["match_date"]
 
-    home_team = str(row.get("mapped_home_team", "")).strip() or str(raw_home).strip()
-    away_team = str(row.get("mapped_away_team", "")).strip() or str(raw_away).strip()
+    home_team = str(row.get("mapped_home_team", "")).strip()
+    away_team = str(row.get("mapped_away_team", "")).strip()
     if not home_team or not away_team or home_team == away_team:
         return None
 
@@ -981,7 +981,7 @@ def main():
     context = build_prediction_context()
     team_mapping = load_shared_mapping()
     team_mapping, canonical_added = ensure_canonical_self_mappings(team_mapping, context)
-    team_mapping, added_api_names, blanks_added = append_only_mapping_from_fixtures(fixtures, context, team_mapping)
+    team_mapping, added_api_names, mapping_changes = update_team_mapping_from_fixtures(fixtures, context, team_mapping)
     save_team_mapping(TEAM_MAPPING_FILE, team_mapping)
     fixtures = apply_team_mapping_to_fixtures(fixtures, team_mapping, context)
     existing = load_prediction_store(PREDICTIONS_FILE)
@@ -1023,7 +1023,7 @@ def main():
     print(f"Team mappings file: {TEAM_MAPPING_FILE}")
     print(f"Canonical raw-data names added: {canonical_added}")
     print(f"API names added from current fixtures: {added_api_names}")
-    print(f"New blank mappings needing manual edit: {blanks_added}")
+    print(f"API names remapped/changed from resolver: {mapping_changes}")
     print(f"Predictions written: {len(new_df)}")
     print(f"Skipped (unmatched team names): {skipped}")
     print(f"Dropped by one-match-per-team-per-day rule: {single_match_dropped}")

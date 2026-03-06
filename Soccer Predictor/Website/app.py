@@ -4,11 +4,14 @@ import json
 import threading
 import importlib.util
 import subprocess
+import time
 from dataclasses import dataclass
+from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 
 import joblib
 import pandas as pd
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, send_from_directory
 
 
 class AveragedProbaClassifier:
@@ -35,6 +38,9 @@ PROJECT_DIR = os.path.dirname(WEBSITE_DIR)
 FILES_DIR = os.path.join(PROJECT_DIR, "files")
 MLS_FILES_DIR = os.path.join(PROJECT_DIR, "MLS", "files")
 WEBSITE_FILES_DIR = os.path.join(WEBSITE_DIR, "files")
+GRAPHICS_DIR = os.path.join(WEBSITE_DIR, "graphics")
+FEEDBACK_DIR = os.path.join(WEBSITE_FILES_DIR, "feedback")
+FEEDBACK_FILE = os.path.join(FEEDBACK_DIR, "feedback.txt")
 ACCURACY_HISTORY_DIR = os.path.join(WEBSITE_FILES_DIR, "accuracy_history")
 ACCURACY_TOTALS_FILE = os.path.join(WEBSITE_FILES_DIR, "accuracy_totals.json")
 GLOBAL_UPCOMING_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "upcoming_matchweek_predictions.csv")
@@ -43,6 +49,7 @@ GLOBAL_PROJECTED_TABLE_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "
 MLS_PROJECTED_TABLE_FILE = os.path.join(PROJECT_DIR, "MLS", "Data", "Predictions", "projected_league_tables.csv")
 MLS_PROJECTED_BRACKET_FILE = os.path.join(PROJECT_DIR, "MLS", "Data", "Predictions", "projected_mls_playoff_bracket.json")
 LIVE_RESULTS_UPDATER = os.path.join(FILES_DIR, "Update_Live_Prediction_Results.py")
+RUN_ALL_PIPELINE = os.path.join(PROJECT_DIR, "Run_All_Pipeline.py")
 MLS_COMPETITION = "United States/MLS"
 if FILES_DIR not in sys.path:
     sys.path.insert(0, FILES_DIR)
@@ -91,6 +98,7 @@ class PredictorContext:
 
 
 _ctx_lock = threading.Lock()
+_feedback_lock = threading.Lock()
 _ctx_global = None
 _ctx_mls = None
 
@@ -634,6 +642,25 @@ def _load_projected_tables(csv_path):
     for competition, comp_frame in frame.groupby("competition", dropna=False):
         rows = []
         for _, row in comp_frame.iterrows():
+            win_league_pct_raw = pd.to_numeric(row.get("win_league_pct"), errors="coerce")
+            top4_pct_raw = pd.to_numeric(row.get("top4_pct"), errors="coerce")
+            bottom3_pct_raw = pd.to_numeric(row.get("bottom3_pct"), errors="coerce")
+            most_likely_position_raw = pd.to_numeric(row.get("most_likely_position"), errors="coerce")
+            most_likely_position_pct_raw = pd.to_numeric(row.get("most_likely_position_pct"), errors="coerce")
+            sim_runs_raw = pd.to_numeric(row.get("sim_runs"), errors="coerce")
+            position_odds = {}
+            position_odds_raw = row.get("position_odds_json")
+            if pd.notna(position_odds_raw):
+                try:
+                    parsed_position_odds = json.loads(str(position_odds_raw))
+                    if isinstance(parsed_position_odds, dict):
+                        for pos_key, pct_value in parsed_position_odds.items():
+                            pos_num = pd.to_numeric(pos_key, errors="coerce")
+                            pct_num = pd.to_numeric(pct_value, errors="coerce")
+                            if pd.notna(pos_num) and pd.notna(pct_num):
+                                position_odds[int(pos_num)] = float(pct_num)
+                except Exception:
+                    position_odds = {}
             rows.append(
                 {
                     "position": int(row["position"]) if pd.notna(row["position"]) else 0,
@@ -648,6 +675,13 @@ def _load_projected_tables(csv_path):
                     "Pts": int(pd.to_numeric(row.get("Pts"), errors="coerce")) if pd.notna(pd.to_numeric(row.get("Pts"), errors="coerce")) else 0,
                     "PlayedReal": int(pd.to_numeric(row.get("PlayedReal"), errors="coerce")) if pd.notna(pd.to_numeric(row.get("PlayedReal"), errors="coerce")) else 0,
                     "PlayedPred": int(pd.to_numeric(row.get("PlayedPred"), errors="coerce")) if pd.notna(pd.to_numeric(row.get("PlayedPred"), errors="coerce")) else 0,
+                    "win_league_pct": float(win_league_pct_raw) if pd.notna(win_league_pct_raw) else 0.0,
+                    "top4_pct": float(top4_pct_raw) if pd.notna(top4_pct_raw) else 0.0,
+                    "bottom3_pct": float(bottom3_pct_raw) if pd.notna(bottom3_pct_raw) else 0.0,
+                    "most_likely_position": int(most_likely_position_raw) if pd.notna(most_likely_position_raw) else 0,
+                    "most_likely_position_pct": float(most_likely_position_pct_raw) if pd.notna(most_likely_position_pct_raw) else 0.0,
+                    "position_odds": position_odds,
+                    "sim_runs": int(sim_runs_raw) if pd.notna(sim_runs_raw) else 0,
                 }
             )
         tables[str(competition)] = rows
@@ -665,6 +699,71 @@ def _load_json_payload(path):
             return json.load(fh)
     except Exception:
         return None
+
+
+def _to_int(value):
+    """Best-effort integer coercion for display-safe counters."""
+    try:
+        num = float(value)
+    except Exception:
+        return 0
+    if pd.isna(num):
+        return 0
+    return int(round(num))
+
+
+def _normalize_h2h_payload(payload):
+    """Normalize head-to-head stats to whole-number counters."""
+    if not isinstance(payload, dict):
+        return {}
+    out = dict(payload)
+    int_fields = {
+        "games",
+        "wins",
+        "draws",
+        "losses",
+        "goals_scored",
+        "goals_conceded",
+        "home_games",
+        "away_games",
+        "home_wins",
+        "home_draws",
+        "home_losses",
+        "away_wins",
+        "away_draws",
+        "away_losses",
+    }
+    for key in int_fields:
+        if key in out:
+            out[key] = _to_int(out.get(key))
+    return out
+
+
+def _to_float_or_none(value):
+    """Best-effort float coercion for optional stat fields."""
+    try:
+        num = float(value)
+    except Exception:
+        return None
+    if pd.isna(num):
+        return None
+    return float(num)
+
+
+def _normalize_recent_form_payload(payload):
+    """Normalize recent-form payload for H2H card display."""
+    src = payload if isinstance(payload, dict) else {}
+    out = {
+        "points_last_10": _to_int(src.get("points_last_10")),
+        "wins_last_10": _to_int(src.get("wins_last_10")),
+        "draws_last_10": _to_int(src.get("draws_last_10")),
+        "losses_last_10": _to_int(src.get("losses_last_10")),
+        "avg_goals_for_last_10": _to_float_or_none(src.get("avg_goals_for_last_10")),
+        "avg_goals_against_last_10": _to_float_or_none(src.get("avg_goals_against_last_10")),
+        "avg_shots_for_last_10": _to_float_or_none(src.get("avg_shots_for_last_10")),
+        "avg_shots_against_last_10": _to_float_or_none(src.get("avg_shots_against_last_10")),
+    }
+    return out
 
 
 def run_live_results_updater():
@@ -688,6 +787,93 @@ def run_live_results_updater():
                 print(proc.stderr.strip())
     except Exception as exc:
         print(f"[startup] Live updater error: {exc}")
+
+
+def _run_full_pipeline_once():
+    """Run full data/model refresh pipeline and reload in-memory predictor contexts."""
+    global _ctx_global, _ctx_mls
+    if not os.path.exists(RUN_ALL_PIPELINE):
+        print(f"[refresh] Pipeline runner not found: {RUN_ALL_PIPELINE}")
+        return False
+    try:
+        proc = subprocess.run(
+            [sys.executable, RUN_ALL_PIPELINE],
+            cwd=PROJECT_DIR,
+            capture_output=True,
+            text=True,
+            timeout=3600,
+            check=False,
+        )
+        if proc.stdout:
+            print(proc.stdout.strip())
+        if proc.returncode != 0:
+            print("[refresh] Daily pipeline failed.")
+            if proc.stderr:
+                print(proc.stderr.strip())
+            return False
+    except Exception as exc:
+        print(f"[refresh] Daily pipeline error: {exc}")
+        return False
+
+    with _ctx_lock:
+        _ctx_global = None
+        _ctx_mls = None
+    try:
+        # Warm both contexts so API requests do not pay first-load penalty.
+        get_context("global")
+        get_context("mls")
+        print("[refresh] Model contexts reloaded successfully.")
+    except Exception as exc:
+        print(f"[refresh] Context reload warning: {exc}")
+    return True
+
+
+def _seconds_until_next_refresh(refresh_hour, refresh_minute, tz_name):
+    """Return seconds until the next local scheduled refresh time."""
+    try:
+        tz = ZoneInfo(tz_name)
+    except Exception:
+        tz = ZoneInfo("UTC")
+    now = datetime.now(tz)
+    target = now.replace(hour=refresh_hour, minute=refresh_minute, second=0, microsecond=0)
+    if target <= now:
+        target = target + timedelta(days=1)
+    return max(1, int((target - now).total_seconds())), target
+
+
+def _daily_refresh_loop(refresh_hour, refresh_minute, tz_name):
+    """Run the full pipeline exactly once per day at configured local time."""
+    while True:
+        wait_seconds, target = _seconds_until_next_refresh(refresh_hour, refresh_minute, tz_name)
+        print(
+            f"[refresh] Next model refresh scheduled for {target.isoformat()} "
+            f"({wait_seconds} seconds)."
+        )
+        time.sleep(wait_seconds)
+        print("[refresh] Starting scheduled daily refresh...")
+        ok = _run_full_pipeline_once()
+        if ok:
+            print("[refresh] Scheduled daily refresh complete.")
+
+
+def start_daily_refresh_scheduler(refresh_hour=4, refresh_minute=0, tz_name="America/New_York"):
+    """Start background scheduler thread for once-daily model refresh."""
+    thread = threading.Thread(
+        target=_daily_refresh_loop,
+        args=(refresh_hour, refresh_minute, tz_name),
+        daemon=True,
+        name="daily-model-refresh",
+    )
+    thread.start()
+    print(
+        "[startup] Daily model refresh enabled at "
+        f"{refresh_hour:02d}:{refresh_minute:02d} ({tz_name})."
+    )
+
+
+def _should_run_startup_tasks(debug_mode):
+    """Avoid running startup jobs twice when Flask reloader is enabled."""
+    return (not debug_mode) or os.environ.get("WERKZEUG_RUN_MAIN") == "true"
 
 
 def _safe_filename(name):
@@ -834,19 +1020,20 @@ def api_h2h():
     if not team1 or not team2:
         return jsonify({"ok": False, "error": "Missing teams"}), 400
         
-    t1_data = ctx.overall_teams.get(team1, {})
-    t2_data = ctx.overall_teams.get(team2, {})
-    t1_form = ctx.current_form.get("teams", {}).get(team1, {})
-    t2_form = ctx.current_form.get("teams", {}).get(team2, {})
+    t1_form = _normalize_recent_form_payload(ctx.current_form.get("teams", {}).get(team1, {}))
+    t2_form = _normalize_recent_form_payload(ctx.current_form.get("teams", {}).get(team2, {}))
     
+    h2h_data = _normalize_h2h_payload(ctx.head_to_head.get(team1, {}).get(team2))
+    h2h_data_reverse = _normalize_h2h_payload(ctx.head_to_head.get(team2, {}).get(team1))
+    h2h_total_games = max(h2h_data.get("games", 0), h2h_data_reverse.get("games", 0))
+
     return jsonify({
         "ok": True,
-        "team1_stats": t1_data,
-        "team2_stats": t2_data,
         "team1_form": t1_form,
         "team2_form": t2_form,
-        "h2h_data": ctx.head_to_head.get(team1, {}).get(team2),
-        "h2h_data_reverse": ctx.head_to_head.get(team2, {}).get(team1)
+        "h2h_data": h2h_data,
+        "h2h_data_reverse": h2h_data_reverse,
+        "h2h_total_games": h2h_total_games,
     })
 
 
@@ -877,10 +1064,45 @@ def api_league_tables():
     return jsonify({"ok": True, **data})
 
 
+@app.post("/api/feedback")
+def api_feedback():
+    """Persist user feedback to a local text file."""
+    payload = request.get_json(silent=True) or request.form or {}
+    feedback_text = str(payload.get("feedback", "")).strip()
+    if not feedback_text:
+        return jsonify({"ok": False, "error": "Feedback cannot be empty."}), 400
+    if len(feedback_text) > 5000:
+        return jsonify({"ok": False, "error": "Feedback is too long (max 5000 characters)."}), 400
+
+    timestamp = datetime.now(ZoneInfo("America/New_York")).isoformat()
+    remote_addr = request.headers.get("X-Forwarded-For") or request.remote_addr or "unknown"
+    user_agent = request.headers.get("User-Agent", "unknown")
+    entry = (
+        f"[{timestamp}] ip={remote_addr}\n"
+        f"user_agent={user_agent}\n"
+        f"feedback={feedback_text}\n"
+        "-----\n"
+    )
+    try:
+        os.makedirs(FEEDBACK_DIR, exist_ok=True)
+        with _feedback_lock:
+            with open(FEEDBACK_FILE, "a", encoding="utf-8") as fh:
+                fh.write(entry)
+    except Exception as exc:
+        return jsonify({"ok": False, "error": f"Failed to save feedback: {exc}"}), 500
+    return jsonify({"ok": True})
+
+
 @app.get("/tactics")
 def tactics():
     """Render the tactics whiteboard page."""
     return render_template("tactics.html")
+
+
+@app.get("/graphics/<path:filename>")
+def serve_graphic(filename):
+    """Serve assets from Website/graphics for logos and other static artwork."""
+    return send_from_directory(GRAPHICS_DIR, filename)
 
 
 if __name__ == "__main__":
@@ -890,10 +1112,31 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--host", default="0.0.0.0", help="Host to bind to")
     parser.add_argument("--port", type=int, default=5000, help="Port to bind to")
+    parser.add_argument("--debug", action="store_true", help="Enable Flask debug mode")
+    parser.add_argument("--disable-daily-refresh", action="store_true", help="Disable once-daily model refresh")
+    parser.add_argument("--daily-refresh-hour", type=int, default=4, help="Hour (0-23) for daily model refresh")
+    parser.add_argument("--daily-refresh-minute", type=int, default=0, help="Minute (0-59) for daily model refresh")
+    parser.add_argument(
+        "--daily-refresh-tz",
+        default="America/New_York",
+        help="IANA timezone for daily model refresh (example: America/New_York)",
+    )
     args = parser.parse_args()
 
-    run_live_results_updater()
-    update_accuracy_history_files()
+    if not (0 <= args.daily_refresh_hour <= 23):
+        raise SystemExit("--daily-refresh-hour must be between 0 and 23")
+    if not (0 <= args.daily_refresh_minute <= 59):
+        raise SystemExit("--daily-refresh-minute must be between 0 and 59")
+
+    if _should_run_startup_tasks(args.debug):
+        run_live_results_updater()
+        update_accuracy_history_files()
+        if not args.disable_daily_refresh:
+            start_daily_refresh_scheduler(
+                refresh_hour=args.daily_refresh_hour,
+                refresh_minute=args.daily_refresh_minute,
+                tz_name=args.daily_refresh_tz,
+            )
 
     if args.host == "0.0.0.0":
         try:
@@ -905,4 +1148,4 @@ if __name__ == "__main__":
         except Exception:
             pass
 
-    app.run(host=args.host, port=args.port, debug=True)
+    app.run(host=args.host, port=args.port, debug=args.debug)

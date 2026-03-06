@@ -810,8 +810,8 @@ def predict_fixture(row, context):
     match_date = row["match_date"]
     match_datetime_et = str(row.get("match_datetime_et", "")).strip()
 
-    home_team = str(row.get("mapped_home_team", "")).strip() or str(raw_home).strip()
-    away_team = str(row.get("mapped_away_team", "")).strip() or str(raw_away).strip()
+    home_team = str(row.get("mapped_home_team", "")).strip()
+    away_team = str(row.get("mapped_away_team", "")).strip()
     if not home_team or not away_team or home_team == away_team:
         return None
 

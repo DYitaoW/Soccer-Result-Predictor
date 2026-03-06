@@ -1,7 +1,10 @@
 import os
+import json
 from collections import defaultdict
 from datetime import datetime
 import random
+import subprocess
+import sys
 
 import joblib
 import pandas as pd
@@ -10,11 +13,34 @@ import Predict_Match as pm
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+FILES_DIR = os.path.dirname(os.path.abspath(__file__))
 RAW_DIR = os.path.join(BASE_DIR, "Data", "Raw_Data")
 OUT_DIR = os.path.join(BASE_DIR, "Data", "Predictions")
 OUT_TABLE = os.path.join(OUT_DIR, "projected_league_tables.csv")
 OUT_MATCHES = os.path.join(OUT_DIR, "projected_future_matches.csv")
 RNG = random.Random()
+SIMULATION_RUNS = 200
+
+
+def rebuild_model_cache_once():
+    """Rebuild the model cache in non-interactive mode for dtype/pickle compatibility."""
+    predict_script = os.path.join(FILES_DIR, "Predict_Match.py")
+    if not os.path.exists(predict_script):
+        raise FileNotFoundError(f"Missing predictor script: {predict_script}")
+    proc = subprocess.run(
+        [sys.executable, predict_script],
+        cwd=BASE_DIR,
+        text=True,
+        input="n\nq\n",
+        capture_output=True,
+        check=False,
+        timeout=3600,
+    )
+    if proc.returncode != 0:
+        stderr = (proc.stderr or "").strip()
+        stdout = (proc.stdout or "").strip()
+        message = stderr or stdout or f"exit code {proc.returncode}"
+        raise RuntimeError(f"Auto-rebuild of model cache failed: {message}")
 
 
 def latest_raw_file_per_competition(raw_root):
@@ -40,7 +66,12 @@ def load_context():
     if not os.path.exists(pm.MODEL_CACHE):
         raise FileNotFoundError(f"Missing model cache: {pm.MODEL_CACHE}. Run Predict_Match.py first.")
 
-    bundle = joblib.load(pm.MODEL_CACHE)
+    try:
+        bundle = joblib.load(pm.MODEL_CACHE)
+    except Exception as exc:
+        print(f"[warn] Failed to load model cache ({exc.__class__.__name__}). Rebuilding cache once...")
+        rebuild_model_cache_once()
+        bundle = joblib.load(pm.MODEL_CACHE)
     if bundle.get("fingerprint") != pm.data_fingerprint(season_files):
         raise RuntimeError("Model cache is stale. Rebuild by running Predict_Match.py.")
 
@@ -148,6 +179,71 @@ def apply_result(table, home, away, hg, ag, is_real):
         as_["Pts"] += 1
 
 
+def clone_table(table):
+    return {
+        team: {
+            "P": int(stats.get("P", 0)),
+            "W": int(stats.get("W", 0)),
+            "D": int(stats.get("D", 0)),
+            "L": int(stats.get("L", 0)),
+            "GF": int(stats.get("GF", 0)),
+            "GA": int(stats.get("GA", 0)),
+            "GD": int(stats.get("GD", 0)),
+            "Pts": int(stats.get("Pts", 0)),
+            "PlayedReal": int(stats.get("PlayedReal", 0)),
+            "PlayedPred": int(stats.get("PlayedPred", 0)),
+        }
+        for team, stats in table.items()
+    }
+
+
+def rank_table(table):
+    return sorted(table.items(), key=lambda kv: (-kv[1]["Pts"], -kv[1]["GD"], -kv[1]["GF"], kv[0]))
+
+
+def sample_outcome(probs):
+    labels = ["H", "D", "A"]
+    weights = [max(0.0, float(probs.get(label, 0.0))) for label in labels]
+    total = sum(weights)
+    if total <= 0:
+        return max(probs, key=probs.get)
+    return RNG.choices(labels, weights=weights, k=1)[0]
+
+
+def coerce_scoreline(pred_result, base_hg, base_ag):
+    hg = int(round(float(base_hg)))
+    ag = int(round(float(base_ag)))
+    hg = max(0, hg)
+    ag = max(0, ag)
+    if pred_result == "H" and hg <= ag:
+        hg = ag + 1
+    elif pred_result == "A" and ag <= hg:
+        ag = hg + 1
+    elif pred_result == "D":
+        ag = hg
+    return hg, ag
+
+
+def run_monte_carlo(teams, base_table, future_predictions, runs):
+    stat_sums = {team: defaultdict(float) for team in teams}
+    position_counts = {team: defaultdict(int) for team in teams}
+
+    for _ in range(max(1, int(runs))):
+        sim_table = clone_table(base_table)
+        for fixture in future_predictions:
+            result = sample_outcome(fixture["probs"])
+            hg, ag = coerce_scoreline(result, fixture["pred_home_goals"], fixture["pred_away_goals"])
+            apply_result(sim_table, fixture["home_team"], fixture["away_team"], hg, ag, is_real=False)
+
+        ranked = rank_table(sim_table)
+        for pos, (team, stats) in enumerate(ranked, start=1):
+            position_counts[team][pos] += 1
+            for key, value in stats.items():
+                stat_sums[team][key] += float(value)
+
+    return stat_sums, position_counts
+
+
 def predict_match(ctx, home_team, away_team, competition_hint):
     prediction_season = pm.choose_season_for_teams(home_team, away_team, ctx["season_teams"], ctx["latest_season"])
     competition_key = os.path.dirname(prediction_season).replace("\\", "/") or competition_hint
@@ -215,11 +311,20 @@ def project_competition(ctx, competition, raw_file):
     teams = sorted(set(df["HomeTeam"].astype(str).str.strip()) | set(df["AwayTeam"].astype(str).str.strip()))
     table = init_table(teams)
     future_rows = []
+    future_predictions = []
     seen_pairs = set()
 
     def add_future_prediction(home, away, match_date=""):
         pred_res, phg, pag, probs = predict_match(ctx, home, away, competition)
-        apply_result(table, home, away, phg, pag, is_real=False)
+        future_predictions.append(
+            {
+                "home_team": home,
+                "away_team": away,
+                "pred_home_goals": phg,
+                "pred_away_goals": pag,
+                "probs": probs,
+            }
+        )
         future_rows.append(
             {
                 "competition": competition,
@@ -269,15 +374,51 @@ def project_competition(ctx, competition, raw_file):
             seen_pairs.add((resolved_home, resolved_away))
             add_future_prediction(resolved_home, resolved_away, "")
 
+    stat_sums, position_counts = run_monte_carlo(teams, table, future_predictions, SIMULATION_RUNS)
+    averaged = {}
+    for team in teams:
+        sums = stat_sums.get(team, {})
+        averaged[team] = {
+            "P": int(round(sums.get("P", 0.0) / SIMULATION_RUNS)),
+            "W": int(round(sums.get("W", 0.0) / SIMULATION_RUNS)),
+            "D": int(round(sums.get("D", 0.0) / SIMULATION_RUNS)),
+            "L": int(round(sums.get("L", 0.0) / SIMULATION_RUNS)),
+            "GF": int(round(sums.get("GF", 0.0) / SIMULATION_RUNS)),
+            "GA": int(round(sums.get("GA", 0.0) / SIMULATION_RUNS)),
+            "GD": int(round(sums.get("GD", 0.0) / SIMULATION_RUNS)),
+            "Pts": int(round(sums.get("Pts", 0.0) / SIMULATION_RUNS)),
+            "PlayedReal": int(round(sums.get("PlayedReal", 0.0) / SIMULATION_RUNS)),
+            "PlayedPred": int(round(sums.get("PlayedPred", 0.0) / SIMULATION_RUNS)),
+        }
+
     out_rows = []
-    ranked = sorted(table.items(), key=lambda kv: (-kv[1]["Pts"], -kv[1]["GD"], -kv[1]["GF"], kv[0]))
+    ranked = sorted(averaged.items(), key=lambda kv: (-kv[1]["Pts"], -kv[1]["GD"], -kv[1]["GF"], kv[0]))
+    n_teams = len(teams)
+    top_n = min(4, n_teams)
+    bottom_cutoff = max(1, n_teams - 2)
     for pos, (team, s) in enumerate(ranked, start=1):
+        team_positions = position_counts.get(team, {})
+        most_likely_pos, most_likely_count = max(team_positions.items(), key=lambda kv: kv[1], default=(pos, 0))
+        win_league_pct = (team_positions.get(1, 0) / SIMULATION_RUNS) * 100.0
+        top4_pct = (sum(v for k, v in team_positions.items() if k <= top_n) / SIMULATION_RUNS) * 100.0
+        bottom3_pct = (sum(v for k, v in team_positions.items() if k >= bottom_cutoff) / SIMULATION_RUNS) * 100.0
+        position_odds = {
+            str(rank): round((team_positions.get(rank, 0) / SIMULATION_RUNS) * 100.0, 2)
+            for rank in range(1, n_teams + 1)
+        }
         out_rows.append(
             {
                 "competition": competition,
                 "position": pos,
                 "team": team,
                 **s,
+                "win_league_pct": round(win_league_pct, 2),
+                "top4_pct": round(top4_pct, 2),
+                "bottom3_pct": round(bottom3_pct, 2),
+                "most_likely_position": int(most_likely_pos),
+                "most_likely_position_pct": round((most_likely_count / SIMULATION_RUNS) * 100.0, 2),
+                "position_odds_json": json.dumps(position_odds, separators=(",", ":"), sort_keys=True),
+                "sim_runs": int(SIMULATION_RUNS),
             }
         )
     return out_rows, future_rows

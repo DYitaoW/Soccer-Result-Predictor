@@ -3,7 +3,10 @@ import json
 import re
 import random
 import urllib.request
+from collections import defaultdict
 from datetime import datetime
+import subprocess
+import sys
 
 import joblib
 import pandas as pd
@@ -30,6 +33,7 @@ class AveragedProbaClassifier:
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MLS_FILES_DIR = os.path.dirname(os.path.abspath(__file__))
 RAW_DIR = os.path.join(BASE_DIR, "Data", "Raw_Data")
 OUT_DIR = os.path.join(BASE_DIR, "Data", "Predictions")
 OUT_TABLE = os.path.join(OUT_DIR, "projected_league_tables.csv")
@@ -37,6 +41,7 @@ OUT_MATCHES = os.path.join(OUT_DIR, "projected_future_matches.csv")
 OUT_BRACKET = os.path.join(OUT_DIR, "projected_mls_playoff_bracket.json")
 ESPN_SCOREBOARD_API = "https://site.api.espn.com/apis/site/v2/sports/soccer/usa.1/scoreboard"
 RNG = random.Random()
+SIMULATION_RUNS = 200
 
 EASTERN_CONFERENCE_TEAMS = {
     "Atlanta Utd",
@@ -92,6 +97,27 @@ def normalize_team_key(name):
     text = str(name or "").strip().lower()
     text = re.sub(r"[^a-z0-9]+", " ", text)
     return "".join(text.split())
+
+
+def rebuild_model_cache_once():
+    """Rebuild the MLS model cache in non-interactive mode for dtype/pickle compatibility."""
+    predict_script = os.path.join(MLS_FILES_DIR, "Predict_Match.py")
+    if not os.path.exists(predict_script):
+        raise FileNotFoundError(f"Missing predictor script: {predict_script}")
+    proc = subprocess.run(
+        [sys.executable, predict_script],
+        cwd=BASE_DIR,
+        text=True,
+        input="n\nq\n",
+        capture_output=True,
+        check=False,
+        timeout=3600,
+    )
+    if proc.returncode != 0:
+        stderr = (proc.stderr or "").strip()
+        stdout = (proc.stdout or "").strip()
+        message = stderr or stdout or f"exit code {proc.returncode}"
+        raise RuntimeError(f"Auto-rebuild of MLS model cache failed: {message}")
 
 
 def build_conference_lookup():
@@ -311,7 +337,12 @@ def load_context():
     if not os.path.exists(pm.MODEL_CACHE):
         raise FileNotFoundError(f"Missing model cache: {pm.MODEL_CACHE}. Run Predict_Match.py first.")
 
-    bundle = joblib.load(pm.MODEL_CACHE)
+    try:
+        bundle = joblib.load(pm.MODEL_CACHE)
+    except Exception as exc:
+        print(f"[warn] Failed to load MLS model cache ({exc.__class__.__name__}). Rebuilding cache once...")
+        rebuild_model_cache_once()
+        bundle = joblib.load(pm.MODEL_CACHE)
     if bundle.get("fingerprint") != pm.data_fingerprint(season_files):
         raise RuntimeError("Model cache is stale. Rebuild by running Predict_Match.py.")
 
@@ -420,6 +451,100 @@ def apply_result(table, home, away, hg, ag, is_real):
         as_["D"] += 1
         hs["Pts"] += 1
         as_["Pts"] += 1
+
+
+def clone_table(table):
+    return {
+        team: {
+            "P": int(stats.get("P", 0)),
+            "W": int(stats.get("W", 0)),
+            "D": int(stats.get("D", 0)),
+            "L": int(stats.get("L", 0)),
+            "GF": int(stats.get("GF", 0)),
+            "GA": int(stats.get("GA", 0)),
+            "GD": int(stats.get("GD", 0)),
+            "Pts": int(stats.get("Pts", 0)),
+            "PlayedReal": int(stats.get("PlayedReal", 0)),
+            "PlayedPred": int(stats.get("PlayedPred", 0)),
+        }
+        for team, stats in table.items()
+    }
+
+
+def rank_table(table):
+    return sorted(table.items(), key=lambda kv: (-kv[1]["Pts"], -kv[1]["GD"], -kv[1]["GF"], kv[0]))
+
+
+def sample_outcome(probs):
+    labels = ["H", "D", "A"]
+    weights = [max(0.0, float(probs.get(label, 0.0))) for label in labels]
+    total = sum(weights)
+    if total <= 0:
+        return max(probs, key=probs.get)
+    return RNG.choices(labels, weights=weights, k=1)[0]
+
+
+def coerce_scoreline(pred_result, base_hg, base_ag):
+    hg = int(round(float(base_hg)))
+    ag = int(round(float(base_ag)))
+    hg = max(0, hg)
+    ag = max(0, ag)
+    if pred_result == "H" and hg <= ag:
+        hg = ag + 1
+    elif pred_result == "A" and ag <= hg:
+        ag = hg + 1
+    elif pred_result == "D":
+        ag = hg
+    return hg, ag
+
+
+def run_monte_carlo_mls(canonical_teams, base_table, future_predictions, conference_lookup, runs):
+    stat_sums = {team: defaultdict(float) for team in canonical_teams}
+    league_pos_counts = {team: defaultdict(int) for team in canonical_teams}
+    east_pos_counts = {team: defaultdict(int) for team in canonical_teams}
+    west_pos_counts = {team: defaultdict(int) for team in canonical_teams}
+
+    for _ in range(max(1, int(runs))):
+        sim_table = clone_table(base_table)
+        for fixture in future_predictions:
+            result = sample_outcome(fixture["probs"])
+            hg, ag = coerce_scoreline(result, fixture["pred_home_goals"], fixture["pred_away_goals"])
+            apply_result(sim_table, fixture["home_team"], fixture["away_team"], hg, ag, is_real=False)
+
+        ranked = rank_table(sim_table)
+        for pos, (team, stats) in enumerate(ranked, start=1):
+            league_pos_counts[team][pos] += 1
+            for key, value in stats.items():
+                stat_sums[team][key] += float(value)
+
+        east_ranked = [item for item in ranked if conference_lookup.get(normalize_team_key(item[0])) == "east"]
+        west_ranked = [item for item in ranked if conference_lookup.get(normalize_team_key(item[0])) == "west"]
+        for pos, (team, _) in enumerate(east_ranked, start=1):
+            east_pos_counts[team][pos] += 1
+        for pos, (team, _) in enumerate(west_ranked, start=1):
+            west_pos_counts[team][pos] += 1
+
+    return stat_sums, league_pos_counts, east_pos_counts, west_pos_counts
+
+
+def build_probability_columns(position_counts, team, total_teams):
+    counts = position_counts.get(team, {})
+    most_likely_pos, most_likely_count = max(counts.items(), key=lambda kv: kv[1], default=(1, 0))
+    top_n = min(4, total_teams)
+    bottom_cutoff = max(1, total_teams - 2)
+    position_odds = {
+        str(rank): round((counts.get(rank, 0) / SIMULATION_RUNS) * 100.0, 2)
+        for rank in range(1, total_teams + 1)
+    }
+    return {
+        "win_league_pct": round((counts.get(1, 0) / SIMULATION_RUNS) * 100.0, 2),
+        "top4_pct": round((sum(v for k, v in counts.items() if k <= top_n) / SIMULATION_RUNS) * 100.0, 2),
+        "bottom3_pct": round((sum(v for k, v in counts.items() if k >= bottom_cutoff) / SIMULATION_RUNS) * 100.0, 2),
+        "most_likely_position": int(most_likely_pos),
+        "most_likely_position_pct": round((most_likely_count / SIMULATION_RUNS) * 100.0, 2),
+        "position_odds_json": json.dumps(position_odds, separators=(",", ":"), sort_keys=True),
+        "sim_runs": int(SIMULATION_RUNS),
+    }
 
 
 def predict_match(ctx, home_team, away_team, competition_hint):
@@ -667,6 +792,7 @@ def project_competition(ctx, competition, raw_file):
     canonical_team_set = set(canonical_teams)
     table = init_table(canonical_teams)
     future_rows = []
+    future_predictions = []
     key_to_team = {normalize_team_key(team): team for team in ctx["available_teams"]}
     seen_fixtures = set()
     seen_pairs = set()
@@ -680,7 +806,15 @@ def project_competition(ctx, competition, raw_file):
 
     def add_predicted_fixture(home, away, match_date):
         pred_res, phg, pag, probs = predict_match(ctx, home, away, competition)
-        apply_result(table, home, away, phg, pag, is_real=False)
+        future_predictions.append(
+            {
+                "home_team": home,
+                "away_team": away,
+                "pred_home_goals": phg,
+                "pred_away_goals": pag,
+                "probs": probs,
+            }
+        )
         future_rows.append(
             {
                 "competition": competition,
@@ -734,11 +868,31 @@ def project_competition(ctx, competition, raw_file):
             seen_pairs.add((home, away))
             add_predicted_fixture(home, away, "")
 
+    conference_lookup = build_conference_lookup()
+    stat_sums, league_pos_counts, east_pos_counts, west_pos_counts = run_monte_carlo_mls(
+        canonical_teams, table, future_predictions, conference_lookup, SIMULATION_RUNS
+    )
+    averaged = {}
+    for team in canonical_teams:
+        sums = stat_sums.get(team, {})
+        averaged[team] = {
+            "P": int(round(sums.get("P", 0.0) / SIMULATION_RUNS)),
+            "W": int(round(sums.get("W", 0.0) / SIMULATION_RUNS)),
+            "D": int(round(sums.get("D", 0.0) / SIMULATION_RUNS)),
+            "L": int(round(sums.get("L", 0.0) / SIMULATION_RUNS)),
+            "GF": int(round(sums.get("GF", 0.0) / SIMULATION_RUNS)),
+            "GA": int(round(sums.get("GA", 0.0) / SIMULATION_RUNS)),
+            "GD": int(round(sums.get("GD", 0.0) / SIMULATION_RUNS)),
+            "Pts": int(round(sums.get("Pts", 0.0) / SIMULATION_RUNS)),
+            "PlayedReal": int(round(sums.get("PlayedReal", 0.0) / SIMULATION_RUNS)),
+            "PlayedPred": int(round(sums.get("PlayedPred", 0.0) / SIMULATION_RUNS)),
+        }
     out_rows = []
-    ranked = sorted(table.items(), key=lambda kv: (-kv[1]["Pts"], -kv[1]["GD"], -kv[1]["GF"], kv[0]))
+    ranked = sorted(averaged.items(), key=lambda kv: (-kv[1]["Pts"], -kv[1]["GD"], -kv[1]["GF"], kv[0]))
 
-    def emit_rows(target_name, items):
+    def emit_rows(target_name, items, pos_counts):
         rows = []
+        total_teams = len(items)
         for pos, (team, stats) in enumerate(items, start=1):
             rows.append(
                 {
@@ -746,19 +900,19 @@ def project_competition(ctx, competition, raw_file):
                     "position": pos,
                     "team": team,
                     **stats,
+                    **build_probability_columns(pos_counts, team, total_teams),
                 }
             )
         return rows
 
-    conference_lookup = build_conference_lookup()
     east_ranked = [item for item in ranked if conference_lookup.get(normalize_team_key(item[0])) == "east"]
     west_ranked = [item for item in ranked if conference_lookup.get(normalize_team_key(item[0])) == "west"]
 
-    out_rows.extend(emit_rows("United States/MLS - Supporters Shield Table", ranked))
+    out_rows.extend(emit_rows("United States/MLS - Supporters Shield Table", ranked, league_pos_counts))
     if east_ranked:
-        out_rows.extend(emit_rows("United States/MLS - Eastern Conference", east_ranked))
+        out_rows.extend(emit_rows("United States/MLS - Eastern Conference", east_ranked, east_pos_counts))
     if west_ranked:
-        out_rows.extend(emit_rows("United States/MLS - Western Conference", west_ranked))
+        out_rows.extend(emit_rows("United States/MLS - Western Conference", west_ranked, west_pos_counts))
 
     bracket_payload = None
     if len(east_ranked) >= 9 and len(west_ranked) >= 9:
