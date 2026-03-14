@@ -13,14 +13,29 @@
   <main class="page">
         <div id="notification-area" class="notification-area"></div>
     <header class="site-header">
-      <button id="brand-home-btn" class="brand brand-home-btn" type="button" aria-label="Go to home">
-        <img class="brand-mark" src="{{ url_for('serve_graphic', filename='BtSLogo.png') }}" alt="Beyond The Score logo">
-        <div>
-          <div class="brand-name">Beyond The Score</div>
-          <div class="brand-sub">Matchday Predictor</div>
-        </div>
-      </button>
-      <button id="theme-toggle" class="theme-toggle">Dark Mode</button>
+      <div class="site-header-top">
+        <button id="brand-home-btn" class="brand brand-home-btn" type="button" aria-label="Go to home">
+          <img class="brand-mark" src="{{ url_for('serve_graphic', filename='BtSLogo.png') }}" alt="Beyond The Score logo">
+          <div>
+            <div class="brand-name">Beyond The Score</div>
+            <div class="brand-sub">Matchday Predictor</div>
+          </div>
+        </button>
+        <button id="theme-toggle" class="theme-toggle">Dark Mode</button>
+      </div>
+
+      <div id="main-tabs" class="tabs main-tabs">
+        <button id="tab-home" class="tab-btn active" type="button">Home</button>
+        <button id="tab-predictor" class="tab-btn" type="button"> Custom Match Predictors (Experimental) </button>
+        <button id="tab-global" class="tab-btn" type="button">Upcoming Matches</button>
+        <button id="tab-h2h" class="tab-btn" type="button">Head to Head</button>
+        <button id="tab-market" class="tab-btn" type="button">Market & Odds (Coming Soon)</button>
+        <button id="tab-league-table" class="tab-btn" type="button">Projected League Tables</button>
+        <button id="tab-position-odds" class="tab-btn" type="button">Position Odds</button>
+        <button id="tab-players" class="tab-btn" type="button">Players (Coming Soon)</button>
+        <button id="tab-tactics" class="tab-btn" type="button">Tactics Board</button>
+        <button id="tab-about" class="tab-btn" type="button">About</button>
+      </div>
     </header>
 
     <section class="hero">
@@ -43,19 +58,6 @@
       </div>
     </section>
 
-    <div class="tabs">
-      <button id="tab-home" class="tab-btn active" type="button">Home</button>
-      <button id="tab-predictor" class="tab-btn" type="button"> Custom Match Predictors (Experimental) </button>
-      <button id="tab-global" class="tab-btn" type="button">Upcoming Matches</button>
-      <button id="tab-h2h" class="tab-btn" type="button">Head to Head</button>
-      <button id="tab-market" class="tab-btn" type="button">Market & Odds (Coming Soon)</button>
-      <button id="tab-league-table" class="tab-btn" type="button">Projected League Tables</button>
-      <button id="tab-position-odds" class="tab-btn" type="button">Position Odds</button>
-      <button id="tab-players" class="tab-btn" type="button">Players (Coming Soon)</button>
-      <button id="tab-tactics" class="tab-btn" type="button">Tactics Board</button>
-      <button id="tab-about" class="tab-btn" type="button">About</button>
-    </div>
-
         <section id="panel-home">
       <div class="card">
         <h3>Highlighed Upcoming Fixtures</h3>
@@ -71,6 +73,7 @@
           <select id="winner-dataset">
             <option value="global">European Leagues</option>
             <option value="mls">MLS</option>
+            <option value="extra">Extra Leagues</option>
           </select>
         </div>
       </div>
@@ -81,6 +84,7 @@
       <div class="tabs">
         <button id="subtab-predictor-euro" class="tab-btn active" type="button">European</button>
         <button id="subtab-predictor-mls" class="tab-btn" type="button">MLS</button>
+        <button id="subtab-predictor-extra" class="tab-btn" type="button">Extra Leagues</button>
       </div>
 
       <section id="predictor-euro-body">
@@ -132,6 +136,30 @@
         <section id="result-mls" class="card hidden"></section>
         <section id="error-mls" class="card error hidden"></section>
       </section>
+
+      <section id="predictor-extra-body" class="hidden">
+        <form id="predict-form-extra" class="card">
+          <label for="home-team-extra">Home Team (Extra Leagues)</label>
+          <input id="home-team-extra" name="home_team" list="extra-teams" required placeholder="Start typing team name">
+
+          <label for="away-team-extra">Away Team (Extra Leagues)</label>
+          <input id="away-team-extra" name="away_team" list="extra-teams" required placeholder="Start typing team name">
+
+          <datalist id="extra-teams">
+            {% for team in extra_teams %}
+            <option value="{{ team }}"></option>
+            {% endfor %}
+          </datalist>
+
+          <button type="submit">Predict Extra League</button>
+        </form>
+
+        <section class="card">
+          <p class="note">Disclaimer: extra-league predictions are experimental and may be less accurate. Use for entertainment purposes only.</p>
+        </section>
+        <section id="result-extra" class="card hidden"></section>
+        <section id="error-extra" class="card error hidden"></section>
+      </section>
     </section>
 
     <section id="panel-global" class="hidden">
@@ -141,6 +169,7 @@
         <select id="global-source-filter">
           <option value="global">European Leagues</option>
           <option value="mls">MLS</option>
+          <option value="extra">Extra Leagues</option>
         </select>
       </div>
       <div class="card">
@@ -154,6 +183,14 @@
       <div class="card">
         <h3>Head to Head Comparison</h3>
         <div class="controls" style="display: flex; gap: 10px; flex-wrap: wrap; align-items: end;">
+            <div style="min-width: 160px;">
+                <label for="h2h-dataset">Dataset</label>
+                <select id="h2h-dataset" style="width: 100%; padding: 8px; border: 1px solid var(--card-border); border-radius: 4px; background: var(--card-bg); color: var(--text-color);">
+                    <option value="global">European Leagues</option>
+                    <option value="mls">MLS</option>
+                    <option value="extra">Extra Leagues</option>
+                </select>
+            </div>
             <div style="flex: 1;">
                 <label for="h2h-team1">Team 1</label>
                 <input id="h2h-team1" list="teams" placeholder="Type team name..." style="width: 100%; padding: 8px; border: 1px solid var(--card-border); border-radius: 4px; background: var(--card-bg); color: var(--text-color);">
@@ -185,6 +222,7 @@
           <select id="table-dataset">
             <option value="global">European Leagues</option>
             <option value="mls">MLS</option>
+            <option value="extra">Extra Leagues</option>
           </select>
 
           <label for="table-league">League</label>
@@ -203,6 +241,7 @@
           <select id="position-odds-dataset">
             <option value="global">European Leagues</option>
             <option value="mls">MLS</option>
+            <option value="extra">Extra Leagues</option>
           </select>
 
           <label for="position-odds-league">League</label>
@@ -330,14 +369,18 @@
   <script>
     const form = document.getElementById("predict-form");
     const formMls = document.getElementById("predict-form-mls");
+    const formExtra = document.getElementById("predict-form-extra");
     const resultEl = document.getElementById("result");
     const errorEl = document.getElementById("error");
     const resultMlsEl = document.getElementById("result-mls");
     const errorMlsEl = document.getElementById("error-mls");
+    const resultExtraEl = document.getElementById("result-extra");
+    const errorExtraEl = document.getElementById("error-extra");
     const panelHome = document.getElementById("panel-home");
     const panelPredictor = document.getElementById("panel-predictor");
     const predictorEuroBody = document.getElementById("predictor-euro-body");
     const predictorMlsBody = document.getElementById("predictor-mls-body");
+    const predictorExtraBody = document.getElementById("predictor-extra-body");
     const panelGlobal = document.getElementById("panel-global");
     const panelLeagueTable = document.getElementById("panel-league-table");
     const panelPositionOdds = document.getElementById("panel-position-odds");
@@ -347,6 +390,7 @@
     const tabPredictor = document.getElementById("tab-predictor");
     const subtabPredictorEuro = document.getElementById("subtab-predictor-euro");
     const subtabPredictorMls = document.getElementById("subtab-predictor-mls");
+    const subtabPredictorExtra = document.getElementById("subtab-predictor-extra");
     const tabGlobal = document.getElementById("tab-global");
     const tabH2H = document.getElementById("tab-h2h");
     const tabMarket = document.getElementById("tab-market");
@@ -371,17 +415,31 @@
     const panelH2H = document.getElementById("panel-h2h");
     const panelMarket = document.getElementById("panel-market");
     const h2hResults = document.getElementById("h2h-results");
+    const h2hDataset = document.getElementById("h2h-dataset");
+    const h2hTeam1Input = document.getElementById("h2h-team1");
+    const h2hTeam2Input = document.getElementById("h2h-team2");
     const topPicksList = document.getElementById("top-picks-list");
     const feedbackText = document.getElementById("feedback-text");
     const feedbackSubmit = document.getElementById("feedback-submit");
     const brandHomeBtn = document.getElementById("brand-home-btn");
-    const leagueTablesCache = { global: null, mls: null };
+    const leagueTablesCache = { global: null, mls: null, extra: null };
     let tableViewMode = "standings";
-    const upcomingCache = { global: [], mls: [] };
+    const upcomingCache = { global: [], mls: [], extra: [] };
     const upcomingStatsCache = {
       global: { stats: null, league_stats: [] },
       mls: { stats: null, league_stats: [] },
+      extra: { stats: null, league_stats: [] },
     };
+    const mlsTeamSet = new Set(
+      Array.from(document.querySelectorAll("#mls-teams option"))
+        .map((opt) => String(opt.value || "").trim().toLowerCase())
+        .filter(Boolean)
+    );
+    const extraTeamSet = new Set(
+      Array.from(document.querySelectorAll("#extra-teams option"))
+        .map((opt) => String(opt.value || "").trim().toLowerCase())
+        .filter(Boolean)
+    );
     
     // Dark Mode Logic
     const themeToggle = document.getElementById("theme-toggle");
@@ -543,12 +601,23 @@
       if (mode === "mls") {
         subtabPredictorEuro.classList.remove("active");
         subtabPredictorMls.classList.add("active");
+        subtabPredictorExtra.classList.remove("active");
         predictorEuroBody.classList.add("hidden");
         predictorMlsBody.classList.remove("hidden");
+        predictorExtraBody.classList.add("hidden");
+      } else if (mode === "extra") {
+        subtabPredictorEuro.classList.remove("active");
+        subtabPredictorMls.classList.remove("active");
+        subtabPredictorExtra.classList.add("active");
+        predictorEuroBody.classList.add("hidden");
+        predictorMlsBody.classList.add("hidden");
+        predictorExtraBody.classList.remove("hidden");
       } else {
         subtabPredictorMls.classList.remove("active");
+        subtabPredictorExtra.classList.remove("active");
         subtabPredictorEuro.classList.add("active");
         predictorMlsBody.classList.add("hidden");
+        predictorExtraBody.classList.add("hidden");
         predictorEuroBody.classList.remove("hidden");
       }
     }
@@ -711,6 +780,13 @@
       return formatPercent(value, true);
     }
 
+    function asWholePct(value) {
+      const n = Number(value);
+      if (!Number.isFinite(n) || n <= 0) return "0%";
+      if (n < 1) return "<1%";
+      return `${Math.round(n)}%`;
+    }
+
     function renderLeagueProbabilityRows(rows) {
       if (!rows || !rows.length) {
         return "<p>No probability data available for this league.</p>";
@@ -786,11 +862,13 @@
           <tbody>
       `;
       for (const row of sortedRows) {
+        const mostLikelyPos = Number(row.most_likely_position);
         let cells = "";
         for (let pos = 1; pos <= totalPositions; pos += 1) {
           const odds = row.position_odds || {};
           const raw = odds[pos] !== undefined ? odds[pos] : odds[String(pos)];
-          cells += `<td>${asPct(raw)}</td>`;
+          const highlightClass = pos === mostLikelyPos ? "position-odds-best" : "";
+          cells += `<td class="${highlightClass}">${asWholePct(raw)}</td>`;
         }
         html += `
           <tr class="${getLeagueRowClass(leagueName, row.position, totalPositions)}">
@@ -1191,7 +1269,7 @@
 
     function renderTopPicks() {
       const allRows = dedupeFixtures(
-        [...(upcomingCache.global || []), ...(upcomingCache.mls || [])]
+        [...(upcomingCache.global || []), ...(upcomingCache.mls || []), ...(upcomingCache.extra || [])]
           .filter(isValidProbabilityRow)
       );
       const futureRows = allRows.filter(isLikelyFutureFixture);
@@ -1307,30 +1385,58 @@
           console.error("Failed to preload MLS upcoming rows", err);
         }
       }
+      if (!upcomingCache.extra.length) {
+        try {
+          const respExtra = await fetch("/api/upcoming/extra");
+          const dataExtra = await respExtra.json();
+          if (respExtra.ok && dataExtra.ok) {
+            upcomingCache.extra = dataExtra.rows || [];
+          }
+        } catch (err) {
+          console.error("Failed to preload extra upcoming rows", err);
+        }
+      }
       renderTopPicks();
     }
 
-    function openMatchupInH2H(homeTeam, awayTeam) {
+    function inferH2HMode(team1, team2) {
+      const t1 = String(team1 || "").trim().toLowerCase();
+      const t2 = String(team2 || "").trim().toLowerCase();
+      if (t1 && t2 && mlsTeamSet.has(t1) && mlsTeamSet.has(t2)) return "mls";
+      if (t1 && t2 && extraTeamSet.has(t1) && extraTeamSet.has(t2)) return "extra";
+      return "global";
+    }
+
+    function applyH2HDataset(mode) {
+      const dataset = mode === "mls" ? "mls" : mode === "extra" ? "extra" : "global";
+      h2hDataset.value = dataset;
+      const listId = dataset === "mls" ? "mls-teams" : dataset === "extra" ? "extra-teams" : "teams";
+      h2hTeam1Input.setAttribute("list", listId);
+      h2hTeam2Input.setAttribute("list", listId);
+    }
+
+    function openMatchupInH2H(homeTeam, awayTeam, mode) {
       if (!homeTeam || !awayTeam) return;
+      const resolvedMode = mode || inferH2HMode(homeTeam, awayTeam);
+      applyH2HDataset(resolvedMode);
       activateTab("h2h");
-      const team1Input = document.getElementById("h2h-team1");
-      const team2Input = document.getElementById("h2h-team2");
-      team1Input.value = homeTeam;
-      team2Input.value = awayTeam;
+      h2hTeam1Input.value = homeTeam;
+      h2hTeam2Input.value = awayTeam;
       document.getElementById("btn-compare").click();
     }
 
     // H2H Logic
     document.getElementById("btn-compare").addEventListener("click", async () => {
-        const t1 = document.getElementById("h2h-team1").value;
-        const t2 = document.getElementById("h2h-team2").value;
+        const t1 = h2hTeam1Input.value;
+        const t2 = h2hTeam2Input.value;
         if(!t1 || !t2) return showNotification("Please select two teams.");
+        const dataset = h2hDataset.value || inferH2HMode(t1, t2);
         
         h2hResults.innerHTML = "Loading...";
         h2hResults.classList.remove("hidden");
         
         try {
-            const resp = await fetch(`/api/h2h?team1=${encodeURIComponent(t1)}&team2=${encodeURIComponent(t2)}`);
+            const resp = await fetch(`/api/h2h?team1=${encodeURIComponent(t1)}&team2=${encodeURIComponent(t2)}&mode=${encodeURIComponent(dataset)}`);
             const data = await resp.json();
             if(!data.ok) throw new Error(data.error);
             
@@ -1401,6 +1507,10 @@
         }
     });
 
+    h2hDataset.addEventListener("change", () => {
+      applyH2HDataset(h2hDataset.value);
+    });
+
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const formData = new FormData(form);
@@ -1443,16 +1553,48 @@
       showResult(errorMlsEl, resultMlsEl, data.prediction, false);
     });
 
+    formExtra.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = new FormData(formExtra);
+      const payload = {
+        home_team: formData.get("home_team"),
+        away_team: formData.get("away_team"),
+      };
+
+      const resp = await fetch("/api/predict/extra", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await resp.json();
+      if (!resp.ok || !data.ok) {
+        showError(errorExtraEl, resultExtraEl, data.error || "Extra league prediction failed.");
+        return;
+      }
+      showResult(errorExtraEl, resultExtraEl, data.prediction, true);
+    });
+
     tabHome.addEventListener("click", () => activateTab("home"));
     brandHomeBtn.addEventListener("click", () => tabHome.click());
     tabPredictor.addEventListener("click", () => activateTab("predictor"));
     subtabPredictorEuro.addEventListener("click", () => setPredictorMode("euro"));
     subtabPredictorMls.addEventListener("click", () => setPredictorMode("mls"));
+    subtabPredictorExtra.addEventListener("click", () => setPredictorMode("extra"));
     feedbackSubmit.addEventListener("click", submitFeedback);
     tabGlobal.addEventListener("click", async () => {
       activateTab("global");
-      const source = globalSourceFilter.value === "mls" ? "mls" : "global";
-      const url = source === "mls" ? "/api/upcoming/mls" : "/api/upcoming/global";
+      const source =
+        globalSourceFilter.value === "mls"
+          ? "mls"
+          : globalSourceFilter.value === "extra"
+            ? "extra"
+            : "global";
+      const url =
+        source === "mls"
+          ? "/api/upcoming/mls"
+          : source === "extra"
+            ? "/api/upcoming/extra"
+            : "/api/upcoming/global";
       await loadUpcoming(source, url, globalList, globalStats, globalLeagueFilter);
     });
     tabH2H.addEventListener("click", () => activateTab("h2h"));
@@ -1520,7 +1662,12 @@
       renderSelectedLeagueTable();
     });
     globalLeagueFilter.addEventListener("change", () => {
-      const source = globalSourceFilter.value === "mls" ? "mls" : "global";
+      const source =
+        globalSourceFilter.value === "mls"
+          ? "mls"
+          : globalSourceFilter.value === "extra"
+            ? "extra"
+            : "global";
       renderUpcoming(globalList, upcomingCache[source], globalLeagueFilter.value);
       const payload = upcomingStatsCache[source];
       renderStats(
@@ -1531,8 +1678,18 @@
       );
     });
     globalSourceFilter.addEventListener("change", async () => {
-      const source = globalSourceFilter.value === "mls" ? "mls" : "global";
-      const url = source === "mls" ? "/api/upcoming/mls" : "/api/upcoming/global";
+      const source =
+        globalSourceFilter.value === "mls"
+          ? "mls"
+          : globalSourceFilter.value === "extra"
+            ? "extra"
+            : "global";
+      const url =
+        source === "mls"
+          ? "/api/upcoming/mls"
+          : source === "extra"
+            ? "/api/upcoming/extra"
+            : "/api/upcoming/global";
       await loadUpcoming(source, url, globalList, globalStats, globalLeagueFilter);
     });
 

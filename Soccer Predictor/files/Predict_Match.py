@@ -947,8 +947,15 @@ def main():
         current_form = {"teams": {}}
     if "teams" not in current_form or not isinstance(current_form["teams"], dict):
         current_form["teams"] = {}
-    # Ensure form/odds exist for all teams from actual loaded match history.
-    current_form["teams"].update(dynamic_form)
+    # Preserve current-form file data, fill missing fields from dynamic history.
+    for team, stats in dynamic_form.items():
+        if team not in current_form["teams"] or not isinstance(current_form["teams"].get(team), dict):
+            current_form["teams"][team] = stats
+            continue
+        existing = current_form["teams"][team]
+        for key, value in stats.items():
+            if key not in existing or existing.get(key) in (None, "", 0, 0.0):
+                existing[key] = value
 
     feature_frames = []
     for season_key, season_matches in matches.groupby("season_key", sort=False):

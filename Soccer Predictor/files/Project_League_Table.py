@@ -98,7 +98,14 @@ def load_context():
     current_form = pm.replace_nan_with_sentinel(current_form)
     league_strength = pm.replace_nan_with_sentinel(league_strength)
     current_form.setdefault("teams", {})
-    current_form["teams"].update(dynamic_form)
+    for team, stats in dynamic_form.items():
+        if team not in current_form["teams"] or not isinstance(current_form["teams"].get(team), dict):
+            current_form["teams"][team] = stats
+            continue
+        existing = current_form["teams"][team]
+        for key, value in stats.items():
+            if key not in existing or existing.get(key) in (None, "", 0, 0.0):
+                existing[key] = value
 
     team_comp_map = {}
     for _, row in matches.iterrows():

@@ -278,6 +278,26 @@ def int_if_count_key(key, value):
     return value
 
 
+def sanitize_overall_teams(overall_teams, weighted_overall):
+    cleaned = {}
+    for team, stats in overall_teams.items():
+        entry = {}
+        for key, value in stats.items():
+            entry[key] = int_if_count_key(key, value)
+
+        weighted_entry = weighted_overall.get(team, {})
+        for key, value in weighted_entry.items():
+            if not key.startswith("weighted_avg_"):
+                continue
+            if isinstance(value, (int, float)) and pd.isna(value):
+                entry[key] = 0.0
+            else:
+                entry[key] = float(value)
+
+        cleaned[team] = entry
+    return cleaned
+
+
 def sanitize_head_to_head(h2h_stats, weighted_h2h):
     cleaned = {}
     for home, away_map in h2h_stats.items():
@@ -517,14 +537,13 @@ def sort_all_seasons():
     for home in weighted_h2h:
         calculate_weighted_averages(weighted_h2h[home])
 
-    for team in overall_teams:
-        overall_teams[team].update(weighted_overall.get(team, {}))
+    cleaned_overall = sanitize_overall_teams(overall_teams, weighted_overall)
     cleaned_h2h = sanitize_head_to_head(h2h_stats, weighted_h2h)
 
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     with open(os.path.join(OUTPUT_DIR, "overall_teams.json"), "w") as f:
-        json.dump(overall_teams, f, indent=4)
+        json.dump(cleaned_overall, f, indent=4)
     with open(os.path.join(OUTPUT_DIR, "season_teams.json"), "w") as f:
         json.dump(season_data, f, indent=4)
     with open(os.path.join(OUTPUT_DIR, "head_to_head.json"), "w") as f:

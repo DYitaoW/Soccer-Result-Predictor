@@ -10,6 +10,7 @@ SP_DIR = Path(__file__).resolve().parent
 ROOT_DIR = SP_DIR.parent
 FILES_DIR = SP_DIR / "files"
 MLS_FILES_DIR = SP_DIR / "MLS" / "files"
+EXTRA_FILES_DIR = SP_DIR / "Extra-leagues" / "files"
 LOCAL_KEYS_FILE = FILES_DIR / "local_api_keys.json"
 
 
@@ -21,6 +22,11 @@ def parse_args():
         "--skip-mls",
         action="store_true",
         help="Skip MLS pipeline steps.",
+    )
+    parser.add_argument(
+        "--skip-extra",
+        action="store_true",
+        help="Skip extra-leagues pipeline steps.",
     )
     parser.add_argument(
         "--skip-global",
@@ -147,6 +153,29 @@ def main():
         run_step(
             "MLS projected league tables",
             [py, str(MLS_FILES_DIR / "Project_League_Table.py")],
+            continue_on_error=args.continue_on_error,
+        )
+
+    if not args.skip_extra:
+        run_step(
+            "Extra leagues download/process/sort latest data",
+            [py, str(EXTRA_FILES_DIR / "Download_Latest_Data.py")],
+            continue_on_error=args.continue_on_error,
+        )
+        run_step(
+            "Extra leagues build model cache (non-interactive)",
+            [py, str(EXTRA_FILES_DIR / "Predict_Match.py")],
+            continue_on_error=args.continue_on_error,
+            input_text="n\nq\n",
+        )
+        run_step(
+            "Extra leagues upcoming matchweek predictions",
+            [py, str(EXTRA_FILES_DIR / "Predict_Upcoming_Matchweek.py"), "--window-days", str(args.window_days)],
+            continue_on_error=args.continue_on_error,
+        )
+        run_step(
+            "Extra leagues projected league tables",
+            [py, str(EXTRA_FILES_DIR / "Project_League_Table.py")],
             continue_on_error=args.continue_on_error,
         )
 

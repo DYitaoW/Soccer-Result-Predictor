@@ -614,15 +614,88 @@ def load_upcoming_matchweek_fixtures_from_api(api_token, window_days):
         rows.extend(comp_df.to_dict("records"))
 
     fixtures = pd.DataFrame(rows)
-    if accessible_competitions == 0:
-        raise RuntimeError(
-            "No configured competitions were accessible with this API key. "
-            "Your football-data.org plan may restrict some leagues."
-        )
     if fixtures.empty:
         return fixtures
     fixtures = fixtures.sort_values(["match_date", "competition", "home_team", "away_team"]).reset_index(drop=True)
     return fixtures
+
+
+def _raw_is_played(row):
+    res = str(row.get("FTR", "")).strip().upper()
+    hg = row.get("FTHG")
+    ag = row.get("FTAG")
+    return res in {"H", "D", "A"} and pd.notna(hg) and pd.notna(ag)
+
+
+def load_upcoming_matchweek_fixtures_from_raw(raw_dir, window_days):
+    latest = find_latest_season_file_per_competition(raw_dir)
+    if not latest:
+        return pd.DataFrame()
+
+    today = pd.Timestamp(datetime.now(UTC).date())
+    rows = []
+    for competition, rel_path in sorted(latest.items()):
+        full_path = os.path.join(raw_dir, rel_path)
+        try:
+            frame = pd.read_csv(full_path)
+        except Exception:
+            frame = pd.read_csv(full_path, encoding="latin-1", engine="python", on_bad_lines="skip")
+
+        needed = {"Date", "HomeTeam", "AwayTeam", "FTHG", "FTAG", "FTR"}
+        if not needed.issubset(frame.columns):
+            continue
+
+        frame = frame.copy()
+        frame["DateParsed"] = pd.to_datetime(frame["Date"], dayfirst=True, format="mixed", errors="coerce")
+        frame = frame[frame["HomeTeam"].notna() & frame["AwayTeam"].notna()]
+        frame = frame[frame["DateParsed"].notna()]
+        if frame.empty:
+            continue
+
+        frame = frame[~frame.apply(_raw_is_played, axis=1)]
+        if frame.empty:
+            continue
+
+        future = frame[frame["DateParsed"] >= today]
+        if future.empty:
+            future = frame.copy()
+
+        next_date = future["DateParsed"].min()
+        if pd.isna(next_date):
+            continue
+
+        cutoff_date = next_date + pd.Timedelta(days=max(0, int(window_days)))
+        window = future[future["DateParsed"] <= cutoff_date]
+        for _, row in window.iterrows():
+            rows.append(
+                {
+                    "match_date": row["DateParsed"].normalize(),
+                    "competition": competition,
+                    "home_team": str(row["HomeTeam"]).strip(),
+                    "away_team": str(row["AwayTeam"]).strip(),
+                }
+            )
+
+    if not rows:
+        return pd.DataFrame()
+    fixtures = pd.DataFrame(rows)
+    fixtures = fixtures.sort_values(["match_date", "competition", "home_team", "away_team"]).reset_index(drop=True)
+    return fixtures
+
+
+def _dedupe_fixtures(fixtures):
+    if fixtures.empty:
+        return fixtures
+    work = fixtures.copy()
+    work["home_key"] = work["home_team"].map(normalize_team_key)
+    work["away_key"] = work["away_team"].map(normalize_team_key)
+    work["pair_key"] = work.apply(
+        lambda r: "|".join(sorted([r["home_key"], r["away_key"]])), axis=1
+    )
+    work["dedupe_key"] = work["match_date"].astype(str) + "|" + work["competition"] + "|" + work["pair_key"]
+    work = work.drop_duplicates(subset=["dedupe_key"], keep="first")
+    work = work.drop(columns=["home_key", "away_key", "pair_key", "dedupe_key"])
+    return work
 
 
 def load_prediction_store(path):
@@ -970,12 +1043,21 @@ def main():
     if args.refresh_download:
         download_latest.main()
 
-    if not args.api_token:
-        raise ValueError("Missing API token. Set FOOTBALL_DATA_API_TOKEN or pass --api-token.")
+    fixtures_api = pd.DataFrame()
+    if args.api_token:
+        try:
+            fixtures_api = load_upcoming_matchweek_fixtures_from_api(args.api_token, args.window_days)
+        except Exception as exc:
+            print(f"API fixtures load failed: {exc}")
+            fixtures_api = pd.DataFrame()
+    else:
+        print("No API token provided; using raw CSV fixtures only.")
 
-    fixtures = load_upcoming_matchweek_fixtures_from_api(args.api_token, args.window_days)
+    fixtures_raw = load_upcoming_matchweek_fixtures_from_raw(RAW_DATA_DIR, args.window_days)
+    fixtures = pd.concat([fixtures_api, fixtures_raw], ignore_index=True) if not fixtures_raw.empty or not fixtures_api.empty else pd.DataFrame()
+    fixtures = _dedupe_fixtures(fixtures)
     if fixtures.empty:
-        print("No upcoming matchweek fixtures returned by API.")
+        print("No upcoming matchweek fixtures returned by API or raw CSVs.")
         return
 
     context = build_prediction_context()

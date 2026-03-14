@@ -1,0 +1,127 @@
+{
+    "season": "Argentina\\Primera Division\\argstat2026",
+    "source_file": "Argentina\\Primera Division\\argstat2026.csv",
+    "generated_at_utc": "2026-03-14T02:36:24",
+    "teams": {
+        "Aldosivi": {
+            "status": "fetch_failed",
+            "top_5_players": []
+        },
+        "Argentinos Jrs": {
+            "status": "fetch_failed",
+            "top_5_players": []
+        },
+        "Atl. Tucuman": {
+            "status": "fetch_failed",
+            "top_5_players": []
+        },
+        "Banfield": {
+            "status": "fetch_failed",
+            "top_5_players": []
+        },
+        "Barracas Central": {
+            "status": "fetch_failed",
+            "top_5_players": []
+        },
+        "Belgrano": {
+            "status": "fetch_failed",
+            "top_5_players": []
+        },
+        "Boca Juniors": {
+            "status": "fetch_failed",
+            "top_5_players": []
+        },
+        "Central Cordoba": {
+            "status": "fetch_failed",
+            "top_5_players": []
+        },
+        "Defensa y Justicia": {
+            "status": "fetch_failed",
+            "top_5_players": []
+        },
+        "Dep. Riestra": {
+            "status": "fetch_failed",
+            "top_5_players": []
+        },
+        "Estudiantes L.P.": {
+            "status": "club_not_found",
+            "top_5_players": []
+        },
+        "Estudiantes Rio Cuarto": {
+            "status": "club_not_found",
+            "top_5_players": []
+        },
+        "Gimnasia L.P.": {
+            "status": "club_not_found",
+            "top_5_players": []
+        },
+        "Gimnasia Mendoza": {
+            "status": "fetch_failed",
+            "top_5_players": []
+        },
+        "Huracan": {
+            "status": "fetch_failed",
+            "top_5_players": []
+        },
+        "Ind. Rivadavia": {
+            "status": "fetch_failed",
+            "top_5_players": []
+        },
+        "Independiente": {
+            "status": "fetch_failed",
+            "top_5_players": []
+        },
+        "Instituto": {
+            "status": "fetch_failed",
+            "top_5_players": []
+        },
+        "Lanus": {
+            "status": "fetch_failed",
+            "top_5_players": []
+        },
+        "Newells Old Boys": {
+            "status": "fetch_failed",
+            "top_5_players": []
+        },
+        "Platense": {
+            "status": "fetch_failed",
+            "top_5_players": []
+        },
+        "Racing Club": {
+            "status": "fetch_failed",
+            "top_5_players": []
+        },
+        "River Plate": {
+            "status": "fetch_failed",
+            "top_5_players": []
+        },
+        "Rosario Central": {
+            "status": "fetch_failed",
+            "top_5_players": []
+        },
+        "San Lorenzo": {
+            "status": "fetch_failed",
+            "top_5_players": []
+        },
+        "Sarmiento Junin": {
+            "status": "fetch_failed",
+            "top_5_players": []
+        },
+        "Talleres Cordoba": {
+            "status": "club_not_found",
+            "top_5_players": []
+        },
+        "Tigre": {
+            "status": "fetch_failed",
+            "top_5_players": []
+        },
+        "Union de Santa Fe": {
+            "status": "club_not_found",
+            "top_5_players": []
+        },
+        "Velez Sarsfield": {
+            "status": "fetch_failed",
+            "top_5_players": []
+        }
+    }
+}

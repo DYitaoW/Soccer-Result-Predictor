@@ -305,6 +305,26 @@ def int_if_count_key(key, value):
     return value
 
 
+def sanitize_overall_teams(overall_teams, weighted_overall):
+    cleaned = {}
+    for team, stats in overall_teams.items():
+        entry = {}
+        for key, value in stats.items():
+            entry[key] = int_if_count_key(key, value)
+
+        weighted_entry = weighted_overall.get(team, {})
+        for key, value in weighted_entry.items():
+            if not key.startswith("weighted_avg_"):
+                continue
+            if isinstance(value, (int, float)) and pd.isna(value):
+                entry[key] = 0.0
+            else:
+                entry[key] = float(value)
+
+        cleaned[team] = entry
+    return cleaned
+
+
 def sanitize_head_to_head(h2h_stats, weighted_h2h):
     cleaned = {}
     for home, away_map in h2h_stats.items():
@@ -445,6 +465,26 @@ def detect_position_from_raw_player_text(raw_text):
         return "defense"
     return "unknown"
 
+def _normalize_column_name(col):
+    if isinstance(col, tuple):
+        parts = [str(part).strip() for part in col if str(part).strip().lower() not in {"", "nan", "none"}]
+        text = " ".join(parts).strip()
+    else:
+        text = str(col).strip()
+    return re.sub(r"\s+", " ", text).strip().lower()
+
+
+def _find_player_market_columns(table):
+    player_col = None
+    market_col = None
+    for col in table.columns:
+        norm = _normalize_column_name(col)
+        if player_col is None and "player" in norm:
+            player_col = col
+        if market_col is None and "market" in norm and "value" in norm:
+            market_col = col
+    return player_col, market_col
+
 
 def fetch_injured_player_keys(club_url, club_id):
     injury_url = club_url.replace("/startseite/verein/", "/sperrenundverletzungen/verein/")
@@ -497,9 +537,10 @@ def fetch_top_market_value_players(club_url, club_id, season_id, injured_player_
 
         tables = pd.read_html(StringIO(html))
         for table in tables:
-            cols = [str(col) for col in table.columns]
-            if "Player" in cols and "Market value" in cols:
-                player_table = table
+            player_col, market_col = _find_player_market_columns(table)
+            if player_col is not None and market_col is not None:
+                player_table = table[[player_col, market_col]].copy()
+                player_table.columns = ["Player", "Market value"]
                 break
         if player_table is not None and not player_table.empty:
             break
@@ -543,6 +584,15 @@ def build_top_market_value_players_file():
     df = read_csv_fast(latest_path)
     teams = sorted(set(df["HomeTeam"].dropna()) | set(df["AwayTeam"].dropna()))
 
+    previous = {}
+    previous_path = os.path.join(OUTPUT_DIR, TOP_MARKET_VALUE_FILE)
+    if os.path.exists(previous_path):
+        try:
+            with open(previous_path, "r", encoding="utf-8") as file:
+                previous = json.load(file) or {}
+        except Exception:
+            previous = {}
+
     output = {
         "season": latest_file.replace(".csv", ""),
         "source_file": latest_file,
@@ -557,10 +607,14 @@ def build_top_market_value_players_file():
         try:
             club_url, club_id = find_transfermarkt_club_link(team_name)
             if not club_url or not club_id:
-                output["teams"][team_name] = {
-                    "status": "club_not_found",
-                    "top_5_players": [],
-                }
+                cached = (previous.get("teams", {}) or {}).get(team_name)
+                if cached and cached.get("top_5_players"):
+                    output["teams"][team_name] = {**cached, "status": "cached_club_not_found"}
+                else:
+                    output["teams"][team_name] = {
+                        "status": "club_not_found",
+                        "top_5_players": [],
+                    }
                 continue
 
             try:
@@ -568,20 +622,40 @@ def build_top_market_value_players_file():
             except Exception:
                 injured_player_keys = set()
             top_players = fetch_top_market_value_players(club_url, club_id, latest_start_year, injured_player_keys)
-            output["teams"][team_name] = {
-                "status": "ok" if top_players else "no_values_found",
-                "club_id": club_id,
-                "club_url": club_url,
-                "injured_players_excluded": len(injured_player_keys),
-                "top_5_players": top_players,
-            }
-            print(f"Market values: {team_name} ({len(top_players)} players)")
+            if top_players:
+                output["teams"][team_name] = {
+                    "status": "ok",
+                    "club_id": club_id,
+                    "club_url": club_url,
+                    "injured_players_excluded": len(injured_player_keys),
+                    "top_5_players": top_players,
+                }
+                print(f"Market values: {team_name} ({len(top_players)} players)")
+            else:
+                cached = (previous.get("teams", {}) or {}).get(team_name)
+                if cached and cached.get("top_5_players"):
+                    output["teams"][team_name] = {**cached, "status": "cached_no_values_found"}
+                    print(f"Market values: {team_name} (cached)")
+                else:
+                    output["teams"][team_name] = {
+                        "status": "no_values_found",
+                        "club_id": club_id,
+                        "club_url": club_url,
+                        "injured_players_excluded": len(injured_player_keys),
+                        "top_5_players": [],
+                    }
+                    print(f"Market values: {team_name} (no values)")
         except Exception:
-            output["teams"][team_name] = {
-                "status": "fetch_failed",
-                "top_5_players": [],
-            }
-            print(f"Market values: {team_name} (failed)")
+            cached = (previous.get("teams", {}) or {}).get(team_name)
+            if cached and cached.get("top_5_players"):
+                output["teams"][team_name] = {**cached, "status": "cached_fetch_failed"}
+                print(f"Market values: {team_name} (cached)")
+            else:
+                output["teams"][team_name] = {
+                    "status": "fetch_failed",
+                    "top_5_players": [],
+                }
+                print(f"Market values: {team_name} (failed)")
 
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     with open(os.path.join(OUTPUT_DIR, TOP_MARKET_VALUE_FILE), "w", encoding="utf-8") as file:
@@ -761,14 +835,13 @@ def sort_all_seasons():
     for home in weighted_h2h:
         calculate_weighted_averages(weighted_h2h[home])
 
-    for team in overall_teams:
-        overall_teams[team].update(weighted_overall.get(team, {}))
+    cleaned_overall = sanitize_overall_teams(overall_teams, weighted_overall)
     cleaned_h2h = sanitize_head_to_head(h2h_stats, weighted_h2h)
 
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     with open(os.path.join(OUTPUT_DIR, "overall_teams.json"), "w") as f:
-        json.dump(overall_teams, f, indent=4)
+        json.dump(cleaned_overall, f, indent=4)
     with open(os.path.join(OUTPUT_DIR, "season_teams.json"), "w") as f:
         json.dump(season_data, f, indent=4)
     with open(os.path.join(OUTPUT_DIR, "head_to_head.json"), "w") as f:

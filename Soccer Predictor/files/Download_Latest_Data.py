@@ -28,6 +28,10 @@ COMPETITIONS = [
     {"country": "France", "league": "Ligue 1", "league_code": "F1", "file_prefix": "ligue1stat"},
     {"country": "France", "league": "Ligue 2", "league_code": "F2", "file_prefix": "ligue2stat"},
     {"country": "Portugal", "league": "Liga Portugal", "league_code": "P1", "file_prefix": "portstat"},
+    {"country": "Netherlands", "league": "Eredivisie", "league_code": "N1", "file_prefix": "eredivisiestat"},
+    {"country": "Belgium", "league": "First Division A", "league_code": "B1", "file_prefix": "belgiestat"},
+    {"country": "Scotland", "league": "Premiership", "league_code": "SC0", "file_prefix": "scotpremstat"},
+    {"country": "Turkey", "league": "Super Lig", "league_code": "T1", "file_prefix": "turkstat"},
     {"country": "France", "league": "Ligue 2", "league_code": "F2", "file_prefix": "ligue2stat"},
 ]
 

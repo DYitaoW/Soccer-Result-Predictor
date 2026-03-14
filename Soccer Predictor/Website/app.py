@@ -5,6 +5,7 @@ import threading
 import importlib.util
 import subprocess
 import time
+from collections import deque
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
@@ -37,6 +38,7 @@ WEBSITE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_DIR = os.path.dirname(WEBSITE_DIR)
 FILES_DIR = os.path.join(PROJECT_DIR, "files")
 MLS_FILES_DIR = os.path.join(PROJECT_DIR, "MLS", "files")
+EXTRA_FILES_DIR = os.path.join(PROJECT_DIR, "Extra-leagues", "files")
 WEBSITE_FILES_DIR = os.path.join(WEBSITE_DIR, "files")
 GRAPHICS_DIR = os.path.join(WEBSITE_DIR, "graphics")
 FEEDBACK_DIR = os.path.join(WEBSITE_FILES_DIR, "feedback")
@@ -45,16 +47,28 @@ ACCURACY_HISTORY_DIR = os.path.join(WEBSITE_FILES_DIR, "accuracy_history")
 ACCURACY_TOTALS_FILE = os.path.join(WEBSITE_FILES_DIR, "accuracy_totals.json")
 GLOBAL_UPCOMING_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "upcoming_matchweek_predictions.csv")
 MLS_UPCOMING_FILE = os.path.join(PROJECT_DIR, "MLS", "Data", "Predictions", "upcoming_matchweek_predictions.csv")
+EXTRA_UPCOMING_FILE = os.path.join(PROJECT_DIR, "Extra-leagues", "Data", "Predictions", "upcoming_matchweek_predictions.csv")
 GLOBAL_PROJECTED_TABLE_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "projected_league_tables.csv")
 MLS_PROJECTED_TABLE_FILE = os.path.join(PROJECT_DIR, "MLS", "Data", "Predictions", "projected_league_tables.csv")
+EXTRA_PROJECTED_TABLE_FILE = os.path.join(PROJECT_DIR, "Extra-leagues", "Data", "Predictions", "projected_league_tables.csv")
 MLS_PROJECTED_BRACKET_FILE = os.path.join(PROJECT_DIR, "MLS", "Data", "Predictions", "projected_mls_playoff_bracket.json")
 LIVE_RESULTS_UPDATER = os.path.join(FILES_DIR, "Update_Live_Prediction_Results.py")
 RUN_ALL_PIPELINE = os.path.join(PROJECT_DIR, "Run_All_Pipeline.py")
+TEAM_NAME_DISPLAY_MAPPING_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "team_name_mapping_master.json")
+USE_DISPLAY_NAME_MAPPING = False
 MLS_COMPETITION = "United States/MLS"
+STATIC_PREDICTIONS = os.environ.get("STATIC_PREDICTIONS", "1").strip().lower() in {"1", "true", "yes"}
+LOW_MEMORY_STATIC = os.environ.get("LOW_MEMORY_STATIC", "1").strip().lower() in {"1", "true", "yes"}
+STATIC_PREDICTIONS_CACHE = os.environ.get("STATIC_PREDICTIONS_CACHE", "0").strip().lower() in {"1", "true", "yes"}
+STATIC_PREDICTIONS_GLOBAL_FILE = os.environ.get("STATIC_PREDICTIONS_GLOBAL_FILE", GLOBAL_UPCOMING_FILE)
+STATIC_PREDICTIONS_MLS_FILE = os.environ.get("STATIC_PREDICTIONS_MLS_FILE", MLS_UPCOMING_FILE)
+STATIC_PREDICTIONS_EXTRA_FILE = os.environ.get("STATIC_PREDICTIONS_EXTRA_FILE", EXTRA_UPCOMING_FILE)
 if FILES_DIR not in sys.path:
     sys.path.insert(0, FILES_DIR)
 if MLS_FILES_DIR not in sys.path:
     sys.path.insert(0, MLS_FILES_DIR)
+if EXTRA_FILES_DIR not in sys.path:
+    sys.path.insert(0, EXTRA_FILES_DIR)
 
 
 def _load_module(module_name, file_path):
@@ -68,9 +82,13 @@ def _load_module(module_name, file_path):
 
 pm_global = _load_module("predict_match_global", os.path.join(FILES_DIR, "Predict_Match.py"))
 pm_mls = _load_module("predict_match_mls", os.path.join(MLS_FILES_DIR, "Predict_Match.py"))
+pm_extra = _load_module("predict_match_extra", os.path.join(EXTRA_FILES_DIR, "Predict_Match.py"))
 
 
 app = Flask(__name__, template_folder="templates", static_folder="static")
+API_RATE_LIMIT_PER_MINUTE = int(os.environ.get("API_RATE_LIMIT_PER_MINUTE", "60"))
+_api_rate_lock = threading.Lock()
+_api_rate_events_by_ip = {}
 
 
 @dataclass
@@ -101,7 +119,233 @@ _ctx_lock = threading.Lock()
 _feedback_lock = threading.Lock()
 _ctx_global = None
 _ctx_mls = None
+_ctx_extra = None
+_static_predictions_cache = {}
+_static_team_cache = {}
 
+
+def _client_ip():
+    """Return best-effort client IP, respecting trusted proxy forwarding headers."""
+    forwarded_for = request.headers.get("X-Forwarded-For", "")
+    if forwarded_for:
+        first_ip = forwarded_for.split(",")[0].strip()
+        if first_ip:
+            return first_ip
+    return request.remote_addr or "unknown"
+
+
+@app.before_request
+def _enforce_api_rate_limit():
+    """Apply a per-IP rolling one-minute cap for all API routes."""
+    if not request.path.startswith("/api/"):
+        return None
+
+    now = time.time()
+    cutoff = now - 60.0
+    ip = _client_ip()
+    limit = max(1, API_RATE_LIMIT_PER_MINUTE)
+    retry_after = 60
+
+    with _api_rate_lock:
+        events = _api_rate_events_by_ip.setdefault(ip, deque())
+        while events and events[0] <= cutoff:
+            events.popleft()
+
+        if len(events) >= limit:
+            retry_after = int(max(1, 60 - (now - events[0])))
+            return jsonify(
+                {
+                    "ok": False,
+                    "error": "Rate limit exceeded. Try again later.",
+                    "retry_after_seconds": retry_after,
+                    "limit_per_minute": limit,
+                }
+            ), 429
+
+        events.append(now)
+
+        # Best-effort memory cleanup for IPs that have no recent events.
+        stale_ips = [key for key, queue in _api_rate_events_by_ip.items() if not queue or queue[-1] <= cutoff]
+        for key in stale_ips:
+            _api_rate_events_by_ip.pop(key, None)
+
+    return None
+
+
+def _load_team_display_mappings():
+    """Load flattened team-name display mappings from mapping master JSON."""
+    if not os.path.exists(TEAM_NAME_DISPLAY_MAPPING_FILE):
+        return {}, {}
+    try:
+        with open(TEAM_NAME_DISPLAY_MAPPING_FILE, "r", encoding="utf-8") as fh:
+            payload = json.load(fh)
+    except Exception:
+        return {}, {}
+    if not isinstance(payload, dict):
+        return {}, {}
+
+    db_to_display = {}
+    display_to_db = {}
+    for _, comp_map in payload.items():
+        if not isinstance(comp_map, dict):
+            continue
+        for raw_name, mapped_name in comp_map.items():
+            db_name = str(raw_name or "").strip()
+            display_name = str(mapped_name or "").strip()
+            if not db_name or not display_name:
+                continue
+            db_to_display.setdefault(db_name, display_name)
+            display_to_db.setdefault(display_name, db_name)
+    return db_to_display, display_to_db
+
+
+TEAM_DB_TO_DISPLAY, TEAM_DISPLAY_TO_DB = _load_team_display_mappings()
+
+
+def _team_name_for_display(name):
+    """Map DB/canonical team names to UI display names."""
+    text = str(name or "").strip()
+    if not text:
+        return ""
+    if not USE_DISPLAY_NAME_MAPPING:
+        return text
+    return TEAM_DB_TO_DISPLAY.get(text, text)
+
+
+def _team_name_for_db(name):
+    """Map UI display names back to DB/canonical team names."""
+    text = str(name or "").strip()
+    if not text:
+        return ""
+    if not USE_DISPLAY_NAME_MAPPING:
+        return text
+    return TEAM_DISPLAY_TO_DB.get(text, text)
+
+
+def _normalize_team_key(name):
+    return str(name or "").strip().lower()
+
+
+def _to_float(value, default=0.0):
+    try:
+        return float(value)
+    except Exception:
+        return default
+
+
+def _load_static_predictions(path):
+    if not path or not os.path.exists(path):
+        return {}, set()
+    try:
+        df = pd.read_csv(path)
+    except Exception:
+        return {}, set()
+    if df.empty:
+        return {}, set()
+
+    lower_cols = {str(col).strip().lower(): col for col in df.columns}
+    def find_col(*names):
+        for name in names:
+            col = lower_cols.get(name)
+            if col is not None:
+                return col
+        return None
+
+    home_col = find_col("home_team", "hometeam", "home")
+    away_col = find_col("away_team", "awayteam", "away")
+    if home_col is None or away_col is None:
+        return {}, set()
+
+    comp_col = find_col("competition", "league")
+    result_col = find_col("predicted_result", "prediction", "result")
+    ph_col = find_col("prob_home", "prob_h", "home_prob")
+    pd_col = find_col("prob_draw", "prob_d", "draw_prob")
+    pa_col = find_col("prob_away", "prob_a", "away_prob")
+    hg_col = find_col("pred_home_goals", "home_goals")
+    ag_col = find_col("pred_away_goals", "away_goals")
+    hs_col = find_col("pred_home_shots", "home_shots")
+    as_col = find_col("pred_away_shots", "away_shots")
+    hst_col = find_col("pred_home_sot", "home_sot")
+    ast_col = find_col("pred_away_sot", "away_sot")
+
+    lookup = {}
+    teams = set()
+    for _, row in df.iterrows():
+        home_raw = row.get(home_col)
+        away_raw = row.get(away_col)
+        home = str(home_raw or "").strip()
+        away = str(away_raw or "").strip()
+        if not home or not away:
+            continue
+        key = (_normalize_team_key(home), _normalize_team_key(away))
+        record = {
+            "home_team": home,
+            "away_team": away,
+            "competition": str(row.get(comp_col, "")).strip() if comp_col else "",
+            "predicted_result": str(row.get(result_col, "")).strip().upper() if result_col else "",
+            "prob_home": _to_float(row.get(ph_col)) if ph_col else 0.0,
+            "prob_draw": _to_float(row.get(pd_col)) if pd_col else 0.0,
+            "prob_away": _to_float(row.get(pa_col)) if pa_col else 0.0,
+            "pred_home_goals": _to_float(row.get(hg_col)) if hg_col else 0.0,
+            "pred_away_goals": _to_float(row.get(ag_col)) if ag_col else 0.0,
+            "pred_home_shots": _to_float(row.get(hs_col)) if hs_col else 0.0,
+            "pred_away_shots": _to_float(row.get(as_col)) if as_col else 0.0,
+            "pred_home_sot": _to_float(row.get(hst_col)) if hst_col else 0.0,
+            "pred_away_sot": _to_float(row.get(ast_col)) if ast_col else 0.0,
+        }
+        lookup[key] = record
+        teams.add(home)
+        teams.add(away)
+
+    return lookup, teams
+
+
+def _get_static_predictions(mode):
+    if mode == "mls":
+        path = STATIC_PREDICTIONS_MLS_FILE
+    elif mode == "extra":
+        path = STATIC_PREDICTIONS_EXTRA_FILE
+    else:
+        path = STATIC_PREDICTIONS_GLOBAL_FILE
+    if not path or not os.path.exists(path):
+        return {}, set()
+    mtime = os.path.getmtime(path)
+    if STATIC_PREDICTIONS_CACHE:
+        cache = _static_predictions_cache.get(mode)
+        if cache and cache.get("path") == path and cache.get("mtime") == mtime:
+            return cache["lookup"], cache["teams"]
+
+    lookup, teams = _load_static_predictions(path)
+    if STATIC_PREDICTIONS_CACHE:
+        _static_predictions_cache[mode] = {"path": path, "mtime": mtime, "lookup": lookup, "teams": teams}
+    return lookup, teams
+
+
+def _load_teams_from_team_data(pm_mod):
+    overall = pm_mod.load_json_if_exists(os.path.join(pm_mod.TEAM_DATA_DIR, "overall_teams.json")) or {}
+    teams = []
+    if isinstance(overall, dict):
+        teams = list(overall.keys())
+    if not teams:
+        season_teams = pm_mod.load_json_if_exists(os.path.join(pm_mod.TEAM_DATA_DIR, "season_teams.json")) or {}
+        if isinstance(season_teams, dict):
+            for season_map in season_teams.values():
+                if isinstance(season_map, dict):
+                    teams.extend(list(season_map.keys()))
+    return sorted({str(team).strip() for team in teams if str(team).strip()})
+
+
+def _load_h2h_and_form(pm_mod):
+    head_to_head = pm_mod.load_json_if_exists(os.path.join(pm_mod.TEAM_DATA_DIR, "head_to_head.json")) or {}
+    current_form = pm_mod.load_json_if_exists(os.path.join(pm_mod.TEAM_DATA_DIR, "current_form.json")) or {}
+    try:
+        current_form = pm_mod.replace_nan_with_sentinel(current_form)
+    except Exception:
+        pass
+    if not isinstance(current_form, dict):
+        current_form = {"teams": {}}
+    current_form.setdefault("teams", {})
+    return head_to_head, current_form
 
 def _load_context(pm_mod):
     """Load cached model bundle and supporting team data for one predictor mode."""
@@ -149,7 +393,15 @@ def _load_context(pm_mod):
         current_form = {"teams": {}}
     if "teams" not in current_form or not isinstance(current_form["teams"], dict):
         current_form["teams"] = {}
-    current_form["teams"].update(dynamic_form)
+    current_form_teams = current_form["teams"]
+    for team, stats in dynamic_form.items():
+        if team not in current_form_teams or not isinstance(current_form_teams.get(team), dict):
+            current_form_teams[team] = stats
+            continue
+        existing = current_form_teams[team]
+        for key, value in stats.items():
+            if key not in existing or existing.get(key) in (None, "", 0, 0.0):
+                existing[key] = value
 
     team_competition_map = {}
     for _, row in matches.iterrows():
@@ -204,13 +456,19 @@ def _latest_season_for_competition(season_teams, competition, fallback, parse_st
 
 def get_context(mode="global"):
     """Return lazily initialized prediction context for global or MLS mode."""
-    global _ctx_global, _ctx_mls
+    global _ctx_global, _ctx_mls, _ctx_extra
     if mode == "mls":
         if _ctx_mls is None:
             with _ctx_lock:
                 if _ctx_mls is None:
                     _ctx_mls = _load_context(pm_mls)
         return _ctx_mls
+    if mode == "extra":
+        if _ctx_extra is None:
+            with _ctx_lock:
+                if _ctx_extra is None:
+                    _ctx_extra = _load_context(pm_extra)
+        return _ctx_extra
 
     if _ctx_global is None:
         with _ctx_lock:
@@ -221,10 +479,41 @@ def get_context(mode="global"):
 
 def _predict(home_raw, away_raw, mode="global"):
     """Run a single match prediction and return probabilities plus stat projections."""
+    if STATIC_PREDICTIONS:
+        lookup, _ = _get_static_predictions(mode)
+        key = (_normalize_team_key(home_raw), _normalize_team_key(away_raw))
+        record = lookup.get(key)
+        if not record:
+            raise ValueError("Prediction not available in static data.")
+        prediction = record.get("predicted_result") or ""
+        if prediction not in {"H", "D", "A"}:
+            probs = {"H": record.get("prob_home", 0.0), "D": record.get("prob_draw", 0.0), "A": record.get("prob_away", 0.0)}
+            prediction = max(probs, key=probs.get)
+        home_display = _team_name_for_display(record["home_team"])
+        away_display = _team_name_for_display(record["away_team"])
+        return {
+            "home_team": home_display,
+            "away_team": away_display,
+            "competition": record.get("competition") or "",
+            "predicted_result": prediction,
+            "winner_label": {"H": f"{home_display} win", "D": "Draw", "A": f"{away_display} win"}[prediction],
+            "prob_home": round(_to_float(record.get("prob_home", 0.0)) * 100, 3),
+            "prob_draw": round(_to_float(record.get("prob_draw", 0.0)) * 100, 3),
+            "prob_away": round(_to_float(record.get("prob_away", 0.0)) * 100, 3),
+            "pred_home_goals": int(round(_to_float(record.get("pred_home_goals", 0.0)))),
+            "pred_away_goals": int(round(_to_float(record.get("pred_away_goals", 0.0)))),
+            "pred_home_shots": round(_to_float(record.get("pred_home_shots", 0.0)), 2),
+            "pred_away_shots": round(_to_float(record.get("pred_away_shots", 0.0)), 2),
+            "pred_home_sot": round(_to_float(record.get("pred_home_sot", 0.0)), 2),
+            "pred_away_sot": round(_to_float(record.get("pred_away_sot", 0.0)), 2),
+        }
+
     ctx = get_context(mode)
     pm = ctx.pm
-    home_team = pm.resolve_team_name(home_raw, ctx.available_teams)
-    away_team = pm.resolve_team_name(away_raw, ctx.available_teams)
+    home_input = _team_name_for_db(home_raw)
+    away_input = _team_name_for_db(away_raw)
+    home_team = pm.resolve_team_name(home_input, ctx.available_teams)
+    away_team = pm.resolve_team_name(away_input, ctx.available_teams)
     if not home_team or not away_team:
         raise ValueError("One or both team names were not recognized.")
     if home_team == away_team:
@@ -315,9 +604,12 @@ def _predict(home_raw, away_raw, mode="global"):
     else:
         probabilities = pm.reduce_draw_probability(probabilities)
         seed = pm.prediction_randomizer_seed(home_team, away_team, feature_competition, prediction_season)
+        max_delta = getattr(pm, "EU_RANDOMIZER_MAX_DELTA", None)
+        if max_delta is None:
+            max_delta = getattr(pm, "MLS_RANDOMIZER_MAX_DELTA", 0.12)
         probabilities = pm.apply_probability_randomizer(
             probabilities,
-            pm.EU_RANDOMIZER_MAX_DELTA,
+            max_delta,
             seed=seed,
         )
 
@@ -329,12 +621,15 @@ def _predict(home_raw, away_raw, mode="global"):
     home_sot = max(0.0, float(ctx.home_sot_reg.predict(X_match)[0]))
     away_sot = max(0.0, float(ctx.away_sot_reg.predict(X_match)[0]))
 
+    home_display = _team_name_for_display(home_team)
+    away_display = _team_name_for_display(away_team)
+
     return {
-        "home_team": home_team,
-        "away_team": away_team,
+        "home_team": home_display,
+        "away_team": away_display,
         "competition": home_comp if home_comp == away_comp else f"{home_comp} vs {away_comp}",
         "predicted_result": prediction,
-        "winner_label": {"H": f"{home_team} win", "D": "Draw", "A": f"{away_team} win"}[prediction],
+        "winner_label": {"H": f"{home_display} win", "D": "Draw", "A": f"{away_display} win"}[prediction],
         "prob_home": round(probabilities["H"] * 100, 3),
         "prob_draw": round(probabilities["D"] * 100, 3),
         "prob_away": round(probabilities["A"] * 100, 3),
@@ -456,6 +751,8 @@ def _build_persistent_accuracy_stats(mode, rows):
             str(k): v for k, v in by_league_all.items()
             if str(k).strip() == MLS_COMPETITION
         }
+    elif mode == "extra":
+        filtered = {}
     else:
         filtered = {
             str(k): v for k, v in by_league_all.items()
@@ -500,17 +797,55 @@ def _build_persistent_accuracy_stats(mode, rows):
     return stats, league_stats
 
 
-def _load_upcoming_rows(csv_path):
+def _load_upcoming_rows(csv_path, mode=None):
     """Load upcoming prediction rows and attach persistent accuracy stats."""
     if not os.path.exists(csv_path):
         empty = pd.DataFrame()
+        target_mode = mode or "global"
         return [], _compute_accuracy_stats(empty), _compute_league_accuracy_stats(empty)
     try:
-        frame = pd.read_csv(csv_path)
+        if LOW_MEMORY_STATIC:
+            allowed = {
+                "match_date",
+                "competition",
+                "home_team",
+                "away_team",
+                "predicted_result",
+                "prob_home",
+                "prob_draw",
+                "prob_away",
+                "pred_home_goals",
+                "pred_away_goals",
+                "pred_home_shots",
+                "pred_away_shots",
+                "pred_home_sot",
+                "pred_away_sot",
+                "probability_reasoning",
+                "actual_result",
+                "match_datetime_et",
+            }
+            frame = pd.read_csv(
+                csv_path,
+                usecols=lambda c: c in allowed,
+                dtype={
+                    "match_date": "string",
+                    "competition": "string",
+                    "home_team": "string",
+                    "away_team": "string",
+                    "predicted_result": "string",
+                    "probability_reasoning": "string",
+                    "actual_result": "string",
+                    "match_datetime_et": "string",
+                },
+            )
+        else:
+            frame = pd.read_csv(csv_path)
     except Exception:
         empty = pd.DataFrame()
+        target_mode = mode or "global"
         return [], _compute_accuracy_stats(empty), _compute_league_accuracy_stats(empty)
     if frame.empty:
+        target_mode = mode or "global"
         return [], _compute_accuracy_stats(frame), _compute_league_accuracy_stats(frame)
 
     required = ["match_date", "competition", "home_team", "away_team", "predicted_result", "prob_home", "prob_draw", "prob_away"]
@@ -519,14 +854,15 @@ def _load_upcoming_rows(csv_path):
             return [], _compute_accuracy_stats(frame), _compute_league_accuracy_stats(frame)
 
     frame = frame.sort_values(["match_date", "competition", "home_team", "away_team"])
-    is_mls_file = os.path.normpath(csv_path) == os.path.normpath(MLS_UPCOMING_FILE)
+    target_mode = mode or ("mls" if os.path.normpath(csv_path) == os.path.normpath(MLS_UPCOMING_FILE) else "global")
+    is_mls_file = target_mode == "mls"
     # Current CSV rows are upcoming/pending only. Settled accuracy is persisted in accuracy_totals.json.
     stats = _compute_accuracy_stats(frame)
     league_stats = _compute_league_accuracy_stats(frame)
     rows = []
     for _, row in frame.iterrows():
-        home = str(row["home_team"]).strip()
-        away = str(row["away_team"]).strip()
+        home = _team_name_for_display(str(row["home_team"]).strip())
+        away = _team_name_for_display(str(row["away_team"]).strip())
         raw_date = str(row["match_date"])
         time_label = ""
         mls_dt_raw = str(row.get("match_datetime_et", "")).strip() if "match_datetime_et" in frame.columns else ""
@@ -599,8 +935,7 @@ def _load_upcoming_rows(csv_path):
                 ),
             }
         )
-    mode = "mls" if is_mls_file else "global"
-    persistent_stats, persistent_league_stats = _build_persistent_accuracy_stats(mode, rows)
+    persistent_stats, persistent_league_stats = _build_persistent_accuracy_stats(target_mode, rows)
     return rows, persistent_stats, persistent_league_stats
 
 
@@ -609,7 +944,31 @@ def _load_projected_tables(csv_path):
     if not os.path.exists(csv_path):
         return {"leagues": [], "tables": {}}
     try:
-        frame = pd.read_csv(csv_path)
+        if LOW_MEMORY_STATIC:
+            allowed = {
+                "competition",
+                "position",
+                "team",
+                "P",
+                "W",
+                "D",
+                "L",
+                "GF",
+                "GA",
+                "GD",
+                "Pts",
+                "win_league_pct",
+                "top4_pct",
+                "bottom3_pct",
+                "remaining_games",
+            }
+            frame = pd.read_csv(
+                csv_path,
+                usecols=lambda c: c in allowed,
+                dtype={"competition": "string", "team": "string"},
+            )
+        else:
+            frame = pd.read_csv(csv_path)
     except Exception:
         return {"leagues": [], "tables": {}}
 
@@ -664,7 +1023,7 @@ def _load_projected_tables(csv_path):
             rows.append(
                 {
                     "position": int(row["position"]) if pd.notna(row["position"]) else 0,
-                    "team": str(row["team"]),
+                    "team": _team_name_for_display(str(row["team"])),
                     "P": int(pd.to_numeric(row.get("P"), errors="coerce")) if pd.notna(pd.to_numeric(row.get("P"), errors="coerce")) else 0,
                     "W": int(pd.to_numeric(row.get("W"), errors="coerce")) if pd.notna(pd.to_numeric(row.get("W"), errors="coerce")) else 0,
                     "D": int(pd.to_numeric(row.get("D"), errors="coerce")) if pd.notna(pd.to_numeric(row.get("D"), errors="coerce")) else 0,
@@ -818,10 +1177,12 @@ def _run_full_pipeline_once():
     with _ctx_lock:
         _ctx_global = None
         _ctx_mls = None
+        _ctx_extra = None
     try:
         # Warm both contexts so API requests do not pay first-load penalty.
         get_context("global")
         get_context("mls")
+        get_context("extra")
         print("[refresh] Model contexts reloaded successfully.")
     except Exception as exc:
         print(f"[refresh] Context reload warning: {exc}")
@@ -958,28 +1319,72 @@ def update_accuracy_history_files():
     os.makedirs(ACCURACY_HISTORY_DIR, exist_ok=True)
     global_files, global_rows = _update_accuracy_history_from_csv(GLOBAL_UPCOMING_FILE, "global")
     mls_files, mls_rows = _update_accuracy_history_from_csv(MLS_UPCOMING_FILE, "mls")
+    extra_files, extra_rows = _update_accuracy_history_from_csv(EXTRA_UPCOMING_FILE, "extra")
     print(
         "[startup] Accuracy history updated: "
         f"global_files={global_files}, global_new_rows={global_rows}, "
-        f"mls_files={mls_files}, mls_new_rows={mls_rows}"
+        f"mls_files={mls_files}, mls_new_rows={mls_rows}, "
+        f"extra_files={extra_files}, extra_new_rows={extra_rows}"
     )
 
 
 @app.get("/")
 def index():
     """Render the main website page with available team lists."""
-    global_ctx = get_context("global")
-    mls_ctx = get_context("mls")
-    return render_template("index.html", teams=global_ctx.available_teams, mls_teams=mls_ctx.available_teams)
+    if STATIC_PREDICTIONS:
+        _, global_teams = _get_static_predictions("global")
+        _, mls_teams = _get_static_predictions("mls")
+        _, extra_teams = _get_static_predictions("extra")
+        if not global_teams:
+            global_teams = set(_load_teams_from_team_data(pm_global))
+        if not mls_teams:
+            mls_teams = set(_load_teams_from_team_data(pm_mls))
+        if not extra_teams:
+            extra_teams = set(_load_teams_from_team_data(pm_extra))
+        global_display_teams = sorted({_team_name_for_display(team) for team in global_teams})
+        mls_display_teams = sorted({_team_name_for_display(team) for team in mls_teams})
+        extra_display_teams = sorted({_team_name_for_display(team) for team in extra_teams})
+    else:
+        global_ctx = get_context("global")
+        mls_ctx = get_context("mls")
+        global_display_teams = sorted({_team_name_for_display(team) for team in global_ctx.available_teams})
+        mls_display_teams = sorted({_team_name_for_display(team) for team in mls_ctx.available_teams})
+        try:
+            extra_ctx = get_context("extra")
+            extra_display_teams = sorted({_team_name_for_display(team) for team in extra_ctx.available_teams})
+        except Exception:
+            extra_display_teams = sorted({_team_name_for_display(team) for team in _load_teams_from_team_data(pm_extra)})
+    return render_template(
+        "index.html",
+        teams=global_display_teams,
+        mls_teams=mls_display_teams,
+        extra_teams=extra_display_teams,
+    )
 
 
 @app.get("/api/teams")
 def api_teams():
     """Return selectable teams for the requested prediction mode."""
     mode = str(request.args.get("mode", "global")).strip().lower()
-    if mode not in {"global", "mls"}:
+    if mode not in {"global", "mls", "extra"}:
         mode = "global"
-    return jsonify({"teams": get_context(mode).available_teams})
+    if STATIC_PREDICTIONS:
+        _, teams = _get_static_predictions(mode)
+        if not teams:
+            if mode == "mls":
+                teams = _load_teams_from_team_data(pm_mls)
+            elif mode == "extra":
+                teams = _load_teams_from_team_data(pm_extra)
+            else:
+                teams = _load_teams_from_team_data(pm_global)
+        display_teams = sorted({_team_name_for_display(team) for team in teams})
+    else:
+        try:
+            teams = get_context(mode).available_teams
+            display_teams = sorted({_team_name_for_display(team) for team in teams})
+        except Exception:
+            display_teams = []
+    return jsonify({"teams": display_teams})
 
 
 @app.post("/api/predict")
@@ -1008,17 +1413,42 @@ def api_predict_mls():
     return jsonify({"ok": True, "prediction": result})
 
 
+@app.post("/api/predict/extra")
+def api_predict_extra():
+    """Predict a single extra-league matchup from user input."""
+    payload = request.get_json(silent=True) or request.form
+    home_team = str(payload.get("home_team", "")).strip()
+    away_team = str(payload.get("away_team", "")).strip()
+    try:
+        result = _predict(home_team, away_team, mode="extra")
+    except Exception as exc:
+        return jsonify({"ok": False, "error": str(exc)}), 400
+    return jsonify({"ok": True, "prediction": result})
+
+
 @app.get("/api/h2h")
 def api_h2h():
     """Return head-to-head and form data for two teams."""
-    team1 = request.args.get("team1", "").strip()
-    team2 = request.args.get("team2", "").strip()
+    team1_input = request.args.get("team1", "").strip()
+    team2_input = request.args.get("team2", "").strip()
     mode = request.args.get("mode", "global").strip().lower()
     
-    ctx = get_context(mode)
+    if STATIC_PREDICTIONS:
+        if mode == "mls":
+            pm_mod = pm_mls
+        elif mode == "extra":
+            pm_mod = pm_extra
+        else:
+            pm_mod = pm_global
+        head_to_head, current_form = _load_h2h_and_form(pm_mod)
+        ctx = type("StaticCtx", (), {"head_to_head": head_to_head, "current_form": current_form})
+    else:
+        ctx = get_context(mode)
     
-    if not team1 or not team2:
+    if not team1_input or not team2_input:
         return jsonify({"ok": False, "error": "Missing teams"}), 400
+    team1 = _team_name_for_db(team1_input)
+    team2 = _team_name_for_db(team2_input)
         
     t1_form = _normalize_recent_form_payload(ctx.current_form.get("teams", {}).get(team1, {}))
     t2_form = _normalize_recent_form_payload(ctx.current_form.get("teams", {}).get(team2, {}))
@@ -1040,14 +1470,21 @@ def api_h2h():
 @app.get("/api/upcoming/global")
 def api_upcoming_global():
     """Return upcoming global fixtures and persistent accuracy stats."""
-    rows, stats, league_stats = _load_upcoming_rows(GLOBAL_UPCOMING_FILE)
+    rows, stats, league_stats = _load_upcoming_rows(GLOBAL_UPCOMING_FILE, "global")
     return jsonify({"ok": True, "rows": rows, "stats": stats, "league_stats": league_stats})
 
 
 @app.get("/api/upcoming/mls")
 def api_upcoming_mls():
     """Return upcoming MLS fixtures and persistent accuracy stats."""
-    rows, stats, league_stats = _load_upcoming_rows(MLS_UPCOMING_FILE)
+    rows, stats, league_stats = _load_upcoming_rows(MLS_UPCOMING_FILE, "mls")
+    return jsonify({"ok": True, "rows": rows, "stats": stats, "league_stats": league_stats})
+
+
+@app.get("/api/upcoming/extra")
+def api_upcoming_extra():
+    """Return upcoming extra-league fixtures and persistent accuracy stats."""
+    rows, stats, league_stats = _load_upcoming_rows(EXTRA_UPCOMING_FILE, "extra")
     return jsonify({"ok": True, "rows": rows, "stats": stats, "league_stats": league_stats})
 
 
@@ -1059,6 +1496,9 @@ def api_league_tables():
         data = _load_projected_tables(MLS_PROJECTED_TABLE_FILE)
         bracket = _load_json_payload(MLS_PROJECTED_BRACKET_FILE)
         return jsonify({"ok": True, **data, "bracket": bracket})
+    if mode == "extra":
+        data = _load_projected_tables(EXTRA_PROJECTED_TABLE_FILE)
+        return jsonify({"ok": True, **data})
     else:
         data = _load_projected_tables(GLOBAL_PROJECTED_TABLE_FILE)
     return jsonify({"ok": True, **data})
@@ -1131,7 +1571,7 @@ if __name__ == "__main__":
     if _should_run_startup_tasks(args.debug):
         run_live_results_updater()
         update_accuracy_history_files()
-        if not args.disable_daily_refresh:
+        if not args.disable_daily_refresh and not STATIC_PREDICTIONS:
             start_daily_refresh_scheduler(
                 refresh_hour=args.daily_refresh_hour,
                 refresh_minute=args.daily_refresh_minute,

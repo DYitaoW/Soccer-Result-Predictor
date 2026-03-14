@@ -1,9 +1,9 @@
 {
-  "updated_at_utc": "2026-03-06T23:49:44+00:00",
+  "updated_at_utc": "2026-03-14T03:08:29+00:00",
   "overall": {
-    "correct_total": 37,
-    "total_predictions": 72,
-    "accuracy_pct": 51.4
+    "correct_total": 39,
+    "total_predictions": 76,
+    "accuracy_pct": 51.3
   },
   "by_league": {
     "Italy/Serie A": {
@@ -42,9 +42,9 @@
       "accuracy_pct": 57.1
     },
     "United States/MLS": {
-      "correct_total": 5,
-      "total_predictions": 8,
-      "accuracy_pct": 62.5
+      "correct_total": 7,
+      "total_predictions": 12,
+      "accuracy_pct": 58.3
     }
   },
   "counted_prediction_keys": {
@@ -479,6 +479,30 @@
       "predicted_result": "H",
       "actual_result": "H",
       "is_correct": 1
+    },
+    "2026-03-07|United States/MLS|philadelphiaunion|sanjoseearthquakes": {
+      "competition": "United States/MLS",
+      "predicted_result": "H",
+      "actual_result": "A",
+      "is_correct": 0
+    },
+    "2026-03-07|United States/MLS|portlandtimbers|vancouverwhitecaps": {
+      "competition": "United States/MLS",
+      "predicted_result": "A",
+      "actual_result": "A",
+      "is_correct": 1
+    },
+    "2026-03-07|United States/MLS|sandiego|sportingkansas": {
+      "competition": "United States/MLS",
+      "predicted_result": "A",
+      "actual_result": "A",
+      "is_correct": 1
+    },
+    "2026-03-08|United States/MLS|cincinnati|toronto": {
+      "competition": "United States/MLS",
+      "predicted_result": "H",
+      "actual_result": "A",
+      "is_correct": 0
     }
   }
 }

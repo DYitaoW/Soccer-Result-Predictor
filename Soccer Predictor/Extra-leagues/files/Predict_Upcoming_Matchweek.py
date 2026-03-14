@@ -1,0 +1,389 @@
+import argparse
+import os
+import sys
+from datetime import datetime, timedelta
+
+import joblib
+import pandas as pd
+
+import Predict_Match as pm
+
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+RAW_DATA_DIR = os.path.join(BASE_DIR, "Data", "Raw_Data")
+PREDICTIONS_DIR = os.path.join(BASE_DIR, "Data", "Predictions")
+PREDICTIONS_FILE = os.path.join(PREDICTIONS_DIR, "upcoming_matchweek_predictions.csv")
+
+RESULT_COLUMNS = [
+    "prediction_key",
+    "created_at_utc",
+    "match_date",
+    "competition",
+    "home_team",
+    "away_team",
+    "predicted_result",
+    "prob_home",
+    "prob_draw",
+    "prob_away",
+    "pred_home_goals",
+    "pred_away_goals",
+    "pred_home_shots",
+    "pred_away_shots",
+    "pred_home_sot",
+    "pred_away_sot",
+    "actual_home_goals",
+    "actual_away_goals",
+    "actual_result",
+    "is_correct",
+    "settled_at_utc",
+]
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="Predict upcoming fixtures for extra leagues based on raw CSV schedules."
+    )
+    parser.add_argument(
+        "--window-days",
+        type=int,
+        default=3,
+        help="Days after each league's next fixture date to include in that matchweek window.",
+    )
+    return parser.parse_args()
+
+
+def _normalize_team_key(name):
+    if not name:
+        return ""
+    text = str(name).strip().lower()
+    text = text.replace("&", "and")
+    return "".join(ch for ch in text if ch.isalnum())
+
+
+def make_prediction_key(match_date, competition, home_team, away_team):
+    date_key = match_date.strftime("%Y-%m-%d")
+    home_key = _normalize_team_key(home_team)
+    away_key = _normalize_team_key(away_team)
+    team_pair = sorted([home_key, away_key])
+    return f"{date_key}|{competition}|{team_pair[0]}|{team_pair[1]}"
+
+
+def parse_date(value):
+    date_value = pd.to_datetime(value, dayfirst=True, format="mixed", errors="coerce")
+    if pd.isna(date_value):
+        return None
+    return date_value.normalize()
+
+
+def latest_raw_file_per_competition(raw_root):
+    latest = {}
+    for root, _, files in os.walk(raw_root):
+        for name in files:
+            if not name.endswith(".csv"):
+                continue
+            start_year = pm.parse_season_start_year(name)
+            if start_year is None:
+                continue
+            full_path = os.path.join(root, name)
+            rel_path = os.path.relpath(full_path, raw_root)
+            competition = os.path.dirname(rel_path).replace("\\", "/") or "Unknown"
+            current = latest.get(competition)
+            if current is None or start_year > current[0]:
+                latest[competition] = (start_year, full_path)
+    return {comp: path for comp, (_, path) in latest.items()}
+
+
+def build_context():
+    matches, season_files = pm.load_training_matches(pm.PROCESSED_DIR)
+    if not os.path.exists(pm.MODEL_CACHE):
+        raise FileNotFoundError(
+            f"Missing model cache: {pm.MODEL_CACHE}. Run Predict_Match.py first."
+        )
+
+    try:
+        # Ensure custom wrapper class is resolvable when cache was pickled from __main__.
+        setattr(sys.modules.get("__main__"), "AveragedProbaClassifier", pm.AveragedProbaClassifier)
+    except Exception:
+        pass
+
+    try:
+        bundle = joblib.load(pm.MODEL_CACHE)
+    except Exception:
+        # Rebuild once if the cache was created under a different module name.
+        if hasattr(pm, "rebuild_model_cache_once"):
+            pm.rebuild_model_cache_once()
+        else:
+            import subprocess
+
+            subprocess.run(
+                [sys.executable, os.path.join(os.path.dirname(__file__), "Predict_Match.py")],
+                cwd=BASE_DIR,
+                text=True,
+                input="n\nq\n",
+                check=False,
+            )
+        bundle = joblib.load(pm.MODEL_CACHE)
+    if bundle.get("fingerprint") != pm.data_fingerprint(season_files):
+        raise RuntimeError("Model cache is stale. Rebuild by running Predict_Match.py.")
+
+    overall_teams = pm.load_json_if_exists(os.path.join(pm.TEAM_DATA_DIR, "overall_teams.json"))
+    season_teams = pm.load_json_if_exists(os.path.join(pm.TEAM_DATA_DIR, "season_teams.json"))
+    head_to_head = pm.load_json_if_exists(os.path.join(pm.TEAM_DATA_DIR, "head_to_head.json"))
+    current_form = pm.load_json_if_exists(os.path.join(pm.TEAM_DATA_DIR, "current_form.json"))
+    league_strength = pm.load_json_if_exists(os.path.join(pm.TEAM_DATA_DIR, "league_strength.json")) or {}
+    market_value = pm.load_json_if_exists(
+        os.path.join(pm.TEAM_DATA_DIR, "team_top_market_value_players.json")
+    ) or {}
+    dynamic_form = pm.build_dynamic_form_from_matches(matches)
+
+    if (
+        overall_teams is None
+        or season_teams is None
+        or head_to_head is None
+        or current_form is None
+        or not isinstance(overall_teams, dict)
+        or len(overall_teams) == 0
+    ):
+        overall_teams, season_teams, head_to_head, current_form = pm.build_fallback_data(
+            matches, season_files
+        )
+
+    overall_teams = pm.replace_nan_with_sentinel(overall_teams)
+    season_teams = pm.replace_nan_with_sentinel(season_teams)
+    head_to_head = pm.replace_nan_with_sentinel(head_to_head)
+    current_form = pm.replace_nan_with_sentinel(current_form)
+    league_strength = pm.replace_nan_with_sentinel(league_strength)
+
+    if not isinstance(current_form, dict):
+        current_form = {"teams": {}}
+    current_form.setdefault("teams", {})
+    for team, stats in dynamic_form.items():
+        if team not in current_form["teams"] or not isinstance(current_form["teams"].get(team), dict):
+            current_form["teams"][team] = stats
+            continue
+        existing = current_form["teams"][team]
+        for key, value in stats.items():
+            if key not in existing or existing.get(key) in (None, "", 0, 0.0):
+                existing[key] = value
+
+    team_comp_map = {}
+    for _, row in matches.iterrows():
+        team_comp_map[row["HomeTeam"]] = row["competition"]
+        team_comp_map[row["AwayTeam"]] = row["competition"]
+
+    latest_start_year = max(pm.parse_start_year_from_key(k) for k in season_teams.keys())
+    latest_season = season_files[-1].replace(".csv", "")
+    available = sorted(set(matches["HomeTeam"].dropna()) | set(matches["AwayTeam"].dropna()))
+
+    return {
+        "clf": bundle["clf"],
+        "result_le": bundle["result_label_encoder"],
+        "home_goal_reg": bundle["home_goal_reg"],
+        "away_goal_reg": bundle["away_goal_reg"],
+        "home_shot_reg": bundle["home_shot_reg"],
+        "away_shot_reg": bundle["away_shot_reg"],
+        "home_sot_reg": bundle["home_sot_reg"],
+        "away_sot_reg": bundle["away_sot_reg"],
+        "train_columns": bundle["train_columns"],
+        "overall_teams": overall_teams,
+        "season_teams": season_teams,
+        "head_to_head": head_to_head,
+        "current_form": current_form,
+        "league_strength": league_strength,
+        "market_value": market_value,
+        "team_comp_map": team_comp_map,
+        "latest_start": latest_start_year,
+        "latest_season": latest_season,
+        "available_teams": available,
+    }
+
+
+def latest_season_for_competition(season_teams, competition, fallback):
+    competition = str(competition or "").strip()
+    if not competition:
+        return fallback
+    best_key = None
+    best_year = -1
+    prefix = f"{competition}/"
+    for season_key in season_teams.keys():
+        if not str(season_key).startswith(prefix):
+            continue
+        year = pm.parse_start_year_from_key(season_key)
+        if year > best_year:
+            best_year = year
+            best_key = season_key
+    return best_key or fallback
+
+
+def predict_fixture(ctx, home_raw, away_raw, competition_hint):
+    home_team = pm.resolve_team_name(home_raw, ctx["available_teams"])
+    away_team = pm.resolve_team_name(away_raw, ctx["available_teams"])
+    if not home_team or not away_team or home_team == away_team:
+        return None
+
+    competition_fallback = latest_season_for_competition(
+        ctx["season_teams"], competition_hint, ctx["latest_season"]
+    )
+    prediction_season = pm.choose_season_for_teams(
+        home_team, away_team, ctx["season_teams"], competition_fallback
+    )
+    competition_key = os.path.dirname(prediction_season).replace("\\", "/") or "Unknown"
+    feature_competition = competition_hint or competition_key
+    prediction_start_year = pm.parse_start_year_from_key(prediction_season)
+    season_coeff = pm.season_recency_coefficient(ctx["latest_start"], prediction_start_year)
+    home_comp = ctx["team_comp_map"].get(home_team, feature_competition)
+    away_comp = ctx["team_comp_map"].get(away_team, feature_competition)
+
+    X_match = pm.build_features(
+        pm.build_match_input(home_team, away_team),
+        prediction_season,
+        feature_competition,
+        season_coeff,
+        ctx["overall_teams"],
+        ctx["season_teams"],
+        ctx["head_to_head"],
+        ctx["current_form"],
+        ctx["league_strength"],
+        home_competition_override=home_comp,
+        away_competition_override=away_comp,
+    )
+    X_match = pd.get_dummies(X_match, columns=["competition"], dtype=float)
+    X_match = X_match.reindex(columns=ctx["train_columns"], fill_value=0.0)
+
+    probabilities = {"H": 0.0, "D": 0.0, "A": 0.0}
+    proba_values = ctx["clf"].predict_proba(X_match)[0]
+    for idx, enc in enumerate(ctx["clf"].classes_):
+        label = ctx["result_le"].inverse_transform([enc])[0]
+        probabilities[label] = float(proba_values[idx])
+
+    probabilities = pm.reduce_draw_probability(probabilities)
+    seed = pm.prediction_randomizer_seed(home_team, away_team, feature_competition, prediction_season)
+    max_delta = getattr(pm, "EU_RANDOMIZER_MAX_DELTA", None)
+    if max_delta is None:
+        max_delta = getattr(pm, "MLS_RANDOMIZER_MAX_DELTA", 0.12)
+    probabilities = pm.apply_probability_randomizer(probabilities, max_delta, seed=seed)
+
+    prediction = max(probabilities, key=probabilities.get)
+    home_goals = max(0.0, float(ctx["home_goal_reg"].predict(X_match)[0]))
+    away_goals = max(0.0, float(ctx["away_goal_reg"].predict(X_match)[0]))
+    home_shots = max(0.0, float(ctx["home_shot_reg"].predict(X_match)[0]))
+    away_shots = max(0.0, float(ctx["away_shot_reg"].predict(X_match)[0]))
+    home_sot = max(0.0, float(ctx["home_sot_reg"].predict(X_match)[0]))
+    away_sot = max(0.0, float(ctx["away_sot_reg"].predict(X_match)[0]))
+
+    return {
+        "home_team": home_team,
+        "away_team": away_team,
+        "competition": home_comp if home_comp == away_comp else f"{home_comp} vs {away_comp}",
+        "predicted_result": prediction,
+        "prob_home": round(probabilities["H"], 6),
+        "prob_draw": round(probabilities["D"], 6),
+        "prob_away": round(probabilities["A"], 6),
+        "pred_home_goals": round(home_goals, 3),
+        "pred_away_goals": round(away_goals, 3),
+        "pred_home_shots": round(home_shots, 3),
+        "pred_away_shots": round(away_shots, 3),
+        "pred_home_sot": round(home_sot, 3),
+        "pred_away_sot": round(away_sot, 3),
+    }
+
+
+def upcoming_fixtures_from_raw(raw_path, window_days):
+    try:
+        df = pd.read_csv(raw_path)
+    except Exception:
+        return pd.DataFrame()
+    required = {"Date", "Home", "Away", "HG", "AG", "Res"}
+    if not required.issubset(df.columns):
+        return pd.DataFrame()
+
+    work = df.copy()
+    work["DateParsed"] = work["Date"].apply(parse_date)
+    work = work[work["Home"].notna() & work["Away"].notna()]
+    work = work[work["DateParsed"].notna()]
+    if work.empty:
+        return work
+
+    def is_played(row):
+        res = str(row.get("Res", "")).strip().upper()
+        hg = row.get("HG")
+        ag = row.get("AG")
+        return res in {"H", "D", "A"} and pd.notna(hg) and pd.notna(ag)
+
+    work = work[~work.apply(is_played, axis=1)].copy()
+    if work.empty:
+        return work
+
+    today = pd.Timestamp(datetime.utcnow().date())
+    future = work[work["DateParsed"] >= today]
+    if future.empty:
+        future = work.copy()
+
+    next_date = future["DateParsed"].min()
+    if pd.isna(next_date):
+        return pd.DataFrame()
+
+    window_end = next_date + pd.Timedelta(days=int(window_days))
+    return future[(future["DateParsed"] >= next_date) & (future["DateParsed"] <= window_end)].copy()
+
+
+def main():
+    args = parse_args()
+    latest = latest_raw_file_per_competition(RAW_DATA_DIR)
+    if not latest:
+        raise ValueError(f"No raw season files found in {RAW_DATA_DIR}")
+
+    ctx = build_context()
+    created_at = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+    rows = []
+    for competition, path in sorted(latest.items()):
+        fixtures = upcoming_fixtures_from_raw(path, args.window_days)
+        if fixtures.empty:
+            continue
+        for _, row in fixtures.iterrows():
+            match_date = row["DateParsed"].date()
+            home = str(row.get("Home", "")).strip()
+            away = str(row.get("Away", "")).strip()
+            if not home or not away:
+                continue
+            pred = predict_fixture(ctx, home, away, competition)
+            if pred is None:
+                continue
+            rows.append(
+                {
+                    "prediction_key": make_prediction_key(match_date, competition, pred["home_team"], pred["away_team"]),
+                    "created_at_utc": created_at,
+                    "match_date": match_date.strftime("%Y-%m-%d"),
+                    "competition": competition,
+                    "home_team": pred["home_team"],
+                    "away_team": pred["away_team"],
+                    "predicted_result": pred["predicted_result"],
+                    "prob_home": pred["prob_home"],
+                    "prob_draw": pred["prob_draw"],
+                    "prob_away": pred["prob_away"],
+                    "pred_home_goals": pred["pred_home_goals"],
+                    "pred_away_goals": pred["pred_away_goals"],
+                    "pred_home_shots": pred["pred_home_shots"],
+                    "pred_away_shots": pred["pred_away_shots"],
+                    "pred_home_sot": pred["pred_home_sot"],
+                    "pred_away_sot": pred["pred_away_sot"],
+                    "actual_home_goals": "",
+                    "actual_away_goals": "",
+                    "actual_result": "",
+                    "is_correct": "",
+                    "settled_at_utc": "",
+                }
+            )
+
+    out = pd.DataFrame(rows, columns=RESULT_COLUMNS).astype("object")
+    if not out.empty:
+        out = out.sort_values(["match_date", "competition", "home_team", "away_team"])
+
+    os.makedirs(PREDICTIONS_DIR, exist_ok=True)
+    out.to_csv(PREDICTIONS_FILE, index=False)
+    print(f"Saved upcoming extra-league predictions: {PREDICTIONS_FILE}")
+    print(f"Rows: {len(out)}")
+
+
+if __name__ == "__main__":
+    main()
