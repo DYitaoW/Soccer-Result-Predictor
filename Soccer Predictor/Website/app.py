@@ -55,6 +55,7 @@ MLS_PROJECTED_BRACKET_FILE = os.path.join(PROJECT_DIR, "MLS", "Data", "Predictio
 LIVE_RESULTS_UPDATER = os.path.join(FILES_DIR, "Update_Live_Prediction_Results.py")
 RUN_ALL_PIPELINE = os.path.join(PROJECT_DIR, "Run_All_Pipeline.py")
 TEAM_NAME_DISPLAY_MAPPING_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "team_name_mapping_master.json")
+TOP_SCORERS_FILE = os.path.join(PROJECT_DIR, "Data", "Team_Data", "current_season_top_scorers.json")
 USE_DISPLAY_NAME_MAPPING = False
 MLS_COMPETITION = "United States/MLS"
 STATIC_PREDICTIONS = os.environ.get("STATIC_PREDICTIONS", "1").strip().lower() in {"1", "true", "yes"}
@@ -336,16 +337,41 @@ def _load_teams_from_team_data(pm_mod):
 
 
 def _load_h2h_and_form(pm_mod):
-    head_to_head = pm_mod.load_json_if_exists(os.path.join(pm_mod.TEAM_DATA_DIR, "head_to_head.json")) or {}
-    current_form = pm_mod.load_json_if_exists(os.path.join(pm_mod.TEAM_DATA_DIR, "current_form.json")) or {}
+    head_to_head = pm_mod.load_json_if_exists(os.path.join(pm_mod.TEAM_DATA_DIR, "head_to_head.json"))
+    current_form = pm_mod.load_json_if_exists(os.path.join(pm_mod.TEAM_DATA_DIR, "current_form.json"))
+    matches, season_files = pm_mod.load_training_matches(pm_mod.PROCESSED_DIR)
+    dynamic_form = pm_mod.build_dynamic_form_from_matches(matches)
+
+    if (
+        head_to_head is None
+        or current_form is None
+        or not isinstance(head_to_head, dict)
+        or not isinstance(current_form, dict)
+    ):
+        _, _, head_to_head, current_form = pm_mod.build_fallback_data(matches, season_files)
+
     try:
+        head_to_head = pm_mod.replace_nan_with_sentinel(head_to_head)
         current_form = pm_mod.replace_nan_with_sentinel(current_form)
     except Exception:
         pass
+
     if not isinstance(current_form, dict):
         current_form = {"teams": {}}
-    current_form.setdefault("teams", {})
-    return head_to_head, current_form
+    if "teams" not in current_form or not isinstance(current_form["teams"], dict):
+        current_form["teams"] = {}
+
+    current_form_teams = current_form["teams"]
+    for team, stats in dynamic_form.items():
+        if team not in current_form_teams or not isinstance(current_form_teams.get(team), dict):
+            current_form_teams[team] = stats
+            continue
+        existing = current_form_teams[team]
+        for key, value in stats.items():
+            if key not in existing or existing.get(key) in (None, "", 0, 0.0):
+                existing[key] = value
+
+    return head_to_head or {}, current_form
 
 def _load_context(pm_mod):
     """Load cached model bundle and supporting team data for one predictor mode."""
@@ -957,9 +983,15 @@ def _load_projected_tables(csv_path):
                 "GA",
                 "GD",
                 "Pts",
+                "PlayedReal",
+                "PlayedPred",
                 "win_league_pct",
                 "top4_pct",
                 "bottom3_pct",
+                "most_likely_position",
+                "most_likely_position_pct",
+                "position_odds_json",
+                "sim_runs",
                 "remaining_games",
             }
             frame = pd.read_csv(
@@ -1537,6 +1569,35 @@ def api_feedback():
 def tactics():
     """Render the tactics whiteboard page."""
     return render_template("tactics.html")
+
+
+@app.get("/players")
+def players():
+    """Render the players/top scorers page."""
+    return render_template("players.html")
+
+
+@app.get("/api/scorers")
+def api_scorers():
+    """Return current season top scorers by competition."""
+    if not os.path.exists(TOP_SCORERS_FILE):
+        return jsonify({"ok": False, "error": "Scorers data not available", "competitions": {}}), 404
+    
+    try:
+        with open(TOP_SCORERS_FILE, "r", encoding="utf-8") as fh:
+            data = json.load(fh)
+    except Exception as exc:
+        return jsonify({"ok": False, "error": f"Could not load scorers: {exc}", "competitions": {}}), 500
+    
+    competitions = data.get("competitions", {})
+    last_updated = data.get("last_updated_utc", "Unknown")
+    
+    return jsonify({
+        "ok": True,
+        "last_updated_utc": last_updated,
+        "competitions": competitions,
+        "available_leagues": sorted(competitions.keys()),
+    })
 
 
 @app.get("/graphics/<path:filename>")

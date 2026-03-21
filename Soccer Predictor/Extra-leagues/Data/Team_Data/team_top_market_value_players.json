@@ -1,7 +1,7 @@
 {
     "season": "Argentina\\Primera Division\\argstat2026",
     "source_file": "Argentina\\Primera Division\\argstat2026.csv",
-    "generated_at_utc": "2026-03-14T02:36:24",
+    "generated_at_utc": "2026-03-20T17:05:20",
     "teams": {
         "Aldosivi": {
             "status": "fetch_failed",

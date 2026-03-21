@@ -32,7 +32,7 @@
         <button id="tab-market" class="tab-btn" type="button">Market & Odds (Coming Soon)</button>
         <button id="tab-league-table" class="tab-btn" type="button">Projected League Tables</button>
         <button id="tab-position-odds" class="tab-btn" type="button">Position Odds</button>
-        <button id="tab-players" class="tab-btn" type="button">Players (Coming Soon)</button>
+        <button id="tab-players" class="tab-btn" type="button">Players</button>
         <button id="tab-tactics" class="tab-btn" type="button">Tactics Board</button>
         <button id="tab-about" class="tab-btn" type="button">About</button>
       </div>
@@ -781,6 +781,7 @@
     }
 
     function asWholePct(value) {
+      if (value === null || value === undefined || value === "") return "—";
       const n = Number(value);
       if (!Number.isFinite(n) || n <= 0) return "0%";
       if (n < 1) return "<1%";
@@ -863,10 +864,11 @@
       `;
       for (const row of sortedRows) {
         const mostLikelyPos = Number(row.most_likely_position);
+        const odds = row.position_odds;
+        const hasOdds = odds && Object.keys(odds).length > 0;
         let cells = "";
         for (let pos = 1; pos <= totalPositions; pos += 1) {
-          const odds = row.position_odds || {};
-          const raw = odds[pos] !== undefined ? odds[pos] : odds[String(pos)];
+          const raw = hasOdds ? (odds[pos] !== undefined ? odds[pos] : odds[String(pos)]) : null;
           const highlightClass = pos === mostLikelyPos ? "position-odds-best" : "";
           cells += `<td class="${highlightClass}">${asWholePct(raw)}</td>`;
         }
@@ -1624,7 +1626,9 @@
         renderPositionOddsView();
       }
     });
-    tabPlayers.addEventListener("click", () => activateTab("players"));
+    tabPlayers.addEventListener("click", () => {
+      window.location.href = "/players";
+    });
     tabTactics.addEventListener("click", () => {
       window.location.href = "/tactics";
     });
