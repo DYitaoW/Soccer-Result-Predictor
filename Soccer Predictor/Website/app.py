@@ -63,6 +63,7 @@ STATIC_PREDICTIONS_CACHE = os.environ.get("STATIC_PREDICTIONS_CACHE", "0").strip
 STATIC_PREDICTIONS_GLOBAL_FILE = os.environ.get("STATIC_PREDICTIONS_GLOBAL_FILE", GLOBAL_UPCOMING_FILE)
 STATIC_PREDICTIONS_MLS_FILE = os.environ.get("STATIC_PREDICTIONS_MLS_FILE", MLS_UPCOMING_FILE)
 STATIC_PREDICTIONS_EXTRA_FILE = os.environ.get("STATIC_PREDICTIONS_EXTRA_FILE", EXTRA_UPCOMING_FILE)
+REFRESH_API_TOKEN = os.environ.get("REFRESH_API_TOKEN", "").strip()
 if FILES_DIR not in sys.path:
     sys.path.insert(0, FILES_DIR)
 if MLS_FILES_DIR not in sys.path:
@@ -132,6 +133,18 @@ def _client_ip():
         if first_ip:
             return first_ip
     return request.remote_addr or "unknown"
+
+
+def _refresh_auth_ok():
+    """Return True if refresh endpoint is authorized."""
+    if not REFRESH_API_TOKEN:
+        return True
+    token = request.headers.get("X-Refresh-Token", "").strip()
+    if not token:
+        auth_header = request.headers.get("Authorization", "").strip()
+        if auth_header.lower().startswith("bearer "):
+            token = auth_header[7:].strip()
+    return token == REFRESH_API_TOKEN
 
 
 @app.before_request
@@ -1150,7 +1163,7 @@ def run_live_results_updater():
 
 def _run_full_pipeline_once():
     """Run full data/model refresh pipeline and reload in-memory predictor contexts."""
-    global _ctx_global, _ctx_mls
+    global _ctx_global, _ctx_mls, _ctx_extra
     if not os.path.exists(RUN_ALL_PIPELINE):
         print(f"[refresh] Pipeline runner not found: {RUN_ALL_PIPELINE}")
         return False
@@ -1178,14 +1191,18 @@ def _run_full_pipeline_once():
         _ctx_global = None
         _ctx_mls = None
         _ctx_extra = None
-    try:
-        # Warm both contexts so API requests do not pay first-load penalty.
-        get_context("global")
-        get_context("mls")
-        get_context("extra")
-        print("[refresh] Model contexts reloaded successfully.")
-    except Exception as exc:
-        print(f"[refresh] Context reload warning: {exc}")
+    _static_predictions_cache.clear()
+    _static_team_cache.clear()
+    update_accuracy_history_files()
+    if not STATIC_PREDICTIONS:
+        try:
+            # Warm both contexts so API requests do not pay first-load penalty.
+            get_context("global")
+            get_context("mls")
+            get_context("extra")
+            print("[refresh] Model contexts reloaded successfully.")
+        except Exception as exc:
+            print(f"[refresh] Context reload warning: {exc}")
     return True
 
 
@@ -1217,7 +1234,7 @@ def _daily_refresh_loop(refresh_hour, refresh_minute, tz_name):
             print("[refresh] Scheduled daily refresh complete.")
 
 
-def start_daily_refresh_scheduler(refresh_hour=4, refresh_minute=0, tz_name="America/New_York"):
+def start_daily_refresh_scheduler(refresh_hour=3, refresh_minute=0, tz_name="America/New_York"):
     """Start background scheduler thread for once-daily model refresh."""
     thread = threading.Thread(
         target=_daily_refresh_loop,
@@ -1387,6 +1404,20 @@ def api_teams():
     return jsonify({"teams": display_teams})
 
 
+@app.post("/api/refresh")
+def api_refresh():
+    """Trigger a full pipeline refresh in the background."""
+    if not _refresh_auth_ok():
+        return jsonify({"ok": False, "error": "Unauthorized"}), 401
+
+    def _run():
+        print("[refresh] Manual refresh requested via API.")
+        _run_full_pipeline_once()
+
+    threading.Thread(target=_run, daemon=True, name="manual-refresh").start()
+    return jsonify({"ok": True, "message": "Refresh started."})
+
+
 @app.post("/api/predict")
 def api_predict():
     """Predict a single European/global matchup from user input."""
@@ -1554,7 +1585,7 @@ if __name__ == "__main__":
     parser.add_argument("--port", type=int, default=5000, help="Port to bind to")
     parser.add_argument("--debug", action="store_true", help="Enable Flask debug mode")
     parser.add_argument("--disable-daily-refresh", action="store_true", help="Disable once-daily model refresh")
-    parser.add_argument("--daily-refresh-hour", type=int, default=4, help="Hour (0-23) for daily model refresh")
+    parser.add_argument("--daily-refresh-hour", type=int, default=3, help="Hour (0-23) for daily model refresh")
     parser.add_argument("--daily-refresh-minute", type=int, default=0, help="Minute (0-59) for daily model refresh")
     parser.add_argument(
         "--daily-refresh-tz",
@@ -1571,7 +1602,7 @@ if __name__ == "__main__":
     if _should_run_startup_tasks(args.debug):
         run_live_results_updater()
         update_accuracy_history_files()
-        if not args.disable_daily_refresh and not STATIC_PREDICTIONS:
+        if not args.disable_daily_refresh:
             start_daily_refresh_scheduler(
                 refresh_hour=args.daily_refresh_hour,
                 refresh_minute=args.daily_refresh_minute,
