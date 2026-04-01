@@ -21,6 +21,8 @@ PREDICTIONS_FILE = os.path.join(PREDICTIONS_DIR, "upcoming_matchweek_predictions
 TEAM_MAPPING_FILE = os.path.join(PREDICTIONS_DIR, "team_name_mapping_master.json")
 LEGACY_GLOBAL_MAPPING_FILE = os.path.join(PREDICTIONS_DIR, "upcoming_fixture_team_mapping.json")
 LEGACY_MLS_MAPPING_FILE = os.path.join(BASE_DIR, "MLS", "Data", "Predictions", "upcoming_fixture_team_mapping.json")
+TEAM_DATA_DIR = os.path.join(BASE_DIR, "Data", "Team_Data")
+SCORERS_FILE = os.path.join(TEAM_DATA_DIR, "current_season_top_scorers.json")
 FOOTBALL_DATA_API_BASE = "https://api.football-data.org/v4"
 
 # football-data.org competition codes mapped to your project competition naming.
@@ -709,8 +711,152 @@ def load_prediction_store(path):
     return frame.astype("object")
 
 
-def load_results_index(raw_dir):
+def load_finished_matches_from_api(api_token):
+    """Fetch finished matches from football-data.org API for all configured competitions."""
     results = {}
+    headers = {"X-Auth-Token": api_token}
+
+    for competition_code, competition_name in API_COMPETITIONS.items():
+        url = f"{FOOTBALL_DATA_API_BASE}/competitions/{competition_code}/matches?status=FINISHED"
+        try:
+            data = fetch_json(url, headers=headers, timeout=45)
+        except urllib.error.HTTPError as error:
+            if error.code == 401:
+                print("Warning: API token invalid or missing permission. Falling back to CSV results.")
+                return results
+            if error.code in {403, 404, 429}:
+                continue
+            continue
+        except Exception as exc:
+            print(f"Warning: Could not fetch finished matches for {competition_name}: {exc}")
+            continue
+
+        matches = data.get("matches", [])
+        if not isinstance(matches, list) or not matches:
+            continue
+
+        for match in matches:
+            home_team = ((match.get("homeTeam") or {}).get("name") or "").strip()
+            away_team = ((match.get("awayTeam") or {}).get("name") or "").strip()
+            utc_date = match.get("utcDate")
+            
+            # Check if match has finished (both score and status indicate completion).
+            status = str(match.get("status", "")).strip()
+            score = match.get("score") or {}
+            full_time = score.get("fullTime") or {}
+            home_goals = full_time.get("home")
+            away_goals = full_time.get("away")
+            
+            if not home_team or not away_team or not utc_date:
+                continue
+            if home_goals is None or away_goals is None:
+                continue
+            if status not in {"FINISHED", "FULL_TIME"}:
+                continue
+
+            parsed = pd.to_datetime(utc_date, utc=True, errors="coerce")
+            if pd.isna(parsed):
+                continue
+
+            match_date = parsed.tz_convert("UTC").tz_localize(None).normalize()
+            
+            # Determine result: H (home win), D (draw), A (away win).
+            if home_goals > away_goals:
+                result = "H"
+            elif away_goals > home_goals:
+                result = "A"
+            else:
+                result = "D"
+            
+            key = make_prediction_key(match_date, competition_name, home_team, away_team)
+            results[key] = {
+                "actual_home_goals": int(home_goals),
+                "actual_away_goals": int(away_goals),
+                "actual_result": result,
+            }
+
+    return results
+
+
+def load_top_scorers_from_api(api_token):
+    """Fetch current season top scorers from football-data.org API for all configured competitions."""
+    scorers_by_competition = {}
+    headers = {"X-Auth-Token": api_token}
+
+    for competition_code, competition_name in API_COMPETITIONS.items():
+        url = f"{FOOTBALL_DATA_API_BASE}/competitions/{competition_code}/scorers"
+        try:
+            data = fetch_json(url, headers=headers, timeout=45)
+        except urllib.error.HTTPError as error:
+            if error.code in {401, 403, 404, 429}:
+                continue
+            continue
+        except Exception as exc:
+            print(f"Warning: Could not fetch scorers for {competition_name}: {exc}")
+            continue
+
+        scorers_list = data.get("scorers", [])
+        if not isinstance(scorers_list, list) or not scorers_list:
+            continue
+
+        competition_scorers = []
+        for scorer in scorers_list:
+            player = scorer.get("player") or {}
+            team = scorer.get("team") or {}
+            goals = scorer.get("goals")
+            assists = scorer.get("assists")
+            
+            player_name = str(player.get("name", "")).strip()
+            team_name = str(team.get("name", "")).strip()
+            
+            if not player_name or goals is None:
+                continue
+            
+            competition_scorers.append({
+                "rank": len(competition_scorers) + 1,
+                "player_name": player_name,
+                "team_name": team_name,
+                "goals": int(goals),
+                "assists": int(assists) if assists is not None else 0,
+                "player_id": player.get("id"),
+                "team_id": team.get("id"),
+            })
+
+        if competition_scorers:
+            scorers_by_competition[competition_name] = competition_scorers
+
+    return scorers_by_competition
+
+
+def save_top_scorers(scorers_by_competition):
+    """Save fetched scorers data to JSON file."""
+    os.makedirs(TEAM_DATA_DIR, exist_ok=True)
+    
+    output = {
+        "last_updated_utc": datetime.now(UTC).replace(microsecond=0).isoformat(),
+        "competitions": scorers_by_competition,
+    }
+    
+    with open(SCORERS_FILE, "w", encoding="utf-8") as fh:
+        json.dump(output, fh, indent=2, ensure_ascii=False)
+    
+    return len(scorers_by_competition)
+
+
+def load_results_index(raw_dir, api_token=None):
+    """Load match results from API first (if token provided), then fall back to CSV files."""
+    results = {}
+    
+    # Try to fetch from API first if token is provided.
+    if api_token:
+        print("Fetching finished matches from football-data.org API...")
+        api_results = load_finished_matches_from_api(api_token)
+        results.update(api_results)
+        if api_results:
+            print(f"  Loaded {len(api_results)} finished matches from API")
+    
+    # Fall back to CSV files for any missing results or if no API token.
+    csv_count = 0
     for root, _, files in os.walk(raw_dir):
         for name in files:
             if not name.endswith(".csv"):
@@ -744,11 +890,18 @@ def load_results_index(raw_dir):
             for idx, row in frame.iterrows():
                 match_date = date_parsed.loc[idx]
                 key = make_prediction_key(match_date, competition, row["HomeTeam"], row["AwayTeam"])
-                results[key] = {
-                    "actual_home_goals": int(row["FTHG"]),
-                    "actual_away_goals": int(row["FTAG"]),
-                    "actual_result": str(row["FTR"]).strip(),
-                }
+                # Only add from CSV if not already fetched from API.
+                if key not in results:
+                    results[key] = {
+                        "actual_home_goals": int(row["FTHG"]),
+                        "actual_away_goals": int(row["FTAG"]),
+                        "actual_result": str(row["FTR"]).strip(),
+                    }
+                    csv_count += 1
+    
+    if csv_count > 0:
+        print(f"  Loaded {csv_count} additional finished matches from CSV files")
+    
     return results
 
 
@@ -1091,7 +1244,7 @@ def main():
             combined.loc[row["prediction_key"]] = row
         combined = combined.reset_index(drop=True)
 
-    results_index = load_results_index(RAW_DATA_DIR)
+    results_index = load_results_index(RAW_DATA_DIR, api_token=args.api_token)
     combined, settled_count = settle_predictions(combined, results_index)
     combined, removed_completed = drop_completed_predictions(combined, results_index)
     combined = dedupe_predictions(combined)
@@ -1101,7 +1254,18 @@ def main():
     os.makedirs(PREDICTIONS_DIR, exist_ok=True)
     combined.to_csv(PREDICTIONS_FILE, index=False)
 
-    print(f"Upcoming fixtures found: {len(fixtures)}")
+    # Fetch and save current season top scorers if API token is available
+    scorers_saved = 0
+    if args.api_token:
+        try:
+            print("\nFetching current season top scorers from API...")
+            scorers_by_comp = load_top_scorers_from_api(args.api_token)
+            scorers_saved = save_top_scorers(scorers_by_comp)
+            print(f"  Saved top scorers for {scorers_saved} competitions")
+        except Exception as exc:
+            print(f"  Warning: Could not fetch/save scorers: {exc}")
+
+    print(f"\nUpcoming fixtures found: {len(fixtures)}")
     print(f"Team mappings file: {TEAM_MAPPING_FILE}")
     print(f"Canonical raw-data names added: {canonical_added}")
     print(f"API names added from current fixtures: {added_api_names}")

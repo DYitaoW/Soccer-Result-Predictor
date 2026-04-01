@@ -4,6 +4,7 @@ import json
 import re
 import urllib.parse
 import urllib.request
+import time
 from collections import defaultdict
 from datetime import datetime
 from io import StringIO
@@ -40,8 +41,12 @@ TEAM_NAME_ALIASES = {
 }
 TRANSFERMARKT_SEARCH_URL = "https://www.transfermarkt.com/schnellsuche/ergebnis/schnellsuche?query={query}"
 TRANSFERMARKT_HEADERS = {
-    "User-Agent": "Mozilla/5.0",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
     "Accept-Language": "en-US,en;q=0.9",
+    "Connection": "keep-alive",
+    "Referer": "https://www.transfermarkt.com/",
 }
 TOP_MARKET_VALUE_FILE = "team_top_market_value_players.json"
 MLS_TRANSFERMARKT_QUERY_ALIASES = {
@@ -54,7 +59,9 @@ MLS_TRANSFERMARKT_QUERY_ALIASES = {
     "NY Red Bulls": "New York Red Bulls",
     "NYCFC": "New York City FC",
     "St. Louis City": "St. Louis City SC",
+    "St Louis City": "St. Louis City SC",
     "DC United": "D.C. United",
+    "D.C. United": "D.C. United",
 }
 PLAYER_POSITION_SUFFIXES = [
     "Goalkeeper",
@@ -72,6 +79,18 @@ PLAYER_POSITION_SUFFIXES = [
     "Centre-Forward",
     "Striker",
 ]
+
+def fetch_html(url, retries=2, pause_seconds=1.5):
+    for attempt in range(retries):
+        try:
+            request = urllib.request.Request(url, headers=TRANSFERMARKT_HEADERS)
+            with urllib.request.urlopen(request, timeout=30) as response:
+                return response.read().decode("utf-8", errors="ignore")
+        except Exception:
+            if attempt + 1 < retries:
+                time.sleep(pause_seconds)
+                continue
+            return ""
 
 
 def read_csv_fast(path):
@@ -479,18 +498,18 @@ def _find_player_market_columns(table):
     market_col = None
     for col in table.columns:
         norm = _normalize_column_name(col)
-        if player_col is None and "player" in norm:
+        if player_col is None and ("player" in norm or norm == "name"):
             player_col = col
-        if market_col is None and "market" in norm and "value" in norm:
+        if market_col is None and (("market" in norm and "value" in norm) or norm in {"mv", "m.v.", "marketvalue"}):
             market_col = col
     return player_col, market_col
 
 
 def fetch_injured_player_keys(club_url, club_id):
     injury_url = club_url.replace("/startseite/verein/", "/sperrenundverletzungen/verein/")
-    request = urllib.request.Request(injury_url, headers=TRANSFERMARKT_HEADERS)
-    with urllib.request.urlopen(request, timeout=30) as response:
-        html = response.read().decode("utf-8", errors="ignore")
+    html = fetch_html(injury_url)
+    if not html:
+        return set()
 
     tables = pd.read_html(StringIO(html))
     injured = set()
@@ -510,9 +529,9 @@ def find_transfermarkt_club_link(team_name):
     query = MLS_TRANSFERMARKT_QUERY_ALIASES.get(team_name, team_name)
     encoded = urllib.parse.quote(query)
     url = TRANSFERMARKT_SEARCH_URL.format(query=encoded)
-    request = urllib.request.Request(url, headers=TRANSFERMARKT_HEADERS)
-    with urllib.request.urlopen(request, timeout=30) as response:
-        html = response.read().decode("utf-8", errors="ignore")
+    html = fetch_html(url)
+    if not html:
+        return None, None
 
     match = re.search(r'href="(/[^"#]+/startseite/verein/(\d+))"', html)
     if not match:
@@ -531,9 +550,9 @@ def fetch_top_market_value_players(club_url, club_id, season_id, injured_player_
 
     player_table = None
     for candidate in candidate_urls:
-        request = urllib.request.Request(candidate, headers=TRANSFERMARKT_HEADERS)
-        with urllib.request.urlopen(request, timeout=30) as response:
-            html = response.read().decode("utf-8", errors="ignore")
+        html = fetch_html(candidate)
+        if not html:
+            continue
 
         tables = pd.read_html(StringIO(html))
         for table in tables:
