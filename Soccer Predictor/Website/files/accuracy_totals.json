@@ -1,9 +1,9 @@
 {
-  "updated_at_utc": "2026-03-20T20:54:47+00:00",
+  "updated_at_utc": "2026-05-12T20:31:56+00:00",
   "overall": {
-    "correct_total": 61,
-    "total_predictions": 123,
-    "accuracy_pct": 49.6
+    "correct_total": 66,
+    "total_predictions": 135,
+    "accuracy_pct": 48.9
   },
   "by_league": {
     "Italy/Serie A": {
@@ -42,9 +42,9 @@
       "accuracy_pct": 46.2
     },
     "United States/MLS": {
-      "correct_total": 8,
-      "total_predictions": 16,
-      "accuracy_pct": 50.0
+      "correct_total": 13,
+      "total_predictions": 28,
+      "accuracy_pct": 46.4
     }
   },
   "counted_prediction_keys": {
@@ -785,6 +785,78 @@
       "predicted_result": "A",
       "actual_result": "A",
       "is_correct": 1
+    },
+    "2026-03-21|United States/MLS|austin|losangeles": {
+      "competition": "United States/MLS",
+      "predicted_result": "H",
+      "actual_result": "D",
+      "is_correct": 0
+    },
+    "2026-03-21|United States/MLS|dallas|houstondynamo": {
+      "competition": "United States/MLS",
+      "predicted_result": "H",
+      "actual_result": "H",
+      "is_correct": 1
+    },
+    "2026-03-21|United States/MLS|nashville|orlando": {
+      "competition": "United States/MLS",
+      "predicted_result": "H",
+      "actual_result": "H",
+      "is_correct": 1
+    },
+    "2026-03-21|United States/MLS|chicagofire|philadelphiaunion": {
+      "competition": "United States/MLS",
+      "predicted_result": "H",
+      "actual_result": "A",
+      "is_correct": 0
+    },
+    "2026-03-21|United States/MLS|coloradorapids|sportingkansas": {
+      "competition": "United States/MLS",
+      "predicted_result": "H",
+      "actual_result": "A",
+      "is_correct": 0
+    },
+    "2026-03-21|United States/MLS|newenglandrevolution|stlouis": {
+      "competition": "United States/MLS",
+      "predicted_result": "D",
+      "actual_result": "H",
+      "is_correct": 0
+    },
+    "2026-03-21|United States/MLS|columbuscrew|toronto": {
+      "competition": "United States/MLS",
+      "predicted_result": "D",
+      "actual_result": "H",
+      "is_correct": 0
+    },
+    "2026-03-21|United States/MLS|sanjoseearthquakes|vancouverwhitecaps": {
+      "competition": "United States/MLS",
+      "predicted_result": "H",
+      "actual_result": "A",
+      "is_correct": 0
+    },
+    "2026-03-22|United States/MLS|cincinnati|montreal": {
+      "competition": "United States/MLS",
+      "predicted_result": "H",
+      "actual_result": "H",
+      "is_correct": 1
+    },
+    "2026-03-22|United States/MLS|minnesota|seattlesounders": {
+      "competition": "United States/MLS",
+      "predicted_result": "D",
+      "actual_result": "D",
+      "is_correct": 1
+    },
+    "2026-03-22|United States/MLS|intermiami|newyork": {
+      "competition": "United States/MLS",
+      "predicted_result": "A",
+      "actual_result": "A",
+      "is_correct": 1
+    },
+    "2026-03-22|United States/MLS|realsaltlake|sandiego": {
+      "competition": "United States/MLS",
+      "predicted_result": "H",
+      "actual_result": "D",
+      "is_correct": 0
     }
   }
 }

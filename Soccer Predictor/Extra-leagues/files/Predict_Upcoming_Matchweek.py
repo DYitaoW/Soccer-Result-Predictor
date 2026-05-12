@@ -18,6 +18,7 @@ RESULT_COLUMNS = [
     "prediction_key",
     "created_at_utc",
     "match_date",
+    "match_datetime_utc",
     "competition",
     "home_team",
     "away_team",
@@ -47,7 +48,7 @@ def parse_args():
         "--window-days",
         type=int,
         default=3,
-        help="Days after each league's next fixture date to include in that matchweek window.",
+        help="Minimum lookahead window in days, extended through the next Tuesday when that is farther out.",
     )
     return parser.parse_args()
 
@@ -73,6 +74,19 @@ def parse_date(value):
     if pd.isna(date_value):
         return None
     return date_value.normalize()
+
+
+def calculate_fixture_window_end(window_days, start_date=None):
+    # Anchor the window to today so extra-league pulls reflect the current slate.
+    today = pd.Timestamp(start_date or datetime.utcnow().date()).normalize()
+    min_window_end = today + pd.Timedelta(days=max(0, int(window_days)))
+
+    # Extend through the next Tuesday when that keeps the Friday-to-Tuesday block together.
+    days_to_tuesday = (1 - today.weekday()) % 7
+    if days_to_tuesday == 0:
+        days_to_tuesday = 7
+    next_tuesday = today + pd.Timedelta(days=days_to_tuesday)
+    return max(min_window_end, next_tuesday)
 
 
 def latest_raw_file_per_competition(raw_root):
@@ -319,12 +333,9 @@ def upcoming_fixtures_from_raw(raw_path, window_days):
     if future.empty:
         future = work.copy()
 
-    next_date = future["DateParsed"].min()
-    if pd.isna(next_date):
-        return pd.DataFrame()
-
-    window_end = next_date + pd.Timedelta(days=int(window_days))
-    return future[(future["DateParsed"] >= next_date) & (future["DateParsed"] <= window_end)].copy()
+    # Use a current-date window so midweek pulls keep the full Friday-to-Tuesday slate.
+    window_end = calculate_fixture_window_end(window_days, start_date=today)
+    return future[future["DateParsed"] <= window_end].copy()
 
 
 def main():
@@ -354,6 +365,7 @@ def main():
                     "prediction_key": make_prediction_key(match_date, competition, pred["home_team"], pred["away_team"]),
                     "created_at_utc": created_at,
                     "match_date": match_date.strftime("%Y-%m-%d"),
+                    "match_datetime_utc": "",
                     "competition": competition,
                     "home_team": pred["home_team"],
                     "away_team": pred["away_team"],

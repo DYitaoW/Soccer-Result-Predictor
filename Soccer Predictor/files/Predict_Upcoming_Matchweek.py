@@ -35,7 +35,6 @@ API_COMPETITIONS = {
     "BL1": "Germany/Bundesliga",
     "BL2": "Germany/Bundesliga 2",
     "FL1": "France/Ligue 1",
-    "FL2": "France/Ligue 2",
     "PPL": "Portugal/Liga Portugal",
 }
 
@@ -76,6 +75,7 @@ RESULT_COLUMNS = [
     "prediction_key",
     "created_at_utc",
     "match_date",
+    "match_datetime_utc",
     "competition",
     "home_team",
     "away_team",
@@ -110,7 +110,7 @@ def parse_cli_args():
         "--window-days",
         type=int,
         default=3,
-        help="Days after each league's next fixture date to include in that matchweek window.",
+        help="Minimum lookahead window in days, extended through the next Tuesday when that is farther out.",
     )
     parser.add_argument(
         "--api-token",
@@ -130,6 +130,20 @@ def parse_match_date(value):
     if pd.isna(date_value):
         return None
     return date_value.normalize()
+
+
+def calculate_fixture_window_end(window_days, start_date=None):
+    # Anchor the window to today so the pull covers the current scheduling block.
+    today = pd.Timestamp(start_date or datetime.now(UTC).date())
+    today = today.normalize()
+    min_window_end = today + pd.Timedelta(days=max(0, int(window_days)))
+
+    # Extend through the next Tuesday when that keeps the Friday-to-Tuesday slate intact.
+    days_to_tuesday = (1 - today.weekday()) % 7
+    if days_to_tuesday == 0:
+        days_to_tuesday = 7
+    next_tuesday = today + pd.Timedelta(days=days_to_tuesday)
+    return max(min_window_end, next_tuesday)
 
 
 def make_prediction_key(match_date, competition, home_team, away_team):
@@ -322,6 +336,11 @@ def resolve_live_team_name(raw_name, competition, context):
     by_key = {normalize_team_key(team): team for team in valid_names}
     if key in by_key:
         return by_key[key]
+
+    # Catch API names like "Newcastle United FC" when the canonical project name is just "Newcastle".
+    contained_by_raw = [team for team in valid_names if normalize_team_key(team) and normalize_team_key(team) in key]
+    if len(contained_by_raw) == 1:
+        return contained_by_raw[0]
 
     contains = [team for team in valid_names if key in normalize_team_key(team)]
     if len(contains) == 1:
@@ -600,6 +619,7 @@ def load_upcoming_matchweek_fixtures_from_api(api_token, window_days):
             comp_rows.append(
                 {
                     "match_date": match_date,
+                    "match_datetime_utc": str(parsed.tz_convert("UTC").isoformat()),
                     "competition": competition_name,
                     "home_team": home_team,
                     "away_team": away_team,
@@ -610,8 +630,9 @@ def load_upcoming_matchweek_fixtures_from_api(api_token, window_days):
             continue
 
         comp_df = pd.DataFrame(comp_rows).sort_values(["match_date", "home_team", "away_team"])
-        first_date = comp_df["match_date"].min()
-        cutoff_date = first_date + pd.Timedelta(days=max(0, window_days))
+        
+        # Use a current-date window so late-week pulls keep the full Friday-to-Tuesday block.
+        cutoff_date = calculate_fixture_window_end(window_days)
         comp_df = comp_df[comp_df["match_date"] <= cutoff_date]
         rows.extend(comp_df.to_dict("records"))
 
@@ -637,6 +658,9 @@ def load_upcoming_matchweek_fixtures_from_raw(raw_dir, window_days):
     today = pd.Timestamp(datetime.now(UTC).date())
     rows = []
     for competition, rel_path in sorted(latest.items()):
+        # Skip Ligue 2 from the global upcoming slate.
+        if competition == "France/Ligue 2":
+            continue
         full_path = os.path.join(raw_dir, rel_path)
         try:
             frame = pd.read_csv(full_path)
@@ -662,11 +686,8 @@ def load_upcoming_matchweek_fixtures_from_raw(raw_dir, window_days):
         if future.empty:
             future = frame.copy()
 
-        next_date = future["DateParsed"].min()
-        if pd.isna(next_date):
-            continue
-
-        cutoff_date = next_date + pd.Timedelta(days=max(0, int(window_days)))
+        # Reuse the same current-date window instead of anchoring to the first fixture date.
+        cutoff_date = calculate_fixture_window_end(window_days, start_date=today)
         window = future[future["DateParsed"] <= cutoff_date]
         for _, row in window.iterrows():
             rows.append(
@@ -1072,10 +1093,12 @@ def predict_fixture(row, context):
     pred_away_sot = max(0.0, float(context["away_sot_reg"].predict(X_match)[0]))
 
     key = make_prediction_key(match_date, competition, home_team, away_team)
+    match_datetime_utc = str(row.get("match_datetime_utc", "")).strip()
     return {
         "prediction_key": key,
         "created_at_utc": datetime.now(UTC).replace(microsecond=0).isoformat(),
         "match_date": match_date.strftime("%Y-%m-%d"),
+        "match_datetime_utc": match_datetime_utc,
         "competition": competition,
         "home_team": home_team,
         "away_team": away_team,
@@ -1156,6 +1179,29 @@ def dedupe_predictions(predictions_df):
     frame["prediction_key"] = frame["canonical_prediction_key"]
     frame = frame.drop(columns=["canonical_prediction_key"])
     return frame
+
+
+def keep_only_current_fixtures(predictions_df, fixtures_df):
+    if predictions_df.empty or fixtures_df.empty:
+        return predictions_df.iloc[0:0].copy()
+
+    fixture_keys = set()
+    for _, row in fixtures_df.iterrows():
+        match_date = parse_match_date(row.get("match_date"))
+        competition = str(row.get("competition", "")).strip()
+        home_team = str(row.get("mapped_home_team", "") or row.get("home_team", "")).strip()
+        away_team = str(row.get("mapped_away_team", "") or row.get("away_team", "")).strip()
+        if match_date is None or not competition or not home_team or not away_team:
+            continue
+        fixture_keys.add(make_prediction_key(match_date, competition, home_team, away_team))
+
+    if not fixture_keys:
+        return predictions_df.iloc[0:0].copy()
+
+    # Keep only fixtures that still belong to the latest upcoming slate.
+    frame = predictions_df.copy()
+    keep_mask = frame["prediction_key"].astype(str).isin(fixture_keys)
+    return frame[keep_mask].copy()
 
 
 def enforce_single_match_per_team_day(predictions_df):
@@ -1244,6 +1290,8 @@ def main():
             combined.loc[row["prediction_key"]] = row
         combined = combined.reset_index(drop=True)
 
+    # Remove stale rows so old leagues and fixtures do not linger in the upcoming file.
+    combined = keep_only_current_fixtures(combined, fixtures)
     results_index = load_results_index(RAW_DATA_DIR, api_token=args.api_token)
     combined, settled_count = settle_predictions(combined, results_index)
     combined, removed_completed = drop_completed_predictions(combined, results_index)

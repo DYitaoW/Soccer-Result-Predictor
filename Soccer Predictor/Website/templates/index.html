@@ -1154,7 +1154,7 @@
       }
       const byDay = {};
       for (const r of visibleRows) {
-        const key = `${r.weekday} ${r.date_label}`;
+        const key = `${r.weekday || ""} ${r.date_label || ""}`.trim();
         byDay[key] = byDay[key] || [];
         byDay[key].push(r);
       }
@@ -1291,7 +1291,7 @@
         >
           <p class="pick-league">${escapeHtml(r.competition)}</p>
           <p class="pick-match">${escapeHtml(r.home_team)} vs ${escapeHtml(r.away_team)}</p>
-          <p class="match-meta">${escapeHtml(r.weekday || "")} ${escapeHtml(r.date_label || "")}${r.time_label ? ` - ${escapeHtml(r.time_label)}` : ""}</p>
+          <p class="match-meta">${escapeHtml(`${r.weekday || ""} ${r.date_label || ""}`.trim())}${r.time_label ? ` - ${escapeHtml(r.time_label)}` : ""}</p>
           <p class="pick-prediction">Prediction: ${escapeHtml(r.winner_label)}</p>
           <div class="probability-track">
             <div style="width: ${Number(r.prob_home) || 0}%; background-color: #55d37a;" title="${escapeHtml(r.home_team)}"></div>

@@ -861,6 +861,7 @@ def _load_upcoming_rows(csv_path, mode=None):
                 "pred_away_sot",
                 "probability_reasoning",
                 "actual_result",
+                "match_datetime_utc",
                 "match_datetime_et",
             }
             frame = pd.read_csv(
@@ -874,6 +875,7 @@ def _load_upcoming_rows(csv_path, mode=None):
                     "predicted_result": "string",
                     "probability_reasoning": "string",
                     "actual_result": "string",
+                    "match_datetime_utc": "string",
                     "match_datetime_et": "string",
                 },
             )
@@ -892,12 +894,18 @@ def _load_upcoming_rows(csv_path, mode=None):
         if col not in frame.columns:
             return [], _compute_accuracy_stats(frame), _compute_league_accuracy_stats(frame)
 
+    # Drop past fixtures so stale upcoming rows never show on the website.
+    parsed_dates = pd.to_datetime(frame["match_date"], errors="coerce").dt.normalize()
+    today = pd.Timestamp(datetime.now().date())
+    frame = frame[parsed_dates.notna()].copy()
+    frame["match_date"] = parsed_dates[parsed_dates.notna()].dt.strftime("%Y-%m-%d")
+    frame = frame[parsed_dates[parsed_dates.notna()] >= today].copy()
+    if frame.empty:
+        return [], _compute_accuracy_stats(frame), _compute_league_accuracy_stats(frame)
+
     frame = frame.sort_values(["match_date", "competition", "home_team", "away_team"])
     target_mode = mode or ("mls" if os.path.normpath(csv_path) == os.path.normpath(MLS_UPCOMING_FILE) else "global")
     is_mls_file = target_mode == "mls"
-    # Current CSV rows are upcoming/pending only. Settled accuracy is persisted in accuracy_totals.json.
-    stats = _compute_accuracy_stats(frame)
-    league_stats = _compute_league_accuracy_stats(frame)
     rows = []
     for _, row in frame.iterrows():
         home = _team_name_for_display(str(row["home_team"]).strip())
@@ -905,7 +913,19 @@ def _load_upcoming_rows(csv_path, mode=None):
         raw_date = str(row["match_date"])
         time_label = ""
         mls_dt_raw = str(row.get("match_datetime_et", "")).strip() if "match_datetime_et" in frame.columns else ""
-        if is_mls_file and mls_dt_raw:
+        utc_dt_raw = str(row.get("match_datetime_utc", "")).strip() if "match_datetime_utc" in frame.columns else ""
+        
+        # Prioritize match_datetime_utc if available from API
+        if utc_dt_raw:
+            date_val = pd.to_datetime(utc_dt_raw, utc=True, errors="coerce")
+            if pd.notna(date_val) and is_mls_file:
+                # MLS timestamps should be presented in Eastern time.
+                try:
+                    date_val = date_val.tz_convert("America/New_York")
+                    time_label = date_val.strftime("%I:%M %p ET").lstrip("0")
+                except Exception:
+                    pass
+        elif is_mls_file and mls_dt_raw:
             date_val = pd.to_datetime(mls_dt_raw, utc=True, errors="coerce")
             if pd.notna(date_val):
                 try:
@@ -928,8 +948,13 @@ def _load_upcoming_rows(csv_path, mode=None):
             weekday = ""
             date_label = str(row["match_date"])
         else:
-            weekday = date_val.strftime("%A")
-            date_label = date_val.strftime("%B %d, %Y")
+            # MLS cards should display one full human-readable date string.
+            if is_mls_file:
+                weekday = ""
+                date_label = date_val.strftime("%A %B %d, %Y")
+            else:
+                weekday = date_val.strftime("%A")
+                date_label = date_val.strftime("%B %d, %Y")
         try:
             ph_raw = float(row["prob_home"]) * 100
             pdv_raw = float(row["prob_draw"]) * 100
@@ -942,7 +967,7 @@ def _load_upcoming_rows(csv_path, mode=None):
             ph, pdv, pa = 0.0, 0.0, 0.0
         rows.append(
             {
-                "match_date": str(row["match_date"]),
+                "match_date": date_label if is_mls_file else str(row["match_date"]),
                 "match_datetime_et": mls_dt_raw if is_mls_file else "",
                 "weekday": weekday,
                 "date_label": date_label,

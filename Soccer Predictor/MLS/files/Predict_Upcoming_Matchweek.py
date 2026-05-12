@@ -57,6 +57,7 @@ RESULT_COLUMNS = [
     "prediction_key",
     "created_at_utc",
     "match_date",
+    "match_datetime_utc",
     "match_datetime_et",
     "competition",
     "home_team",
@@ -93,7 +94,7 @@ def parse_cli_args():
         "--window-days",
         type=int,
         default=3,
-        help="Days after each league's next fixture date to include in that matchweek window.",
+        help="Minimum lookahead window in days, extended through the next Tuesday when that is farther out.",
     )
     parser.add_argument(
         "--api-token",
@@ -113,6 +114,20 @@ def parse_match_date(value):
     if pd.isna(date_value):
         return None
     return date_value.normalize()
+
+
+def calculate_fixture_window_end(window_days, start_date=None):
+    # Anchor the window to today so the pull reflects the current MLS slate.
+    today = pd.Timestamp(start_date or datetime.now(UTC).date())
+    today = today.normalize()
+    min_window_end = today + pd.Timedelta(days=max(0, int(window_days)))
+
+    # Extend through the next Tuesday when that keeps the Friday-to-Tuesday block together.
+    days_to_tuesday = (1 - today.weekday()) % 7
+    if days_to_tuesday == 0:
+        days_to_tuesday = 7
+    next_tuesday = today + pd.Timedelta(days=days_to_tuesday)
+    return max(min_window_end, next_tuesday)
 
 
 def make_prediction_key(match_date, competition, home_team, away_team):
@@ -479,8 +494,8 @@ def load_upcoming_matchweek_fixtures_from_csv_fallback(window_days):
     fixtures = frame[["match_date", "competition", "home_team", "away_team"]].copy()
     fixtures["match_datetime_et"] = None
     fixtures = fixtures.sort_values(["match_date", "home_team", "away_team"]).reset_index(drop=True)
-    first_date = fixtures["match_date"].min()
-    cutoff_date = first_date + pd.Timedelta(days=max(0, window_days))
+    # Apply the same current-date window across fallback sources.
+    cutoff_date = calculate_fixture_window_end(window_days, start_date=today)
     fixtures = fixtures[fixtures["match_date"] <= cutoff_date].reset_index(drop=True)
     return fixtures
 
@@ -490,7 +505,8 @@ def load_upcoming_matchweek_fixtures_from_espn(window_days, lookahead_days=21):
     rows = []
     seen = set()
 
-    for offset in range(max(1, lookahead_days + 1)):
+    # Start from today so same-day MLS fixtures are included in the slate.
+    for offset in range(0, max(1, lookahead_days + 1)):
         day = today + pd.Timedelta(days=offset)
         url = f"{ESPN_SCOREBOARD_API}?dates={day.strftime('%Y%m%d')}"
         try:
@@ -555,8 +571,8 @@ def load_upcoming_matchweek_fixtures_from_espn(window_days, lookahead_days=21):
         return fixtures
 
     fixtures = fixtures.sort_values(["match_date", "home_team", "away_team"]).reset_index(drop=True)
-    first_date = fixtures["match_date"].min()
-    cutoff_date = first_date + pd.Timedelta(days=max(0, window_days))
+    # Apply the same current-date window across ESPN results.
+    cutoff_date = calculate_fixture_window_end(window_days, start_date=today)
     fixtures = fixtures[fixtures["match_date"] <= cutoff_date].reset_index(drop=True)
     return fixtures
 
@@ -615,8 +631,8 @@ def load_upcoming_matchweek_fixtures_from_api(api_token, window_days):
         return fixtures
 
     fixtures = fixtures.sort_values(["match_date", "home_team", "away_team"]).reset_index(drop=True)
-    first_date = fixtures["match_date"].min()
-    cutoff_date = first_date + pd.Timedelta(days=max(0, window_days))
+    # Apply the same current-date window across API results.
+    cutoff_date = calculate_fixture_window_end(window_days, start_date=today)
     fixtures = fixtures[fixtures["match_date"] <= cutoff_date].reset_index(drop=True)
     return fixtures
 
@@ -808,6 +824,7 @@ def predict_fixture(row, context):
     raw_away = row["away_team"]
     competition = row["competition"]
     match_date = row["match_date"]
+    match_datetime_utc = str(row.get("match_datetime_utc", "")).strip()
     match_datetime_et = str(row.get("match_datetime_et", "")).strip()
 
     home_team = str(row.get("mapped_home_team", "")).strip()
@@ -908,6 +925,7 @@ def predict_fixture(row, context):
         "prediction_key": key,
         "created_at_utc": datetime.now(UTC).replace(microsecond=0).isoformat(),
         "match_date": match_date.strftime("%Y-%m-%d"),
+        "match_datetime_utc": match_datetime_utc,
         "match_datetime_et": match_datetime_et,
         "competition": competition,
         "home_team": home_team,
@@ -992,6 +1010,29 @@ def dedupe_predictions(predictions_df):
     return frame
 
 
+def keep_only_current_fixtures(predictions_df, fixtures_df):
+    if predictions_df.empty or fixtures_df.empty:
+        return predictions_df.iloc[0:0].copy()
+
+    fixture_keys = set()
+    for _, row in fixtures_df.iterrows():
+        match_date = parse_match_date(row.get("match_date"))
+        competition = str(row.get("competition", "")).strip()
+        home_team = str(row.get("mapped_home_team", "") or row.get("home_team", "")).strip()
+        away_team = str(row.get("mapped_away_team", "") or row.get("away_team", "")).strip()
+        if match_date is None or not competition or not home_team or not away_team:
+            continue
+        fixture_keys.add(make_prediction_key(match_date, competition, home_team, away_team))
+
+    if not fixture_keys:
+        return predictions_df.iloc[0:0].copy()
+
+    # Keep only fixtures that still belong to the latest MLS slate.
+    frame = predictions_df.copy()
+    keep_mask = frame["prediction_key"].astype(str).isin(fixture_keys)
+    return frame[keep_mask].copy()
+
+
 def main():
     args = parse_cli_args()
 
@@ -1034,6 +1075,8 @@ def main():
             combined.loc[row["prediction_key"]] = row
         combined = combined.reset_index(drop=True)
 
+    # Remove stale rows so the website only receives fixtures from the active MLS pull.
+    combined = keep_only_current_fixtures(combined, fixtures)
     results_index = load_results_index(RAW_DATA_DIR)
     combined, settled_count = settle_predictions(combined, results_index)
     combined, removed_completed = drop_completed_predictions(combined, results_index)
