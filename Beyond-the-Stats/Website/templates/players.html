@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Players - Beyond the Score</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('serve_graphic', filename='BtSLogo.png') }}">
+  <link rel="icon" type="image/png" sizes="192x192" href="{{ url_for('serve_graphic', filename='BtSLogo.png') }}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('serve_graphic', filename='BtSLogo.png') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <style>
+    .scorers-container {
+      max-width: 900px;
+      margin: 2rem auto;
+    }
+    .league-selector {
+      margin: 2rem 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .league-btn {
+      padding: 0.5rem 1rem;
+      border: 2px solid #ccc;
+      background: transparent;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+    .league-btn:hover {
+      border-color: #0066cc;
+      color: #0066cc;
+    }
+    .league-btn.active {
+      background: #0066cc;
+      color: white;
+      border-color: #0066cc;
+    }
+    .scorers-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 2rem;
+    }
+    .scorers-table th,
+    .scorers-table td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+    .scorers-table th {
+      background: #f5f5f5;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .scorers-table tr:hover {
+      background: #f9f9f9;
+    }
+    .rank {
+      font-weight: 600;
+      color: #0066cc;
+      min-width: 30px;
+    }
+    .player-name {
+      font-weight: 500;
+    }
+    .goals {
+      text-align: center;
+      font-weight: 600;
+      color: #d9534f;
+    }
+    .assists {
+      text-align: center;
+      color: #5cb85c;
+    }
+    .loading {
+      text-align: center;
+      padding: 2rem;
+      color: #999;
+    }
+    .error {
+      color: #d9534f;
+      padding: 1rem;
+      background: #f8d7da;
+      border: 1px solid #f5c6cb;
+      border-radius: 4px;
+      margin: 1rem 0;
+    }
+    .last-updated {
+      font-size: 0.85rem;
+      color: #999;
+      margin-top: 1rem;
+    }
+    .no-data {
+      text-align: center;
+      padding: 2rem;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div id="notification-area" class="notification-area"></div>
+    <header class="site-header">
+      <div class="site-header-top">
+        <button id="brand-home-btn" class="brand brand-home-btn" type="button" aria-label="Go to home">
+          <img class="brand-mark" src="{{ url_for('serve_graphic', filename='BtSLogo.png') }}" alt="Beyond The Score logo">
+          <div>
+            <div class="brand-name">Beyond The Score</div>
+            <div class="brand-sub">Matchday Predictor</div>
+          </div>
+        </button>
+        <button id="theme-toggle" class="theme-toggle">Dark Mode</button>
+      </div>
+
+      <div id="main-tabs" class="tabs main-tabs">
+        <button id="tab-home" class="tab-btn" type="button">Home</button>
+        <button id="tab-predictor" class="tab-btn" type="button"> Custom Match Predictors (Experimental) </button>
+        <button id="tab-global" class="tab-btn" type="button">Upcoming Matches</button>
+        <button id="tab-h2h" class="tab-btn" type="button">Head to Head</button>
+        <button id="tab-market" class="tab-btn" type="button">Market & Odds (Coming Soon)</button>
+        <button id="tab-league-table" class="tab-btn" type="button">Projected League Tables</button>
+        <button id="tab-position-odds" class="tab-btn" type="button">Position Odds</button>
+        <button id="tab-players" class="tab-btn active" type="button">Players</button>
+        <button id="tab-tactics" class="tab-btn" type="button">Tactics Board</button>
+        <button id="tab-about" class="tab-btn" type="button">About</button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-badge">Season Leaders</div>
+      <h1>Top Scorers By League</h1>
+      <p class="sub">Current season's leading goal scorers across major European leagues and competitions</p>
+    </section>
+
+    <div class="scorers-container">
+      <div id="loading" class="loading">Loading scorers data...</div>
+      <div id="error-message" style="display: none;" class="error"></div>
+      <div id="scorers-content" style="display: none;">
+        <div class="league-selector" id="league-selector"></div>
+        <table class="scorers-table" id="scorers-table">
+          <thead>
+            <tr>
+              <th style="width: 50px;">Rank</th>
+              <th style="width: 40%;">Player</th>
+              <th style="width: 40%;">Team</th>
+              <th style="width: 10%;">Goals</th>
+              <th style="width: 10%;">Assists</th>
+            </tr>
+          </thead>
+          <tbody id="scorers-body"></tbody>
+        </table>
+        <div class="last-updated" id="last-updated"></div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const SCORERS_API_URL = '/api/scorers';
+    let allScorersData = {};
+    let selectedLeague = null;
+
+    document.getElementById('brand-home-btn').addEventListener('click', () => {
+      window.location.href = '/';
+    });
+
+    document.getElementById('theme-toggle').addEventListener('click', function() {
+      document.body.classList.toggle('dark-mode');
+      localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    });
+
+    // Restore theme preference
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark-mode');
+      document.getElementById('theme-toggle').textContent = 'Light Mode';
+    }
+
+    async function loadScorersData() {
+      try {
+        const response = await fetch(SCORERS_API_URL);
+        if (!response.ok) {
+          throw new Error('Failed to load scorers data');
+        }
+        const data = await response.json();
+        if (!data.ok) {
+          throw new Error(data.error || 'Unknown error');
+        }
+
+        allScorersData = data.competitions || {};
+        const lastUpdated = data.last_updated_utc;
+
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('error-message').style.display = 'none';
+        document.getElementById('scorers-content').style.display = 'block';
+
+        if (Object.keys(allScorersData).length === 0) {
+          document.getElementById('scorers-content').innerHTML = '<div class="no-data">No scorers data available yet. Run the prediction pipeline to fetch current season top scorers.</div>';
+          return;
+        }
+
+        // Populate league selector
+        const leagues = Object.keys(allScorersData).sort();
+        const selectorDiv = document.getElementById('league-selector');
+        selectorDiv.innerHTML = '';
+        
+        leagues.forEach((league, index) => {
+          const btn = document.createElement('button');
+          btn.className = 'league-btn' + (index === 0 ? ' active' : '');
+          btn.textContent = league;
+          btn.addEventListener('click', () => selectLeague(league));
+          selectorDiv.appendChild(btn);
+        });
+
+        // Select first league by default
+        if (leagues.length > 0) {
+          selectedLeague = leagues[0];
+          displayScorers(selectedLeague);
+        }
+
+        // Update "last updated" text
+        if (lastUpdated) {
+          const date = new Date(lastUpdated);
+          const formatted = date.toLocaleString();
+          document.getElementById('last-updated').textContent = `Last updated: ${formatted}`;
+        }
+      } catch (error) {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('scorers-content').style.display = 'block';
+        const errorDiv = document.getElementById('error-message');
+        errorDiv.style.display = 'block';
+        errorDiv.textContent = `Error: ${error.message}`;
+      }
+    }
+
+    function selectLeague(league) {
+      selectedLeague = league;
+      
+      // Update active button
+      document.querySelectorAll('.league-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.textContent === league) {
+          btn.classList.add('active');
+        }
+      });
+
+      displayScorers(league);
+    }
+
+    function displayScorers(league) {
+      const scorers = allScorersData[league] || [];
+      const tbody = document.getElementById('scorers-body');
+      tbody.innerHTML = '';
+
+      if (scorers.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #999;">No scorers data for this league</td></tr>';
+        return;
+      }
+
+      scorers.forEach(scorer => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td class="rank">${scorer.rank}</td>
+          <td class="player-name">${scorer.player_name}</td>
+          <td>${scorer.team_name}</td>
+          <td class="goals">${scorer.goals}</td>
+          <td class="assists">${scorer.assists}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    // Load data on page load
+    loadScorersData();
+
+    // Set up navigation tabs
+    document.getElementById('tab-home').addEventListener('click', () => {
+      window.location.href = '/';
+    });
+    document.getElementById('tab-predictor').addEventListener('click', () => {
+      window.location.href = '/#predictor';
+    });
+    document.getElementById('tab-global').addEventListener('click', () => {
+      window.location.href = '/#matches';
+    });
+    document.getElementById('tab-h2h').addEventListener('click', () => {
+      window.location.href = '/#h2h';
+    });
+    document.getElementById('tab-league-table').addEventListener('click', () => {
+      window.location.href = '/#league-table';
+    });
+    document.getElementById('tab-position-odds').addEventListener('click', () => {
+      window.location.href = '/#position-odds';
+    });
+    document.getElementById('tab-tactics').addEventListener('click', () => {
+      window.location.href = '/tactics';
+    });
+    document.getElementById('tab-about').addEventListener('click', () => {
+      window.location.href = '/#about';
+    });
+  </script>
+</body>
+</html>
