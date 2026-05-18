@@ -28,6 +28,7 @@
         <button id="tab-home" class="tab-btn active" type="button">Home</button>
         <button id="tab-predictor" class="tab-btn" type="button"> Custom Match Predictors (Experimental) </button>
         <button id="tab-global" class="tab-btn" type="button">Upcoming Matches</button>
+        <button id="tab-cups" class="tab-btn" type="button">Cups</button>
         <button id="tab-h2h" class="tab-btn" type="button">Head to Head</button>
         <button id="tab-market" class="tab-btn" type="button">Market & Odds (Coming Soon)</button>
         <button id="tab-league-table" class="tab-btn" type="button">Projected League Tables</button>
@@ -179,6 +180,21 @@
         <select id="global-league-filter"></select>
       </div>
       <div id="global-list" class="card">Loading...</div>
+    </section>
+
+    <section id="panel-cups" class="hidden">
+      <div class="card">
+        <h3>Cup Tables & Brackets</h3>
+        <p class="section-subtitle">League-phase tables and projected knockout paths for supported cup competitions.</p>
+        <div id="cup-projection-tabs" class="tabs" aria-label="Cup competition tabs"></div>
+        <div id="cup-view-tabs" class="tabs" aria-label="Cup table and bracket view tabs">
+          <button id="cup-view-table" class="tab-btn active" type="button">League Table</button>
+          <button id="cup-view-bracket" class="tab-btn" type="button">Bracket</button>
+        </div>
+        <p id="cup-format-note" class="note"></p>
+      </div>
+      <div id="cup-table-view" class="card">Loading cup table...</div>
+      <div id="cup-bracket-view" class="card hidden">Loading cup bracket...</div>
     </section>
 
     <section id="panel-h2h" class="hidden">
@@ -385,6 +401,7 @@
     const predictorMlsBody = document.getElementById("predictor-mls-body");
     const predictorExtraBody = document.getElementById("predictor-extra-body");
     const panelGlobal = document.getElementById("panel-global");
+    const panelCups = document.getElementById("panel-cups");
     const panelLeagueTable = document.getElementById("panel-league-table");
     const panelPositionOdds = document.getElementById("panel-position-odds");
     const panelPlayers = document.getElementById("panel-players");
@@ -395,6 +412,7 @@
     const subtabPredictorMls = document.getElementById("subtab-predictor-mls");
     const subtabPredictorExtra = document.getElementById("subtab-predictor-extra");
     const tabGlobal = document.getElementById("tab-global");
+    const tabCups = document.getElementById("tab-cups");
     const tabH2H = document.getElementById("tab-h2h");
     const tabMarket = document.getElementById("tab-market");
     const tabLeagueTable = document.getElementById("tab-league-table");
@@ -427,8 +445,16 @@
     const feedbackText = document.getElementById("feedback-text");
     const feedbackSubmit = document.getElementById("feedback-submit");
     const brandHomeBtn = document.getElementById("brand-home-btn");
+    const cupProjectionTabs = document.getElementById("cup-projection-tabs");
+    const cupViewTable = document.getElementById("cup-view-table");
+    const cupViewBracket = document.getElementById("cup-view-bracket");
+    const cupFormatNote = document.getElementById("cup-format-note");
+    const cupTableView = document.getElementById("cup-table-view");
+    const cupBracketView = document.getElementById("cup-bracket-view");
     const leagueTablesCache = { global: null, mls: null, extra: null, cups: null };
     let tableViewMode = "standings";
+    let activeCupProjectionCompetition = "UEFA/Champions League";
+    let activeCupProjectionView = "table";
     const upcomingCache = { global: [], mls: [], extra: [], cups: [] };
     const upcomingStatsCache = {
       global: { stats: null, league_stats: [] },
@@ -443,6 +469,13 @@
       { key: "champions-league", label: "Champions League", competitions: ["UEFA/Champions League", "Europe/Champions League"] },
       { key: "europa-league", label: "Europa League", competitions: ["UEFA/Europa League", "Europe/Europa League"] },
       { key: "conference-league", label: "Conference League", competitions: ["UEFA/Conference League", "Europe/Conference League"] },
+    ];
+    const cupProjectionConfigs = [
+      { key: "ucl", label: "Champions League", competition: "UEFA/Champions League", aliases: ["UEFA/Champions League", "Europe/Champions League"], hasTable: true, leaguePhaseMatches: 8 },
+      { key: "uel", label: "Europa League", competition: "UEFA/Europa League", aliases: ["UEFA/Europa League", "Europe/Europa League"], hasTable: true, leaguePhaseMatches: 8 },
+      { key: "uecl", label: "Conference League", competition: "UEFA/Conference League", aliases: ["UEFA/Conference League", "Europe/Conference League"], hasTable: true, leaguePhaseMatches: 6 },
+      { key: "fa-cup", label: "FA Cup", competition: "England/FA Cup", aliases: ["England/FA Cup"], hasTable: false, leaguePhaseMatches: null },
+      { key: "league-cup", label: "League Cup", competition: "England/League Cup", aliases: ["England/League Cup"], hasTable: false, leaguePhaseMatches: null },
     ];
     let activeCupTab = "all";
     const mlsTeamSet = new Set(
@@ -563,6 +596,7 @@
       tabHome.classList.remove("active");
       tabPredictor.classList.remove("active");
       tabGlobal.classList.remove("active");
+      tabCups.classList.remove("active");
       tabH2H.classList.remove("active");
       tabMarket.classList.remove("active");
       tabLeagueTable.classList.remove("active");
@@ -572,6 +606,7 @@
       panelHome.classList.add("hidden");
       panelPredictor.classList.add("hidden");
       panelGlobal.classList.add("hidden");
+      panelCups.classList.add("hidden");
       panelH2H.classList.add("hidden");
       panelMarket.classList.add("hidden");
       panelLeagueTable.classList.add("hidden");
@@ -588,6 +623,9 @@
       } else if (tab === "global") {
         tabGlobal.classList.add("active");
         panelGlobal.classList.remove("hidden");
+      } else if (tab === "cups") {
+        tabCups.classList.add("active");
+        panelCups.classList.remove("hidden");
       } else if (tab === "h2h") {
         tabH2H.classList.add("active");
         panelH2H.classList.remove("hidden");
@@ -646,9 +684,27 @@
       const isMlsSupporters = league === "united states/mls - supporters shield table";
       const isMlsEast = league === "united states/mls - eastern conference";
       const isMlsWest = league === "united states/mls - western conference";
+      const isUefaCupTable = [
+        "uefa/champions league",
+        "europe/champions league",
+        "uefa/europa league",
+        "europe/europa league",
+        "uefa/conference league",
+        "europe/conference league"
+      ].includes(league);
 
       if (isMlsEast || isMlsWest) {
         if (position >= 1 && position <= 9) {
+          return "table-promo-blue";
+        }
+        return "";
+      }
+
+      if (isUefaCupTable) {
+        if (position >= 1 && position <= 8) {
+          return "table-first";
+        }
+        if (position >= 9 && position <= 24) {
           return "table-promo-blue";
         }
         return "";
@@ -1105,13 +1161,13 @@
       leagueTableView.innerHTML = html;
     }
 
-    function renderCupBracket(payload, competition) {
+    function renderCupBracket(payload, competition, target = leagueTableView) {
       const brackets = payload && payload.cup_brackets && payload.cup_brackets.competitions
         ? payload.cup_brackets.competitions
         : {};
       const bracket = brackets[competition];
       if (!bracket || !bracket.rounds || !bracket.rounds.length) {
-        leagueTableView.innerHTML = `<p>No cup fixture bracket found for ${escapeHtml(competition)}. Run Track_Cup_Results.py after cup predictions are generated.</p>`;
+        target.innerHTML = `<p>No cup fixture bracket found for ${escapeHtml(competition)}. Run Track_Cup_Results.py after cup predictions are generated.</p>`;
         return;
       }
       let html = `
@@ -1150,7 +1206,119 @@
         html += "</div>";
       }
       html += "</div>";
-      leagueTableView.innerHTML = html;
+      target.innerHTML = html;
+    }
+
+    function cupConfigForCompetition(competition) {
+      return cupProjectionConfigs.find((config) => config.aliases.includes(competition)) || cupProjectionConfigs[0];
+    }
+
+    function primaryCupCompetition(config, payload) {
+      if (!config) return "";
+      const tables = payload && payload.tables ? payload.tables : {};
+      const brackets = payload && payload.cup_brackets && payload.cup_brackets.competitions
+        ? payload.cup_brackets.competitions
+        : {};
+      return config.aliases.find((name) => tables[name] || brackets[name]) || config.competition;
+    }
+
+    function cupCompetitionHasData(config, payload) {
+      const competition = primaryCupCompetition(config, payload);
+      const hasRows = Boolean(payload && payload.tables && payload.tables[competition] && payload.tables[competition].length);
+      const hasBracket = Boolean(
+        payload &&
+        payload.cup_brackets &&
+        payload.cup_brackets.competitions &&
+        payload.cup_brackets.competitions[competition]
+      );
+      return hasRows || hasBracket;
+    }
+
+    function renderCupProjectionTabs(payload) {
+      cupProjectionTabs.innerHTML = cupProjectionConfigs.map((config) => {
+        const competition = primaryCupCompetition(config, payload);
+        const active = cupConfigForCompetition(activeCupProjectionCompetition).key === config.key;
+        const emptyClass = cupCompetitionHasData(config, payload) ? "" : " cup-tab-empty";
+        return `
+          <button
+            class="tab-btn${active ? " active" : ""}${emptyClass}"
+            type="button"
+            data-cup-projection="${escapeHtml(competition)}"
+          >${escapeHtml(config.label)}</button>
+        `;
+      }).join("");
+    }
+
+    function renderCupTable(payload, competition) {
+      const config = cupConfigForCompetition(competition);
+      if (!config.hasTable) {
+        cupTableView.innerHTML = `<p>${escapeHtml(config.label)} uses a knockout bracket view instead of a league-phase table.</p>`;
+        return;
+      }
+      const rows = payload && payload.tables ? (payload.tables[competition] || []) : [];
+      const phaseMatches = config.leaguePhaseMatches || 8;
+      if (!rows.length) {
+        cupTableView.innerHTML = `
+          <h3>${escapeHtml(config.label)} League Phase Table</h3>
+          <p>No league-phase table data available yet. Run cup predictions and Track_Cup_Results.py to populate this table.</p>
+        `;
+        return;
+      }
+      cupTableView.innerHTML = `
+        <h3>${escapeHtml(config.label)} League Phase Table</h3>
+        <p class="note">League phase uses ${phaseMatches} matches per club. Top 8 advance to the Round of 16; positions 9-24 enter the first round playoff.</p>
+        <div class="stats-row">
+          <span class="stat-chip cup-top8-chip">Top 8: Round of 16</span>
+          <span class="stat-chip cup-playoff-chip">9-24: First Round Playoff</span>
+        </div>
+        ${renderLeagueTableRows(rows, competition)}
+      `;
+    }
+
+    function renderCupProjectionViews() {
+      const payload = leagueTablesCache.cups;
+      if (!payload) {
+        cupTableView.textContent = "Loading cup projections...";
+        cupBracketView.textContent = "Loading cup projections...";
+        return;
+      }
+      const config = cupConfigForCompetition(activeCupProjectionCompetition);
+      const competition = primaryCupCompetition(config, payload);
+      activeCupProjectionCompetition = competition;
+      renderCupProjectionTabs(payload);
+      cupFormatNote.textContent = config.hasTable
+        ? `${config.label}: ${config.leaguePhaseMatches} league-phase matches, then first round playoff, Round of 16, quarterfinals, semifinals and final.`
+        : `${config.label}: showing the next/recent cup rounds only, not the full historical bracket.`;
+      cupViewTable.classList.toggle("active", activeCupProjectionView === "table");
+      cupViewBracket.classList.toggle("active", activeCupProjectionView === "bracket");
+      cupTableView.classList.toggle("hidden", activeCupProjectionView !== "table");
+      cupBracketView.classList.toggle("hidden", activeCupProjectionView !== "bracket");
+      renderCupTable(payload, competition);
+      renderCupBracket(payload, competition, cupBracketView);
+    }
+
+    async function loadCupProjections() {
+      if (!leagueTablesCache.cups) {
+        cupTableView.textContent = "Loading cup projections...";
+        cupBracketView.textContent = "Loading cup projections...";
+        const resp = await fetch("/api/league-tables?mode=cups");
+        const data = await resp.json();
+        if (!resp.ok || !data.ok) {
+          cupTableView.textContent = "Failed to load cup projections.";
+          cupBracketView.textContent = "Failed to load cup projections.";
+          return;
+        }
+        leagueTablesCache.cups = data;
+        const firstWithData = cupProjectionConfigs.find((config) => cupCompetitionHasData(config, data));
+        if (firstWithData) {
+          activeCupProjectionCompetition = primaryCupCompetition(firstWithData, data);
+        }
+      }
+      const activeConfig = cupConfigForCompetition(activeCupProjectionCompetition);
+      if (!activeConfig.hasTable && activeCupProjectionView === "table") {
+        activeCupProjectionView = "bracket";
+      }
+      renderCupProjectionViews();
     }
 
     async function loadLeagueTables(mode) {
@@ -1757,6 +1925,10 @@
       const source = currentUpcomingSource();
       await loadUpcoming(source, upcomingUrlForSource(source), globalList, globalStats, globalLeagueFilter);
     });
+    tabCups.addEventListener("click", async () => {
+      activateTab("cups");
+      await loadCupProjections();
+    });
     tabH2H.addEventListener("click", () => activateTab("h2h"));
     tabMarket.addEventListener("click", () => activateTab("market"));
     tabLeagueTable.addEventListener("click", async () => {
@@ -1833,6 +2005,25 @@
         return;
       }
       renderSelectedLeagueTable();
+    });
+    cupProjectionTabs.addEventListener("click", async (event) => {
+      const btn = event.target.closest("[data-cup-projection]");
+      if (!btn) return;
+      activeCupProjectionCompetition = btn.getAttribute("data-cup-projection") || activeCupProjectionCompetition;
+      const config = cupConfigForCompetition(activeCupProjectionCompetition);
+      if (!config.hasTable) {
+        activeCupProjectionView = "bracket";
+      }
+      await loadCupProjections();
+    });
+    cupViewTable.addEventListener("click", () => {
+      const config = cupConfigForCompetition(activeCupProjectionCompetition);
+      activeCupProjectionView = config.hasTable ? "table" : "bracket";
+      renderCupProjectionViews();
+    });
+    cupViewBracket.addEventListener("click", () => {
+      activeCupProjectionView = "bracket";
+      renderCupProjectionViews();
     });
     globalLeagueFilter.addEventListener("change", () => {
       const source = currentUpcomingSource();

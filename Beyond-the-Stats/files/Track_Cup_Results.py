@@ -49,10 +49,24 @@ UEFA_TABLE_COMPETITIONS = {
     "Europe/Europa League",
     "Europe/Conference League",
 }
+UEFA_LEAGUE_PHASE_MATCHES = {
+    "UEFA/Champions League": 8,
+    "Europe/Champions League": 8,
+    "UEFA/Europa League": 8,
+    "Europe/Europa League": 8,
+    "UEFA/Conference League": 6,
+    "Europe/Conference League": 6,
+}
+UEFA_PRIMARY_COMPETITIONS = [
+    "UEFA/Champions League",
+    "UEFA/Europa League",
+    "UEFA/Conference League",
+]
 DOMESTIC_BRACKET_COMPETITIONS = {
     "England/FA Cup",
     "England/League Cup",
 }
+DOMESTIC_BRACKET_MATCH_LIMIT = 16
 
 CUP_HISTORY_COLUMNS = [
     "prediction_key",
@@ -398,10 +412,21 @@ def _build_projected_cup_tables(completed_df, upcoming_df):
     out_rows = []
     for competition, comp_frame in combined.groupby("competition", dropna=False):
         table = {}
+        max_phase_matches = UEFA_LEAGUE_PHASE_MATCHES.get(str(competition).strip(), 8)
+        played_counts = {}
+        comp_frame = comp_frame.copy()
+        comp_frame["__date_sort"] = pd.to_datetime(comp_frame.get("match_date"), errors="coerce")
+        comp_frame = comp_frame.sort_values(
+            ["__date_sort", "__is_real", "home_team", "away_team"],
+            ascending=[True, False, True, True],
+            na_position="last",
+        )
         for _, row in comp_frame.iterrows():
             home = str(row.get("home_team", "")).strip()
             away = str(row.get("away_team", "")).strip()
             if not home or not away:
+                continue
+            if played_counts.get(home, 0) >= max_phase_matches or played_counts.get(away, 0) >= max_phase_matches:
                 continue
             is_real = bool(row.get("__is_real"))
             if is_real:
@@ -412,6 +437,8 @@ def _build_projected_cup_tables(completed_df, upcoming_df):
             else:
                 hg, ag = _predicted_score(row)
             _apply_result(table, home, away, hg, ag, is_real=is_real)
+            played_counts[home] = played_counts.get(home, 0) + 1
+            played_counts[away] = played_counts.get(away, 0) + 1
 
         ranked = sorted(table.items(), key=lambda item: (-item[1]["Pts"], -item[1]["GD"], -item[1]["GF"], item[0]))
         total_positions = len(ranked)
@@ -467,11 +494,154 @@ def _match_payload(row, status):
     }
 
 
-def _build_projected_cup_brackets(completed_df, upcoming_df):
+def _seed_name(ranked_rows, seed):
+    if seed <= len(ranked_rows):
+        return str(ranked_rows[seed - 1].get("team", "")).strip() or f"Seed {seed}"
+    return f"Seed {seed}"
+
+
+def _uefa_match(stage, slot, home_team, away_team, winner=None):
+    return {
+        "stage": stage,
+        "slot": slot,
+        "match_date": "",
+        "home_team": home_team,
+        "away_team": away_team,
+        "status": "Projected",
+        "winner": winner or home_team,
+        "actual_home_goals": None,
+        "actual_away_goals": None,
+        "pred_home_goals": None,
+        "pred_away_goals": None,
+        "predicted_result": "",
+    }
+
+
+def _build_uefa_bracket_from_table(competition, table_rows):
+    def position_value(row):
+        pos = pd.to_numeric(row.get("position"), errors="coerce")
+        return int(pos) if pd.notna(pos) else 999
+
+    ranked_rows = sorted(
+        table_rows,
+        key=lambda row: (position_value(row), str(row.get("team", ""))),
+    )
+    playoff_pairs = [(9, 24), (10, 23), (11, 22), (12, 21), (13, 20), (14, 19), (15, 18), (16, 17)]
+    playoff_matches = []
+    playoff_winners = []
+    for idx, (high_seed, low_seed) in enumerate(playoff_pairs, start=1):
+        high_team = _seed_name(ranked_rows, high_seed)
+        low_team = _seed_name(ranked_rows, low_seed)
+        winner = high_team
+        playoff_winners.append(winner)
+        playoff_matches.append(_uefa_match("First Round Playoff", idx, high_team, low_team, winner))
+
+    top_seed_order = [1, 8, 4, 5, 2, 7, 3, 6]
+    round_of_16 = []
+    round_of_16_winners = []
+    for idx, seed in enumerate(top_seed_order, start=1):
+        top_seed = _seed_name(ranked_rows, seed)
+        playoff_winner = playoff_winners[idx - 1] if idx - 1 < len(playoff_winners) else f"Playoff Winner {idx}"
+        winner = top_seed
+        round_of_16_winners.append(winner)
+        round_of_16.append(_uefa_match("Round of 16", idx, top_seed, playoff_winner, winner))
+
+    quarterfinals = []
+    semifinalists = []
+    for idx in range(0, 8, 2):
+        home = round_of_16_winners[idx] if idx < len(round_of_16_winners) else f"R16 Winner {idx + 1}"
+        away = round_of_16_winners[idx + 1] if idx + 1 < len(round_of_16_winners) else f"R16 Winner {idx + 2}"
+        winner = home
+        semifinalists.append(winner)
+        quarterfinals.append(_uefa_match("Quarterfinals", (idx // 2) + 1, home, away, winner))
+
+    semifinals = []
+    finalists = []
+    for idx in range(0, 4, 2):
+        home = semifinalists[idx] if idx < len(semifinalists) else f"Quarterfinal Winner {idx + 1}"
+        away = semifinalists[idx + 1] if idx + 1 < len(semifinalists) else f"Quarterfinal Winner {idx + 2}"
+        winner = home
+        finalists.append(winner)
+        semifinals.append(_uefa_match("Semifinals", (idx // 2) + 1, home, away, winner))
+
+    final_home = finalists[0] if finalists else "Semifinal Winner 1"
+    final_away = finalists[1] if len(finalists) > 1 else "Semifinal Winner 2"
+    final = [_uefa_match("Final", 1, final_home, final_away, final_home)]
+
+    return {
+        "competition": competition,
+        "format": "uefa_league_phase_knockout",
+        "league_phase_matches": UEFA_LEAGUE_PHASE_MATCHES.get(competition, 8),
+        "qualification": {
+            "round_of_16": "Positions 1-8",
+            "first_round_playoff": "Positions 9-24",
+        },
+        "rounds": [
+            {"name": "First Round Playoff", "matches": playoff_matches},
+            {"name": "Round of 16", "matches": round_of_16},
+            {"name": "Quarterfinals", "matches": quarterfinals},
+            {"name": "Semifinals", "matches": semifinals},
+            {"name": "Final", "matches": final},
+        ],
+    }
+
+
+def _limited_domestic_rounds(comp_frame):
+    rounds = []
+    completed_rows = comp_frame[comp_frame["__status"] == "Completed"].sort_values(
+        ["match_date", "home_team", "away_team"],
+        ascending=[False, True, True],
+        na_position="last",
+    ).head(DOMESTIC_BRACKET_MATCH_LIMIT)
+    upcoming_rows = comp_frame[comp_frame["__status"] == "Upcoming"].sort_values(
+        ["match_date", "home_team", "away_team"],
+        na_position="last",
+    ).head(DOMESTIC_BRACKET_MATCH_LIMIT)
+    if upcoming_rows.empty and completed_rows.empty:
+        return rounds
+    if upcoming_rows.empty:
+        rounds.append(
+            {
+                "name": "Recent Cup Results",
+                "matches": [_match_payload(row, "Completed") for _, row in completed_rows.iterrows()],
+            }
+        )
+        return rounds
+    rounds.append(
+        {
+            "name": "Upcoming Cup Fixtures",
+            "matches": [_match_payload(row, "Upcoming") for _, row in upcoming_rows.iterrows()],
+        }
+    )
+    if not completed_rows.empty:
+        rounds.append(
+            {
+                "name": "Recent Cup Results",
+                "matches": [_match_payload(row, "Completed") for _, row in completed_rows.iterrows()],
+            }
+        )
+    return rounds
+
+
+def _build_projected_cup_brackets(completed_df, upcoming_df, tables_df):
     payload = {
         "generated_at_utc": datetime.now(UTC).replace(microsecond=0).isoformat(),
         "competitions": {},
     }
+    tables_df = _ensure_columns(tables_df, TABLE_COLUMNS)
+    if not tables_df.empty:
+        for competition, comp_table in tables_df.groupby("competition", dropna=False):
+            competition_name = str(competition).strip()
+            if competition_name not in UEFA_TABLE_COMPETITIONS:
+                continue
+            table_rows = comp_table.to_dict("records")
+            payload["competitions"][competition_name] = _build_uefa_bracket_from_table(competition_name, table_rows)
+    for competition_name in UEFA_PRIMARY_COMPETITIONS:
+        payload["competitions"].setdefault(
+            competition_name,
+            _build_uefa_bracket_from_table(competition_name, []),
+        )
+
     frames = []
     if completed_df is not None and not completed_df.empty:
         completed = completed_df.copy()
@@ -492,19 +662,11 @@ def _build_projected_cup_brackets(completed_df, upcoming_df):
 
     combined = combined.sort_values(["competition", "match_date", "__status", "home_team", "away_team"], na_position="last")
     for competition, comp_frame in combined.groupby("competition", dropna=False):
-        rounds = []
-        for status in ["Upcoming", "Completed"]:
-            status_rows = comp_frame[comp_frame["__status"] == status]
-            if status_rows.empty:
-                continue
-            rounds.append(
-                {
-                    "name": f"{status} Fixtures" if status == "Upcoming" else "Completed Results",
-                    "matches": [_match_payload(row, status) for _, row in status_rows.iterrows()],
-                }
-            )
+        rounds = _limited_domestic_rounds(comp_frame)
         payload["competitions"][competition] = {
             "competition": competition,
+            "format": "domestic_knockout_snapshot",
+            "match_limit_per_section": DOMESTIC_BRACKET_MATCH_LIMIT,
             "rounds": rounds,
         }
     return payload
@@ -512,7 +674,7 @@ def _build_projected_cup_brackets(completed_df, upcoming_df):
 
 def refresh_cup_projection_artifacts(completed_df, upcoming_df):
     tables = _build_projected_cup_tables(completed_df, upcoming_df)
-    brackets = _build_projected_cup_brackets(completed_df, upcoming_df)
+    brackets = _build_projected_cup_brackets(completed_df, upcoming_df, tables)
     _write_csv(PROJECTED_CUP_TABLES_FILE, tables, TABLE_COLUMNS)
     save_json(PROJECTED_CUP_BRACKETS_FILE, brackets)
     return len(tables), sum(len(comp.get("rounds", [])) for comp in brackets.get("competitions", {}).values())
