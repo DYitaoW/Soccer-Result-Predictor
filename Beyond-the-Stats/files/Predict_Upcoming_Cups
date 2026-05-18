@@ -41,6 +41,11 @@ THESPORTSDB_LEAGUE_IDS = {
     "UEFA/Champions League": "4480",             # UEFA Champions League 4480
     "UEFA/Europa League": "4481",             # UEFA Europa League  4481
     "UEFA/Conference League": "5071",            # UEFA Europa Conference League 5071
+    "Italy/Coppa Italia": "4506",
+    "Spain/Copa del Rey": "4483",
+    "Germany/DFB-Pokal": "4485",
+    "France/Coupe de France": "4484",
+    "United States/US Open Cup": "5199",
 }
 
 # --- TheSportsDB fixtures fetcher ---
@@ -136,7 +141,50 @@ CUP_COMPETITIONS = {
         "priority": 5,
         "api_source": "espn",
         "fixture_window_days": 6,
-    }
+    },
+    "Coppa Italia": {
+        "name": "Italy/Coppa Italia",
+        "espn_id": "ita.coppa",
+        "priority": 6,
+        "api_source": "espn",
+        "fixture_window_days": 5,
+    },
+    "Copa del Rey": {
+        "name": "Spain/Copa del Rey",
+        "espn_id": "esp.copa_del_rey",
+        "priority": 7,
+        "api_source": "espn",
+        "fixture_window_days": 5,
+    },
+    "DFB-Pokal": {
+        "name": "Germany/DFB-Pokal",
+        "espn_id": "ger.dfb_pokal",
+        "priority": 8,
+        "api_source": "espn",
+        "fixture_window_days": 6,
+    },
+    "Coupe de France": {
+        "name": "France/Coupe de France",
+        "espn_id": "fra.coupe_de_france",
+        "priority": 9,
+        "api_source": "espn",
+        "fixture_window_days": 6,
+    },
+    "US Open Cup": {
+        "name": "United States/US Open Cup",
+        "espn_id": "usa.open_cup",
+        "priority": 10,
+        "api_source": "espn",
+        "fixture_window_days": 7,
+    },
+}
+
+AUTO_RESOLVE_CUP_COMPETITIONS = {
+    "Italy/Coppa Italia",
+    "Spain/Copa del Rey",
+    "Germany/DFB-Pokal",
+    "France/Coupe de France",
+    "United States/US Open Cup",
 }
 
 # --- CORE CLASSES AND UTILITIES (Copied from original script) ---
@@ -159,6 +207,7 @@ class AveragedProbaClassifier:
 
 MLS_COMPETITION_CODE = "MLS"
 MLS_COMPETITION_NAME = "United States/MLS"
+MLS_TEAM_DATA_DIR = os.path.join(BASE_DIR, "MLS", "Data", "Team_Data")
 MANUAL_TEAM_OVERRIDES = {}
 TEAM_KEY_ALIASES = {
     "caosasuna": "osasuna",
@@ -248,6 +297,94 @@ def load_results_index(raw_dir):
                     "actual_result": str(row["FTR"]).strip(),
                 }
     return results
+
+
+def load_optional_team_data(team_data_dir, file_name):
+    payload = pm.load_json_if_exists(os.path.join(team_data_dir, file_name))
+    return payload if isinstance(payload, dict) else {}
+
+
+def normalize_mls_season_key(season_key):
+    text = str(season_key).replace("\\", "/")
+    directory, file_name = os.path.split(text)
+    if file_name.lower().startswith("mlsstat") and "-" not in file_name:
+        year_text = file_name[len("mlsstat"):]
+        if year_text.isdigit() and len(year_text) == 4:
+            end_year = (int(year_text) + 1) % 100
+            file_name = f"mlsstat{year_text}-{end_year:02d}"
+    return f"{directory}/{file_name}" if directory else file_name
+
+
+def merge_nested_dict(target, source):
+    for key, value in source.items():
+        if isinstance(value, dict) and isinstance(target.get(key), dict):
+            target[key].update(value)
+        else:
+            target[key] = value
+
+
+def merge_mls_team_data_into_context(context):
+    if not os.path.isdir(MLS_TEAM_DATA_DIR):
+        return context
+
+    mls_overall = pm.replace_nan_with_sentinel(
+        load_optional_team_data(MLS_TEAM_DATA_DIR, "overall_teams.json")
+    )
+    mls_seasons = pm.replace_nan_with_sentinel(
+        load_optional_team_data(MLS_TEAM_DATA_DIR, "season_teams.json")
+    )
+    mls_head_to_head = pm.replace_nan_with_sentinel(
+        load_optional_team_data(MLS_TEAM_DATA_DIR, "head_to_head.json")
+    )
+    mls_current_form = pm.replace_nan_with_sentinel(
+        load_optional_team_data(MLS_TEAM_DATA_DIR, "current_form.json")
+    )
+    mls_league_strength = pm.replace_nan_with_sentinel(
+        load_optional_team_data(MLS_TEAM_DATA_DIR, "league_strength.json")
+    )
+    mls_market_values = pm.replace_nan_with_sentinel(
+        load_optional_team_data(MLS_TEAM_DATA_DIR, "team_top_market_value_players.json")
+    )
+
+    mls_team_names = set()
+    if isinstance(mls_overall, dict):
+        context["overall_teams"].update(mls_overall)
+        mls_team_names.update(str(team).strip() for team in mls_overall.keys() if str(team).strip())
+
+    if isinstance(mls_seasons, dict):
+        for season_key, teams in mls_seasons.items():
+            if not isinstance(teams, dict):
+                continue
+            normalized_key = normalize_mls_season_key(season_key)
+            context["season_teams"][normalized_key] = teams
+            mls_team_names.update(str(team).strip() for team in teams.keys() if str(team).strip())
+
+    if isinstance(mls_head_to_head, dict):
+        merge_nested_dict(context["head_to_head"], mls_head_to_head)
+
+    if isinstance(mls_current_form, dict):
+        context["current_form"].setdefault("teams", {})
+        mls_form_teams = mls_current_form.get("teams", {})
+        if isinstance(mls_form_teams, dict):
+            context["current_form"]["teams"].update(mls_form_teams)
+
+    if isinstance(mls_league_strength, dict):
+        context["league_strength"].update(mls_league_strength)
+
+    if isinstance(mls_market_values, dict):
+        context["market_value_data"].update(mls_market_values)
+
+    if mls_team_names:
+        available = set(context.get("available_teams", []))
+        available.update(mls_team_names)
+        context["available_teams"] = sorted(available)
+        team_competition_map = context["team_competition_map"]
+        for team_name in mls_team_names:
+            team_competition_map.setdefault(team_name, MLS_COMPETITION_NAME)
+        print(f"Merged {len(mls_team_names)} MLS teams into cup prediction context.")
+
+    return context
+
 
 def build_prediction_context():
     # This function loads the ML model and all necessary historical stats.
@@ -339,7 +476,7 @@ def build_prediction_context():
     latest_season = season_files[-1].replace(".csv", "")
     latest_start_year = max(pm.parse_start_year_from_key(key) for key in season_teams.keys())
 
-    return {
+    context = {
         "clf": clf,
         "result_label_encoder": result_label_encoder,
         "home_goal_reg": home_goal_reg,
@@ -360,6 +497,7 @@ def build_prediction_context():
         "latest_season": latest_season,
         "latest_start_year": latest_start_year,
     }
+    return merge_mls_team_data_into_context(context)
 
 
 def predict_fixture(row, context):
@@ -462,6 +600,11 @@ def predict_fixture(row, context):
         "UEFA/Conference League": pm.EU_RANDOMIZER_MAX_DELTA,
         "England/FA Cup": 0.045,  # Domestic cup, lower randomness
         "England/League Cup": 0.045,
+        "Italy/Coppa Italia": 0.045,
+        "Spain/Copa del Rey": 0.045,
+        "Germany/DFB-Pokal": 0.045,
+        "France/Coupe de France": 0.045,
+        "United States/US Open Cup": 0.045,
     }
     # If not mapped, use 0.035 for unknown domestic cups
     randomizer_delta = CUP_RANDOMIZER_DELTAS.get(competition, 0.035)
@@ -829,6 +972,10 @@ def apply_team_mapping_to_fixtures(fixtures, mapping, context):
             return ""
         if api_name in known_teams:
             return api_name
+        if competition in AUTO_RESOLVE_CUP_COMPETITIONS:
+            resolved = resolve_live_team_name(api_name, competition, context)
+            if resolved:
+                return resolved
         return ""
 
     mapped["mapped_home_team"] = mapped.apply(
