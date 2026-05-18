@@ -170,9 +170,11 @@
           <option value="global">European Leagues</option>
           <option value="mls">MLS</option>
           <option value="extra">Extra Leagues</option>
+          <option value="cups">Cup Competitions</option>
         </select>
+        <div id="cup-tabs" class="tabs cup-tabs hidden" aria-label="Cup prediction tabs"></div>
       </div>
-      <div class="card">
+      <div id="global-league-filter-card" class="card">
         <label for="global-league-filter">League</label>
         <select id="global-league-filter"></select>
       </div>
@@ -290,7 +292,7 @@
            Championship, Bundesliga, Ligue 1, La Liga, Serie A, etc.). The separate MLS predictor only works with MLS matchups and uses a 
            sepearate, less advanced model due to current data limitations. Predictions between teams in different leagues often create wild
            predictions and are far less accurate than predictions of teams in the same league. The upcoming matches tab is used to show matches
-           of the current matchweek (and midweek fixtures), but do not include cup competitions (including the Champions League). Each prediction
+           of the current matchweek (and midweek fixtures), including dedicated tabs for supported cup competitions. Each prediction
            also includes a score prediction and may include shots and shot on target predictions and a reasoning for the match prediction. These additional
            features are experimental and may not be available for all matches or leagues. The league table shows the predicted league table based on real 
            results and predicted results for the rest of the season. Accuracy of the predictions is not guaranteed and should be used for ENTERTAINMENT PURPOSES ONLY.
@@ -403,6 +405,8 @@
     const globalStats = document.getElementById("global-stats");
     const globalSourceFilter = document.getElementById("global-source-filter");
     const globalLeagueFilter = document.getElementById("global-league-filter");
+    const globalLeagueFilterCard = document.getElementById("global-league-filter-card");
+    const cupTabs = document.getElementById("cup-tabs");
     const tableDataset = document.getElementById("table-dataset");
     const tableLeague = document.getElementById("table-league");
     const tableViewToggle = document.getElementById("table-view-toggle");
@@ -424,12 +428,22 @@
     const brandHomeBtn = document.getElementById("brand-home-btn");
     const leagueTablesCache = { global: null, mls: null, extra: null };
     let tableViewMode = "standings";
-    const upcomingCache = { global: [], mls: [], extra: [] };
+    const upcomingCache = { global: [], mls: [], extra: [], cups: [] };
     const upcomingStatsCache = {
       global: { stats: null, league_stats: [] },
       mls: { stats: null, league_stats: [] },
       extra: { stats: null, league_stats: [] },
+      cups: { stats: null, league_stats: [] },
     };
+    const cupPredictionTabs = [
+      { key: "all", label: "All Cups", competitions: [] },
+      { key: "fa-cup", label: "FA Cup", competitions: ["England/FA Cup"] },
+      { key: "league-cup", label: "League Cup", competitions: ["England/League Cup"] },
+      { key: "champions-league", label: "Champions League", competitions: ["UEFA/Champions League", "Europe/Champions League"] },
+      { key: "europa-league", label: "Europa League", competitions: ["UEFA/Europa League", "Europe/Europa League"] },
+      { key: "conference-league", label: "Conference League", competitions: ["UEFA/Conference League", "Europe/Conference League"] },
+    ];
+    let activeCupTab = "all";
     const mlsTeamSet = new Set(
       Array.from(document.querySelectorAll("#mls-teams option"))
         .map((opt) => String(opt.value || "").trim().toLowerCase())
@@ -1111,14 +1125,21 @@
     }
 
     function renderLeagueStats(leagueStats, selectedLeague) {
-      if (!selectedLeague || !leagueStats || !leagueStats.length) {
+      const selectedLeagues = Array.isArray(selectedLeague)
+        ? selectedLeague.filter(Boolean)
+        : (selectedLeague ? [selectedLeague] : []);
+      if (!selectedLeagues.length || !leagueStats || !leagueStats.length) {
         return "<p>No selected league stats yet.</p>";
       }
-      const row = leagueStats.find((item) => item.competition === selectedLeague);
-      if (!row) {
+      const rows = leagueStats.filter((item) => selectedLeagues.includes(item.competition));
+      if (!rows.length) {
         return "<p>No selected league stats yet.</p>";
       }
-      return `<p><strong>${row.competition} Accuracy:</strong> ${row.correct_total}/${row.settled_total} (${asPct(row.accuracy_pct)})</p>`;
+      const label = selectedLeagues.length === 1 ? selectedLeagues[0] : rows.map((row) => row.competition).join(" / ");
+      const correctTotal = rows.reduce((sum, row) => sum + (Number(row.correct_total) || 0), 0);
+      const settledTotal = rows.reduce((sum, row) => sum + (Number(row.settled_total) || 0), 0);
+      const accuracyPct = settledTotal ? (100 * correctTotal / settledTotal) : 0;
+      return `<p><strong>${label} Accuracy:</strong> ${correctTotal}/${settledTotal} (${asPct(accuracyPct)})</p>`;
     }
 
     function renderStats(target, stats, leagueStats, selectedLeague) {
@@ -1142,12 +1163,66 @@
         .replace(/'/g, "&#39;");
     }
 
+    function currentUpcomingSource() {
+      if (globalSourceFilter.value === "mls") return "mls";
+      if (globalSourceFilter.value === "extra") return "extra";
+      if (globalSourceFilter.value === "cups") return "cups";
+      return "global";
+    }
+
+    function upcomingUrlForSource(source) {
+      if (source === "mls") return "/api/upcoming/mls";
+      if (source === "extra") return "/api/upcoming/extra";
+      if (source === "cups") return "/api/upcoming/cups";
+      return "/api/upcoming/global";
+    }
+
+    function normalizeLeagueSelection(selectedLeague) {
+      if (Array.isArray(selectedLeague)) {
+        return selectedLeague.map((league) => String(league || "").trim()).filter(Boolean);
+      }
+      const league = String(selectedLeague || "").trim();
+      return league ? [league] : [];
+    }
+
+    function rowsForLeagueSelection(rows, selectedLeague) {
+      const selectedLeagues = normalizeLeagueSelection(selectedLeague);
+      if (!selectedLeagues.length) return rows;
+      return rows.filter((r) => selectedLeagues.includes(r.competition));
+    }
+
+    function renderCupTabs() {
+      cupTabs.innerHTML = cupPredictionTabs.map((tab) => `
+        <button
+          class="tab-btn ${tab.key === activeCupTab ? "active" : ""}"
+          type="button"
+          data-cup-tab="${escapeHtml(tab.key)}"
+        >${escapeHtml(tab.label)}</button>
+      `).join("");
+    }
+
+    function activeCupSelection() {
+      return cupPredictionTabs.find((tab) => tab.key === activeCupTab) || cupPredictionTabs[0];
+    }
+
+    function renderActiveCupTab() {
+      const tab = activeCupSelection();
+      renderUpcoming(globalList, upcomingCache.cups, tab.competitions);
+      const payload = upcomingStatsCache.cups;
+      renderStats(
+        globalStats,
+        payload.stats || { correct_total: 0, total_predictions: 0, pending_total: 0, accuracy_pct: 0.0 },
+        payload.league_stats || [],
+        tab.competitions
+      );
+    }
+
     function renderUpcoming(target, rows, selectedLeague) {
       if (!rows.length) {
         target.innerHTML = "<p>No upcoming predictions found.</p>";
         return;
       }
-      const visibleRows = selectedLeague ? rows.filter((r) => r.competition === selectedLeague) : rows;
+      const visibleRows = rowsForLeagueSelection(rows, selectedLeague);
       if (!visibleRows.length) {
         target.innerHTML = "<p>No upcoming predictions for this league.</p>";
         return;
@@ -1271,7 +1346,12 @@
 
     function renderTopPicks() {
       const allRows = dedupeFixtures(
-        [...(upcomingCache.global || []), ...(upcomingCache.mls || []), ...(upcomingCache.extra || [])]
+        [
+          ...(upcomingCache.global || []),
+          ...(upcomingCache.mls || []),
+          ...(upcomingCache.extra || []),
+          ...(upcomingCache.cups || []),
+        ]
           .filter(isValidProbabilityRow)
       );
       const futureRows = allRows.filter(isLikelyFutureFixture);
@@ -1344,6 +1424,9 @@
     async function loadUpcoming(mode, url, target, statsTarget, filterEl) {
       target.textContent = "Loading...";
       statsTarget.textContent = "Loading...";
+      const isCupMode = mode === "cups";
+      cupTabs.classList.toggle("hidden", !isCupMode);
+      globalLeagueFilterCard.classList.toggle("hidden", isCupMode);
       const resp = await fetch(url);
       const data = await resp.json();
       if (!resp.ok || !data.ok) {
@@ -1359,8 +1442,13 @@
       const leagueStats = data.league_stats || [];
       upcomingStatsCache[mode] = { stats: stats, league_stats: leagueStats };
       const selectedLeague = populateUpcomingLeagueFilter(filterEl, rows);
-      renderUpcoming(target, rows, selectedLeague);
-      renderStats(statsTarget, stats, leagueStats, selectedLeague);
+      if (isCupMode) {
+        renderCupTabs();
+        renderActiveCupTab();
+      } else {
+        renderUpcoming(target, rows, selectedLeague);
+        renderStats(statsTarget, stats, leagueStats, selectedLeague);
+      }
       renderTopPicks();
     }
 
@@ -1396,6 +1484,17 @@
           }
         } catch (err) {
           console.error("Failed to preload extra upcoming rows", err);
+        }
+      }
+      if (!upcomingCache.cups.length) {
+        try {
+          const respCups = await fetch("/api/upcoming/cups");
+          const dataCups = await respCups.json();
+          if (respCups.ok && dataCups.ok) {
+            upcomingCache.cups = dataCups.rows || [];
+          }
+        } catch (err) {
+          console.error("Failed to preload cup upcoming rows", err);
         }
       }
       renderTopPicks();
@@ -1585,19 +1684,8 @@
     feedbackSubmit.addEventListener("click", submitFeedback);
     tabGlobal.addEventListener("click", async () => {
       activateTab("global");
-      const source =
-        globalSourceFilter.value === "mls"
-          ? "mls"
-          : globalSourceFilter.value === "extra"
-            ? "extra"
-            : "global";
-      const url =
-        source === "mls"
-          ? "/api/upcoming/mls"
-          : source === "extra"
-            ? "/api/upcoming/extra"
-            : "/api/upcoming/global";
-      await loadUpcoming(source, url, globalList, globalStats, globalLeagueFilter);
+      const source = currentUpcomingSource();
+      await loadUpcoming(source, upcomingUrlForSource(source), globalList, globalStats, globalLeagueFilter);
     });
     tabH2H.addEventListener("click", () => activateTab("h2h"));
     tabMarket.addEventListener("click", () => activateTab("market"));
@@ -1666,12 +1754,11 @@
       renderSelectedLeagueTable();
     });
     globalLeagueFilter.addEventListener("change", () => {
-      const source =
-        globalSourceFilter.value === "mls"
-          ? "mls"
-          : globalSourceFilter.value === "extra"
-            ? "extra"
-            : "global";
+      const source = currentUpcomingSource();
+      if (source === "cups") {
+        renderActiveCupTab();
+        return;
+      }
       renderUpcoming(globalList, upcomingCache[source], globalLeagueFilter.value);
       const payload = upcomingStatsCache[source];
       renderStats(
@@ -1682,19 +1769,15 @@
       );
     });
     globalSourceFilter.addEventListener("change", async () => {
-      const source =
-        globalSourceFilter.value === "mls"
-          ? "mls"
-          : globalSourceFilter.value === "extra"
-            ? "extra"
-            : "global";
-      const url =
-        source === "mls"
-          ? "/api/upcoming/mls"
-          : source === "extra"
-            ? "/api/upcoming/extra"
-            : "/api/upcoming/global";
-      await loadUpcoming(source, url, globalList, globalStats, globalLeagueFilter);
+      const source = currentUpcomingSource();
+      await loadUpcoming(source, upcomingUrlForSource(source), globalList, globalStats, globalLeagueFilter);
+    });
+    cupTabs.addEventListener("click", (event) => {
+      const btn = event.target.closest("[data-cup-tab]");
+      if (!btn) return;
+      activeCupTab = btn.getAttribute("data-cup-tab") || "all";
+      renderCupTabs();
+      renderActiveCupTab();
     });
 
     globalList.addEventListener("click", (event) => {

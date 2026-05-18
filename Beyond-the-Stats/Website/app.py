@@ -47,11 +47,6 @@ ACCURACY_HISTORY_DIR = os.path.join(WEBSITE_FILES_DIR, "accuracy_history")
 ACCURACY_TOTALS_FILE = os.path.join(WEBSITE_FILES_DIR, "accuracy_totals.json")
 GLOBAL_UPCOMING_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "upcoming_matchweek_predictions.csv")
 CUP_UPCOMING_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "upcoming_cup_predictions.csv")
-@app.get("/api/upcoming/cups")
-def api_upcoming_cups():
-    """Return upcoming cup fixtures and persistent accuracy stats."""
-    rows, stats, league_stats = _load_upcoming_rows(CUP_UPCOMING_FILE, "cups")
-    return jsonify({"ok": True, "rows": rows, "stats": stats, "league_stats": league_stats})
 MLS_UPCOMING_FILE = os.path.join(PROJECT_DIR, "MLS", "Data", "Predictions", "upcoming_matchweek_predictions.csv")
 EXTRA_UPCOMING_FILE = os.path.join(PROJECT_DIR, "Extra-leagues", "Data", "Predictions", "upcoming_matchweek_predictions.csv")
 GLOBAL_PROJECTED_TABLE_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "projected_league_tables.csv")
@@ -64,6 +59,16 @@ TEAM_NAME_DISPLAY_MAPPING_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions"
 TOP_SCORERS_FILE = os.path.join(PROJECT_DIR, "Data", "Team_Data", "current_season_top_scorers.json")
 USE_DISPLAY_NAME_MAPPING = False
 MLS_COMPETITION = "United States/MLS"
+CUP_COMPETITIONS = {
+    "England/FA Cup",
+    "England/League Cup",
+    "UEFA/Champions League",
+    "UEFA/Europa League",
+    "UEFA/Conference League",
+    "Europe/Champions League",
+    "Europe/Europa League",
+    "Europe/Conference League",
+}
 STATIC_PREDICTIONS = os.environ.get("STATIC_PREDICTIONS", "1").strip().lower() in {"1", "true", "yes"}
 LOW_MEMORY_STATIC = os.environ.get("LOW_MEMORY_STATIC", "1").strip().lower() in {"1", "true", "yes"}
 STATIC_PREDICTIONS_CACHE = os.environ.get("STATIC_PREDICTIONS_CACHE", "0").strip().lower() in {"1", "true", "yes"}
@@ -798,10 +803,15 @@ def _build_persistent_accuracy_stats(mode, rows):
         }
     elif mode == "extra":
         filtered = {}
+    elif mode == "cups":
+        filtered = {
+            str(k): v for k, v in by_league_all.items()
+            if str(k).strip() in CUP_COMPETITIONS
+        }
     else:
         filtered = {
             str(k): v for k, v in by_league_all.items()
-            if str(k).strip() != MLS_COMPETITION
+            if str(k).strip() != MLS_COMPETITION and str(k).strip() not in CUP_COMPETITIONS
         }
 
     pending_by_league = {}
@@ -1584,6 +1594,13 @@ def api_upcoming_mls():
 def api_upcoming_extra():
     """Return upcoming extra-league fixtures and persistent accuracy stats."""
     rows, stats, league_stats = _load_upcoming_rows(EXTRA_UPCOMING_FILE, "extra")
+    return jsonify({"ok": True, "rows": rows, "stats": stats, "league_stats": league_stats})
+
+
+@app.get("/api/upcoming/cups")
+def api_upcoming_cups():
+    """Return upcoming cup fixtures and persistent accuracy stats."""
+    rows, stats, league_stats = _load_upcoming_rows(CUP_UPCOMING_FILE, "cups")
     return jsonify({"ok": True, "rows": rows, "stats": stats, "league_stats": league_stats})
 
 
