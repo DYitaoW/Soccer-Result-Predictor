@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-05-12T17:26:42.888162Z",
+  "generated_at_utc": "2026-05-15T21:41:05.439879Z",
   "eastern_seeds": [
     {
       "seed": 1,
@@ -19,23 +19,23 @@
     },
     {
       "seed": 5,
-      "team": "FC Cincinnati"
-    },
-    {
-      "seed": 6,
       "team": "New York City"
     },
     {
+      "seed": 6,
+      "team": "FC Cincinnati"
+    },
+    {
       "seed": 7,
-      "team": "Charlotte"
+      "team": "New York Red Bulls"
     },
     {
       "seed": 8,
-      "team": "DC United"
+      "team": "Charlotte"
     },
     {
       "seed": 9,
-      "team": "New York Red Bulls"
+      "team": "Orlando City"
     }
   ],
   "western_seeds": [
@@ -61,69 +61,69 @@
     },
     {
       "seed": 6,
-      "team": "FC Dallas"
+      "team": "Real Salt Lake"
     },
     {
       "seed": 7,
-      "team": "Houston Dynamo"
+      "team": "San Diego FC"
     },
     {
       "seed": 8,
-      "team": "Los Angeles Galaxy"
+      "team": "FC Dallas"
     },
     {
       "seed": 9,
-      "team": "Real Salt Lake"
+      "team": "Houston Dynamo"
     }
   ],
   "wildcard": {
     "east": {
-      "home_team": "DC United",
-      "away_team": "New York Red Bulls",
-      "winner": "DC United"
+      "home_team": "Charlotte",
+      "away_team": "Orlando City",
+      "winner": "Charlotte"
     },
     "west": {
-      "home_team": "Los Angeles Galaxy",
-      "away_team": "Real Salt Lake",
-      "winner": "Los Angeles Galaxy"
+      "home_team": "FC Dallas",
+      "away_team": "Houston Dynamo",
+      "winner": "FC Dallas"
     }
   },
   "round_one": {
     "east": {
       "A": {
         "high_seed_team": "Nashville SC",
-        "low_seed_team": "DC United",
+        "low_seed_team": "Charlotte",
         "winner": "Nashville SC",
         "games": [
           {
             "home": "Nashville SC",
-            "away": "DC United",
+            "away": "Charlotte",
             "winner": "Nashville SC"
           },
           {
-            "home": "DC United",
+            "home": "Charlotte",
             "away": "Nashville SC",
-            "winner": "DC United"
+            "winner": "Charlotte"
           },
           {
             "home": "Nashville SC",
-            "away": "DC United",
+            "away": "Charlotte",
             "winner": "Nashville SC"
           }
         ]
       },
       "B": {
         "high_seed_team": "Inter Miami",
-        "low_seed_team": "Charlotte",
+        "low_seed_team": "New York Red Bulls",
         "winner": "Inter Miami",
         "games": [
           {
             "home": "Inter Miami",
-            "away": "Charlotte",
+            "away": "New York Red Bulls",
             "winner": "Inter Miami"
           },
           {
-            "home": "Charlotte",
+            "home": "New York Red Bulls",
             "away": "Inter Miami",
             "winner": "Inter Miami"
           }
@@ -131,16 +131,16 @@
       },
       "C": {
         "high_seed_team": "New England Revolution",
-        "low_seed_team": "New York City",
+        "low_seed_team": "FC Cincinnati",
         "winner": "New England Revolution",
         "games": [
           {
             "home": "New England Revolution",
-            "away": "New York City",
+            "away": "FC Cincinnati",
             "winner": "New England Revolution"
           },
           {
-            "home": "New York City",
+            "home": "FC Cincinnati",
             "away": "New England Revolution",
             "winner": "New England Revolution"
           }
@@ -148,18 +148,23 @@
       },
       "D": {
         "high_seed_team": "Chicago Fire",
-        "low_seed_team": "FC Cincinnati",
-        "winner": "FC Cincinnati",
+        "low_seed_team": "New York City",
+        "winner": "Chicago Fire",
         "games": [
           {
             "home": "Chicago Fire",
-            "away": "FC Cincinnati",
-            "winner": "FC Cincinnati"
+            "away": "New York City",
+            "winner": "Chicago Fire"
           },
           {
-            "home": "FC Cincinnati",
+            "home": "New York City",
             "away": "Chicago Fire",
-            "winner": "FC Cincinnati"
+            "winner": "New York City"
+          },
+          {
+            "home": "Chicago Fire",
+            "away": "New York City",
+            "winner": "Chicago Fire"
           }
         ]
       }
@@ -167,62 +172,67 @@
     "west": {
       "A": {
         "high_seed_team": "Vancouver Whitecaps",
-        "low_seed_team": "Los Angeles Galaxy",
+        "low_seed_team": "FC Dallas",
         "winner": "Vancouver Whitecaps",
         "games": [
           {
             "home": "Vancouver Whitecaps",
-            "away": "Los Angeles Galaxy",
+            "away": "FC Dallas",
             "winner": "Vancouver Whitecaps"
           },
           {
-            "home": "Los Angeles Galaxy",
+            "home": "FC Dallas",
             "away": "Vancouver Whitecaps",
+            "winner": "FC Dallas"
+          },
+          {
+            "home": "Vancouver Whitecaps",
+            "away": "FC Dallas",
             "winner": "Vancouver Whitecaps"
           }
         ]
       },
       "B": {
         "high_seed_team": "Seattle Sounders",
-        "low_seed_team": "Houston Dynamo",
+        "low_seed_team": "San Diego FC",
         "winner": "Seattle Sounders",
         "games": [
           {
             "home": "Seattle Sounders",
-            "away": "Houston Dynamo",
+            "away": "San Diego FC",
             "winner": "Seattle Sounders"
           },
           {
-            "home": "Houston Dynamo",
+            "home": "San Diego FC",
             "away": "Seattle Sounders",
-            "winner": "Houston Dynamo"
+            "winner": "San Diego FC"
           },
           {
             "home": "Seattle Sounders",
-            "away": "Houston Dynamo",
+            "away": "San Diego FC",
             "winner": "Seattle Sounders"
           }
         ]
       },
       "C": {
         "high_seed_team": "San Jose Earthquakes",
-        "low_seed_team": "FC Dallas",
-        "winner": "FC Dallas",
+        "low_seed_team": "Real Salt Lake",
+        "winner": "San Jose Earthquakes",
         "games": [
           {
             "home": "San Jose Earthquakes",
-            "away": "FC Dallas",
-            "winner": "FC Dallas"
-          },
-          {
-            "home": "FC Dallas",
-            "away": "San Jose Earthquakes",
+            "away": "Real Salt Lake",
             "winner": "San Jose Earthquakes"
           },
           {
+            "home": "Real Salt Lake",
+            "away": "San Jose Earthquakes",
+            "winner": "Real Salt Lake"
+          },
+          {
             "home": "San Jose Earthquakes",
-            "away": "FC Dallas",
-            "winner": "FC Dallas"
+            "away": "Real Salt Lake",
+            "winner": "San Jose Earthquakes"
           }
         ]
       },
@@ -249,7 +259,7 @@
     "east": [
       {
         "home_team": "Nashville SC",
-        "away_team": "FC Cincinnati",
+        "away_team": "Chicago Fire",
         "winner": "Nashville SC"
       },
       {
@@ -262,12 +272,12 @@
       {
         "home_team": "Vancouver Whitecaps",
         "away_team": "Los Angeles FC",
-        "winner": "Los Angeles FC"
+        "winner": "Vancouver Whitecaps"
       },
       {
         "home_team": "Seattle Sounders",
-        "away_team": "FC Dallas",
-        "winner": "Seattle Sounders"
+        "away_team": "San Jose Earthquakes",
+        "winner": "San Jose Earthquakes"
       }
     ]
   },
@@ -275,17 +285,17 @@
     "east": {
       "home_team": "Nashville SC",
       "away_team": "Inter Miami",
-      "winner": "Inter Miami"
+      "winner": "Nashville SC"
     },
     "west": {
-      "home_team": "Los Angeles FC",
-      "away_team": "Seattle Sounders",
-      "winner": "Los Angeles FC"
+      "home_team": "Vancouver Whitecaps",
+      "away_team": "San Jose Earthquakes",
+      "winner": "Vancouver Whitecaps"
     }
   },
   "mls_cup": {
-    "home_team": "Inter Miami",
-    "away_team": "Los Angeles FC",
-    "winner": "Inter Miami"
+    "home_team": "Nashville SC",
+    "away_team": "Vancouver Whitecaps",
+    "winner": "Vancouver Whitecaps"
   }
 }

@@ -46,6 +46,12 @@ FEEDBACK_FILE = os.path.join(FEEDBACK_DIR, "feedback.txt")
 ACCURACY_HISTORY_DIR = os.path.join(WEBSITE_FILES_DIR, "accuracy_history")
 ACCURACY_TOTALS_FILE = os.path.join(WEBSITE_FILES_DIR, "accuracy_totals.json")
 GLOBAL_UPCOMING_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "upcoming_matchweek_predictions.csv")
+CUP_UPCOMING_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "upcoming_cup_predictions.csv")
+@app.get("/api/upcoming/cups")
+def api_upcoming_cups():
+    """Return upcoming cup fixtures and persistent accuracy stats."""
+    rows, stats, league_stats = _load_upcoming_rows(CUP_UPCOMING_FILE, "cups")
+    return jsonify({"ok": True, "rows": rows, "stats": stats, "league_stats": league_stats})
 MLS_UPCOMING_FILE = os.path.join(PROJECT_DIR, "MLS", "Data", "Predictions", "upcoming_matchweek_predictions.csv")
 EXTRA_UPCOMING_FILE = os.path.join(PROJECT_DIR, "Extra-leagues", "Data", "Predictions", "upcoming_matchweek_predictions.csv")
 GLOBAL_PROJECTED_TABLE_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "projected_league_tables.csv")

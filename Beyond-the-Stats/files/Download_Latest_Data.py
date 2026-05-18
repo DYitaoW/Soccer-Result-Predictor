@@ -1,3 +1,21 @@
+# Utility to load all available raw CSVs into a single DataFrame for fallback use
+def fetch_source_dataframe():
+    frames = []
+    for comp in COMPETITIONS:
+        league_code = comp["league_code"]
+        # Find all CSVs for this league in RAW_DATA_DIR
+        for fname in os.listdir(RAW_DATA_DIR):
+            if fname.endswith(".csv") and league_code in fname:
+                fpath = os.path.join(RAW_DATA_DIR, fname)
+                try:
+                    df = pd.read_csv(fpath)
+                    frames.append(df)
+                except Exception:
+                    continue
+    if not frames:
+        return pd.DataFrame()
+    # Concatenate all, ignore index
+    return pd.concat(frames, ignore_index=True, sort=False)
 import os
 import urllib.request
 from datetime import datetime

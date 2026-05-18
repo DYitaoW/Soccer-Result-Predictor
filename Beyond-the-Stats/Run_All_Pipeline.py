@@ -130,6 +130,13 @@ def main():
             continue_on_error=args.continue_on_error,
         )
 
+        # Run cup predictions (new step)
+        run_step(
+            "Global upcoming cup predictions",
+            [py, str(FILES_DIR / "Predict_Upcoming_Cups"), "--window-days", str(args.window_days)],
+            continue_on_error=args.continue_on_error,
+        )
+
     if not args.skip_mls:
         run_step(
             "MLS download/process/sort latest data",

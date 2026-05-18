@@ -1,13 +1,13 @@
 {
     "season": "Brazil\\Serie A\\brastat2026",
     "source_file": "Brazil\\Serie A\\brastat2026.csv",
-    "generated_at_utc": "2026-05-12T17:26:50",
+    "generated_at_utc": "2026-05-15T21:41:13",
     "teams": {
         "Athletico-PR": {
             "status": "ok",
             "club_id": "679",
             "club_url": "https://www.transfermarkt.com/club-athletico-paranaense/startseite/verein/679",
-            "injured_players_excluded": 3,
+            "injured_players_excluded": 5,
             "top_5_players": [
                 {
                     "player": "Bruno Zapelli",
@@ -45,7 +45,7 @@
             "status": "ok",
             "club_id": "330",
             "club_url": "https://www.transfermarkt.com/clube-atletico-mineiro/startseite/verein/330",
-            "injured_players_excluded": 3,
+            "injured_players_excluded": 4,
             "top_5_players": [
                 {
                     "player": "Renan Lodi",
@@ -83,10 +83,16 @@
             "status": "ok",
             "club_id": "6600",
             "club_url": "https://www.transfermarkt.com/sc-internacional-porto-alegre/startseite/verein/6600",
-            "injured_players_excluded": 5,
+            "injured_players_excluded": 4,
             "top_5_players": [
                 {
                     "player": "Victor Gabriel",
+                    "position_group": "defense",
+                    "market_value": "\u20ac5.00m",
+                    "market_value_eur": 5000000
+                },
+                {
+                    "player": "Bruno Gomes",
                     "position_group": "defense",
                     "market_value": "\u20ac5.00m",
                     "market_value_eur": 5000000
@@ -98,20 +104,14 @@
                     "market_value_eur": 5000000
                 },
                 {
-                    "player": "Bruno Gomes",
-                    "position_group": "defense",
-                    "market_value": "\u20ac5.00m",
-                    "market_value_eur": 5000000
-                },
-                {
-                    "player": "Rodrigo Villagra",
-                    "position_group": "midfield",
+                    "player": "Anthoni",
+                    "position_group": "goalkeeper",
                     "market_value": "\u20ac4.00m",
                     "market_value_eur": 4000000
                 },
                 {
-                    "player": "Johan Carbonero",
-                    "position_group": "attack",
+                    "player": "Rodrigo Villagra",
+                    "position_group": "midfield",
                     "market_value": "\u20ac4.00m",
                     "market_value_eur": 4000000
                 }
@@ -292,7 +292,7 @@
             "status": "ok",
             "club_id": "210",
             "club_url": "https://www.transfermarkt.com/gremio-porto-alegre/startseite/verein/210",
-            "injured_players_excluded": 6,
+            "injured_players_excluded": 7,
             "top_5_players": [
                 {
                     "player": "Gabriel Mec",
@@ -330,17 +330,17 @@
             "status": "ok",
             "club_id": "69261",
             "club_url": "https://www.transfermarkt.com/inter-miami-cf/startseite/verein/69261",
-            "injured_players_excluded": 1,
+            "injured_players_excluded": 3,
             "top_5_players": [
                 {
-                    "player": "Rodrigo De Paul",
-                    "position_group": "midfield",
+                    "player": "Lionel Messi",
+                    "position_group": "attack",
                     "market_value": "\u20ac15.00m",
                     "market_value_eur": 15000000
                 },
                 {
-                    "player": "Lionel Messi",
-                    "position_group": "attack",
+                    "player": "Rodrigo De Paul",
+                    "position_group": "midfield",
                     "market_value": "\u20ac15.00m",
                     "market_value_eur": 15000000
                 },
@@ -357,10 +357,10 @@
                     "market_value_eur": 6000000
                 },
                 {
-                    "player": "Tadeo Allende",
-                    "position_group": "attack",
-                    "market_value": "\u20ac5.00m",
-                    "market_value_eur": 5000000
+                    "player": "Telasco Segovia",
+                    "position_group": "midfield",
+                    "market_value": "\u20ac4.50m",
+                    "market_value_eur": 4500000
                 }
             ]
         },
@@ -375,7 +375,7 @@
             "status": "ok",
             "club_id": "1023",
             "club_url": "https://www.transfermarkt.com/se-palmeiras-sao-paulo/startseite/verein/1023",
-            "injured_players_excluded": 3,
+            "injured_players_excluded": 6,
             "top_5_players": [
                 {
                     "player": "Jos\u00e9 Manuel L\u00f3pez",
@@ -390,22 +390,22 @@
                     "market_value_eur": 15000000
                 },
                 {
-                    "player": "Allan",
-                    "position_group": "attack",
-                    "market_value": "\u20ac15.00m",
-                    "market_value_eur": 15000000
-                },
-                {
-                    "player": "Andreas Pereira",
-                    "position_group": "midfield",
-                    "market_value": "\u20ac15.00m",
-                    "market_value_eur": 15000000
-                },
-                {
                     "player": "Mauricio",
                     "position_group": "midfield",
                     "market_value": "\u20ac14.00m",
                     "market_value_eur": 14000000
+                },
+                {
+                    "player": "Paulinho",
+                    "position_group": "attack",
+                    "market_value": "\u20ac11.00m",
+                    "market_value_eur": 11000000
+                },
+                {
+                    "player": "Agust\u00edn Giay",
+                    "position_group": "defense",
+                    "market_value": "\u20ac10.00m",
+                    "market_value_eur": 10000000
                 }
             ]
         },
@@ -458,7 +458,7 @@
             "status": "ok",
             "club_id": "1023",
             "club_url": "https://www.transfermarkt.com/se-palmeiras-sao-paulo/startseite/verein/1023",
-            "injured_players_excluded": 3,
+            "injured_players_excluded": 6,
             "top_5_players": [
                 {
                     "player": "Jos\u00e9 Manuel L\u00f3pez",
@@ -473,22 +473,22 @@
                     "market_value_eur": 15000000
                 },
                 {
-                    "player": "Allan",
-                    "position_group": "attack",
-                    "market_value": "\u20ac15.00m",
-                    "market_value_eur": 15000000
-                },
-                {
-                    "player": "Andreas Pereira",
-                    "position_group": "midfield",
-                    "market_value": "\u20ac15.00m",
-                    "market_value_eur": 15000000
-                },
-                {
                     "player": "Mauricio",
                     "position_group": "midfield",
                     "market_value": "\u20ac14.00m",
                     "market_value_eur": 14000000
+                },
+                {
+                    "player": "Paulinho",
+                    "position_group": "attack",
+                    "market_value": "\u20ac11.00m",
+                    "market_value_eur": 11000000
+                },
+                {
+                    "player": "Agust\u00edn Giay",
+                    "position_group": "defense",
+                    "market_value": "\u20ac10.00m",
+                    "market_value_eur": 10000000
                 }
             ]
         },

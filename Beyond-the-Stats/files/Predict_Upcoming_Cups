@@ -7,7 +7,7 @@ import urllib.request
 import unicodedata
 from datetime import UTC, datetime
 from zoneinfo import ZoneInfo
-
+import requests
 import joblib
 import pandas as pd
 
@@ -29,6 +29,75 @@ FOOTBALL_DATA_API_BASE = "https://api.football-data.org/v4"
 # ESPN scoreboard API template for each competition
 ESPN_SCOREBOARD_API = "https://site.api.espn.com/apis/site/v2/sports/soccer/{espn_id}/scoreboard"
 EASTERN_TZ = ZoneInfo("America/New_York")
+
+# TheSportsDB API
+THESPORTSDB_API_BASE = "https://www.thesportsdb.com/api/v1/json/123"
+
+# Map cup names to TheSportsDB league IDs (these IDs must be correct for each cup)
+THESPORTSDB_LEAGUE_IDS = {
+    "England/FA Cup": "4482",           # English FA Cup 4482
+    "England/League Cup": "4570",     # English League Cup (EFL Cup) 4570
+    "UEFA/Champions League": "4480",             # UEFA Champions League 4480
+    "UEFA/Europa League": "4481",             # UEFA Europa League  4481
+    "UEFA/Conference League": "5071",            # UEFA Europa Conference League 5071
+}
+
+# --- TheSportsDB fixtures fetcher ---
+def load_upcoming_matchweek_fixtures_from_thesportsdb(window_days, competition_name):
+    league_id = THESPORTSDB_LEAGUE_IDS.get(competition_name)
+    if not league_id:
+        print(f"TheSportsDB: No league ID for {competition_name}")
+        return pd.DataFrame()
+    url = f"{THESPORTSDB_API_BASE}/eventsnextleague.php?id={league_id}"
+    try:
+        resp = requests.get(url, timeout=30)
+        resp.raise_for_status()
+        data = resp.json()
+    except Exception as e:
+        print(f"TheSportsDB API error for {competition_name}: {e}")
+        return pd.DataFrame()
+    events = data.get("events") or []
+    if not events:
+        print(f"TheSportsDB: No events found for {competition_name}")
+        return pd.DataFrame()
+    today = pd.Timestamp(datetime.now(UTC).date())
+    rows = []
+    for event in events:
+        #test
+        print(event)
+        # Parse date and filter by window
+        date_str = event.get("dateEvent")
+        if not date_str:
+            continue
+        match_date = pd.to_datetime(date_str, utc=True, errors="coerce")
+        if pd.isna(match_date):
+            continue
+        match_date = match_date.tz_localize(None)
+        if match_date < today:
+            continue
+        # Only include matches within the window
+        cutoff_date = calculate_fixture_window_end(window_days, start_date=today)
+        if match_date > cutoff_date:
+            continue
+        home_team = event.get("strHomeTeam", "").strip()
+        away_team = event.get("strAwayTeam", "").strip()
+        if not home_team or not away_team:
+            continue
+        match_time = event.get("strTime") or ""
+        rows.append({
+            "match_date": match_date,
+            "match_datetime_et": match_time,
+            "competition": competition_name,
+            "home_team": home_team,
+            "away_team": away_team,
+        })
+    fixtures = pd.DataFrame(rows)
+    if fixtures.empty:
+        print(f"TheSportsDB: No valid fixtures for {competition_name}")
+        return fixtures
+    fixtures = fixtures.sort_values(["match_date", "home_team", "away_team"]).reset_index(drop=True)
+    print(f"TheSportsDB: Loaded {len(fixtures)} fixtures for {competition_name}")
+    return fixtures
 
 # Define all target cups and their identifiers/names
 CUP_COMPETITIONS = {
@@ -333,32 +402,37 @@ def predict_fixture(row, context):
         label = context["result_label_encoder"].inverse_transform([encoded_label])[0]
         probabilities[label] = float(proba_values[idx])
 
+    # --- Inline probability adjustment logic from Predict_Match.py ---
     home_league_strength = float(context.get("league_strength", {}).get(home_comp, 0.85))
     away_league_strength = float(context.get("league_strength", {}).get(away_comp, 0.85))
-    probabilities, _, league_direction_shift = pm.apply_league_strength_adjustment(
-        probabilities, home_league_strength, away_league_strength
-    )
+    strength_delta = home_league_strength - away_league_strength
+    strength_gap = abs(strength_delta)
+    draw_scale = 1.0
+    if strength_gap >= 0.08:
+        draw_scale = max(0.65, 1.0 - strength_gap)
+        old_draw = probabilities.get("D", 0.0)
+        probabilities["D"] = old_draw * draw_scale
+        carry = old_draw - probabilities["D"]
+        if carry > 0:
+            non_draw_total = probabilities.get("H", 0.0) + probabilities.get("A", 0.0)
+            if non_draw_total > 0:
+                probabilities["H"] += carry * (probabilities.get("H", 0.0) / non_draw_total)
+                probabilities["A"] += carry * (probabilities.get("A", 0.0) / non_draw_total)
+        total_prob = probabilities.get("H", 0.0) + probabilities.get("D", 0.0) + probabilities.get("A", 0.0)
+        if total_prob > 0:
+            probabilities["H"] /= total_prob
+            probabilities["D"] /= total_prob
+            probabilities["A"] /= total_prob
 
-    home_adv_shift = pm.mls_home_advantage_shift(home_team, prediction_season, context["season_teams"])
-    transfer = min(home_adv_shift, probabilities.get("A", 0.0))
-    probabilities["H"] = max(0.0, probabilities.get("H", 0.0) + transfer)
-    probabilities["A"] = max(0.0, probabilities.get("A", 0.0) - transfer)
-    total_prob = probabilities.get("H", 0.0) + probabilities.get("D", 0.0) + probabilities.get("A", 0.0)
-    if total_prob > 0:
-        probabilities["H"] /= total_prob
-        probabilities["D"] /= total_prob
-        probabilities["A"] /= total_prob
-
-    market_shift, _, _ = pm.market_value_probability_shift(
-        home_team, away_team, context.get("market_value_data", {})
-    )
-    if market_shift != 0.0:
-        if market_shift > 0:
-            transfer = min(market_shift, probabilities.get("A", 0.0))
+    # Directional league-strength correction
+    league_direction_shift = max(-0.14, min(0.14, 0.30 * strength_delta))
+    if league_direction_shift != 0.0:
+        if league_direction_shift > 0:
+            transfer = min(league_direction_shift, probabilities.get("A", 0.0))
             probabilities["H"] += transfer
             probabilities["A"] -= transfer
         else:
-            transfer = min(abs(market_shift), probabilities.get("H", 0.0))
+            transfer = min(abs(league_direction_shift), probabilities.get("H", 0.0))
             probabilities["A"] += transfer
             probabilities["H"] -= transfer
         total_prob = probabilities.get("H", 0.0) + probabilities.get("D", 0.0) + probabilities.get("A", 0.0)
@@ -366,12 +440,28 @@ def predict_fixture(row, context):
             probabilities["H"] /= total_prob
             probabilities["D"] /= total_prob
             probabilities["A"] /= total_prob
-    probabilities = pm.apply_home_advantage_boost(probabilities)
+
+    # No home_advantage or market_value shift for cups (skip those steps)
+
+    # Reduce draw probability
+
     probabilities = pm.reduce_draw_probability(probabilities)
     seed = pm.prediction_randomizer_seed(home_team, away_team, competition, prediction_season)
+
+    # --- Randomizer delta logic by cup type ---
+    # European cups use EU_RANDOMIZER_MAX_DELTA, domestic cups use a lower value, unknowns use a fallback
+    CUP_RANDOMIZER_DELTAS = {
+        "UEFA/Champions League": pm.EU_RANDOMIZER_MAX_DELTA,
+        "UEFA/Europa League": pm.EU_RANDOMIZER_MAX_DELTA,
+        "UEFA/Conference League": pm.EU_RANDOMIZER_MAX_DELTA,
+        "England/FA Cup": 0.045,  # Domestic cup, lower randomness
+        "England/League Cup": 0.045,
+    }
+    # If not mapped, use 0.035 for unknown domestic cups
+    randomizer_delta = CUP_RANDOMIZER_DELTAS.get(competition, 0.035)
     probabilities = pm.apply_probability_randomizer(
         probabilities,
-        pm.MLS_RANDOMIZER_MAX_DELTA,
+        randomizer_delta,
         seed=seed,
     )
 
@@ -385,9 +475,8 @@ def predict_fixture(row, context):
 
     key = make_prediction_key(match_date, competition, home_team, away_team)
     reasoning = (
-        "Base ensemble probability from trained MLS model, then adjusted by top-player market-value edge "
-        f"(league shift {league_direction_shift:+.3f}; home shift {home_adv_shift:+.3f}; "
-        f"market shift {market_shift:+.3f}, attacker-weighted and capped)."
+        "Base ensemble probability from trained model, then adjusted by league strength difference "
+        f"(league shift {league_direction_shift:+.3f})."
     )
     return {
         "prediction_key": key,
@@ -989,7 +1078,7 @@ def load_upcoming_matchweek_fixtures_from_espn(window_days, competition_name, es
     return fixtures
 
 
-def load_upcoming_matchweek_fixtures(api_token, window_days):
+"""def load_upcoming_matchweek_fixtures(api_token, window_days):
     all_fixtures = []
     
     # 1. Prioritize Cups by defined order (FA Cup first)
@@ -1019,7 +1108,7 @@ def load_upcoming_matchweek_fixtures(api_token, window_days):
         if not fixtures.empty:
             all_fixtures.append(fixtures)
             print(f"SUCCESS: Loaded {len(fixtures)} fixtures for {cup_name} from CSV fallback.")
-            continue
+            continue 
 
     # Aggregate all fixtures into one DataFrame
     if not all_fixtures:
@@ -1030,7 +1119,7 @@ def load_upcoming_matchweek_fixtures(api_token, window_days):
     print(f"\n==================================================================")
     print(f"AGGREGATION COMPLETE: Total unique fixtures loaded: {len(final_fixtures)}")
     print(f"==================================================================")
-    return final_fixtures
+    return final_fixtures """
 
 def load_upcoming_matchweek_fixtures(api_token, window_days):
     # --- PIPELINE ORCHESTRATION FOR ALL CUPS ---
@@ -1041,28 +1130,37 @@ def load_upcoming_matchweek_fixtures(api_token, window_days):
     
     for cup_name, cup_data in sorted_cups:
         print(f"\n--- Checking Source for: {cup_name} ---")
-        
-        # A. Try ESPN (Highest Priority)
+         
+        # B. Try TheSportsDB (new)
+        fixtures = load_upcoming_matchweek_fixtures_from_thesportsdb(window_days, cup_data['name'])
+        if not fixtures.empty:
+            all_fixtures.append(fixtures)
+            print(f"SUCCESS: Loaded {len(fixtures)} fixtures for {cup_name} from TheSportsDB.")
+            continue
+
+        # A. Try CSV Fallback FIRST (most reliable for cups)
+        """fixtures = load_upcoming_matchweek_fixtures_from_csv_fallback(window_days, cup_data['name'])
+        if not fixtures.empty:
+            all_fixtures.append(fixtures)
+            print(f"SUCCESS: Loaded {len(fixtures)} fixtures for {cup_name} from CSV fallback.")
+            continue
+
+       
+
+        # C. Try ESPN (secondary)
         fixtures = load_upcoming_matchweek_fixtures_from_espn(window_days, cup_data['name'], cup_data['espn_id'])
         if not fixtures.empty:
             all_fixtures.append(fixtures)
             print(f"SUCCESS: Loaded {len(fixtures)} fixtures for {cup_name} from ESPN.")
-            continue # Stop if successful, as ESPN is the best source
-        
-        # B. Try Paid API (Fallback for MLS/General Leagues)
+            continue
+
+        # D. Try Paid API (Fallback for MLS/General Leagues)
         if cup_data['api_source'] == 'mls' and api_token:
             fixtures = load_upcoming_matchweek_fixtures_from_api(api_token, window_days)
             if not fixtures.empty:
                 all_fixtures.append(fixtures)
                 print(f"SUCCESS: Loaded {len(fixtures)} fixtures for {cup_name} from football-data.org API.")
-                continue
-        
-        # C. Try CSV Fallback
-        fixtures = load_upcoming_matchweek_fixtures_from_csv_fallback(window_days, cup_data['name'])
-        if not fixtures.empty:
-            all_fixtures.append(fixtures)
-            print(f"SUCCESS: Loaded {len(fixtures)} fixtures for {cup_name} from CSV fallback.")
-            continue
+                continue """
 
     # Aggregate all fixtures into one DataFrame
     if not all_fixtures:
