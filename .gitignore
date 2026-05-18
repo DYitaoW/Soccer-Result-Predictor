@@ -15,6 +15,9 @@ Soccer Predictor/Data/Predictions/*.json
 Soccer Predictor/MLS/Data/Predictions/*.csv
 Soccer Predictor/MLS/Data/Predictions/*.json
 Soccer Predictor/Website/files/accuracy_history/**/*.csv
+Beyond-the-Stats/Data/National_Team_Data/
+Beyond-the-Stats/Data/Predictions/upcoming_national_team_predictions.csv
+Beyond-the-Stats/Data/Predictions/world_cup_projection.json
 
 # Local api keys
 Soccer Predictor/files/local_api_keys.json

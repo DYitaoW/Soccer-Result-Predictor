@@ -40,6 +40,12 @@ def parse_args():
         help="Fixture window days for upcoming matchweek scripts.",
     )
     parser.add_argument(
+        "--national-window-days",
+        type=int,
+        default=90,
+        help="Fixture window days for national-team and World Cup prediction scripts.",
+    )
+    parser.add_argument(
         "--continue-on-error",
         action="store_true",
         help="Continue remaining steps if one step fails.",
@@ -137,6 +143,37 @@ def main():
             continue_on_error=args.continue_on_error,
         )
 
+        national_process_cmd = [py, str(FILES_DIR / "Process_National_Team_Data.py"), "--world-cup-only"]
+        if api_token:
+            national_process_cmd += ["--api-token", api_token]
+        run_step(
+            "National team World Cup model",
+            national_process_cmd,
+            continue_on_error=args.continue_on_error,
+        )
+        national_upcoming_cmd = [
+            py,
+            str(FILES_DIR / "Predict_Upcoming_National_Team_Games.py"),
+            "--world-cup-only",
+            "--window-days",
+            str(args.national_window_days),
+        ]
+        if api_token:
+            national_upcoming_cmd += ["--api-token", api_token]
+        run_step(
+            "Upcoming World Cup predictions",
+            national_upcoming_cmd,
+            continue_on_error=args.continue_on_error,
+        )
+        world_cup_project_cmd = [py, str(FILES_DIR / "Project_World_Cup.py")]
+        if api_token:
+            world_cup_project_cmd += ["--api-token", api_token]
+        run_step(
+            "Projected World Cup groups and bracket",
+            world_cup_project_cmd,
+            continue_on_error=args.continue_on_error,
+        )
+
     if not args.skip_mls:
         run_step(
             "MLS download/process/sort latest data",
@@ -200,7 +237,7 @@ def main():
             "-c",
             (
                 "import importlib.util; "
-                "p=r'Soccer Predictor/Website/app.py'; "
+                "p=r'Beyond-the-Stats/Website/app.py'; "
                 "s=importlib.util.spec_from_file_location('webapp', p); "
                 "m=importlib.util.module_from_spec(s); "
                 "s.loader.exec_module(m); "
