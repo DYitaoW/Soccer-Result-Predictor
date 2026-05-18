@@ -191,6 +191,12 @@ def main():
         [py, str(FILES_DIR / "Update_Live_Prediction_Results.py")],
         continue_on_error=args.continue_on_error,
     )
+    if not args.skip_global:
+        run_step(
+            "Track completed cup predictions and cup projections",
+            [py, str(FILES_DIR / "Track_Cup_Results.py")],
+            continue_on_error=args.continue_on_error,
+        )
 
     # Refresh website accuracy-history store for permanent counters.
     run_step(
@@ -200,7 +206,7 @@ def main():
             "-c",
             (
                 "import importlib.util; "
-                "p=r'Soccer Predictor/Website/app.py'; "
+                "p=r'Beyond-the-Stats/Website/app.py'; "
                 "s=importlib.util.spec_from_file_location('webapp', p); "
                 "m=importlib.util.module_from_spec(s); "
                 "s.loader.exec_module(m); "

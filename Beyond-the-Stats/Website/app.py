@@ -47,9 +47,12 @@ ACCURACY_HISTORY_DIR = os.path.join(WEBSITE_FILES_DIR, "accuracy_history")
 ACCURACY_TOTALS_FILE = os.path.join(WEBSITE_FILES_DIR, "accuracy_totals.json")
 GLOBAL_UPCOMING_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "upcoming_matchweek_predictions.csv")
 CUP_UPCOMING_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "upcoming_cup_predictions.csv")
+CUP_COMPLETED_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "completed_cup_predictions.csv")
 MLS_UPCOMING_FILE = os.path.join(PROJECT_DIR, "MLS", "Data", "Predictions", "upcoming_matchweek_predictions.csv")
 EXTRA_UPCOMING_FILE = os.path.join(PROJECT_DIR, "Extra-leagues", "Data", "Predictions", "upcoming_matchweek_predictions.csv")
 GLOBAL_PROJECTED_TABLE_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "projected_league_tables.csv")
+CUP_PROJECTED_TABLE_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "projected_cup_tables.csv")
+CUP_PROJECTED_BRACKET_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "projected_cup_brackets.json")
 MLS_PROJECTED_TABLE_FILE = os.path.join(PROJECT_DIR, "MLS", "Data", "Predictions", "projected_league_tables.csv")
 EXTRA_PROJECTED_TABLE_FILE = os.path.join(PROJECT_DIR, "Extra-leagues", "Data", "Predictions", "projected_league_tables.csv")
 MLS_PROJECTED_BRACKET_FILE = os.path.join(PROJECT_DIR, "MLS", "Data", "Predictions", "projected_mls_playoff_bracket.json")
@@ -1410,16 +1413,18 @@ def _update_accuracy_history_from_csv(csv_path, source_key):
 
 
 def update_accuracy_history_files():
-    """Refresh both global and MLS accuracy history stores."""
+    """Refresh global, MLS, extra-league, and cup accuracy history stores."""
     os.makedirs(ACCURACY_HISTORY_DIR, exist_ok=True)
     global_files, global_rows = _update_accuracy_history_from_csv(GLOBAL_UPCOMING_FILE, "global")
     mls_files, mls_rows = _update_accuracy_history_from_csv(MLS_UPCOMING_FILE, "mls")
     extra_files, extra_rows = _update_accuracy_history_from_csv(EXTRA_UPCOMING_FILE, "extra")
+    cup_files, cup_rows = _update_accuracy_history_from_csv(CUP_COMPLETED_FILE, "cups")
     print(
         "[startup] Accuracy history updated: "
         f"global_files={global_files}, global_new_rows={global_rows}, "
         f"mls_files={mls_files}, mls_new_rows={mls_rows}, "
-        f"extra_files={extra_files}, extra_new_rows={extra_rows}"
+        f"extra_files={extra_files}, extra_new_rows={extra_rows}, "
+        f"cup_files={cup_files}, cup_new_rows={cup_rows}"
     )
 
 
@@ -1612,6 +1617,10 @@ def api_league_tables():
         data = _load_projected_tables(MLS_PROJECTED_TABLE_FILE)
         bracket = _load_json_payload(MLS_PROJECTED_BRACKET_FILE)
         return jsonify({"ok": True, **data, "bracket": bracket})
+    if mode == "cups":
+        data = _load_projected_tables(CUP_PROJECTED_TABLE_FILE)
+        brackets = _load_json_payload(CUP_PROJECTED_BRACKET_FILE)
+        return jsonify({"ok": True, **data, "cup_brackets": brackets})
     if mode == "extra":
         data = _load_projected_tables(EXTRA_PROJECTED_TABLE_FILE)
         return jsonify({"ok": True, **data})
