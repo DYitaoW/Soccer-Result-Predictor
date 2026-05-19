@@ -459,7 +459,7 @@
     const feedbackText = document.getElementById("feedback-text");
     const feedbackSubmit = document.getElementById("feedback-submit");
     const brandHomeBtn = document.getElementById("brand-home-btn");
-    const ACTIVE_PAGE = "{{ active_page }}";
+    const ACTIVE_PAGE = "league-table";
     // Server-provided routes keep top-tab navigation aligned with Flask endpoints.
     const PAGE_ROUTES = {{ page_routes | tojson }};
     const AVAILABLE_UPCOMING_LEAGUES = {{ upcoming_leagues|tojson }};
@@ -2159,8 +2159,7 @@
     });
     tableViewToggle.addEventListener("click", () => {
       tableViewMode = tableViewMode === "standings" ? "probability" : "standings";
-      updateTableViewToggleLabel();
-      if (tableDataset.value === "mls" && tableLeague.value === "__mls_bracket__") {
+      updateTableViewToggleLabel();`r`n      if (tableDataset.value === "mls" && tableLeague.value === "__mls_bracket__") {
         return;
       }
       renderSelectedLeagueTable();
@@ -2218,6 +2217,8 @@
       openMatchupInH2H(btn.getAttribute("data-home-team"), btn.getAttribute("data-away-team"));
     });
     updateTableViewToggleLabel();
+    // Ensure only this page panel is visible in dedicated templates.
+    activateTab(ACTIVE_PAGE);
     async function initializeActivePage() {
       // Auto-run H2H compare when opened from an upcoming-match deep link.
       if (ACTIVE_PAGE === "h2h") {
@@ -2256,3 +2257,5 @@
   </script>
 </body>
 </html>
+
+

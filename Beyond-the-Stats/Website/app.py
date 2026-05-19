@@ -12,7 +12,7 @@ from zoneinfo import ZoneInfo
 
 import joblib
 import pandas as pd
-from flask import Flask, jsonify, render_template, request, send_from_directory
+from flask import Flask, jsonify, redirect, render_template, request, send_from_directory, url_for
 
 
 class AveragedProbaClassifier:
@@ -115,6 +115,24 @@ PAGE_ROUTES = {
     "tactics": "/tactics",
     "about": "/about",
 }
+
+
+def _build_page_routes():
+    """Build navigation routes from endpoint names so links always stay in sync."""
+    return {
+        "home": url_for("index"),
+        "predictor": url_for("custom_predictor"),
+        "global": url_for("upcoming_matches"),
+        "cups": url_for("cups_page"),
+        "h2h": url_for("head_to_head"),
+        "market": url_for("market_odds"),
+        "league-table": url_for("league_tables"),
+        "world-cup": url_for("world_cup_page"),
+        "position-odds": url_for("position_odds"),
+        "players": url_for("players"),
+        "tactics": url_for("tactics"),
+        "about": url_for("about"),
+    }
 STATIC_PREDICTIONS = os.environ.get("STATIC_PREDICTIONS", "1").strip().lower() in {"1", "true", "yes"}
 LOW_MEMORY_STATIC = os.environ.get("LOW_MEMORY_STATIC", "1").strip().lower() in {"1", "true", "yes"}
 STATIC_PREDICTIONS_CACHE = os.environ.get("STATIC_PREDICTIONS_CACHE", "0").strip().lower() in {"1", "true", "yes"}
@@ -1584,8 +1602,23 @@ def update_accuracy_history_files():
     )
 
 
+PAGE_TEMPLATE_BY_TAB = {
+    # Map each top-tab route to a dedicated template file.
+    "home": "home.html",
+    "predictor": "predictor.html",
+    "global": "upcoming_matches.html",
+    "cups": "cups.html",
+    "h2h": "head_to_head.html",
+    "market": "market_odds.html",
+    "league-table": "league_tables.html",
+    "world-cup": "world_cup.html",
+    "position-odds": "position_odds.html",
+    "about": "about.html",
+}
+
+
 def _render_main_page(active_page="home"):
-    """Render the shared website shell for a top-level page."""
+    """Render a dedicated tab template while preserving shared page data context."""
     if STATIC_PREDICTIONS:
         _, global_teams = _get_static_predictions("global")
         _, mls_teams = _get_static_predictions("mls")
@@ -1609,10 +1642,13 @@ def _render_main_page(active_page="home"):
             extra_display_teams = sorted({_team_name_for_display(team) for team in extra_ctx.available_teams})
         except Exception:
             extra_display_teams = sorted({_team_name_for_display(team) for team in _load_teams_from_team_data(pm_extra)})
+    template_name = PAGE_TEMPLATE_BY_TAB.get(active_page, "home.html")
     return render_template(
-        "index.html",
+        template_name,
+        # Route-selected page key drives per-template panel visibility and initialization.
         active_page=active_page,
-        page_routes=PAGE_ROUTES,
+        # Build routes per request so nav links follow live endpoint paths.
+        page_routes=_build_page_routes(),
         upcoming_leagues=_available_upcoming_leagues(),
         table_leagues=_available_table_leagues(),
         teams=global_display_teams,
@@ -1922,15 +1958,31 @@ def api_feedback():
 
 
 @app.get("/tactics")
+@app.get("/tactics/")
 def tactics():
     """Render the tactics whiteboard page."""
     return render_template("tactics.html")
 
 
 @app.get("/players")
+@app.get("/players/")
 def players():
     """Render the players/top scorers page."""
     return render_template("players.html")
+
+
+@app.get("/player")
+@app.get("/player/")
+def players_alias():
+    """Redirect legacy singular player route to the canonical players page."""
+    return redirect(url_for("players"), code=302)
+
+
+@app.get("/tactic")
+@app.get("/tactic/")
+def tactics_alias():
+    """Redirect legacy singular tactic route to the canonical tactics page."""
+    return redirect(url_for("tactics"), code=302)
 
 
 @app.get("/api/scorers")
