@@ -36,7 +36,7 @@ def parse_cli_args():
         "--window-days",
         type=int,
         default=DEFAULT_MLS_CUP_FIXTURE_WINDOW_DAYS,
-        help="Fallback lookahead window in days for MLS cups without a configured fixture window.",
+        help="Fallback days after an MLS cup's first upcoming fixture for cups without a configured fixture window.",
     )
     return parser.parse_args()
 
@@ -46,6 +46,26 @@ def cup_fixture_window_days(cup_data, fallback_window_days):
         return int(cup_data.get("fixture_window_days", fallback_window_days))
     except (TypeError, ValueError):
         return int(fallback_window_days)
+
+
+def filter_to_next_fixture_window(fixtures, window_days, label):
+    if fixtures.empty:
+        return fixtures
+
+    frame = fixtures.copy()
+    frame["match_date"] = pd.to_datetime(frame["match_date"], errors="coerce").dt.normalize()
+    frame = frame[frame["match_date"].notna()].copy()
+    if frame.empty:
+        return frame
+
+    first_fixture_date = frame["match_date"].min()
+    cutoff_date = upcoming.calculate_fixture_window_end(window_days, start_date=first_fixture_date)
+    filtered = frame[frame["match_date"] <= cutoff_date].reset_index(drop=True)
+    print(
+        f"{label}: First fixture {first_fixture_date.date()} anchors "
+        f"{window_days}-day cutoff at {cutoff_date.date()}."
+    )
+    return filtered
 
 
 def load_upcoming_mls_cup_fixtures_from_thesportsdb(window_days, cup_data):
@@ -66,8 +86,7 @@ def load_upcoming_mls_cup_fixtures_from_thesportsdb(window_days, cup_data):
         print(f"TheSportsDB: No events found for {competition_name}")
         return pd.DataFrame()
 
-    today = pd.Timestamp(datetime.now(UTC).date())
-    cutoff_date = upcoming.calculate_fixture_window_end(window_days, start_date=today)
+    today = pd.Timestamp(datetime.now(UTC).date()).normalize()
     rows = []
     for event in events:
         date_str = event.get("dateEvent")
@@ -77,7 +96,7 @@ def load_upcoming_mls_cup_fixtures_from_thesportsdb(window_days, cup_data):
         if pd.isna(match_date):
             continue
         match_date = match_date.tz_localize(None)
-        if match_date < today or match_date > cutoff_date:
+        if match_date < today:
             continue
 
         home_team = str(event.get("strHomeTeam", "")).strip()
@@ -99,7 +118,11 @@ def load_upcoming_mls_cup_fixtures_from_thesportsdb(window_days, cup_data):
     if fixtures.empty:
         print(f"TheSportsDB: No valid fixtures for {competition_name}")
         return fixtures
-    return fixtures.sort_values(["match_date", "home_team", "away_team"]).reset_index(drop=True)
+    fixtures = fixtures.sort_values(["match_date", "home_team", "away_team"]).reset_index(drop=True)
+    fixtures = filter_to_next_fixture_window(fixtures, window_days, f"TheSportsDB {competition_name}")
+    if fixtures.empty:
+        print(f"TheSportsDB: No fixtures within anchored window for {competition_name}")
+    return fixtures
 
 
 def load_upcoming_mls_cup_fixtures_from_espn(window_days, cup_data, lookahead_days=30):
@@ -108,15 +131,12 @@ def load_upcoming_mls_cup_fixtures_from_espn(window_days, cup_data, lookahead_da
     if not espn_id:
         return pd.DataFrame()
 
-    today = pd.Timestamp(datetime.now(UTC).date())
-    cutoff_date = upcoming.calculate_fixture_window_end(window_days, start_date=today)
+    today = pd.Timestamp(datetime.now(UTC).date()).normalize()
     rows = []
     seen = set()
 
     for offset in range(0, max(1, lookahead_days + 1)):
         day = today + pd.Timedelta(days=offset)
-        if day > cutoff_date:
-            break
 
         url = ESPN_SCOREBOARD_API.format(espn_id=espn_id) + f"?dates={day.strftime('%Y%m%d')}"
         try:
@@ -135,7 +155,7 @@ def load_upcoming_mls_cup_fixtures_from_espn(window_days, cup_data, lookahead_da
                 continue
             event_dt_et = event_date.tz_convert(upcoming.EASTERN_TZ)
             match_date = event_dt_et.tz_localize(None).normalize()
-            if match_date < today or match_date > cutoff_date:
+            if match_date < today:
                 continue
 
             competitions = event.get("competitions", [])
@@ -177,7 +197,8 @@ def load_upcoming_mls_cup_fixtures_from_espn(window_days, cup_data, lookahead_da
     fixtures = pd.DataFrame(rows)
     if fixtures.empty:
         return fixtures
-    return fixtures.sort_values(["match_date", "home_team", "away_team"]).reset_index(drop=True)
+    fixtures = fixtures.sort_values(["match_date", "home_team", "away_team"]).reset_index(drop=True)
+    return filter_to_next_fixture_window(fixtures, window_days, f"ESPN {competition_name}")
 
 
 def load_upcoming_mls_cup_fixtures(window_days):
