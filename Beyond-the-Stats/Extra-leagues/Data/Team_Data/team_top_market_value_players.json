@@ -1,25 +1,19 @@
 {
     "season": "Brazil\\Serie A\\brastat2026",
     "source_file": "Brazil\\Serie A\\brastat2026.csv",
-    "generated_at_utc": "2026-05-15T21:41:13",
+    "generated_at_utc": "2026-05-19T16:19:40",
     "teams": {
         "Athletico-PR": {
             "status": "ok",
             "club_id": "679",
             "club_url": "https://www.transfermarkt.com/club-athletico-paranaense/startseite/verein/679",
-            "injured_players_excluded": 5,
+            "injured_players_excluded": 6,
             "top_5_players": [
                 {
                     "player": "Bruno Zapelli",
                     "position_group": "midfield",
                     "market_value": "\u20ac4.50m",
                     "market_value_eur": 4500000
-                },
-                {
-                    "player": "Lucas Esquivel",
-                    "position_group": "defense",
-                    "market_value": "\u20ac4.00m",
-                    "market_value_eur": 4000000
                 },
                 {
                     "player": "Juan Portilla",
@@ -30,6 +24,12 @@
                 {
                     "player": "Kevin Viveros",
                     "position_group": "attack",
+                    "market_value": "\u20ac4.00m",
+                    "market_value_eur": 4000000
+                },
+                {
+                    "player": "Lucas Esquivel",
+                    "position_group": "defense",
                     "market_value": "\u20ac4.00m",
                     "market_value_eur": 4000000
                 },
@@ -72,7 +72,7 @@
                     "market_value_eur": 6000000
                 },
                 {
-                    "player": "Natanael",
+                    "player": "Lyanco",
                     "position_group": "defense",
                     "market_value": "\u20ac5.00m",
                     "market_value_eur": 5000000
@@ -167,7 +167,7 @@
             "status": "ok",
             "club_id": "199",
             "club_url": "https://www.transfermarkt.com/corinthians-sao-paulo/startseite/verein/199",
-            "injured_players_excluded": 7,
+            "injured_players_excluded": 8,
             "top_5_players": [
                 {
                     "player": "Yuri Alberto",
@@ -188,14 +188,14 @@
                     "market_value_eur": 16000000
                 },
                 {
-                    "player": "Hugo Souza",
-                    "position_group": "goalkeeper",
+                    "player": "Rodrigo Garro",
+                    "position_group": "midfield",
                     "market_value": "\u20ac11.00m",
                     "market_value_eur": 11000000
                 },
                 {
-                    "player": "Rodrigo Garro",
-                    "position_group": "midfield",
+                    "player": "Hugo Souza",
+                    "position_group": "goalkeeper",
                     "market_value": "\u20ac11.00m",
                     "market_value_eur": 11000000
                 }
@@ -214,7 +214,7 @@
                     "market_value_eur": 4000000
                 },
                 {
-                    "player": "Breno Lopes",
+                    "player": "Joaqu\u00edn Lavega",
                     "position_group": "attack",
                     "market_value": "\u20ac3.00m",
                     "market_value_eur": 3000000
@@ -226,7 +226,7 @@
                     "market_value_eur": 3000000
                 },
                 {
-                    "player": "Joaqu\u00edn Lavega",
+                    "player": "Breno Lopes",
                     "position_group": "attack",
                     "market_value": "\u20ac3.00m",
                     "market_value_eur": 3000000
@@ -254,7 +254,7 @@
             "status": "ok",
             "club_id": "2462",
             "club_url": "https://www.transfermarkt.com/fluminense-rio-de-janeiro/startseite/verein/2462",
-            "injured_players_excluded": 3,
+            "injured_players_excluded": 2,
             "top_5_players": [
                 {
                     "player": "H\u00e9rcules",
@@ -269,14 +269,14 @@
                     "market_value_eur": 8000000
                 },
                 {
-                    "player": "John Kennedy",
-                    "position_group": "attack",
+                    "player": "Guilherme Arana",
+                    "position_group": "defense",
                     "market_value": "\u20ac7.00m",
                     "market_value_eur": 7000000
                 },
                 {
-                    "player": "Guilherme Arana",
-                    "position_group": "defense",
+                    "player": "John Kennedy",
+                    "position_group": "attack",
                     "market_value": "\u20ac7.00m",
                     "market_value_eur": 7000000
                 },
@@ -307,13 +307,13 @@
                     "market_value_eur": 11000000
                 },
                 {
-                    "player": "Carlos Vin\u00edcius",
+                    "player": "Francis Amuzu",
                     "position_group": "attack",
                     "market_value": "\u20ac7.00m",
                     "market_value_eur": 7000000
                 },
                 {
-                    "player": "Francis Amuzu",
+                    "player": "Carlos Vin\u00edcius",
                     "position_group": "attack",
                     "market_value": "\u20ac7.00m",
                     "market_value_eur": 7000000
@@ -339,12 +339,6 @@
                     "market_value_eur": 15000000
                 },
                 {
-                    "player": "Rodrigo De Paul",
-                    "position_group": "midfield",
-                    "market_value": "\u20ac15.00m",
-                    "market_value_eur": 15000000
-                },
-                {
                     "player": "Germ\u00e1n Berterame",
                     "position_group": "attack",
                     "market_value": "\u20ac12.00m",
@@ -361,6 +355,12 @@
                     "position_group": "midfield",
                     "market_value": "\u20ac4.50m",
                     "market_value_eur": 4500000
+                },
+                {
+                    "player": "Sergio Reguil\u00f3n",
+                    "position_group": "defense",
+                    "market_value": "\u20ac4.00m",
+                    "market_value_eur": 4000000
                 }
             ]
         },
@@ -375,13 +375,19 @@
             "status": "ok",
             "club_id": "1023",
             "club_url": "https://www.transfermarkt.com/se-palmeiras-sao-paulo/startseite/verein/1023",
-            "injured_players_excluded": 6,
+            "injured_players_excluded": 5,
             "top_5_players": [
                 {
                     "player": "Jos\u00e9 Manuel L\u00f3pez",
                     "position_group": "attack",
                     "market_value": "\u20ac22.00m",
                     "market_value_eur": 22000000
+                },
+                {
+                    "player": "Andreas Pereira",
+                    "position_group": "midfield",
+                    "market_value": "\u20ac15.00m",
+                    "market_value_eur": 15000000
                 },
                 {
                     "player": "Jhon Arias",
@@ -400,12 +406,6 @@
                     "position_group": "attack",
                     "market_value": "\u20ac11.00m",
                     "market_value_eur": 11000000
-                },
-                {
-                    "player": "Agust\u00edn Giay",
-                    "position_group": "defense",
-                    "market_value": "\u20ac10.00m",
-                    "market_value_eur": 10000000
                 }
             ]
         },
@@ -458,13 +458,19 @@
             "status": "ok",
             "club_id": "1023",
             "club_url": "https://www.transfermarkt.com/se-palmeiras-sao-paulo/startseite/verein/1023",
-            "injured_players_excluded": 6,
+            "injured_players_excluded": 5,
             "top_5_players": [
                 {
                     "player": "Jos\u00e9 Manuel L\u00f3pez",
                     "position_group": "attack",
                     "market_value": "\u20ac22.00m",
                     "market_value_eur": 22000000
+                },
+                {
+                    "player": "Andreas Pereira",
+                    "position_group": "midfield",
+                    "market_value": "\u20ac15.00m",
+                    "market_value_eur": 15000000
                 },
                 {
                     "player": "Jhon Arias",
@@ -483,12 +489,6 @@
                     "position_group": "attack",
                     "market_value": "\u20ac11.00m",
                     "market_value_eur": 11000000
-                },
-                {
-                    "player": "Agust\u00edn Giay",
-                    "position_group": "defense",
-                    "market_value": "\u20ac10.00m",
-                    "market_value_eur": 10000000
                 }
             ]
         },
@@ -505,7 +505,7 @@
                     "market_value_eur": 4000000
                 },
                 {
-                    "player": "Breno Lopes",
+                    "player": "Joaqu\u00edn Lavega",
                     "position_group": "attack",
                     "market_value": "\u20ac3.00m",
                     "market_value_eur": 3000000
@@ -517,7 +517,7 @@
                     "market_value_eur": 3000000
                 },
                 {
-                    "player": "Joaqu\u00edn Lavega",
+                    "player": "Breno Lopes",
                     "position_group": "attack",
                     "market_value": "\u20ac3.00m",
                     "market_value_eur": 3000000

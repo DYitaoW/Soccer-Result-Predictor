@@ -715,5 +715,13 @@
   "UEFA/Europa League": {
     "Freiburg": "",
     "Aston Villa": ""
+  },
+  "Germany/DFB-Pokal": {
+    "Bayern Munich": "",
+    "Stuttgart": ""
+  },
+  "France/Coupe de France": {
+    "Lens": "",
+    "Nice": ""
   }
 }
