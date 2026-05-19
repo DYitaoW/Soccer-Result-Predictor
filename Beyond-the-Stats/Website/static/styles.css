@@ -711,6 +711,81 @@ body:not(.dark-mode) .confidence-pill {
   font-size: 1.12rem;
 }
 
+.world-cup-hero {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 14px;
+  background: linear-gradient(180deg, rgba(85, 211, 122, 0.12), rgba(85, 211, 122, 0.03));
+}
+
+.world-cup-hero h2 {
+  margin: 8px 0 4px;
+  color: var(--primary);
+}
+
+.world-cup-group-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.world-cup-group-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  background: #111922;
+  overflow-x: auto;
+}
+
+body:not(.dark-mode) .world-cup-group-card {
+  background: #f7f9fc;
+}
+
+.wc-qualified td {
+  background: rgba(69, 115, 179, 0.22);
+}
+
+.wc-third-place td {
+  background: rgba(113, 78, 163, 0.14);
+}
+
+.wc-third-qualified td {
+  background: rgba(85, 211, 122, 0.18);
+}
+
+.wc-third-eliminated td {
+  background: rgba(179, 81, 81, 0.12);
+}
+
+.world-cup-bracket {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.world-cup-round {
+  min-width: 210px;
+}
+
+.world-cup-match-card .match-meta {
+  margin-top: 6px;
+  font-size: 0.78rem;
+}
+
+.world-cup-rules ul {
+  margin: 8px 0 0;
+  padding-left: 20px;
+  color: var(--muted);
+}
+
 .player-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -848,6 +923,10 @@ body:not(.dark-mode) .confidence-pill {
   }
 
   .kick-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .world-cup-group-grid {
     grid-template-columns: 1fr;
   }
 

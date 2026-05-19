@@ -1,0 +1,388 @@
+import argparse
+import os
+import urllib.error
+import urllib.parse
+from datetime import UTC, datetime, timedelta
+
+import pandas as pd
+
+import Process_National_Team_Data as national
+
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PREDICTIONS_DIR = os.path.join(BASE_DIR, "Data", "Predictions")
+PREDICTIONS_FILE = os.path.join(PREDICTIONS_DIR, "upcoming_national_team_predictions.csv")
+
+RESULT_COLUMNS = [
+    "prediction_key",
+    "created_at_utc",
+    "match_date",
+    "match_datetime_utc",
+    "competition",
+    "stage",
+    "venue",
+    "home_team",
+    "away_team",
+    "display_home_team",
+    "display_away_team",
+    "is_neutral_site",
+    "source",
+    "predicted_result",
+    "prob_home",
+    "prob_draw",
+    "prob_away",
+    "pred_home_goals",
+    "pred_away_goals",
+    "actual_home_goals",
+    "actual_away_goals",
+    "actual_result",
+    "is_correct",
+    "settled_at_utc",
+]
+
+
+def parse_cli_args():
+    parser = argparse.ArgumentParser(
+        description="Fetch upcoming national-team fixtures and generate predictions from the national predictor."
+    )
+    parser.add_argument(
+        "--window-days",
+        type=int,
+        default=90,
+        help="Lookahead window for upcoming national-team fixtures.",
+    )
+    parser.add_argument(
+        "--world-cup-only",
+        action="store_true",
+        help="Only predict FIFA World Cup fixtures.",
+    )
+    parser.add_argument(
+        "--api-token",
+        type=str,
+        default=os.getenv("FOOTBALL_DATA_API_TOKEN", "").strip(),
+        help="Optional football-data.org token for supplemental scheduled fixtures.",
+    )
+    return parser.parse_args()
+
+
+def load_prediction_store(path):
+    if not os.path.exists(path):
+        return pd.DataFrame(columns=RESULT_COLUMNS)
+    frame = pd.read_csv(path)
+    for col in RESULT_COLUMNS:
+        if col not in frame.columns:
+            frame[col] = ""
+    return frame[RESULT_COLUMNS].astype("object")
+
+
+def competition_configs(world_cup_only=False):
+    if world_cup_only:
+        return {"FIFA/World Cup": national.UPCOMING_ESPN_COMPETITIONS["FIFA/World Cup"]}
+    return dict(national.UPCOMING_ESPN_COMPETITIONS)
+
+
+def iter_window_dates(window_days):
+    today = datetime.now(UTC).date()
+    end = today + timedelta(days=max(0, int(window_days)))
+    current = today
+    while current <= end:
+        yield current
+        current += timedelta(days=1)
+
+
+def parse_espn_fixture(event, competition_name):
+    parsed = national.parse_espn_event(event, competition_name, require_completed=False)
+    if not parsed:
+        return None
+    if parsed.get("FTR"):
+        return None
+    match_dt = pd.to_datetime(parsed.get("match_datetime_utc"), utc=True, errors="coerce")
+    if pd.isna(match_dt):
+        return None
+    if match_dt < pd.Timestamp(datetime.now(UTC)):
+        return None
+    return parsed
+
+
+def fetch_espn_upcoming_fixtures(window_days, world_cup_only=False):
+    rows = []
+    seen_event_ids = set()
+    configs = competition_configs(world_cup_only=world_cup_only)
+    for competition_name, config in sorted(configs.items(), key=lambda item: item[1]["priority"]):
+        espn_id = config["espn_id"]
+        print(f"Checking ESPN fixtures for {competition_name} ({espn_id})")
+        for day in iter_window_dates(window_days):
+            url = national.ESPN_SCOREBOARD_API.format(espn_id=espn_id) + f"?dates={day.strftime('%Y%m%d')}"
+            try:
+                payload = national.fetch_json(url, timeout=30)
+            except Exception:
+                continue
+            for event in payload.get("events") or []:
+                event_id = str(event.get("id", "")).strip()
+                if event_id and event_id in seen_event_ids:
+                    continue
+                fixture = parse_espn_fixture(event, competition_name)
+                if not fixture:
+                    continue
+                if event_id:
+                    seen_event_ids.add(event_id)
+                rows.append(fixture)
+    return pd.DataFrame(rows)
+
+
+def parse_football_data_fixture(match, competition_name):
+    parsed = national.parse_football_data_match(match, competition_name, completed_only=False)
+    if not parsed:
+        return None
+    match_dt = pd.to_datetime(parsed.get("match_datetime_utc"), utc=True, errors="coerce")
+    if pd.isna(match_dt) or match_dt < pd.Timestamp(datetime.now(UTC)):
+        return None
+    parsed["source"] = "football-data.org"
+    return parsed
+
+
+def fetch_football_data_upcoming_fixtures(api_token, window_days, world_cup_only=False):
+    if not api_token:
+        return pd.DataFrame()
+
+    rows = []
+    today = datetime.now(UTC).date()
+    end = today + timedelta(days=max(0, int(window_days)))
+    headers = {"X-Auth-Token": api_token}
+    wanted_names = set(competition_configs(world_cup_only=world_cup_only).keys())
+    for competition_code, competition_name in national.FOOTBALL_DATA_COMPETITIONS.items():
+        if competition_name not in wanted_names:
+            continue
+        query = urllib.parse.urlencode(
+            {
+                "dateFrom": today.strftime("%Y-%m-%d"),
+                "dateTo": end.strftime("%Y-%m-%d"),
+                "status": "SCHEDULED",
+            }
+        )
+        url = f"{national.FOOTBALL_DATA_API_BASE}/competitions/{competition_code}/matches?{query}"
+        try:
+            payload = national.fetch_json(url, headers=headers, timeout=45)
+        except urllib.error.HTTPError as error:
+            if error.code == 401:
+                raise RuntimeError("football-data.org API token is invalid.") from error
+            continue
+        except Exception:
+            continue
+        for match in payload.get("matches") or []:
+            parsed = parse_football_data_fixture(match, competition_name)
+            if parsed:
+                rows.append(parsed)
+    return pd.DataFrame(rows)
+
+
+def dedupe_fixtures(fixtures):
+    if fixtures.empty:
+        return fixtures
+    frame = fixtures.copy()
+    source_order = {"espn": 0, "football-data.org": 1}
+    frame["source_order"] = frame["source"].map(source_order).fillna(99)
+    frame["prediction_key"] = frame.apply(
+        lambda row: national.make_prediction_key(
+            row["match_date"], row["competition"], row["home_team"], row["away_team"]
+        ),
+        axis=1,
+    )
+    frame = frame.sort_values(["source_order", "match_datetime_utc", "prediction_key"])
+    frame = frame.drop_duplicates(subset=["prediction_key"], keep="first")
+    frame = frame.drop(columns=["source_order"])
+    return frame.sort_values(["match_datetime_utc", "competition", "home_team"]).reset_index(drop=True)
+
+
+def load_upcoming_fixtures(api_token, window_days, world_cup_only=False):
+    espn = fetch_espn_upcoming_fixtures(window_days, world_cup_only=world_cup_only)
+    football_data = fetch_football_data_upcoming_fixtures(
+        api_token,
+        window_days,
+        world_cup_only=world_cup_only,
+    )
+    frames = [frame for frame in [espn, football_data] if not frame.empty]
+    if not frames:
+        return pd.DataFrame()
+    return dedupe_fixtures(pd.concat(frames, ignore_index=True))
+
+
+def probabilities_from_model(feature_frame, bundle):
+    probabilities = {"H": 0.0, "D": 0.0, "A": 0.0}
+    proba_values = bundle["clf"].predict_proba(feature_frame)[0]
+    for idx, encoded_label in enumerate(bundle["clf"].classes_):
+        label = bundle["result_label_encoder"].inverse_transform([encoded_label])[0]
+        probabilities[label] = float(proba_values[idx])
+    return probabilities
+
+
+def normalize_probabilities(probabilities):
+    total = sum(max(0.0, float(probabilities.get(key, 0.0))) for key in ["H", "D", "A"])
+    if total <= 0:
+        return {"H": 1 / 3, "D": 1 / 3, "A": 1 / 3}
+    return {key: max(0.0, float(probabilities.get(key, 0.0))) / total for key in ["H", "D", "A"]}
+
+
+def adjust_for_knockout(probabilities, stage):
+    probabilities = normalize_probabilities(probabilities)
+    if not national.stage_is_knockout(stage):
+        return probabilities
+    draw_carry = probabilities["D"] * 0.55
+    probabilities["D"] -= draw_carry
+    non_draw = probabilities["H"] + probabilities["A"]
+    if non_draw > 0:
+        probabilities["H"] += draw_carry * probabilities["H"] / non_draw
+        probabilities["A"] += draw_carry * probabilities["A"] / non_draw
+    else:
+        probabilities["H"] += draw_carry * 0.5
+        probabilities["A"] += draw_carry * 0.5
+    return normalize_probabilities(probabilities)
+
+
+def predict_fixture(row, bundle):
+    snapshot = bundle["snapshot"]
+    raw_home = str(row.get("home_team", "")).strip()
+    raw_away = str(row.get("away_team", "")).strip()
+    competition = str(row.get("competition", "")).strip()
+    stage = str(row.get("stage", "") or "unknown").strip().lower() or "unknown"
+    is_neutral_site = bool(row.get("is_neutral_site", False))
+    match_date = row.get("match_date")
+
+    raw_features, home_team, away_team = national.build_prediction_feature_frame(
+        raw_home,
+        raw_away,
+        competition,
+        stage,
+        is_neutral_site,
+        snapshot,
+    )
+    if not home_team or not away_team or home_team == away_team:
+        return None
+
+    feature_frame = national.align_feature_frame(raw_features, bundle)
+    probabilities = probabilities_from_model(feature_frame, bundle)
+    probabilities = adjust_for_knockout(probabilities, stage)
+    prediction_key = national.make_prediction_key(match_date, competition, home_team, away_team)
+    jitter_delta = 0.018 if "world cup" in competition.lower() else 0.026
+    probabilities = national.probability_jitter(probabilities, prediction_key, jitter_delta)
+
+    pred_home_goals = max(0.0, float(bundle["home_goal_reg"].predict(feature_frame)[0]))
+    pred_away_goals = max(0.0, float(bundle["away_goal_reg"].predict(feature_frame)[0]))
+    predicted_result = max(probabilities, key=probabilities.get)
+
+    parsed_dt = pd.to_datetime(row.get("match_datetime_utc"), utc=True, errors="coerce")
+    match_date_text = (
+        parsed_dt.strftime("%Y-%m-%d")
+        if not pd.isna(parsed_dt)
+        else str(match_date)[:10]
+    )
+
+    return {
+        "prediction_key": prediction_key,
+        "created_at_utc": datetime.now(UTC).replace(microsecond=0).isoformat(),
+        "match_date": match_date_text,
+        "match_datetime_utc": str(row.get("match_datetime_utc", "")).strip(),
+        "competition": competition,
+        "stage": stage,
+        "venue": str(row.get("venue", "") or "").strip(),
+        "home_team": home_team,
+        "away_team": away_team,
+        "display_home_team": raw_home,
+        "display_away_team": raw_away,
+        "is_neutral_site": "1" if is_neutral_site else "0",
+        "source": str(row.get("source", "") or "").strip(),
+        "predicted_result": predicted_result,
+        "prob_home": round(probabilities["H"], 6),
+        "prob_draw": round(probabilities["D"], 6),
+        "prob_away": round(probabilities["A"], 6),
+        "pred_home_goals": round(pred_home_goals, 3),
+        "pred_away_goals": round(pred_away_goals, 3),
+        "actual_home_goals": None,
+        "actual_away_goals": None,
+        "actual_result": None,
+        "is_correct": None,
+        "settled_at_utc": None,
+    }
+
+
+def keep_only_current_fixtures(predictions_df, fixtures_df, bundle):
+    if predictions_df.empty or fixtures_df.empty:
+        return predictions_df.iloc[0:0].copy()
+    fixture_keys = set()
+    snapshot = bundle["snapshot"]
+    for _, row in fixtures_df.iterrows():
+        raw_features, home_team, away_team = national.build_prediction_feature_frame(
+            row.get("home_team", ""),
+            row.get("away_team", ""),
+            row.get("competition", ""),
+            row.get("stage", "unknown"),
+            bool(row.get("is_neutral_site", False)),
+            snapshot,
+        )
+        del raw_features
+        if home_team and away_team and home_team != away_team:
+            fixture_keys.add(
+                national.make_prediction_key(
+                    row.get("match_date"),
+                    row.get("competition", ""),
+                    home_team,
+                    away_team,
+                )
+            )
+    frame = predictions_df.copy()
+    return frame[frame["prediction_key"].astype(str).isin(fixture_keys)].copy()
+
+
+def main():
+    args = parse_cli_args()
+    bundle = national.load_model_bundle()
+    fixtures = load_upcoming_fixtures(
+        args.api_token,
+        args.window_days,
+        world_cup_only=args.world_cup_only,
+    )
+    if fixtures.empty:
+        print("No upcoming national-team fixtures returned by ESPN or football-data.org.")
+        return
+
+    existing = load_prediction_store(PREDICTIONS_FILE)
+    existing = existing.set_index("prediction_key", drop=False) if not existing.empty else existing
+    new_records = []
+    skipped = 0
+    for _, fixture in fixtures.iterrows():
+        prediction = predict_fixture(fixture, bundle)
+        if prediction is None:
+            skipped += 1
+            continue
+        new_records.append(prediction)
+
+    new_df = pd.DataFrame(new_records, columns=RESULT_COLUMNS).astype("object")
+    if new_df.empty and existing.empty:
+        print("No national-team predictions were generated.")
+        return
+
+    if existing.empty:
+        combined = new_df.copy()
+    else:
+        combined = existing.copy().astype("object")
+        for _, row in new_df.iterrows():
+            combined.loc[row["prediction_key"]] = row
+        combined = combined.reset_index(drop=True)
+
+    combined = keep_only_current_fixtures(combined, fixtures, bundle)
+    combined = combined[RESULT_COLUMNS].sort_values(["match_date", "competition", "home_team", "away_team"])
+
+    os.makedirs(PREDICTIONS_DIR, exist_ok=True)
+    combined.to_csv(PREDICTIONS_FILE, index=False)
+
+    world_cup_count = int(combined["competition"].astype(str).str.contains("World Cup", case=False, na=False).sum())
+    print("\nUpcoming national-team predictions generated")
+    print(f"Fixtures found: {len(fixtures)}")
+    print(f"Predictions written: {len(new_df)}")
+    print(f"World Cup predictions currently in file: {world_cup_count}")
+    print(f"Skipped fixtures: {skipped}")
+    print(f"Saved tracking file: {PREDICTIONS_FILE}")
+
+
+if __name__ == "__main__":
+    main()

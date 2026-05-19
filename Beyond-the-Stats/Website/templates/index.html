@@ -32,6 +32,7 @@
         <button id="tab-h2h" class="tab-btn" type="button">Head to Head</button>
         <button id="tab-market" class="tab-btn" type="button">Market & Odds (Coming Soon)</button>
         <button id="tab-league-table" class="tab-btn" type="button">Projected League Tables</button>
+        <button id="tab-world-cup" class="tab-btn" type="button">World Cup</button>
         <button id="tab-position-odds" class="tab-btn" type="button">Position Odds</button>
         <button id="tab-players" class="tab-btn" type="button">Players</button>
         <button id="tab-tactics" class="tab-btn" type="button">Tactics Board</button>
@@ -252,6 +253,16 @@
       <div id="league-table-view" class="card">Select a dataset and league.</div>
     </section>
 
+    <section id="panel-world-cup" class="hidden">
+      <div class="card">
+        <h3>2026 FIFA World Cup Projection</h3>
+        <p class="section-subtitle">
+          Projected group tables, best third-place ranking, and knockout bracket using current World Cup rules.
+        </p>
+      </div>
+      <div id="world-cup-view" class="card">Loading World Cup projection...</div>
+    </section>
+
     <section id="panel-position-odds" class="hidden">
       <div class="card">
         <h3>Final Position Odds</h3>
@@ -403,6 +414,7 @@
     const panelGlobal = document.getElementById("panel-global");
     const panelCups = document.getElementById("panel-cups");
     const panelLeagueTable = document.getElementById("panel-league-table");
+    const panelWorldCup = document.getElementById("panel-world-cup");
     const panelPositionOdds = document.getElementById("panel-position-odds");
     const panelPlayers = document.getElementById("panel-players");
     const panelAbout = document.getElementById("panel-about");
@@ -416,6 +428,7 @@
     const tabH2H = document.getElementById("tab-h2h");
     const tabMarket = document.getElementById("tab-market");
     const tabLeagueTable = document.getElementById("tab-league-table");
+    const tabWorldCup = document.getElementById("tab-world-cup");
     const tabPositionOdds = document.getElementById("tab-position-odds");
     const tabPlayers = document.getElementById("tab-players");
     const tabTactics = document.getElementById("tab-tactics");
@@ -430,6 +443,7 @@
     const tableLeague = document.getElementById("table-league");
     const tableViewToggle = document.getElementById("table-view-toggle");
     const leagueTableView = document.getElementById("league-table-view");
+    const worldCupView = document.getElementById("world-cup-view");
     const positionOddsDataset = document.getElementById("position-odds-dataset");
     const positionOddsLeague = document.getElementById("position-odds-league");
     const positionOddsView = document.getElementById("position-odds-view");
@@ -445,6 +459,8 @@
     const feedbackText = document.getElementById("feedback-text");
     const feedbackSubmit = document.getElementById("feedback-submit");
     const brandHomeBtn = document.getElementById("brand-home-btn");
+    const leagueTablesCache = { global: null, mls: null, extra: null };
+    let worldCupCache = null;
     const cupProjectionTabs = document.getElementById("cup-projection-tabs");
     const cupViewTable = document.getElementById("cup-view-table");
     const cupViewBracket = document.getElementById("cup-view-bracket");
@@ -600,6 +616,7 @@
       tabH2H.classList.remove("active");
       tabMarket.classList.remove("active");
       tabLeagueTable.classList.remove("active");
+      tabWorldCup.classList.remove("active");
       tabPositionOdds.classList.remove("active");
       tabPlayers.classList.remove("active");
       tabAbout.classList.remove("active");
@@ -610,6 +627,7 @@
       panelH2H.classList.add("hidden");
       panelMarket.classList.add("hidden");
       panelLeagueTable.classList.add("hidden");
+      panelWorldCup.classList.add("hidden");
       panelPositionOdds.classList.add("hidden");
       panelPlayers.classList.add("hidden");
       panelAbout.classList.add("hidden");
@@ -635,6 +653,9 @@
       } else if (tab === "league-table") {
         tabLeagueTable.classList.add("active");
         panelLeagueTable.classList.remove("hidden");
+      } else if (tab === "world-cup") {
+        tabWorldCup.classList.add("active");
+        panelWorldCup.classList.remove("hidden");
       } else if (tab === "position-odds") {
         tabPositionOdds.classList.add("active");
         panelPositionOdds.classList.remove("hidden");
@@ -1161,6 +1182,162 @@
       leagueTableView.innerHTML = html;
     }
 
+    function renderWorldCupGroupTable(group) {
+      const rows = group.teams || [];
+      let html = `
+        <div class="world-cup-group-card">
+          <h4>Group ${escapeHtml(group.group)}</h4>
+          <table class="league-table">
+            <thead>
+              <tr><th>Pos</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th></tr>
+            </thead>
+            <tbody>
+      `;
+      for (const row of rows) {
+        const pos = Number(row.position) || 0;
+        const rowClass = pos <= 2 ? "wc-qualified" : pos === 3 ? "wc-third-place" : "";
+        html += `
+          <tr class="${rowClass}">
+            <td>${pos}</td>
+            <td>${escapeHtml(row.team)}</td>
+            <td>${row.P || 0}</td>
+            <td>${row.W || 0}</td>
+            <td>${row.D || 0}</td>
+            <td>${row.L || 0}</td>
+            <td>${row.GF || 0}</td>
+            <td>${row.GA || 0}</td>
+            <td>${row.GD || 0}</td>
+            <td><strong>${row.Pts || 0}</strong></td>
+          </tr>
+        `;
+      }
+      html += "</tbody></table></div>";
+      return html;
+    }
+
+    function renderWorldCupThirdPlaceTable(rows) {
+      if (!rows || !rows.length) return "<p>No third-place projection available.</p>";
+      let html = `
+        <h3>Best Third-Place Teams</h3>
+        <p class="note">Top eight third-place teams advance to the Round of 32.</p>
+        <table class="league-table">
+          <thead>
+            <tr><th>Rank</th><th>Group</th><th>Team</th><th>Pts</th><th>GD</th><th>GF</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+      `;
+      for (const row of rows) {
+        const qualified = Boolean(row.qualified);
+        html += `
+          <tr class="${qualified ? "wc-third-qualified" : "wc-third-eliminated"}">
+            <td>${row.third_rank || ""}</td>
+            <td>${escapeHtml(row.group)}</td>
+            <td>${escapeHtml(row.team)}</td>
+            <td><strong>${row.Pts || 0}</strong></td>
+            <td>${row.GD || 0}</td>
+            <td>${row.GF || 0}</td>
+            <td>${qualified ? "Qualified" : "Eliminated"}</td>
+          </tr>
+        `;
+      }
+      html += "</tbody></table>";
+      return html;
+    }
+
+    function renderWorldCupKnockoutRound(title, rows) {
+      if (!rows || !rows.length) return "";
+      return `
+        <div class="world-cup-round">
+          <h4>${escapeHtml(title)}</h4>
+          ${rows.map((match) => {
+            const homeWinner = match.home_team && match.home_team === match.winner;
+            const awayWinner = match.away_team && match.away_team === match.winner;
+            const homeScore = match.pred_home_goals === null || match.pred_home_goals === undefined ? "" : match.pred_home_goals;
+            const awayScore = match.pred_away_goals === null || match.pred_away_goals === undefined ? "" : match.pred_away_goals;
+            return `
+              <div class="match-card world-cup-match-card">
+                <div class="match-title">${escapeHtml(match.label || title)}</div>
+                <div class="team ${homeWinner ? "winner" : ""}">
+                  <span>${escapeHtml(match.home_team || match.home_slot || "TBD")}</span>
+                  <span>${homeScore}</span>
+                </div>
+                <div class="team ${awayWinner ? "winner" : ""}">
+                  <span>${escapeHtml(match.away_team || match.away_slot || "TBD")}</span>
+                  <span>${awayScore}</span>
+                </div>
+                ${match.winner ? `<div class="match-meta">Winner: <strong>${escapeHtml(match.winner)}</strong></div>` : ""}
+                ${match.venue ? `<div class="match-meta">${escapeHtml(match.venue)}</div>` : ""}
+              </div>
+            `;
+          }).join("")}
+        </div>
+      `;
+    }
+
+    function renderWorldCupProjection(payload) {
+      if (!payload || !payload.ok) {
+        worldCupView.innerHTML = "<p>No World Cup projection found. Run Project_World_Cup.py first.</p>";
+        return;
+      }
+      const groupTables = payload.group_tables || [];
+      const knockout = payload.knockout || {};
+      const generated = payload.generated_at_utc ? new Date(payload.generated_at_utc).toLocaleString() : "Unknown";
+      const rules = (payload.rules_summary || []).map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+      let html = `
+        <div class="world-cup-hero">
+          <div>
+            <p class="hero-badge">Projected Champion</p>
+            <h2>${escapeHtml(payload.champion || "TBD")}</h2>
+            <p class="section-subtitle">Last generated: ${escapeHtml(generated)}</p>
+          </div>
+          <div class="stats-row">
+            <span class="stat-chip">${groupTables.length} Groups</span>
+            <span class="stat-chip">Top 2 + 8 third-place teams advance</span>
+          </div>
+        </div>
+        <div class="card world-cup-rules">
+          <h3>Rules Used</h3>
+          <ul>${rules}</ul>
+        </div>
+        <h3>Projected Group Tables</h3>
+        <div class="world-cup-group-grid">
+          ${groupTables.map(renderWorldCupGroupTable).join("")}
+        </div>
+        <div class="card">
+          ${renderWorldCupThirdPlaceTable(payload.third_place_table || [])}
+        </div>
+        <div class="card">
+          <h3>Projected Knockout Bracket</h3>
+          <div class="world-cup-bracket">
+            ${renderWorldCupKnockoutRound("Round of 32", knockout.round_of_32)}
+            ${renderWorldCupKnockoutRound("Round of 16", knockout.round_of_16)}
+            ${renderWorldCupKnockoutRound("Quarterfinals", knockout.quarterfinals)}
+            ${renderWorldCupKnockoutRound("Semifinals", knockout.semifinals)}
+            ${renderWorldCupKnockoutRound("Third Place", knockout.third_place)}
+            ${renderWorldCupKnockoutRound("Final", knockout.final)}
+          </div>
+        </div>
+      `;
+      worldCupView.innerHTML = html;
+    }
+
+    async function loadWorldCupProjection() {
+      worldCupView.textContent = "Loading World Cup projection...";
+      if (worldCupCache) {
+        renderWorldCupProjection(worldCupCache);
+        return;
+      }
+      try {
+        const resp = await fetch("/api/world-cup");
+        const data = await resp.json();
+        if (!resp.ok || !data.ok) {
+          throw new Error(data.error || "Failed to load World Cup projection.");
+        }
+        worldCupCache = data;
+        renderWorldCupProjection(data);
+      } catch (err) {
+        worldCupView.innerHTML = `<p class="error">World Cup projection unavailable: ${escapeHtml(err.message)}</p>`;
+      }
     function renderCupBracket(payload, competition, target = leagueTableView) {
       const brackets = payload && payload.cup_brackets && payload.cup_brackets.competitions
         ? payload.cup_brackets.competitions
@@ -1954,6 +2131,10 @@
           renderSelectedLeagueTable();
         }
       }
+    });
+    tabWorldCup.addEventListener("click", async () => {
+      activateTab("world-cup");
+      await loadWorldCupProjection();
     });
     tabPositionOdds.addEventListener("click", async () => {
       activateTab("position-odds");

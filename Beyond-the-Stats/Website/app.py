@@ -47,6 +47,7 @@ ACCURACY_HISTORY_DIR = os.path.join(WEBSITE_FILES_DIR, "accuracy_history")
 ACCURACY_TOTALS_FILE = os.path.join(WEBSITE_FILES_DIR, "accuracy_totals.json")
 GLOBAL_UPCOMING_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "upcoming_matchweek_predictions.csv")
 CUP_UPCOMING_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "upcoming_cup_predictions.csv")
+WORLD_CUP_PROJECTION_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "world_cup_projection.json")
 CUP_COMPLETED_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "completed_cup_predictions.csv")
 MLS_UPCOMING_FILE = os.path.join(PROJECT_DIR, "MLS", "Data", "Predictions", "upcoming_matchweek_predictions.csv")
 EXTRA_UPCOMING_FILE = os.path.join(PROJECT_DIR, "Extra-leagues", "Data", "Predictions", "upcoming_matchweek_predictions.csv")
@@ -1154,6 +1155,24 @@ def _load_json_payload(path):
         return None
 
 
+def _load_world_cup_projection():
+    """Load projected World Cup groups and bracket for website display."""
+    payload = _load_json_payload(WORLD_CUP_PROJECTION_FILE)
+    if not isinstance(payload, dict):
+        return None
+    if not isinstance(payload.get("group_tables"), list):
+        payload["group_tables"] = []
+    if not isinstance(payload.get("third_place_table"), list):
+        payload["third_place_table"] = []
+    if not isinstance(payload.get("group_fixtures"), list):
+        payload["group_fixtures"] = []
+    if not isinstance(payload.get("knockout"), dict):
+        payload["knockout"] = {}
+    payload.setdefault("champion", "")
+    payload.setdefault("rules_summary", [])
+    return payload
+
+
 def _to_int(value):
     """Best-effort integer coercion for display-safe counters."""
     try:
@@ -1588,6 +1607,13 @@ def api_upcoming_global():
     return jsonify({"ok": True, "rows": rows, "stats": stats, "league_stats": league_stats})
 
 
+@app.get("/api/upcoming/cups")
+def api_upcoming_cups():
+    """Return upcoming cup fixtures and persistent accuracy stats."""
+    rows, stats, league_stats = _load_upcoming_rows(CUP_UPCOMING_FILE, "cups")
+    return jsonify({"ok": True, "rows": rows, "stats": stats, "league_stats": league_stats})
+
+
 @app.get("/api/upcoming/mls")
 def api_upcoming_mls():
     """Return upcoming MLS fixtures and persistent accuracy stats."""
@@ -1602,11 +1628,23 @@ def api_upcoming_extra():
     return jsonify({"ok": True, "rows": rows, "stats": stats, "league_stats": league_stats})
 
 
-@app.get("/api/upcoming/cups")
-def api_upcoming_cups():
-    """Return upcoming cup fixtures and persistent accuracy stats."""
-    rows, stats, league_stats = _load_upcoming_rows(CUP_UPCOMING_FILE, "cups")
-    return jsonify({"ok": True, "rows": rows, "stats": stats, "league_stats": league_stats})
+@app.get("/api/world-cup")
+def api_world_cup():
+    """Return projected World Cup group tables and knockout bracket."""
+    payload = _load_world_cup_projection()
+    if payload is None:
+        return jsonify(
+            {
+                "ok": False,
+                "error": "World Cup projection not available. Run files/Project_World_Cup.py first.",
+                "group_tables": [],
+                "third_place_table": [],
+                "group_fixtures": [],
+                "knockout": {},
+            }
+        ), 404
+    payload["ok"] = True
+    return jsonify(payload)
 
 
 @app.get("/api/league-tables")
