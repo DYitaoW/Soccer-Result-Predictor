@@ -253,6 +253,9 @@ h1 {
 }
 
 .tab-btn {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
   margin: 0;
   border: 1px solid var(--btn-secondary-border);
   border-radius: 10px;
@@ -268,6 +271,9 @@ h1 {
   background: var(--primary);
 }
 
+a.brand,
+a.tab-btn {
+  text-decoration: none;
 .tab-btn.cup-tab-empty {
   opacity: 0.72;
 }
