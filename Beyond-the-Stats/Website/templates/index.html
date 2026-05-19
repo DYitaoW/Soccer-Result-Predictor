@@ -28,6 +28,7 @@
         <button id="tab-home" class="tab-btn active" type="button">Home</button>
         <button id="tab-predictor" class="tab-btn" type="button"> Custom Match Predictors (Experimental) </button>
         <button id="tab-global" class="tab-btn" type="button">Upcoming Matches</button>
+        <button id="tab-cups" class="tab-btn" type="button">Cups</button>
         <button id="tab-h2h" class="tab-btn" type="button">Head to Head</button>
         <button id="tab-market" class="tab-btn" type="button">Market & Odds (Coming Soon)</button>
         <button id="tab-league-table" class="tab-btn" type="button">Projected League Tables</button>
@@ -170,13 +171,30 @@
           <option value="global">European Leagues</option>
           <option value="mls">MLS</option>
           <option value="extra">Extra Leagues</option>
+          <option value="cups">Cup Competitions</option>
         </select>
+        <div id="cup-tabs" class="tabs cup-tabs hidden" aria-label="Cup prediction tabs"></div>
       </div>
-      <div class="card">
+      <div id="global-league-filter-card" class="card">
         <label for="global-league-filter">League</label>
         <select id="global-league-filter"></select>
       </div>
       <div id="global-list" class="card">Loading...</div>
+    </section>
+
+    <section id="panel-cups" class="hidden">
+      <div class="card">
+        <h3>Cup Tables & Brackets</h3>
+        <p class="section-subtitle">League-phase tables and projected knockout paths for supported cup competitions.</p>
+        <div id="cup-projection-tabs" class="tabs" aria-label="Cup competition tabs"></div>
+        <div id="cup-view-tabs" class="tabs" aria-label="Cup table and bracket view tabs">
+          <button id="cup-view-table" class="tab-btn active" type="button">League Table</button>
+          <button id="cup-view-bracket" class="tab-btn" type="button">Bracket</button>
+        </div>
+        <p id="cup-format-note" class="note"></p>
+      </div>
+      <div id="cup-table-view" class="card">Loading cup table...</div>
+      <div id="cup-bracket-view" class="card hidden">Loading cup bracket...</div>
     </section>
 
     <section id="panel-h2h" class="hidden">
@@ -223,6 +241,7 @@
             <option value="global">European Leagues</option>
             <option value="mls">MLS</option>
             <option value="extra">Extra Leagues</option>
+            <option value="cups">Cup Competitions</option>
           </select>
 
           <label for="table-league">League</label>
@@ -290,7 +309,7 @@
            Championship, Bundesliga, Ligue 1, La Liga, Serie A, etc.). The separate MLS predictor only works with MLS matchups and uses a 
            sepearate, less advanced model due to current data limitations. Predictions between teams in different leagues often create wild
            predictions and are far less accurate than predictions of teams in the same league. The upcoming matches tab is used to show matches
-           of the current matchweek (and midweek fixtures), but do not include cup competitions (including the Champions League). Each prediction
+           of the current matchweek (and midweek fixtures), including dedicated tabs for supported cup competitions. Each prediction
            also includes a score prediction and may include shots and shot on target predictions and a reasoning for the match prediction. These additional
            features are experimental and may not be available for all matches or leagues. The league table shows the predicted league table based on real 
            results and predicted results for the rest of the season. Accuracy of the predictions is not guaranteed and should be used for ENTERTAINMENT PURPOSES ONLY.
@@ -382,6 +401,7 @@
     const predictorMlsBody = document.getElementById("predictor-mls-body");
     const predictorExtraBody = document.getElementById("predictor-extra-body");
     const panelGlobal = document.getElementById("panel-global");
+    const panelCups = document.getElementById("panel-cups");
     const panelLeagueTable = document.getElementById("panel-league-table");
     const panelPositionOdds = document.getElementById("panel-position-odds");
     const panelPlayers = document.getElementById("panel-players");
@@ -392,6 +412,7 @@
     const subtabPredictorMls = document.getElementById("subtab-predictor-mls");
     const subtabPredictorExtra = document.getElementById("subtab-predictor-extra");
     const tabGlobal = document.getElementById("tab-global");
+    const tabCups = document.getElementById("tab-cups");
     const tabH2H = document.getElementById("tab-h2h");
     const tabMarket = document.getElementById("tab-market");
     const tabLeagueTable = document.getElementById("tab-league-table");
@@ -403,6 +424,8 @@
     const globalStats = document.getElementById("global-stats");
     const globalSourceFilter = document.getElementById("global-source-filter");
     const globalLeagueFilter = document.getElementById("global-league-filter");
+    const globalLeagueFilterCard = document.getElementById("global-league-filter-card");
+    const cupTabs = document.getElementById("cup-tabs");
     const tableDataset = document.getElementById("table-dataset");
     const tableLeague = document.getElementById("table-league");
     const tableViewToggle = document.getElementById("table-view-toggle");
@@ -422,14 +445,39 @@
     const feedbackText = document.getElementById("feedback-text");
     const feedbackSubmit = document.getElementById("feedback-submit");
     const brandHomeBtn = document.getElementById("brand-home-btn");
-    const leagueTablesCache = { global: null, mls: null, extra: null };
+    const cupProjectionTabs = document.getElementById("cup-projection-tabs");
+    const cupViewTable = document.getElementById("cup-view-table");
+    const cupViewBracket = document.getElementById("cup-view-bracket");
+    const cupFormatNote = document.getElementById("cup-format-note");
+    const cupTableView = document.getElementById("cup-table-view");
+    const cupBracketView = document.getElementById("cup-bracket-view");
+    const leagueTablesCache = { global: null, mls: null, extra: null, cups: null };
     let tableViewMode = "standings";
-    const upcomingCache = { global: [], mls: [], extra: [] };
+    let activeCupProjectionCompetition = "UEFA/Champions League";
+    let activeCupProjectionView = "table";
+    const upcomingCache = { global: [], mls: [], extra: [], cups: [] };
     const upcomingStatsCache = {
       global: { stats: null, league_stats: [] },
       mls: { stats: null, league_stats: [] },
       extra: { stats: null, league_stats: [] },
+      cups: { stats: null, league_stats: [] },
     };
+    const cupPredictionTabs = [
+      { key: "all", label: "All Cups", competitions: [] },
+      { key: "fa-cup", label: "FA Cup", competitions: ["England/FA Cup"] },
+      { key: "league-cup", label: "League Cup", competitions: ["England/League Cup"] },
+      { key: "champions-league", label: "Champions League", competitions: ["UEFA/Champions League", "Europe/Champions League"] },
+      { key: "europa-league", label: "Europa League", competitions: ["UEFA/Europa League", "Europe/Europa League"] },
+      { key: "conference-league", label: "Conference League", competitions: ["UEFA/Conference League", "Europe/Conference League"] },
+    ];
+    const cupProjectionConfigs = [
+      { key: "ucl", label: "Champions League", competition: "UEFA/Champions League", aliases: ["UEFA/Champions League", "Europe/Champions League"], hasTable: true, leaguePhaseMatches: 8 },
+      { key: "uel", label: "Europa League", competition: "UEFA/Europa League", aliases: ["UEFA/Europa League", "Europe/Europa League"], hasTable: true, leaguePhaseMatches: 8 },
+      { key: "uecl", label: "Conference League", competition: "UEFA/Conference League", aliases: ["UEFA/Conference League", "Europe/Conference League"], hasTable: true, leaguePhaseMatches: 6 },
+      { key: "fa-cup", label: "FA Cup", competition: "England/FA Cup", aliases: ["England/FA Cup"], hasTable: false, leaguePhaseMatches: null },
+      { key: "league-cup", label: "League Cup", competition: "England/League Cup", aliases: ["England/League Cup"], hasTable: false, leaguePhaseMatches: null },
+    ];
+    let activeCupTab = "all";
     const mlsTeamSet = new Set(
       Array.from(document.querySelectorAll("#mls-teams option"))
         .map((opt) => String(opt.value || "").trim().toLowerCase())
@@ -548,6 +596,7 @@
       tabHome.classList.remove("active");
       tabPredictor.classList.remove("active");
       tabGlobal.classList.remove("active");
+      tabCups.classList.remove("active");
       tabH2H.classList.remove("active");
       tabMarket.classList.remove("active");
       tabLeagueTable.classList.remove("active");
@@ -557,6 +606,7 @@
       panelHome.classList.add("hidden");
       panelPredictor.classList.add("hidden");
       panelGlobal.classList.add("hidden");
+      panelCups.classList.add("hidden");
       panelH2H.classList.add("hidden");
       panelMarket.classList.add("hidden");
       panelLeagueTable.classList.add("hidden");
@@ -573,6 +623,9 @@
       } else if (tab === "global") {
         tabGlobal.classList.add("active");
         panelGlobal.classList.remove("hidden");
+      } else if (tab === "cups") {
+        tabCups.classList.add("active");
+        panelCups.classList.remove("hidden");
       } else if (tab === "h2h") {
         tabH2H.classList.add("active");
         panelH2H.classList.remove("hidden");
@@ -631,9 +684,27 @@
       const isMlsSupporters = league === "united states/mls - supporters shield table";
       const isMlsEast = league === "united states/mls - eastern conference";
       const isMlsWest = league === "united states/mls - western conference";
+      const isUefaCupTable = [
+        "uefa/champions league",
+        "europe/champions league",
+        "uefa/europa league",
+        "europe/europa league",
+        "uefa/conference league",
+        "europe/conference league"
+      ].includes(league);
 
       if (isMlsEast || isMlsWest) {
         if (position >= 1 && position <= 9) {
+          return "table-promo-blue";
+        }
+        return "";
+      }
+
+      if (isUefaCupTable) {
+        if (position >= 1 && position <= 8) {
+          return "table-first";
+        }
+        if (position >= 9 && position <= 24) {
           return "table-promo-blue";
         }
         return "";
@@ -834,6 +905,10 @@
       const mode = tableDataset.value;
       const selectedLeague = tableLeague.value;
       const payload = leagueTablesCache[mode];
+      if (mode === "cups" && selectedLeague.startsWith("__cup_bracket__:")) {
+        renderCupBracket(payload, selectedLeague.replace("__cup_bracket__:", ""));
+        return;
+      }
       if (!payload || !payload.tables || !payload.tables[selectedLeague]) {
         leagueTableView.innerHTML = "<p>No projected table data available.</p>";
         return;
@@ -937,7 +1012,7 @@
       winnerView.innerHTML = html;
     }
 
-    function setLeagueSelectOptions(selectEl, leagues, includeMlsBracket = false) {
+    function setLeagueSelectOptions(selectEl, leagues, includeMlsBracket = false, cupBrackets = null) {
       selectEl.innerHTML = "";
       const priorityLeagues = [
         "England/Premier League",
@@ -966,6 +1041,13 @@
         const option = document.createElement("option");
         option.value = "__mls_bracket__";
         option.textContent = "MLS Cup Playoff Bracket";
+        selectEl.appendChild(option);
+      }
+      const cupCompetitions = cupBrackets && cupBrackets.competitions ? Object.keys(cupBrackets.competitions) : [];
+      for (const competition of cupCompetitions.sort((a, b) => a.localeCompare(b))) {
+        const option = document.createElement("option");
+        option.value = `__cup_bracket__:${competition}`;
+        option.textContent = `${competition} Fixture Bracket`;
         selectEl.appendChild(option);
       }
     }
@@ -1079,6 +1161,166 @@
       leagueTableView.innerHTML = html;
     }
 
+    function renderCupBracket(payload, competition, target = leagueTableView) {
+      const brackets = payload && payload.cup_brackets && payload.cup_brackets.competitions
+        ? payload.cup_brackets.competitions
+        : {};
+      const bracket = brackets[competition];
+      if (!bracket || !bracket.rounds || !bracket.rounds.length) {
+        target.innerHTML = `<p>No cup fixture bracket found for ${escapeHtml(competition)}. Run Track_Cup_Results.py after cup predictions are generated.</p>`;
+        return;
+      }
+      let html = `
+        <h3>${escapeHtml(competition)} Fixture Bracket</h3>
+        <p class="note">Built from tracked completed cup predictions and upcoming cup fixtures.</p>
+        <div class="bracket-container cup-bracket-container">
+      `;
+      for (const round of bracket.rounds) {
+        const matches = round.matches || [];
+        html += `
+          <div class="bracket-round">
+            <h4>${escapeHtml(round.name || "Cup Fixtures")}</h4>
+        `;
+        if (!matches.length) {
+          html += "<p>No matches in this section.</p>";
+        }
+        for (const match of matches) {
+          const isCompleted = String(match.status || "").toLowerCase() === "completed";
+          const score = isCompleted && match.actual_home_goals !== null && match.actual_away_goals !== null
+            ? `${match.actual_home_goals} - ${match.actual_away_goals}`
+            : (
+              match.pred_home_goals !== null && match.pred_away_goals !== null
+                ? `Projected ${match.pred_home_goals} - ${match.pred_away_goals}`
+                : "Prediction pending"
+            );
+          html += `
+            <div class="match-card">
+              <div class="match-title">${escapeHtml(match.match_date || match.status || "Cup match")}</div>
+              <div class="team ${match.home_team === match.winner ? "winner" : ""}"><span>${escapeHtml(match.home_team)}</span></div>
+              <div class="team ${match.away_team === match.winner ? "winner" : ""}"><span>${escapeHtml(match.away_team)}</span></div>
+              <div class="match-meta"><strong>${escapeHtml(score)}</strong></div>
+              <div class="match-meta">Winner: ${escapeHtml(match.winner || "TBD")}</div>
+            </div>
+          `;
+        }
+        html += "</div>";
+      }
+      html += "</div>";
+      target.innerHTML = html;
+    }
+
+    function cupConfigForCompetition(competition) {
+      return cupProjectionConfigs.find((config) => config.aliases.includes(competition)) || cupProjectionConfigs[0];
+    }
+
+    function primaryCupCompetition(config, payload) {
+      if (!config) return "";
+      const tables = payload && payload.tables ? payload.tables : {};
+      const brackets = payload && payload.cup_brackets && payload.cup_brackets.competitions
+        ? payload.cup_brackets.competitions
+        : {};
+      return config.aliases.find((name) => tables[name] || brackets[name]) || config.competition;
+    }
+
+    function cupCompetitionHasData(config, payload) {
+      const competition = primaryCupCompetition(config, payload);
+      const hasRows = Boolean(payload && payload.tables && payload.tables[competition] && payload.tables[competition].length);
+      const hasBracket = Boolean(
+        payload &&
+        payload.cup_brackets &&
+        payload.cup_brackets.competitions &&
+        payload.cup_brackets.competitions[competition]
+      );
+      return hasRows || hasBracket;
+    }
+
+    function renderCupProjectionTabs(payload) {
+      cupProjectionTabs.innerHTML = cupProjectionConfigs.map((config) => {
+        const competition = primaryCupCompetition(config, payload);
+        const active = cupConfigForCompetition(activeCupProjectionCompetition).key === config.key;
+        const emptyClass = cupCompetitionHasData(config, payload) ? "" : " cup-tab-empty";
+        return `
+          <button
+            class="tab-btn${active ? " active" : ""}${emptyClass}"
+            type="button"
+            data-cup-projection="${escapeHtml(competition)}"
+          >${escapeHtml(config.label)}</button>
+        `;
+      }).join("");
+    }
+
+    function renderCupTable(payload, competition) {
+      const config = cupConfigForCompetition(competition);
+      if (!config.hasTable) {
+        cupTableView.innerHTML = `<p>${escapeHtml(config.label)} uses a knockout bracket view instead of a league-phase table.</p>`;
+        return;
+      }
+      const rows = payload && payload.tables ? (payload.tables[competition] || []) : [];
+      const phaseMatches = config.leaguePhaseMatches || 8;
+      if (!rows.length) {
+        cupTableView.innerHTML = `
+          <h3>${escapeHtml(config.label)} League Phase Table</h3>
+          <p>No league-phase table data available yet. Run cup predictions and Track_Cup_Results.py to populate this table.</p>
+        `;
+        return;
+      }
+      cupTableView.innerHTML = `
+        <h3>${escapeHtml(config.label)} League Phase Table</h3>
+        <p class="note">League phase uses ${phaseMatches} matches per club. Top 8 advance to the Round of 16; positions 9-24 enter the first round playoff.</p>
+        <div class="stats-row">
+          <span class="stat-chip cup-top8-chip">Top 8: Round of 16</span>
+          <span class="stat-chip cup-playoff-chip">9-24: First Round Playoff</span>
+        </div>
+        ${renderLeagueTableRows(rows, competition)}
+      `;
+    }
+
+    function renderCupProjectionViews() {
+      const payload = leagueTablesCache.cups;
+      if (!payload) {
+        cupTableView.textContent = "Loading cup projections...";
+        cupBracketView.textContent = "Loading cup projections...";
+        return;
+      }
+      const config = cupConfigForCompetition(activeCupProjectionCompetition);
+      const competition = primaryCupCompetition(config, payload);
+      activeCupProjectionCompetition = competition;
+      renderCupProjectionTabs(payload);
+      cupFormatNote.textContent = config.hasTable
+        ? `${config.label}: ${config.leaguePhaseMatches} league-phase matches, then first round playoff, Round of 16, quarterfinals, semifinals and final.`
+        : `${config.label}: showing the next/recent cup rounds only, not the full historical bracket.`;
+      cupViewTable.classList.toggle("active", activeCupProjectionView === "table");
+      cupViewBracket.classList.toggle("active", activeCupProjectionView === "bracket");
+      cupTableView.classList.toggle("hidden", activeCupProjectionView !== "table");
+      cupBracketView.classList.toggle("hidden", activeCupProjectionView !== "bracket");
+      renderCupTable(payload, competition);
+      renderCupBracket(payload, competition, cupBracketView);
+    }
+
+    async function loadCupProjections() {
+      if (!leagueTablesCache.cups) {
+        cupTableView.textContent = "Loading cup projections...";
+        cupBracketView.textContent = "Loading cup projections...";
+        const resp = await fetch("/api/league-tables?mode=cups");
+        const data = await resp.json();
+        if (!resp.ok || !data.ok) {
+          cupTableView.textContent = "Failed to load cup projections.";
+          cupBracketView.textContent = "Failed to load cup projections.";
+          return;
+        }
+        leagueTablesCache.cups = data;
+        const firstWithData = cupProjectionConfigs.find((config) => cupCompetitionHasData(config, data));
+        if (firstWithData) {
+          activeCupProjectionCompetition = primaryCupCompetition(firstWithData, data);
+        }
+      }
+      const activeConfig = cupConfigForCompetition(activeCupProjectionCompetition);
+      if (!activeConfig.hasTable && activeCupProjectionView === "table") {
+        activeCupProjectionView = "bracket";
+      }
+      renderCupProjectionViews();
+    }
+
     async function loadLeagueTables(mode) {
       leagueTableView.textContent = "Loading...";
       const resp = await fetch(`/api/league-tables?mode=${encodeURIComponent(mode)}`);
@@ -1089,36 +1331,53 @@
       }
       leagueTablesCache[mode] = data;
       const leagues = data.leagues || [];
-      if (!leagues.length) {
+      const cupBracketCount = data.cup_brackets && data.cup_brackets.competitions
+        ? Object.keys(data.cup_brackets.competitions).length
+        : 0;
+      if (!leagues.length && !(mode === "cups" && cupBracketCount)) {
         leagueTableView.innerHTML = "<p>No projected table CSV found. Run Project_League_Table.py first.</p>";
         positionOddsView.innerHTML = "<p>No projected table CSV found. Run Project_League_Table.py first.</p>";
         winnerView.innerHTML = "<p>No projected table CSV found. Run Project_League_Table.py first.</p>";
         return;
       }
-      setLeagueSelectOptions(tableLeague, leagues, mode === "mls");
-      setLeagueSelectOptions(positionOddsLeague, leagues, false);
+      setLeagueSelectOptions(tableLeague, leagues, mode === "mls", mode === "cups" ? data.cup_brackets : null);
+      if (positionOddsDataset.value === mode) {
+        setLeagueSelectOptions(positionOddsLeague, leagues, false);
+      }
       if (mode === "mls" && tableLeague.value === "__mls_bracket__") {
         tableViewToggle.disabled = true;
         await renderMlsBracket(data);
+      } else if (mode === "cups" && tableLeague.value.startsWith("__cup_bracket__:")) {
+        tableViewToggle.disabled = true;
+        renderCupBracket(data, tableLeague.value.replace("__cup_bracket__:", ""));
       } else {
         tableViewToggle.disabled = false;
         renderSelectedLeagueTable();
       }
-      renderPositionOddsView();
+      if (positionOddsDataset.value === mode) {
+        renderPositionOddsView();
+      }
       if (winnerDataset.value === mode) {
         renderWinnerView();
       }
     }
 
     function renderLeagueStats(leagueStats, selectedLeague) {
-      if (!selectedLeague || !leagueStats || !leagueStats.length) {
+      const selectedLeagues = Array.isArray(selectedLeague)
+        ? selectedLeague.filter(Boolean)
+        : (selectedLeague ? [selectedLeague] : []);
+      if (!selectedLeagues.length || !leagueStats || !leagueStats.length) {
         return "<p>No selected league stats yet.</p>";
       }
-      const row = leagueStats.find((item) => item.competition === selectedLeague);
-      if (!row) {
+      const rows = leagueStats.filter((item) => selectedLeagues.includes(item.competition));
+      if (!rows.length) {
         return "<p>No selected league stats yet.</p>";
       }
-      return `<p><strong>${row.competition} Accuracy:</strong> ${row.correct_total}/${row.settled_total} (${asPct(row.accuracy_pct)})</p>`;
+      const label = selectedLeagues.length === 1 ? selectedLeagues[0] : rows.map((row) => row.competition).join(" / ");
+      const correctTotal = rows.reduce((sum, row) => sum + (Number(row.correct_total) || 0), 0);
+      const settledTotal = rows.reduce((sum, row) => sum + (Number(row.settled_total) || 0), 0);
+      const accuracyPct = settledTotal ? (100 * correctTotal / settledTotal) : 0;
+      return `<p><strong>${label} Accuracy:</strong> ${correctTotal}/${settledTotal} (${asPct(accuracyPct)})</p>`;
     }
 
     function renderStats(target, stats, leagueStats, selectedLeague) {
@@ -1142,12 +1401,66 @@
         .replace(/'/g, "&#39;");
     }
 
+    function currentUpcomingSource() {
+      if (globalSourceFilter.value === "mls") return "mls";
+      if (globalSourceFilter.value === "extra") return "extra";
+      if (globalSourceFilter.value === "cups") return "cups";
+      return "global";
+    }
+
+    function upcomingUrlForSource(source) {
+      if (source === "mls") return "/api/upcoming/mls";
+      if (source === "extra") return "/api/upcoming/extra";
+      if (source === "cups") return "/api/upcoming/cups";
+      return "/api/upcoming/global";
+    }
+
+    function normalizeLeagueSelection(selectedLeague) {
+      if (Array.isArray(selectedLeague)) {
+        return selectedLeague.map((league) => String(league || "").trim()).filter(Boolean);
+      }
+      const league = String(selectedLeague || "").trim();
+      return league ? [league] : [];
+    }
+
+    function rowsForLeagueSelection(rows, selectedLeague) {
+      const selectedLeagues = normalizeLeagueSelection(selectedLeague);
+      if (!selectedLeagues.length) return rows;
+      return rows.filter((r) => selectedLeagues.includes(r.competition));
+    }
+
+    function renderCupTabs() {
+      cupTabs.innerHTML = cupPredictionTabs.map((tab) => `
+        <button
+          class="tab-btn ${tab.key === activeCupTab ? "active" : ""}"
+          type="button"
+          data-cup-tab="${escapeHtml(tab.key)}"
+        >${escapeHtml(tab.label)}</button>
+      `).join("");
+    }
+
+    function activeCupSelection() {
+      return cupPredictionTabs.find((tab) => tab.key === activeCupTab) || cupPredictionTabs[0];
+    }
+
+    function renderActiveCupTab() {
+      const tab = activeCupSelection();
+      renderUpcoming(globalList, upcomingCache.cups, tab.competitions);
+      const payload = upcomingStatsCache.cups;
+      renderStats(
+        globalStats,
+        payload.stats || { correct_total: 0, total_predictions: 0, pending_total: 0, accuracy_pct: 0.0 },
+        payload.league_stats || [],
+        tab.competitions
+      );
+    }
+
     function renderUpcoming(target, rows, selectedLeague) {
       if (!rows.length) {
         target.innerHTML = "<p>No upcoming predictions found.</p>";
         return;
       }
-      const visibleRows = selectedLeague ? rows.filter((r) => r.competition === selectedLeague) : rows;
+      const visibleRows = rowsForLeagueSelection(rows, selectedLeague);
       if (!visibleRows.length) {
         target.innerHTML = "<p>No upcoming predictions for this league.</p>";
         return;
@@ -1271,7 +1584,12 @@
 
     function renderTopPicks() {
       const allRows = dedupeFixtures(
-        [...(upcomingCache.global || []), ...(upcomingCache.mls || []), ...(upcomingCache.extra || [])]
+        [
+          ...(upcomingCache.global || []),
+          ...(upcomingCache.mls || []),
+          ...(upcomingCache.extra || []),
+          ...(upcomingCache.cups || []),
+        ]
           .filter(isValidProbabilityRow)
       );
       const futureRows = allRows.filter(isLikelyFutureFixture);
@@ -1344,6 +1662,9 @@
     async function loadUpcoming(mode, url, target, statsTarget, filterEl) {
       target.textContent = "Loading...";
       statsTarget.textContent = "Loading...";
+      const isCupMode = mode === "cups";
+      cupTabs.classList.toggle("hidden", !isCupMode);
+      globalLeagueFilterCard.classList.toggle("hidden", isCupMode);
       const resp = await fetch(url);
       const data = await resp.json();
       if (!resp.ok || !data.ok) {
@@ -1359,8 +1680,13 @@
       const leagueStats = data.league_stats || [];
       upcomingStatsCache[mode] = { stats: stats, league_stats: leagueStats };
       const selectedLeague = populateUpcomingLeagueFilter(filterEl, rows);
-      renderUpcoming(target, rows, selectedLeague);
-      renderStats(statsTarget, stats, leagueStats, selectedLeague);
+      if (isCupMode) {
+        renderCupTabs();
+        renderActiveCupTab();
+      } else {
+        renderUpcoming(target, rows, selectedLeague);
+        renderStats(statsTarget, stats, leagueStats, selectedLeague);
+      }
       renderTopPicks();
     }
 
@@ -1396,6 +1722,17 @@
           }
         } catch (err) {
           console.error("Failed to preload extra upcoming rows", err);
+        }
+      }
+      if (!upcomingCache.cups.length) {
+        try {
+          const respCups = await fetch("/api/upcoming/cups");
+          const dataCups = await respCups.json();
+          if (respCups.ok && dataCups.ok) {
+            upcomingCache.cups = dataCups.rows || [];
+          }
+        } catch (err) {
+          console.error("Failed to preload cup upcoming rows", err);
         }
       }
       renderTopPicks();
@@ -1585,19 +1922,12 @@
     feedbackSubmit.addEventListener("click", submitFeedback);
     tabGlobal.addEventListener("click", async () => {
       activateTab("global");
-      const source =
-        globalSourceFilter.value === "mls"
-          ? "mls"
-          : globalSourceFilter.value === "extra"
-            ? "extra"
-            : "global";
-      const url =
-        source === "mls"
-          ? "/api/upcoming/mls"
-          : source === "extra"
-            ? "/api/upcoming/extra"
-            : "/api/upcoming/global";
-      await loadUpcoming(source, url, globalList, globalStats, globalLeagueFilter);
+      const source = currentUpcomingSource();
+      await loadUpcoming(source, upcomingUrlForSource(source), globalList, globalStats, globalLeagueFilter);
+    });
+    tabCups.addEventListener("click", async () => {
+      activateTab("cups");
+      await loadCupProjections();
     });
     tabH2H.addEventListener("click", () => activateTab("h2h"));
     tabMarket.addEventListener("click", () => activateTab("market"));
@@ -1607,10 +1937,18 @@
         await loadLeagueTables(tableDataset.value);
       } else {
         const cached = leagueTablesCache[tableDataset.value];
-        setLeagueSelectOptions(tableLeague, cached.leagues || [], tableDataset.value === "mls");
+        setLeagueSelectOptions(
+          tableLeague,
+          cached.leagues || [],
+          tableDataset.value === "mls",
+          tableDataset.value === "cups" ? cached.cup_brackets : null
+        );
         if (tableDataset.value === "mls" && tableLeague.value === "__mls_bracket__") {
           tableViewToggle.disabled = true;
           await renderMlsBracket(cached);
+        } else if (tableDataset.value === "cups" && tableLeague.value.startsWith("__cup_bracket__:")) {
+          tableViewToggle.disabled = true;
+          renderCupBracket(cached, tableLeague.value.replace("__cup_bracket__:", ""));
         } else {
           tableViewToggle.disabled = false;
           renderSelectedLeagueTable();
@@ -1652,6 +1990,9 @@
       if (tableDataset.value === "mls" && tableLeague.value === "__mls_bracket__") {
         tableViewToggle.disabled = true;
         await renderMlsBracket(leagueTablesCache["mls"] || { tables: {} });
+      } else if (tableDataset.value === "cups" && tableLeague.value.startsWith("__cup_bracket__:")) {
+        tableViewToggle.disabled = true;
+        renderCupBracket(leagueTablesCache["cups"] || { tables: {}, cup_brackets: null }, tableLeague.value.replace("__cup_bracket__:", ""));
       } else {
         tableViewToggle.disabled = false;
         renderSelectedLeagueTable();
@@ -1665,13 +2006,31 @@
       }
       renderSelectedLeagueTable();
     });
+    cupProjectionTabs.addEventListener("click", async (event) => {
+      const btn = event.target.closest("[data-cup-projection]");
+      if (!btn) return;
+      activeCupProjectionCompetition = btn.getAttribute("data-cup-projection") || activeCupProjectionCompetition;
+      const config = cupConfigForCompetition(activeCupProjectionCompetition);
+      if (!config.hasTable) {
+        activeCupProjectionView = "bracket";
+      }
+      await loadCupProjections();
+    });
+    cupViewTable.addEventListener("click", () => {
+      const config = cupConfigForCompetition(activeCupProjectionCompetition);
+      activeCupProjectionView = config.hasTable ? "table" : "bracket";
+      renderCupProjectionViews();
+    });
+    cupViewBracket.addEventListener("click", () => {
+      activeCupProjectionView = "bracket";
+      renderCupProjectionViews();
+    });
     globalLeagueFilter.addEventListener("change", () => {
-      const source =
-        globalSourceFilter.value === "mls"
-          ? "mls"
-          : globalSourceFilter.value === "extra"
-            ? "extra"
-            : "global";
+      const source = currentUpcomingSource();
+      if (source === "cups") {
+        renderActiveCupTab();
+        return;
+      }
       renderUpcoming(globalList, upcomingCache[source], globalLeagueFilter.value);
       const payload = upcomingStatsCache[source];
       renderStats(
@@ -1682,19 +2041,15 @@
       );
     });
     globalSourceFilter.addEventListener("change", async () => {
-      const source =
-        globalSourceFilter.value === "mls"
-          ? "mls"
-          : globalSourceFilter.value === "extra"
-            ? "extra"
-            : "global";
-      const url =
-        source === "mls"
-          ? "/api/upcoming/mls"
-          : source === "extra"
-            ? "/api/upcoming/extra"
-            : "/api/upcoming/global";
-      await loadUpcoming(source, url, globalList, globalStats, globalLeagueFilter);
+      const source = currentUpcomingSource();
+      await loadUpcoming(source, upcomingUrlForSource(source), globalList, globalStats, globalLeagueFilter);
+    });
+    cupTabs.addEventListener("click", (event) => {
+      const btn = event.target.closest("[data-cup-tab]");
+      if (!btn) return;
+      activeCupTab = btn.getAttribute("data-cup-tab") || "all";
+      renderCupTabs();
+      renderActiveCupTab();
     });
 
     globalList.addEventListener("click", (event) => {
