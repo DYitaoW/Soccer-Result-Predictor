@@ -9,33 +9,33 @@
   <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('serve_graphic', filename='BtSLogo.png') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
-<body>
+<body class="dark-mode">
   <main class="page">
         <div id="notification-area" class="notification-area"></div>
     <header class="site-header">
       <div class="site-header-top">
-        <button id="brand-home-btn" class="brand brand-home-btn" type="button" aria-label="Go to home">
+        <a id="brand-home-btn" class="brand brand-home-btn" href="{{ page_routes.home }}" aria-label="Go to home">
           <img class="brand-mark" src="{{ url_for('serve_graphic', filename='BtSLogo.png') }}" alt="Beyond The Score logo">
           <div>
             <div class="brand-name">Beyond The Score</div>
             <div class="brand-sub">Matchday Predictor</div>
           </div>
-        </button>
-        <button id="theme-toggle" class="theme-toggle">Dark Mode</button>
+        </a>
+        <button id="theme-toggle" class="theme-toggle">Light Mode</button>
       </div>
 
-      <div id="main-tabs" class="tabs main-tabs">
-        <button id="tab-home" class="tab-btn active" type="button">Home</button>
-        <button id="tab-predictor" class="tab-btn" type="button"> Custom Match Predictors (Experimental) </button>
-        <button id="tab-global" class="tab-btn" type="button">Upcoming Matches</button>
-        <button id="tab-h2h" class="tab-btn" type="button">Head to Head</button>
-        <button id="tab-market" class="tab-btn" type="button">Market & Odds (Coming Soon)</button>
-        <button id="tab-league-table" class="tab-btn" type="button">Projected League Tables</button>
-        <button id="tab-position-odds" class="tab-btn" type="button">Position Odds</button>
-        <button id="tab-players" class="tab-btn" type="button">Players</button>
-        <button id="tab-tactics" class="tab-btn" type="button">Tactics Board</button>
-        <button id="tab-about" class="tab-btn" type="button">About</button>
-      </div>
+      <nav id="main-tabs" class="tabs main-tabs" aria-label="Primary navigation">
+        <a id="tab-home" class="tab-btn {{ 'active' if active_page == 'home' else '' }}" href="{{ page_routes.home }}">Home</a>
+        <a id="tab-predictor" class="tab-btn {{ 'active' if active_page == 'predictor' else '' }}" href="{{ page_routes.predictor }}">Custom Match Predictors (Experimental)</a>
+        <a id="tab-global" class="tab-btn {{ 'active' if active_page == 'global' else '' }}" href="{{ page_routes.global }}">Upcoming Matches</a>
+        <a id="tab-h2h" class="tab-btn {{ 'active' if active_page == 'h2h' else '' }}" href="{{ page_routes.h2h }}">Head to Head</a>
+        <a id="tab-market" class="tab-btn {{ 'active' if active_page == 'market' else '' }}" href="{{ page_routes.market }}">Market & Odds (Coming Soon)</a>
+        <a id="tab-league-table" class="tab-btn {{ 'active' if active_page == 'league-table' else '' }}" href="{{ page_routes['league-table'] }}">Projected League Tables</a>
+        <a id="tab-position-odds" class="tab-btn {{ 'active' if active_page == 'position-odds' else '' }}" href="{{ page_routes['position-odds'] }}">Position Odds</a>
+        <a id="tab-players" class="tab-btn {{ 'active' if active_page == 'players' else '' }}" href="{{ page_routes.players }}">Players</a>
+        <a id="tab-tactics" class="tab-btn {{ 'active' if active_page == 'tactics' else '' }}" href="{{ page_routes.tactics }}">Tactics Board</a>
+        <a id="tab-about" class="tab-btn {{ 'active' if active_page == 'about' else '' }}" href="{{ page_routes.about }}">About</a>
+      </nav>
     </header>
 
     <section class="hero">
@@ -58,7 +58,7 @@
       </div>
     </section>
 
-        <section id="panel-home">
+        <section id="panel-home" class="{{ '' if active_page == 'home' else 'hidden' }}">
       <div class="card">
         <h3>Highlighed Upcoming Fixtures</h3>
         <p class="section-subtitle">Upcoming matches for the current matchweek.</p>
@@ -80,7 +80,7 @@
       <div id="winner-view" class="card">Loading league winners...</div>
     </section>
 
-    <section id="panel-predictor" class="hidden">
+    <section id="panel-predictor" class="{{ '' if active_page == 'predictor' else 'hidden' }}">
       <div class="tabs">
         <button id="subtab-predictor-euro" class="tab-btn active" type="button">European</button>
         <button id="subtab-predictor-mls" class="tab-btn" type="button">MLS</button>
@@ -162,24 +162,25 @@
       </section>
     </section>
 
-    <section id="panel-global" class="hidden">
+    <section id="panel-global" class="{{ '' if active_page == 'global' else 'hidden' }}">
       <div id="global-stats" class="card"></div>
       <div class="card">
         <label for="global-source-filter">Source</label>
         <select id="global-source-filter">
           <option value="global">European Leagues</option>
+          <option value="cups">Cup Competitions</option>
           <option value="mls">MLS</option>
           <option value="extra">Extra Leagues</option>
         </select>
       </div>
       <div class="card">
-        <label for="global-league-filter">League</label>
+        <label for="global-league-filter">League / Cup</label>
         <select id="global-league-filter"></select>
       </div>
       <div id="global-list" class="card">Loading...</div>
     </section>
 
-    <section id="panel-h2h" class="hidden">
+    <section id="panel-h2h" class="{{ '' if active_page == 'h2h' else 'hidden' }}">
       <div class="card">
         <h3>Head to Head Comparison</h3>
         <div class="controls" style="display: flex; gap: 10px; flex-wrap: wrap; align-items: end;">
@@ -207,14 +208,14 @@
       </div>
     </section>
 
-    <section id="panel-market" class="hidden">
+    <section id="panel-market" class="{{ '' if active_page == 'market' else 'hidden' }}">
       <div class="card">
         <h3>Prediction Market & Betting Odds</h3>
         <p>Current estimates and betting odds will appear here.</p>
       </div>
     </section>
 
-    <section id="panel-league-table" class="hidden">
+    <section id="panel-league-table" class="{{ '' if active_page == 'league-table' else 'hidden' }}">
       <div class="card">
         <h3>Projected League Table</h3>
         <div class="table-controls">
@@ -233,7 +234,7 @@
       <div id="league-table-view" class="card">Select a dataset and league.</div>
     </section>
 
-    <section id="panel-position-odds" class="hidden">
+    <section id="panel-position-odds" class="{{ '' if active_page == 'position-odds' else 'hidden' }}">
       <div class="card">
         <h3>Final Position Odds</h3>
         <div class="table-controls">
@@ -251,7 +252,7 @@
       <div id="position-odds-view" class="card">Select a dataset and league.</div>
     </section>
 
-    <section id="panel-players" class="hidden">
+    <section id="panel-players" class="{{ '' if active_page == 'players' else 'hidden' }}">
       <div class="card">
         <h3>Player Database (Preview)</h3>
         <div class="controls" style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
@@ -272,7 +273,7 @@
       </div>
     </section>
 
-    <section id="panel-about" class="hidden">
+    <section id="panel-about" class="{{ '' if active_page == 'about' else 'hidden' }}">
       <div class="card">
         <h3>About This Project</h3>
         <p>
@@ -422,11 +423,15 @@
     const feedbackText = document.getElementById("feedback-text");
     const feedbackSubmit = document.getElementById("feedback-submit");
     const brandHomeBtn = document.getElementById("brand-home-btn");
+    const ACTIVE_PAGE = "{{ active_page }}";
+    const AVAILABLE_UPCOMING_LEAGUES = {{ upcoming_leagues|tojson }};
+    const AVAILABLE_TABLE_LEAGUES = {{ table_leagues|tojson }};
     const leagueTablesCache = { global: null, mls: null, extra: null };
     let tableViewMode = "standings";
-    const upcomingCache = { global: [], mls: [], extra: [] };
+    const upcomingCache = { global: [], cups: [], mls: [], extra: [] };
     const upcomingStatsCache = {
       global: { stats: null, league_stats: [] },
+      cups: { stats: null, league_stats: [] },
       mls: { stats: null, league_stats: [] },
       extra: { stats: null, league_stats: [] },
     };
@@ -441,7 +446,7 @@
         .filter(Boolean)
     );
     
-    // Dark Mode Logic
+    // Theme logic defaults to dark mode unless the user explicitly chooses light.
     const themeToggle = document.getElementById("theme-toggle");
     themeToggle.addEventListener("click", () => {
       document.body.classList.toggle("dark-mode");
@@ -449,7 +454,10 @@
       themeToggle.textContent = isDark ? "Light Mode" : "Dark Mode";
       localStorage.setItem("theme", isDark ? "dark" : "light");
     });
-    if (localStorage.getItem("theme") === "dark") {
+    if (localStorage.getItem("theme") === "light") {
+      document.body.classList.remove("dark-mode");
+      themeToggle.textContent = "Dark Mode";
+    } else {
       document.body.classList.add("dark-mode");
       themeToggle.textContent = "Light Mode";
     }
@@ -1088,7 +1096,8 @@
         return;
       }
       leagueTablesCache[mode] = data;
-      const leagues = data.leagues || [];
+      const leagues = [...new Set([...(data.available_leagues || AVAILABLE_TABLE_LEAGUES[mode] || []), ...(data.leagues || [])])];
+      data.leagues = leagues;
       if (!leagues.length) {
         leagueTableView.innerHTML = "<p>No projected table CSV found. Run Project_League_Table.py first.</p>";
         positionOddsView.innerHTML = "<p>No projected table CSV found. Run Project_League_Table.py first.</p>";
@@ -1271,7 +1280,7 @@
 
     function renderTopPicks() {
       const allRows = dedupeFixtures(
-        [...(upcomingCache.global || []), ...(upcomingCache.mls || []), ...(upcomingCache.extra || [])]
+        [...(upcomingCache.global || []), ...(upcomingCache.cups || []), ...(upcomingCache.mls || []), ...(upcomingCache.extra || [])]
           .filter(isValidProbabilityRow)
       );
       const futureRows = allRows.filter(isLikelyFutureFixture);
@@ -1308,11 +1317,30 @@
       `).join("");
     }
 
-    function populateUpcomingLeagueFilter(selectEl, rows) {
-      const leagues = [...new Set(rows.map((r) => r.competition))];
+    function currentUpcomingSource() {
+      if (globalSourceFilter.value === "cups") return "cups";
+      if (globalSourceFilter.value === "mls") return "mls";
+      if (globalSourceFilter.value === "extra") return "extra";
+      return "global";
+    }
+
+    function upcomingUrlForSource(source) {
+      if (source === "cups") return "/api/upcoming/cups";
+      if (source === "mls") return "/api/upcoming/mls";
+      if (source === "extra") return "/api/upcoming/extra";
+      return "/api/upcoming/global";
+    }
+
+    function populateUpcomingLeagueFilter(selectEl, rows, mode, availableLeagues = null) {
+      const rowLeagues = rows.map((r) => r.competition).filter(Boolean);
+      const configuredLeagues = availableLeagues || AVAILABLE_UPCOMING_LEAGUES[mode] || [];
+      const leagues = [...new Set([...configuredLeagues, ...rowLeagues])];
       const priorityLeagues = [
         "England/Premier League",
-        "England/Championship"
+        "England/Championship",
+        "UEFA/Champions League",
+        "UEFA/Europa League",
+        "UEFA/Conference League"
       ];
       const leagueRank = (name) => {
         const idx = priorityLeagues.indexOf(name);
@@ -1358,7 +1386,7 @@
       };
       const leagueStats = data.league_stats || [];
       upcomingStatsCache[mode] = { stats: stats, league_stats: leagueStats };
-      const selectedLeague = populateUpcomingLeagueFilter(filterEl, rows);
+      const selectedLeague = populateUpcomingLeagueFilter(filterEl, rows, mode, data.available_leagues || null);
       renderUpcoming(target, rows, selectedLeague);
       renderStats(statsTarget, stats, leagueStats, selectedLeague);
       renderTopPicks();
@@ -1385,6 +1413,17 @@
           }
         } catch (err) {
           console.error("Failed to preload MLS upcoming rows", err);
+        }
+      }
+      if (!upcomingCache.cups.length) {
+        try {
+          const respCups = await fetch("/api/upcoming/cups");
+          const dataCups = await respCups.json();
+          if (respCups.ok && dataCups.ok) {
+            upcomingCache.cups = dataCups.rows || [];
+          }
+        } catch (err) {
+          console.error("Failed to preload cup upcoming rows", err);
         }
       }
       if (!upcomingCache.extra.length) {
@@ -1585,19 +1624,8 @@
     feedbackSubmit.addEventListener("click", submitFeedback);
     tabGlobal.addEventListener("click", async () => {
       activateTab("global");
-      const source =
-        globalSourceFilter.value === "mls"
-          ? "mls"
-          : globalSourceFilter.value === "extra"
-            ? "extra"
-            : "global";
-      const url =
-        source === "mls"
-          ? "/api/upcoming/mls"
-          : source === "extra"
-            ? "/api/upcoming/extra"
-            : "/api/upcoming/global";
-      await loadUpcoming(source, url, globalList, globalStats, globalLeagueFilter);
+      const source = currentUpcomingSource();
+      await loadUpcoming(source, upcomingUrlForSource(source), globalList, globalStats, globalLeagueFilter);
     });
     tabH2H.addEventListener("click", () => activateTab("h2h"));
     tabMarket.addEventListener("click", () => activateTab("market"));
@@ -1666,12 +1694,7 @@
       renderSelectedLeagueTable();
     });
     globalLeagueFilter.addEventListener("change", () => {
-      const source =
-        globalSourceFilter.value === "mls"
-          ? "mls"
-          : globalSourceFilter.value === "extra"
-            ? "extra"
-            : "global";
+      const source = currentUpcomingSource();
       renderUpcoming(globalList, upcomingCache[source], globalLeagueFilter.value);
       const payload = upcomingStatsCache[source];
       renderStats(
@@ -1682,19 +1705,8 @@
       );
     });
     globalSourceFilter.addEventListener("change", async () => {
-      const source =
-        globalSourceFilter.value === "mls"
-          ? "mls"
-          : globalSourceFilter.value === "extra"
-            ? "extra"
-            : "global";
-      const url =
-        source === "mls"
-          ? "/api/upcoming/mls"
-          : source === "extra"
-            ? "/api/upcoming/extra"
-            : "/api/upcoming/global";
-      await loadUpcoming(source, url, globalList, globalStats, globalLeagueFilter);
+      const source = currentUpcomingSource();
+      await loadUpcoming(source, upcomingUrlForSource(source), globalList, globalStats, globalLeagueFilter);
     });
 
     globalList.addEventListener("click", (event) => {
@@ -1708,8 +1720,22 @@
       openMatchupInH2H(btn.getAttribute("data-home-team"), btn.getAttribute("data-away-team"));
     });
     updateTableViewToggleLabel();
-    preloadHomeData();
-    winnerDataset.dispatchEvent(new Event("change"));
+    async function initializeActivePage() {
+      if (ACTIVE_PAGE === "global") {
+        const source = currentUpcomingSource();
+        await loadUpcoming(source, upcomingUrlForSource(source), globalList, globalStats, globalLeagueFilter);
+      } else if (ACTIVE_PAGE === "league-table") {
+        await loadLeagueTables(tableDataset.value);
+      } else if (ACTIVE_PAGE === "position-odds") {
+        await loadLeagueTables(positionOddsDataset.value);
+      } else if (ACTIVE_PAGE === "home") {
+        await preloadHomeData();
+        winnerDataset.dispatchEvent(new Event("change"));
+      } else {
+        preloadHomeData();
+      }
+    }
+    initializeActivePage();
   </script>
 </body>
 </html>

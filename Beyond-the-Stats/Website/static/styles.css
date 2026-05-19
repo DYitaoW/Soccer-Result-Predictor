@@ -253,6 +253,9 @@ h1 {
 }
 
 .tab-btn {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
   margin: 0;
   border: 1px solid var(--btn-secondary-border);
   border-radius: 10px;
@@ -266,6 +269,11 @@ h1 {
   color: var(--btn-text);
   border-color: var(--primary);
   background: var(--primary);
+}
+
+a.brand,
+a.tab-btn {
+  text-decoration: none;
 }
 
 .position-odds-best {
