@@ -32,6 +32,7 @@ EASTERN_TZ = ZoneInfo("America/New_York")
 
 # TheSportsDB API
 THESPORTSDB_API_BASE = "https://www.thesportsdb.com/api/v1/json/123"
+DEFAULT_CUP_FIXTURE_WINDOW_DAYS = 3
 
 # Map cup names to TheSportsDB league IDs (these IDs must be correct for each cup)
 THESPORTSDB_LEAGUE_IDS = {
@@ -40,6 +41,10 @@ THESPORTSDB_LEAGUE_IDS = {
     "UEFA/Champions League": "4480",             # UEFA Champions League 4480
     "UEFA/Europa League": "4481",             # UEFA Europa League  4481
     "UEFA/Conference League": "5071",            # UEFA Europa Conference League 5071
+    "Italy/Coppa Italia": "4506",
+    "Spain/Copa del Rey": "4483",
+    "Germany/DFB-Pokal": "4485",
+    "France/Coupe de France": "4484",
 }
 
 # --- TheSportsDB fixtures fetcher ---
@@ -60,11 +65,9 @@ def load_upcoming_matchweek_fixtures_from_thesportsdb(window_days, competition_n
     if not events:
         print(f"TheSportsDB: No events found for {competition_name}")
         return pd.DataFrame()
-    today = pd.Timestamp(datetime.now(UTC).date())
+    today = pd.Timestamp(datetime.now(UTC).date()).normalize()
     rows = []
     for event in events:
-        #test
-        print(event)
         # Parse date and filter by window
         date_str = event.get("dateEvent")
         if not date_str:
@@ -74,10 +77,6 @@ def load_upcoming_matchweek_fixtures_from_thesportsdb(window_days, competition_n
             continue
         match_date = match_date.tz_localize(None)
         if match_date < today:
-            continue
-        # Only include matches within the window
-        cutoff_date = calculate_fixture_window_end(window_days, start_date=today)
-        if match_date > cutoff_date:
             continue
         home_team = event.get("strHomeTeam", "").strip()
         away_team = event.get("strAwayTeam", "").strip()
@@ -96,6 +95,10 @@ def load_upcoming_matchweek_fixtures_from_thesportsdb(window_days, competition_n
         print(f"TheSportsDB: No valid fixtures for {competition_name}")
         return fixtures
     fixtures = fixtures.sort_values(["match_date", "home_team", "away_team"]).reset_index(drop=True)
+    fixtures = filter_to_next_fixture_window(fixtures, window_days, f"TheSportsDB {competition_name}")
+    if fixtures.empty:
+        print(f"TheSportsDB: No fixtures within anchored window for {competition_name}")
+        return fixtures
     print(f"TheSportsDB: Loaded {len(fixtures)} fixtures for {competition_name}")
     return fixtures
 
@@ -105,32 +108,72 @@ CUP_COMPETITIONS = {
         "name": "England/FA Cup",
         "espn_id": "eng.fa",  # ESPN FA Cup
         "priority": 1,
-        "api_source": "espn"
+        "api_source": "espn",
+        "fixture_window_days": 7,
     },
     "Carabao Cup": {
         "name": "England/League Cup",
         "espn_id": "eng.efl",  # ESPN Carabao Cup (EFL Cup)
         "priority": 2,
-        "api_source": "espn"
+        "api_source": "espn",
+        "fixture_window_days": 5,
     },
     "UCL": {
         "name": "UEFA/Champions League",
         "espn_id": "uefa.champions",  # ESPN UCL
         "priority": 3,
-        "api_source": "espn"
+        "api_source": "espn",
+        "fixture_window_days": 5,
     },
     "UEL": {
         "name": "UEFA/Europa League",
         "espn_id": "uefa.europa",  # ESPN UEL
         "priority": 4,
-        "api_source": "espn"
+        "api_source": "espn",
+        "fixture_window_days": 6,
     },
     "UECL": {
         "name": "UEFA/Conference League",
         "espn_id": "uefa.europa.conf",  # ESPN UECL
         "priority": 5,
-        "api_source": "espn"
-    }
+        "api_source": "espn",
+        "fixture_window_days": 6,
+    },
+    "Coppa Italia": {
+        "name": "Italy/Coppa Italia",
+        "espn_id": "ita.coppa",
+        "priority": 6,
+        "api_source": "espn",
+        "fixture_window_days": 5,
+    },
+    "Copa del Rey": {
+        "name": "Spain/Copa del Rey",
+        "espn_id": "esp.copa_del_rey",
+        "priority": 7,
+        "api_source": "espn",
+        "fixture_window_days": 5,
+    },
+    "DFB-Pokal": {
+        "name": "Germany/DFB-Pokal",
+        "espn_id": "ger.dfb_pokal",
+        "priority": 8,
+        "api_source": "espn",
+        "fixture_window_days": 6,
+    },
+    "Coupe de France": {
+        "name": "France/Coupe de France",
+        "espn_id": "fra.coupe_de_france",
+        "priority": 9,
+        "api_source": "espn",
+        "fixture_window_days": 6,
+    },
+}
+
+AUTO_RESOLVE_CUP_COMPETITIONS = {
+    "Italy/Coppa Italia",
+    "Spain/Copa del Rey",
+    "Germany/DFB-Pokal",
+    "France/Coupe de France",
 }
 
 # --- CORE CLASSES AND UTILITIES (Copied from original script) ---
@@ -242,6 +285,7 @@ def load_results_index(raw_dir):
                     "actual_result": str(row["FTR"]).strip(),
                 }
     return results
+
 
 def build_prediction_context():
     # This function loads the ML model and all necessary historical stats.
@@ -456,6 +500,10 @@ def predict_fixture(row, context):
         "UEFA/Conference League": pm.EU_RANDOMIZER_MAX_DELTA,
         "England/FA Cup": 0.045,  # Domestic cup, lower randomness
         "England/League Cup": 0.045,
+        "Italy/Coppa Italia": 0.045,
+        "Spain/Copa del Rey": 0.045,
+        "Germany/DFB-Pokal": 0.045,
+        "France/Coupe de France": 0.045,
     }
     # If not mapped, use 0.035 for unknown domestic cups
     randomizer_delta = CUP_RANDOMIZER_DELTAS.get(competition, 0.035)
@@ -602,8 +650,8 @@ def parse_cli_args():
     parser.add_argument(
         "--window-days",
         type=int,
-        default=3,
-        help="Minimum lookahead window in days, extended through the next Tuesday when that is farther out.",
+        default=DEFAULT_CUP_FIXTURE_WINDOW_DAYS,
+        help="Fallback days after a cup's first upcoming fixture for cups without a configured fixture window.",
     )
     parser.add_argument(
         "--api-token",
@@ -626,7 +674,7 @@ def parse_match_date(value):
 
 
 def calculate_fixture_window_end(window_days, start_date=None):
-    # Anchor the window to today so the pull reflects the current slate.
+    # Anchor to the supplied start date, usually the cup's first upcoming fixture date.
     today = pd.Timestamp(start_date or datetime.now(UTC).date())
     today = today.normalize()
     min_window_end = today + pd.Timedelta(days=max(0, int(window_days)))
@@ -637,6 +685,33 @@ def calculate_fixture_window_end(window_days, start_date=None):
         days_to_tuesday = 7
     next_tuesday = today + pd.Timedelta(days=days_to_tuesday)
     return max(min_window_end, next_tuesday)
+
+
+def cup_fixture_window_days(cup_data, fallback_window_days):
+    try:
+        return int(cup_data.get("fixture_window_days", fallback_window_days))
+    except (TypeError, ValueError):
+        return int(fallback_window_days)
+
+
+def filter_to_next_fixture_window(fixtures, window_days, label):
+    if fixtures.empty:
+        return fixtures
+
+    frame = fixtures.copy()
+    frame["match_date"] = pd.to_datetime(frame["match_date"], errors="coerce").dt.normalize()
+    frame = frame[frame["match_date"].notna()].copy()
+    if frame.empty:
+        return frame
+
+    first_fixture_date = frame["match_date"].min()
+    cutoff_date = calculate_fixture_window_end(window_days, start_date=first_fixture_date)
+    filtered = frame[frame["match_date"] <= cutoff_date].reset_index(drop=True)
+    print(
+        f"{label}: First fixture {first_fixture_date.date()} anchors "
+        f"{window_days}-day cutoff at {cutoff_date.date()}."
+    )
+    return filtered
 
 
 def make_prediction_key(match_date, competition, home_team, away_team):
@@ -816,6 +891,10 @@ def apply_team_mapping_to_fixtures(fixtures, mapping, context):
             return ""
         if api_name in known_teams:
             return api_name
+        if competition in AUTO_RESOLVE_CUP_COMPETITIONS:
+            resolved = resolve_live_team_name(api_name, competition, context)
+            if resolved:
+                return resolved
         return ""
 
     mapped["mapped_home_team"] = mapped.apply(
@@ -982,9 +1061,7 @@ def load_upcoming_matchweek_fixtures_from_csv_fallback(window_days, competition_
     fixtures = frame[["match_date", "competition", "home_team", "away_team"]].copy()
     fixtures["match_datetime_et"] = None
     fixtures = fixtures.sort_values(["match_date", "home_team", "away_team"]).reset_index(drop=True)
-    # Apply the same current-date window across fallback sources.
-    cutoff_date = calculate_fixture_window_end(window_days, start_date=today)
-    fixtures = fixtures[fixtures["match_date"] <= cutoff_date].reset_index(drop=True)
+    fixtures = filter_to_next_fixture_window(fixtures, window_days, f"CSV Fallback {competition_name}")
     print(f"CSV Fallback: Successfully filtered down to {len(fixtures)} fixtures.")
     return fixtures
 
@@ -1071,9 +1148,7 @@ def load_upcoming_matchweek_fixtures_from_espn(window_days, competition_name, es
         return fixtures
 
     fixtures = fixtures.sort_values(["match_date", "home_team", "away_team"]).reset_index(drop=True)
-    # Apply the same current-date window across ESPN results.
-    cutoff_date = calculate_fixture_window_end(window_days, start_date=today)
-    fixtures = fixtures[fixtures["match_date"] <= cutoff_date].reset_index(drop=True)
+    fixtures = filter_to_next_fixture_window(fixtures, window_days, f"ESPN {competition_name}")
     print(f"ESPN Loader: Successfully filtered down to {len(fixtures)} fixtures.")
     return fixtures
 
@@ -1129,10 +1204,11 @@ def load_upcoming_matchweek_fixtures(api_token, window_days):
     sorted_cups = sorted(CUP_COMPETITIONS.items(), key=lambda item: item[1]['priority'])
     
     for cup_name, cup_data in sorted_cups:
-        print(f"\n--- Checking Source for: {cup_name} ---")
+        cup_window_days = cup_fixture_window_days(cup_data, window_days)
+        print(f"\n--- Checking Source for: {cup_name} ({cup_window_days}-day fixture window) ---")
          
         # B. Try TheSportsDB (new)
-        fixtures = load_upcoming_matchweek_fixtures_from_thesportsdb(window_days, cup_data['name'])
+        fixtures = load_upcoming_matchweek_fixtures_from_thesportsdb(cup_window_days, cup_data['name'])
         if not fixtures.empty:
             all_fixtures.append(fixtures)
             print(f"SUCCESS: Loaded {len(fixtures)} fixtures for {cup_name} from TheSportsDB.")

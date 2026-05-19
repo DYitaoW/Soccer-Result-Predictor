@@ -228,6 +228,12 @@ def main():
         [py, str(FILES_DIR / "Update_Live_Prediction_Results.py")],
         continue_on_error=args.continue_on_error,
     )
+    if not args.skip_global:
+        run_step(
+            "Track completed cup predictions and cup projections",
+            [py, str(FILES_DIR / "Track_Cup_Results.py")],
+            continue_on_error=args.continue_on_error,
+        )
 
     # Refresh website accuracy-history store for permanent counters.
     run_step(
