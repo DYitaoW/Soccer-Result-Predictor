@@ -9,19 +9,19 @@
   <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('serve_graphic', filename='BtSLogo.png') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
-<body>
+<body class="dark-mode">
   <main class="page">
         <div id="notification-area" class="notification-area"></div>
     <header class="site-header">
       <div class="site-header-top">
-        <button id="brand-home-btn" class="brand brand-home-btn" type="button" aria-label="Go to home">
+        <a id="brand-home-btn" class="brand brand-home-btn" href="{{ page_routes.home }}" aria-label="Go to home">
           <img class="brand-mark" src="{{ url_for('serve_graphic', filename='BtSLogo.png') }}" alt="Beyond The Score logo">
           <div>
             <div class="brand-name">Beyond The Score</div>
             <div class="brand-sub">Matchday Predictor</div>
           </div>
-        </button>
-        <button id="theme-toggle" class="theme-toggle">Dark Mode</button>
+        </a>
+        <button id="theme-toggle" class="theme-toggle">Light Mode</button>
       </div>
 
       <div id="main-tabs" class="tabs main-tabs">
@@ -60,7 +60,7 @@
       </div>
     </section>
 
-        <section id="panel-home">
+        <section id="panel-home" class="{{ '' if active_page == 'home' else 'hidden' }}">
       <div class="card">
         <h3>Highlighed Upcoming Fixtures</h3>
         <p class="section-subtitle">Upcoming matches for the current matchweek.</p>
@@ -82,7 +82,7 @@
       <div id="winner-view" class="card">Loading league winners...</div>
     </section>
 
-    <section id="panel-predictor" class="hidden">
+    <section id="panel-predictor" class="{{ '' if active_page == 'predictor' else 'hidden' }}">
       <div class="tabs">
         <button id="subtab-predictor-euro" class="tab-btn active" type="button">European</button>
         <button id="subtab-predictor-mls" class="tab-btn" type="button">MLS</button>
@@ -164,12 +164,13 @@
       </section>
     </section>
 
-    <section id="panel-global" class="hidden">
+    <section id="panel-global" class="{{ '' if active_page == 'global' else 'hidden' }}">
       <div id="global-stats" class="card"></div>
       <div class="card">
         <label for="global-source-filter">Source</label>
         <select id="global-source-filter">
           <option value="global">European Leagues</option>
+          <option value="cups">Cup Competitions</option>
           <option value="mls">MLS</option>
           <option value="extra">Extra Leagues</option>
           <option value="cups">Cup Competitions</option>
@@ -226,14 +227,14 @@
       </div>
     </section>
 
-    <section id="panel-market" class="hidden">
+    <section id="panel-market" class="{{ '' if active_page == 'market' else 'hidden' }}">
       <div class="card">
         <h3>Prediction Market & Betting Odds</h3>
         <p>Current estimates and betting odds will appear here.</p>
       </div>
     </section>
 
-    <section id="panel-league-table" class="hidden">
+    <section id="panel-league-table" class="{{ '' if active_page == 'league-table' else 'hidden' }}">
       <div class="card">
         <h3>Projected League Table</h3>
         <div class="table-controls">
@@ -281,7 +282,7 @@
       <div id="position-odds-view" class="card">Select a dataset and league.</div>
     </section>
 
-    <section id="panel-players" class="hidden">
+    <section id="panel-players" class="{{ '' if active_page == 'players' else 'hidden' }}">
       <div class="card">
         <h3>Player Database (Preview)</h3>
         <div class="controls" style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
@@ -302,7 +303,7 @@
       </div>
     </section>
 
-    <section id="panel-about" class="hidden">
+    <section id="panel-about" class="{{ '' if active_page == 'about' else 'hidden' }}">
       <div class="card">
         <h3>About This Project</h3>
         <p>
@@ -459,6 +460,9 @@
     const feedbackText = document.getElementById("feedback-text");
     const feedbackSubmit = document.getElementById("feedback-submit");
     const brandHomeBtn = document.getElementById("brand-home-btn");
+    const ACTIVE_PAGE = "{{ active_page }}";
+    const AVAILABLE_UPCOMING_LEAGUES = {{ upcoming_leagues|tojson }};
+    const AVAILABLE_TABLE_LEAGUES = {{ table_leagues|tojson }};
     const leagueTablesCache = { global: null, mls: null, extra: null };
     let worldCupCache = null;
     const cupProjectionTabs = document.getElementById("cup-projection-tabs");
@@ -474,6 +478,7 @@
     const upcomingCache = { global: [], mls: [], extra: [], cups: [] };
     const upcomingStatsCache = {
       global: { stats: null, league_stats: [] },
+      cups: { stats: null, league_stats: [] },
       mls: { stats: null, league_stats: [] },
       extra: { stats: null, league_stats: [] },
       cups: { stats: null, league_stats: [] },
@@ -505,7 +510,7 @@
         .filter(Boolean)
     );
     
-    // Dark Mode Logic
+    // Theme logic defaults to dark mode unless the user explicitly chooses light.
     const themeToggle = document.getElementById("theme-toggle");
     themeToggle.addEventListener("click", () => {
       document.body.classList.toggle("dark-mode");
@@ -513,7 +518,10 @@
       themeToggle.textContent = isDark ? "Light Mode" : "Dark Mode";
       localStorage.setItem("theme", isDark ? "dark" : "light");
     });
-    if (localStorage.getItem("theme") === "dark") {
+    if (localStorage.getItem("theme") === "light") {
+      document.body.classList.remove("dark-mode");
+      themeToggle.textContent = "Dark Mode";
+    } else {
       document.body.classList.add("dark-mode");
       themeToggle.textContent = "Light Mode";
     }
@@ -1803,11 +1811,30 @@
       `).join("");
     }
 
-    function populateUpcomingLeagueFilter(selectEl, rows) {
-      const leagues = [...new Set(rows.map((r) => r.competition))];
+    function currentUpcomingSource() {
+      if (globalSourceFilter.value === "cups") return "cups";
+      if (globalSourceFilter.value === "mls") return "mls";
+      if (globalSourceFilter.value === "extra") return "extra";
+      return "global";
+    }
+
+    function upcomingUrlForSource(source) {
+      if (source === "cups") return "/api/upcoming/cups";
+      if (source === "mls") return "/api/upcoming/mls";
+      if (source === "extra") return "/api/upcoming/extra";
+      return "/api/upcoming/global";
+    }
+
+    function populateUpcomingLeagueFilter(selectEl, rows, mode, availableLeagues = null) {
+      const rowLeagues = rows.map((r) => r.competition).filter(Boolean);
+      const configuredLeagues = availableLeagues || AVAILABLE_UPCOMING_LEAGUES[mode] || [];
+      const leagues = [...new Set([...configuredLeagues, ...rowLeagues])];
       const priorityLeagues = [
         "England/Premier League",
-        "England/Championship"
+        "England/Championship",
+        "UEFA/Champions League",
+        "UEFA/Europa League",
+        "UEFA/Conference League"
       ];
       const leagueRank = (name) => {
         const idx = priorityLeagues.indexOf(name);
@@ -1888,6 +1915,17 @@
           }
         } catch (err) {
           console.error("Failed to preload MLS upcoming rows", err);
+        }
+      }
+      if (!upcomingCache.cups.length) {
+        try {
+          const respCups = await fetch("/api/upcoming/cups");
+          const dataCups = await respCups.json();
+          if (respCups.ok && dataCups.ok) {
+            upcomingCache.cups = dataCups.rows || [];
+          }
+        } catch (err) {
+          console.error("Failed to preload cup upcoming rows", err);
         }
       }
       if (!upcomingCache.extra.length) {
@@ -2244,8 +2282,22 @@
       openMatchupInH2H(btn.getAttribute("data-home-team"), btn.getAttribute("data-away-team"));
     });
     updateTableViewToggleLabel();
-    preloadHomeData();
-    winnerDataset.dispatchEvent(new Event("change"));
+    async function initializeActivePage() {
+      if (ACTIVE_PAGE === "global") {
+        const source = currentUpcomingSource();
+        await loadUpcoming(source, upcomingUrlForSource(source), globalList, globalStats, globalLeagueFilter);
+      } else if (ACTIVE_PAGE === "league-table") {
+        await loadLeagueTables(tableDataset.value);
+      } else if (ACTIVE_PAGE === "position-odds") {
+        await loadLeagueTables(positionOddsDataset.value);
+      } else if (ACTIVE_PAGE === "home") {
+        await preloadHomeData();
+        winnerDataset.dispatchEvent(new Event("change"));
+      } else {
+        preloadHomeData();
+      }
+    }
+    initializeActivePage();
   </script>
 </body>
 </html>
