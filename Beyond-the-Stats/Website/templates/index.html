@@ -24,20 +24,20 @@
         <button id="theme-toggle" class="theme-toggle">Light Mode</button>
       </div>
 
-      <div id="main-tabs" class="tabs main-tabs">
-        <button id="tab-home" class="tab-btn active" type="button">Home</button>
-        <button id="tab-predictor" class="tab-btn" type="button"> Custom Match Predictors (Experimental) </button>
-        <button id="tab-global" class="tab-btn" type="button">Upcoming Matches</button>
-        <button id="tab-cups" class="tab-btn" type="button">Cups</button>
-        <button id="tab-h2h" class="tab-btn" type="button">Head to Head</button>
-        <button id="tab-market" class="tab-btn" type="button">Market & Odds (Coming Soon)</button>
-        <button id="tab-league-table" class="tab-btn" type="button">Projected League Tables</button>
-        <button id="tab-world-cup" class="tab-btn" type="button">World Cup</button>
-        <button id="tab-position-odds" class="tab-btn" type="button">Position Odds</button>
-        <button id="tab-players" class="tab-btn" type="button">Players</button>
-        <button id="tab-tactics" class="tab-btn" type="button">Tactics Board</button>
-        <button id="tab-about" class="tab-btn" type="button">About</button>
-      </div>
+      <nav id="main-tabs" class="tabs main-tabs" aria-label="Primary navigation">
+        <a id="tab-home" class="tab-btn {{ 'active' if active_page == 'home' else '' }}" href="{{ page_routes.home }}">Home</a>
+        <a id="tab-predictor" class="tab-btn {{ 'active' if active_page == 'predictor' else '' }}" href="{{ page_routes.predictor }}">Custom Match Predictors (Experimental)</a>
+        <a id="tab-global" class="tab-btn {{ 'active' if active_page == 'global' else '' }}" href="{{ page_routes.global }}">Upcoming Matches</a>
+        <a id="tab-cups" class="tab-btn {{ 'active' if active_page == 'cups' else '' }}" href="{{ page_routes.cups }}">Cups</a>
+        <a id="tab-h2h" class="tab-btn {{ 'active' if active_page == 'h2h' else '' }}" href="{{ page_routes.h2h }}">Head to Head</a>
+        <a id="tab-market" class="tab-btn {{ 'active' if active_page == 'market' else '' }}" href="{{ page_routes.market }}">Market & Odds (Coming Soon)</a>
+        <a id="tab-league-table" class="tab-btn {{ 'active' if active_page == 'league-table' else '' }}" href="{{ page_routes['league-table'] }}">Projected League Tables</a>
+        <a id="tab-world-cup" class="tab-btn {{ 'active' if active_page == 'world-cup' else '' }}" href="{{ page_routes['world-cup'] }}">World Cup</a>
+        <a id="tab-position-odds" class="tab-btn {{ 'active' if active_page == 'position-odds' else '' }}" href="{{ page_routes['position-odds'] }}">Position Odds</a>
+        <a id="tab-players" class="tab-btn {{ 'active' if active_page == 'players' else '' }}" href="{{ page_routes.players }}">Players</a>
+        <a id="tab-tactics" class="tab-btn {{ 'active' if active_page == 'tactics' else '' }}" href="{{ page_routes.tactics }}">Tactics Board</a>
+        <a id="tab-about" class="tab-btn {{ 'active' if active_page == 'about' else '' }}" href="{{ page_routes.about }}">About</a>
+      </nav>
     </header>
 
     <section class="hero">
@@ -173,18 +173,17 @@
           <option value="cups">Cup Competitions</option>
           <option value="mls">MLS</option>
           <option value="extra">Extra Leagues</option>
-          <option value="cups">Cup Competitions</option>
         </select>
         <div id="cup-tabs" class="tabs cup-tabs hidden" aria-label="Cup prediction tabs"></div>
       </div>
       <div id="global-league-filter-card" class="card">
-        <label for="global-league-filter">League</label>
+        <label for="global-league-filter">League / Cup</label>
         <select id="global-league-filter"></select>
       </div>
       <div id="global-list" class="card">Loading...</div>
     </section>
 
-    <section id="panel-cups" class="hidden">
+    <section id="panel-cups" class="{{ '' if active_page == 'cups' else 'hidden' }}">
       <div class="card">
         <h3>Cup Tables & Brackets</h3>
         <p class="section-subtitle">League-phase tables and projected knockout paths for supported cup competitions.</p>
@@ -199,7 +198,7 @@
       <div id="cup-bracket-view" class="card hidden">Loading cup bracket...</div>
     </section>
 
-    <section id="panel-h2h" class="hidden">
+    <section id="panel-h2h" class="{{ '' if active_page == 'h2h' else 'hidden' }}">
       <div class="card">
         <h3>Head to Head Comparison</h3>
         <div class="controls" style="display: flex; gap: 10px; flex-wrap: wrap; align-items: end;">
@@ -254,7 +253,7 @@
       <div id="league-table-view" class="card">Select a dataset and league.</div>
     </section>
 
-    <section id="panel-world-cup" class="hidden">
+    <section id="panel-world-cup" class="{{ '' if active_page == 'world-cup' else 'hidden' }}">
       <div class="card">
         <h3>2026 FIFA World Cup Projection</h3>
         <p class="section-subtitle">
@@ -264,7 +263,7 @@
       <div id="world-cup-view" class="card">Loading World Cup projection...</div>
     </section>
 
-    <section id="panel-position-odds" class="hidden">
+    <section id="panel-position-odds" class="{{ '' if active_page == 'position-odds' else 'hidden' }}">
       <div class="card">
         <h3>Final Position Odds</h3>
         <div class="table-controls">
@@ -463,7 +462,6 @@
     const ACTIVE_PAGE = "{{ active_page }}";
     const AVAILABLE_UPCOMING_LEAGUES = {{ upcoming_leagues|tojson }};
     const AVAILABLE_TABLE_LEAGUES = {{ table_leagues|tojson }};
-    const leagueTablesCache = { global: null, mls: null, extra: null };
     let worldCupCache = null;
     const cupProjectionTabs = document.getElementById("cup-projection-tabs");
     const cupViewTable = document.getElementById("cup-view-table");
@@ -481,7 +479,6 @@
       cups: { stats: null, league_stats: [] },
       mls: { stats: null, league_stats: [] },
       extra: { stats: null, league_stats: [] },
-      cups: { stats: null, league_stats: [] },
     };
     const cupPredictionTabs = [
       { key: "all", label: "All Cups", competitions: [] },
@@ -1867,8 +1864,8 @@
       target.textContent = "Loading...";
       statsTarget.textContent = "Loading...";
       const isCupMode = mode === "cups";
-      cupTabs.classList.toggle("hidden", !isCupMode);
-      globalLeagueFilterCard.classList.toggle("hidden", isCupMode);
+      cupTabs.classList.add("hidden");
+      globalLeagueFilterCard.classList.remove("hidden");
       const resp = await fetch(url);
       const data = await resp.json();
       if (!resp.ok || !data.ok) {
@@ -1883,14 +1880,9 @@
       };
       const leagueStats = data.league_stats || [];
       upcomingStatsCache[mode] = { stats: stats, league_stats: leagueStats };
-      const selectedLeague = populateUpcomingLeagueFilter(filterEl, rows);
-      if (isCupMode) {
-        renderCupTabs();
-        renderActiveCupTab();
-      } else {
-        renderUpcoming(target, rows, selectedLeague);
-        renderStats(statsTarget, stats, leagueStats, selectedLeague);
-      }
+      const selectedLeague = populateUpcomingLeagueFilter(filterEl, rows, mode, data.available_leagues || null);
+      renderUpcoming(target, rows, selectedLeague);
+      renderStats(statsTarget, stats, leagueStats, selectedLeague);
       renderTopPicks();
     }
 
@@ -2246,10 +2238,6 @@
     });
     globalLeagueFilter.addEventListener("change", () => {
       const source = currentUpcomingSource();
-      if (source === "cups") {
-        renderActiveCupTab();
-        return;
-      }
       renderUpcoming(globalList, upcomingCache[source], globalLeagueFilter.value);
       const payload = upcomingStatsCache[source];
       renderStats(
@@ -2286,6 +2274,10 @@
       if (ACTIVE_PAGE === "global") {
         const source = currentUpcomingSource();
         await loadUpcoming(source, upcomingUrlForSource(source), globalList, globalStats, globalLeagueFilter);
+      } else if (ACTIVE_PAGE === "cups") {
+        await loadCupProjections();
+      } else if (ACTIVE_PAGE === "world-cup") {
+        await loadWorldCupProjection();
       } else if (ACTIVE_PAGE === "league-table") {
         await loadLeagueTables(tableDataset.value);
       } else if (ACTIVE_PAGE === "position-odds") {

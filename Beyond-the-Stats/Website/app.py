@@ -82,12 +82,14 @@ GLOBAL_LEAGUES = [
     "Turkey/Super Lig",
 ]
 GLOBAL_CUP_COMPETITIONS = [
-CUP_COMPETITIONS = {
     "England/FA Cup",
     "England/League Cup",
     "UEFA/Champions League",
     "UEFA/Europa League",
     "UEFA/Conference League",
+    "Europe/Champions League",
+    "Europe/Europa League",
+    "Europe/Conference League",
     "Italy/Coppa Italia",
     "Spain/Copa del Rey",
     "Germany/DFB-Pokal",
@@ -103,16 +105,15 @@ PAGE_ROUTES = {
     "home": "/",
     "predictor": "/custom-predictor",
     "global": "/upcoming-matches",
+    "cups": "/cups",
     "h2h": "/head-to-head",
     "market": "/market-odds",
     "league-table": "/league-tables",
+    "world-cup": "/world-cup",
     "position-odds": "/position-odds",
     "players": "/players",
     "tactics": "/tactics",
     "about": "/about",
-    "Europe/Champions League",
-    "Europe/Europa League",
-    "Europe/Conference League",
 }
 STATIC_PREDICTIONS = os.environ.get("STATIC_PREDICTIONS", "1").strip().lower() in {"1", "true", "yes"}
 LOW_MEMORY_STATIC = os.environ.get("LOW_MEMORY_STATIC", "1").strip().lower() in {"1", "true", "yes"}
@@ -481,6 +482,7 @@ def _available_table_leagues():
             _read_competitions_from_prediction_csv(GLOBAL_PROJECTED_TABLE_FILE),
         ),
         "mls": _ordered_unique(MLS_TABLE_LEAGUES, _read_competitions_from_prediction_csv(MLS_PROJECTED_TABLE_FILE)),
+        "cups": _ordered_unique(GLOBAL_CUP_COMPETITIONS, _read_competitions_from_prediction_csv(CUP_PROJECTED_TABLE_FILE)),
         "extra": _ordered_unique(
             _list_processed_competitions(pm_extra.PROCESSED_DIR),
             _read_competitions_from_prediction_csv(EXTRA_PROJECTED_TABLE_FILE),
@@ -937,15 +939,11 @@ def _build_persistent_accuracy_stats(mode, rows):
         }
     elif mode == "extra":
         filtered = {}
-    elif mode == "cups":
-        filtered = {
-            str(k): v for k, v in by_league_all.items()
-            if str(k).strip() in CUP_COMPETITIONS
-        }
     else:
+        cup_names = set(GLOBAL_CUP_COMPETITIONS) | set(MLS_CUP_COMPETITIONS)
         filtered = {
             str(k): v for k, v in by_league_all.items()
-            if str(k).strip() != MLS_COMPETITION and str(k).strip() not in CUP_COMPETITIONS
+            if str(k).strip() != MLS_COMPETITION and str(k).strip() not in cup_names
         }
 
     pending_by_league = {}
@@ -1641,6 +1639,12 @@ def upcoming_matches():
     return _render_main_page("global")
 
 
+@app.get("/cups")
+def cups_page():
+    """Render the cup tables and brackets page."""
+    return _render_main_page("cups")
+
+
 @app.get("/head-to-head")
 def head_to_head():
     """Render the head-to-head page."""
@@ -1657,6 +1661,12 @@ def market_odds():
 def league_tables():
     """Render the projected league tables page."""
     return _render_main_page("league-table")
+
+
+@app.get("/world-cup")
+def world_cup_page():
+    """Render the World Cup projection page."""
+    return _render_main_page("world-cup")
 
 
 @app.get("/position-odds")
@@ -1801,13 +1811,6 @@ def api_upcoming_global():
         "league_stats": league_stats,
         "available_leagues": _available_upcoming_leagues().get("global", []),
     })
-
-
-@app.get("/api/upcoming/cups")
-def api_upcoming_cups():
-    """Return upcoming cup fixtures and persistent accuracy stats."""
-    rows, stats, league_stats = _load_upcoming_rows(CUP_UPCOMING_FILE, "cups")
-    return jsonify({"ok": True, "rows": rows, "stats": stats, "league_stats": league_stats})
 
 
 @app.get("/api/upcoming/mls")
