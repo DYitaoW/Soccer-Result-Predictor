@@ -47,10 +47,14 @@ ACCURACY_HISTORY_DIR = os.path.join(WEBSITE_FILES_DIR, "accuracy_history")
 ACCURACY_TOTALS_FILE = os.path.join(WEBSITE_FILES_DIR, "accuracy_totals.json")
 GLOBAL_UPCOMING_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "upcoming_matchweek_predictions.csv")
 CUP_UPCOMING_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "upcoming_cup_predictions.csv")
+WORLD_CUP_PROJECTION_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "world_cup_projection.json")
+CUP_COMPLETED_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "completed_cup_predictions.csv")
 MLS_UPCOMING_FILE = os.path.join(PROJECT_DIR, "MLS", "Data", "Predictions", "upcoming_matchweek_predictions.csv")
 MLS_CUP_UPCOMING_FILE = os.path.join(PROJECT_DIR, "MLS", "Data", "Predictions", "upcoming_mls_cup_predictions.csv")
 EXTRA_UPCOMING_FILE = os.path.join(PROJECT_DIR, "Extra-leagues", "Data", "Predictions", "upcoming_matchweek_predictions.csv")
 GLOBAL_PROJECTED_TABLE_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "projected_league_tables.csv")
+CUP_PROJECTED_TABLE_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "projected_cup_tables.csv")
+CUP_PROJECTED_BRACKET_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "projected_cup_brackets.json")
 MLS_PROJECTED_TABLE_FILE = os.path.join(PROJECT_DIR, "MLS", "Data", "Predictions", "projected_league_tables.csv")
 EXTRA_PROJECTED_TABLE_FILE = os.path.join(PROJECT_DIR, "Extra-leagues", "Data", "Predictions", "projected_league_tables.csv")
 MLS_PROJECTED_BRACKET_FILE = os.path.join(PROJECT_DIR, "MLS", "Data", "Predictions", "projected_mls_playoff_bracket.json")
@@ -78,6 +82,7 @@ GLOBAL_LEAGUES = [
     "Turkey/Super Lig",
 ]
 GLOBAL_CUP_COMPETITIONS = [
+CUP_COMPETITIONS = {
     "England/FA Cup",
     "England/League Cup",
     "UEFA/Champions League",
@@ -105,6 +110,9 @@ PAGE_ROUTES = {
     "players": "/players",
     "tactics": "/tactics",
     "about": "/about",
+    "Europe/Champions League",
+    "Europe/Europa League",
+    "Europe/Conference League",
 }
 STATIC_PREDICTIONS = os.environ.get("STATIC_PREDICTIONS", "1").strip().lower() in {"1", "true", "yes"}
 LOW_MEMORY_STATIC = os.environ.get("LOW_MEMORY_STATIC", "1").strip().lower() in {"1", "true", "yes"}
@@ -929,10 +937,15 @@ def _build_persistent_accuracy_stats(mode, rows):
         }
     elif mode == "extra":
         filtered = {}
+    elif mode == "cups":
+        filtered = {
+            str(k): v for k, v in by_league_all.items()
+            if str(k).strip() in CUP_COMPETITIONS
+        }
     else:
         filtered = {
             str(k): v for k, v in by_league_all.items()
-            if str(k).strip() != MLS_COMPETITION
+            if str(k).strip() != MLS_COMPETITION and str(k).strip() not in CUP_COMPETITIONS
         }
 
     pending_by_league = {}
@@ -1281,6 +1294,24 @@ def _load_json_payload(path):
         return None
 
 
+def _load_world_cup_projection():
+    """Load projected World Cup groups and bracket for website display."""
+    payload = _load_json_payload(WORLD_CUP_PROJECTION_FILE)
+    if not isinstance(payload, dict):
+        return None
+    if not isinstance(payload.get("group_tables"), list):
+        payload["group_tables"] = []
+    if not isinstance(payload.get("third_place_table"), list):
+        payload["third_place_table"] = []
+    if not isinstance(payload.get("group_fixtures"), list):
+        payload["group_fixtures"] = []
+    if not isinstance(payload.get("knockout"), dict):
+        payload["knockout"] = {}
+    payload.setdefault("champion", "")
+    payload.setdefault("rules_summary", [])
+    return payload
+
+
 def _to_int(value):
     """Best-effort integer coercion for display-safe counters."""
     try:
@@ -1540,16 +1571,18 @@ def _update_accuracy_history_from_csv(csv_path, source_key):
 
 
 def update_accuracy_history_files():
-    """Refresh both global and MLS accuracy history stores."""
+    """Refresh global, MLS, extra-league, and cup accuracy history stores."""
     os.makedirs(ACCURACY_HISTORY_DIR, exist_ok=True)
     global_files, global_rows = _update_accuracy_history_from_csv(GLOBAL_UPCOMING_FILE, "global")
     mls_files, mls_rows = _update_accuracy_history_from_csv(MLS_UPCOMING_FILE, "mls")
     extra_files, extra_rows = _update_accuracy_history_from_csv(EXTRA_UPCOMING_FILE, "extra")
+    cup_files, cup_rows = _update_accuracy_history_from_csv(CUP_COMPLETED_FILE, "cups")
     print(
         "[startup] Accuracy history updated: "
         f"global_files={global_files}, global_new_rows={global_rows}, "
         f"mls_files={mls_files}, mls_new_rows={mls_rows}, "
-        f"extra_files={extra_files}, extra_new_rows={extra_rows}"
+        f"extra_files={extra_files}, extra_new_rows={extra_rows}, "
+        f"cup_files={cup_files}, cup_new_rows={cup_rows}"
     )
 
 
@@ -1770,6 +1803,13 @@ def api_upcoming_global():
     })
 
 
+@app.get("/api/upcoming/cups")
+def api_upcoming_cups():
+    """Return upcoming cup fixtures and persistent accuracy stats."""
+    rows, stats, league_stats = _load_upcoming_rows(CUP_UPCOMING_FILE, "cups")
+    return jsonify({"ok": True, "rows": rows, "stats": stats, "league_stats": league_stats})
+
+
 @app.get("/api/upcoming/mls")
 def api_upcoming_mls():
     """Return upcoming MLS fixtures and persistent accuracy stats."""
@@ -1809,6 +1849,25 @@ def api_upcoming_cups():
     })
 
 
+@app.get("/api/world-cup")
+def api_world_cup():
+    """Return projected World Cup group tables and knockout bracket."""
+    payload = _load_world_cup_projection()
+    if payload is None:
+        return jsonify(
+            {
+                "ok": False,
+                "error": "World Cup projection not available. Run files/Project_World_Cup.py first.",
+                "group_tables": [],
+                "third_place_table": [],
+                "group_fixtures": [],
+                "knockout": {},
+            }
+        ), 404
+    payload["ok"] = True
+    return jsonify(payload)
+
+
 @app.get("/api/league-tables")
 def api_league_tables():
     """Return projected league tables (and MLS playoff bracket when requested)."""
@@ -1817,6 +1876,11 @@ def api_league_tables():
         data = _load_projected_tables(MLS_PROJECTED_TABLE_FILE)
         bracket = _load_json_payload(MLS_PROJECTED_BRACKET_FILE)
         return jsonify({"ok": True, **data, "available_leagues": _available_table_leagues().get("mls", []), "bracket": bracket})
+        return jsonify({"ok": True, **data, "bracket": bracket})
+    if mode == "cups":
+        data = _load_projected_tables(CUP_PROJECTED_TABLE_FILE)
+        brackets = _load_json_payload(CUP_PROJECTED_BRACKET_FILE)
+        return jsonify({"ok": True, **data, "cup_brackets": brackets})
     if mode == "extra":
         data = _load_projected_tables(EXTRA_PROJECTED_TABLE_FILE)
         return jsonify({"ok": True, **data, "available_leagues": _available_table_leagues().get("extra", [])})
