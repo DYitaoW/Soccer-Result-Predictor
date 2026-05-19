@@ -12,7 +12,7 @@ from zoneinfo import ZoneInfo
 
 import joblib
 import pandas as pd
-from flask import Flask, jsonify, redirect, render_template, request, send_from_directory, url_for
+from flask import Flask, jsonify, render_template, request, send_from_directory
 
 
 class AveragedProbaClassifier:
@@ -47,10 +47,8 @@ ACCURACY_HISTORY_DIR = os.path.join(WEBSITE_FILES_DIR, "accuracy_history")
 ACCURACY_TOTALS_FILE = os.path.join(WEBSITE_FILES_DIR, "accuracy_totals.json")
 GLOBAL_UPCOMING_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "upcoming_matchweek_predictions.csv")
 CUP_UPCOMING_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "upcoming_cup_predictions.csv")
-WORLD_CUP_PROJECTION_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "world_cup_projection.json")
 CUP_COMPLETED_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "completed_cup_predictions.csv")
 MLS_UPCOMING_FILE = os.path.join(PROJECT_DIR, "MLS", "Data", "Predictions", "upcoming_matchweek_predictions.csv")
-MLS_CUP_UPCOMING_FILE = os.path.join(PROJECT_DIR, "MLS", "Data", "Predictions", "upcoming_mls_cup_predictions.csv")
 EXTRA_UPCOMING_FILE = os.path.join(PROJECT_DIR, "Extra-leagues", "Data", "Predictions", "upcoming_matchweek_predictions.csv")
 GLOBAL_PROJECTED_TABLE_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "projected_league_tables.csv")
 CUP_PROJECTED_TABLE_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions", "projected_cup_tables.csv")
@@ -64,24 +62,7 @@ TEAM_NAME_DISPLAY_MAPPING_FILE = os.path.join(PROJECT_DIR, "Data", "Predictions"
 TOP_SCORERS_FILE = os.path.join(PROJECT_DIR, "Data", "Team_Data", "current_season_top_scorers.json")
 USE_DISPLAY_NAME_MAPPING = False
 MLS_COMPETITION = "United States/MLS"
-GLOBAL_LEAGUES = [
-    "Belgium/First Division A",
-    "England/Championship",
-    "England/Premier League",
-    "France/Ligue 1",
-    "France/Ligue 2",
-    "Germany/Bundesliga",
-    "Germany/Bundesliga 2",
-    "Italy/Serie A",
-    "Italy/Serie B",
-    "Netherlands/Eredivisie",
-    "Portugal/Liga Portugal",
-    "Scotland/Premiership",
-    "Spain/La Liga",
-    "Spain/La Liga 2",
-    "Turkey/Super Lig",
-]
-GLOBAL_CUP_COMPETITIONS = [
+CUP_COMPETITIONS = {
     "England/FA Cup",
     "England/League Cup",
     "UEFA/Champions League",
@@ -90,49 +71,7 @@ GLOBAL_CUP_COMPETITIONS = [
     "Europe/Champions League",
     "Europe/Europa League",
     "Europe/Conference League",
-    "Italy/Coppa Italia",
-    "Spain/Copa del Rey",
-    "Germany/DFB-Pokal",
-    "France/Coupe de France",
-]
-MLS_CUP_COMPETITIONS = ["United States/US Open Cup"]
-MLS_TABLE_LEAGUES = [
-    "United States/MLS - Supporters Shield Table",
-    "United States/MLS - Eastern Conference",
-    "United States/MLS - Western Conference",
-]
-PAGE_ROUTES = {
-    "home": "/",
-    "predictor": "/custom-predictor",
-    "global": "/upcoming-matches",
-    "cups": "/cups",
-    "h2h": "/head-to-head",
-    "market": "/market-odds",
-    "league-table": "/league-tables",
-    "world-cup": "/world-cup",
-    "position-odds": "/position-odds",
-    "players": "/players",
-    "tactics": "/tactics",
-    "about": "/about",
 }
-
-
-def _build_page_routes():
-    """Build navigation routes from endpoint names so links always stay in sync."""
-    return {
-        "home": url_for("index"),
-        "predictor": url_for("custom_predictor"),
-        "global": url_for("upcoming_matches"),
-        "cups": url_for("cups_page"),
-        "h2h": url_for("head_to_head"),
-        "market": url_for("market_odds"),
-        "league-table": url_for("league_tables"),
-        "world-cup": url_for("world_cup_page"),
-        "position-odds": url_for("position_odds"),
-        "players": url_for("players"),
-        "tactics": url_for("tactics"),
-        "about": url_for("about"),
-    }
 STATIC_PREDICTIONS = os.environ.get("STATIC_PREDICTIONS", "1").strip().lower() in {"1", "true", "yes"}
 LOW_MEMORY_STATIC = os.environ.get("LOW_MEMORY_STATIC", "1").strip().lower() in {"1", "true", "yes"}
 STATIC_PREDICTIONS_CACHE = os.environ.get("STATIC_PREDICTIONS_CACHE", "0").strip().lower() in {"1", "true", "yes"}
@@ -422,90 +361,6 @@ def _load_teams_from_team_data(pm_mod):
                 if isinstance(season_map, dict):
                     teams.extend(list(season_map.keys()))
     return sorted({str(team).strip() for team in teams if str(team).strip()})
-
-
-def _list_processed_competitions(processed_dir):
-    """Return competitions represented by processed-data folders."""
-    competitions = set()
-    if not os.path.isdir(processed_dir):
-        return []
-    for root, _, files in os.walk(processed_dir):
-        if not any(str(name).lower().endswith(".csv") for name in files):
-            continue
-        rel = os.path.relpath(root, processed_dir)
-        if rel == ".":
-            continue
-        competitions.add(rel.replace("\\", "/"))
-    return sorted(competitions, key=lambda name: name.lower())
-
-
-def _read_competitions_from_prediction_csv(csv_path):
-    """Read competition names from a prediction/table CSV if it exists."""
-    if not os.path.exists(csv_path):
-        return []
-    try:
-        frame = pd.read_csv(csv_path, usecols=lambda col: col == "competition", dtype={"competition": "string"})
-    except Exception:
-        return []
-    if frame.empty or "competition" not in frame.columns:
-        return []
-    return sorted(
-        {
-            str(value).strip()
-            for value in frame["competition"].dropna().tolist()
-            if str(value).strip()
-        },
-        key=lambda name: name.lower(),
-    )
-
-
-def _ordered_unique(*groups):
-    """Merge name groups while preserving first-seen ordering."""
-    out = []
-    seen = set()
-    for group in groups:
-        for item in group or []:
-            name = str(item or "").strip()
-            if not name or name in seen:
-                continue
-            seen.add(name)
-            out.append(name)
-    return out
-
-
-def _available_upcoming_leagues():
-    """Leagues/cups shown in upcoming prediction dropdowns, even without rows."""
-    return {
-        "global": _ordered_unique(GLOBAL_LEAGUES, _read_competitions_from_prediction_csv(GLOBAL_UPCOMING_FILE)),
-        "cups": _ordered_unique(
-            GLOBAL_CUP_COMPETITIONS,
-            MLS_CUP_COMPETITIONS,
-            _read_competitions_from_prediction_csv(CUP_UPCOMING_FILE),
-            _read_competitions_from_prediction_csv(MLS_CUP_UPCOMING_FILE),
-        ),
-        "mls": _ordered_unique([MLS_COMPETITION], _read_competitions_from_prediction_csv(MLS_UPCOMING_FILE)),
-        "extra": _ordered_unique(
-            _list_processed_competitions(pm_extra.PROCESSED_DIR),
-            _read_competitions_from_prediction_csv(EXTRA_UPCOMING_FILE),
-        ),
-    }
-
-
-def _available_table_leagues():
-    """Leagues shown in table/position dropdowns, even before table rows exist."""
-    return {
-        "global": _ordered_unique(
-            GLOBAL_LEAGUES,
-            _list_processed_competitions(pm_global.PROCESSED_DIR),
-            _read_competitions_from_prediction_csv(GLOBAL_PROJECTED_TABLE_FILE),
-        ),
-        "mls": _ordered_unique(MLS_TABLE_LEAGUES, _read_competitions_from_prediction_csv(MLS_PROJECTED_TABLE_FILE)),
-        "cups": _ordered_unique(GLOBAL_CUP_COMPETITIONS, _read_competitions_from_prediction_csv(CUP_PROJECTED_TABLE_FILE)),
-        "extra": _ordered_unique(
-            _list_processed_competitions(pm_extra.PROCESSED_DIR),
-            _read_competitions_from_prediction_csv(EXTRA_PROJECTED_TABLE_FILE),
-        ),
-    }
 
 
 def _load_h2h_and_form(pm_mod):
@@ -949,19 +804,17 @@ def _build_persistent_accuracy_stats(mode, rows):
             str(k): v for k, v in by_league_all.items()
             if str(k).strip() == MLS_COMPETITION
         }
-    elif mode == "cups":
-        cup_names = set(GLOBAL_CUP_COMPETITIONS) | set(MLS_CUP_COMPETITIONS)
-        filtered = {
-            str(k): v for k, v in by_league_all.items()
-            if str(k).strip() in cup_names
-        }
     elif mode == "extra":
         filtered = {}
-    else:
-        cup_names = set(GLOBAL_CUP_COMPETITIONS) | set(MLS_CUP_COMPETITIONS)
+    elif mode == "cups":
         filtered = {
             str(k): v for k, v in by_league_all.items()
-            if str(k).strip() != MLS_COMPETITION and str(k).strip() not in cup_names
+            if str(k).strip() in CUP_COMPETITIONS
+        }
+    else:
+        filtered = {
+            str(k): v for k, v in by_league_all.items()
+            if str(k).strip() != MLS_COMPETITION and str(k).strip() not in CUP_COMPETITIONS
         }
 
     pending_by_league = {}
@@ -1174,15 +1027,6 @@ def _load_upcoming_rows(csv_path, mode=None):
     return rows, persistent_stats, persistent_league_stats
 
 
-def _load_cup_upcoming_rows():
-    """Load global and MLS cup prediction rows for the cup dropdown."""
-    rows, _, _ = _load_upcoming_rows(CUP_UPCOMING_FILE, "cups")
-    mls_rows, _, _ = _load_upcoming_rows(MLS_CUP_UPCOMING_FILE, "cups")
-    combined = rows + mls_rows
-    stats, league_stats = _build_persistent_accuracy_stats("cups", combined)
-    return combined, stats, league_stats
-
-
 def _load_projected_tables(csv_path):
     """Load projected table CSV into API-ready league/table structure."""
     if not os.path.exists(csv_path):
@@ -1308,24 +1152,6 @@ def _load_json_payload(path):
             return json.load(fh)
     except Exception:
         return None
-
-
-def _load_world_cup_projection():
-    """Load projected World Cup groups and bracket for website display."""
-    payload = _load_json_payload(WORLD_CUP_PROJECTION_FILE)
-    if not isinstance(payload, dict):
-        return None
-    if not isinstance(payload.get("group_tables"), list):
-        payload["group_tables"] = []
-    if not isinstance(payload.get("third_place_table"), list):
-        payload["third_place_table"] = []
-    if not isinstance(payload.get("group_fixtures"), list):
-        payload["group_fixtures"] = []
-    if not isinstance(payload.get("knockout"), dict):
-        payload["knockout"] = {}
-    payload.setdefault("champion", "")
-    payload.setdefault("rules_summary", [])
-    return payload
 
 
 def _to_int(value):
@@ -1602,23 +1428,9 @@ def update_accuracy_history_files():
     )
 
 
-PAGE_TEMPLATE_BY_TAB = {
-    # Map each top-tab route to a dedicated template file.
-    "home": "home.html",
-    "predictor": "predictor.html",
-    "global": "upcoming_matches.html",
-    "cups": "cups.html",
-    "h2h": "head_to_head.html",
-    "market": "market_odds.html",
-    "league-table": "league_tables.html",
-    "world-cup": "world_cup.html",
-    "position-odds": "position_odds.html",
-    "about": "about.html",
-}
-
-
-def _render_main_page(active_page="home"):
-    """Render a dedicated tab template while preserving shared page data context."""
+@app.get("/")
+def index():
+    """Render the main website page with available team lists."""
     if STATIC_PREDICTIONS:
         _, global_teams = _get_static_predictions("global")
         _, mls_teams = _get_static_predictions("mls")
@@ -1642,79 +1454,12 @@ def _render_main_page(active_page="home"):
             extra_display_teams = sorted({_team_name_for_display(team) for team in extra_ctx.available_teams})
         except Exception:
             extra_display_teams = sorted({_team_name_for_display(team) for team in _load_teams_from_team_data(pm_extra)})
-    template_name = PAGE_TEMPLATE_BY_TAB.get(active_page, "home.html")
     return render_template(
-        template_name,
-        # Route-selected page key drives per-template panel visibility and initialization.
-        active_page=active_page,
-        # Build routes per request so nav links follow live endpoint paths.
-        page_routes=_build_page_routes(),
-        upcoming_leagues=_available_upcoming_leagues(),
-        table_leagues=_available_table_leagues(),
+        "index.html",
         teams=global_display_teams,
         mls_teams=mls_display_teams,
         extra_teams=extra_display_teams,
     )
-
-
-@app.get("/")
-def index():
-    """Render the home page."""
-    return _render_main_page("home")
-
-
-@app.get("/custom-predictor")
-def custom_predictor():
-    """Render the custom match predictor page."""
-    return _render_main_page("predictor")
-
-
-@app.get("/upcoming-matches")
-def upcoming_matches():
-    """Render the upcoming matches page."""
-    return _render_main_page("global")
-
-
-@app.get("/cups")
-def cups_page():
-    """Render the cup tables and brackets page."""
-    return _render_main_page("cups")
-
-
-@app.get("/head-to-head")
-def head_to_head():
-    """Render the head-to-head page."""
-    return _render_main_page("h2h")
-
-
-@app.get("/market-odds")
-def market_odds():
-    """Render the market and odds placeholder page."""
-    return _render_main_page("market")
-
-
-@app.get("/league-tables")
-def league_tables():
-    """Render the projected league tables page."""
-    return _render_main_page("league-table")
-
-
-@app.get("/world-cup")
-def world_cup_page():
-    """Render the World Cup projection page."""
-    return _render_main_page("world-cup")
-
-
-@app.get("/position-odds")
-def position_odds():
-    """Render the position odds page."""
-    return _render_main_page("position-odds")
-
-
-@app.get("/about")
-def about():
-    """Render the about page."""
-    return _render_main_page("about")
 
 
 @app.get("/api/teams")
@@ -1840,71 +1585,28 @@ def api_h2h():
 def api_upcoming_global():
     """Return upcoming global fixtures and persistent accuracy stats."""
     rows, stats, league_stats = _load_upcoming_rows(GLOBAL_UPCOMING_FILE, "global")
-    return jsonify({
-        "ok": True,
-        "rows": rows,
-        "stats": stats,
-        "league_stats": league_stats,
-        "available_leagues": _available_upcoming_leagues().get("global", []),
-    })
+    return jsonify({"ok": True, "rows": rows, "stats": stats, "league_stats": league_stats})
 
 
 @app.get("/api/upcoming/mls")
 def api_upcoming_mls():
     """Return upcoming MLS fixtures and persistent accuracy stats."""
     rows, stats, league_stats = _load_upcoming_rows(MLS_UPCOMING_FILE, "mls")
-    return jsonify({
-        "ok": True,
-        "rows": rows,
-        "stats": stats,
-        "league_stats": league_stats,
-        "available_leagues": _available_upcoming_leagues().get("mls", []),
-    })
+    return jsonify({"ok": True, "rows": rows, "stats": stats, "league_stats": league_stats})
 
 
 @app.get("/api/upcoming/extra")
 def api_upcoming_extra():
     """Return upcoming extra-league fixtures and persistent accuracy stats."""
     rows, stats, league_stats = _load_upcoming_rows(EXTRA_UPCOMING_FILE, "extra")
-    return jsonify({
-        "ok": True,
-        "rows": rows,
-        "stats": stats,
-        "league_stats": league_stats,
-        "available_leagues": _available_upcoming_leagues().get("extra", []),
-    })
+    return jsonify({"ok": True, "rows": rows, "stats": stats, "league_stats": league_stats})
 
 
 @app.get("/api/upcoming/cups")
 def api_upcoming_cups():
     """Return upcoming cup fixtures and persistent accuracy stats."""
-    rows, stats, league_stats = _load_cup_upcoming_rows()
-    return jsonify({
-        "ok": True,
-        "rows": rows,
-        "stats": stats,
-        "league_stats": league_stats,
-        "available_leagues": _available_upcoming_leagues().get("cups", []),
-    })
-
-
-@app.get("/api/world-cup")
-def api_world_cup():
-    """Return projected World Cup group tables and knockout bracket."""
-    payload = _load_world_cup_projection()
-    if payload is None:
-        return jsonify(
-            {
-                "ok": False,
-                "error": "World Cup projection not available. Run files/Project_World_Cup.py first.",
-                "group_tables": [],
-                "third_place_table": [],
-                "group_fixtures": [],
-                "knockout": {},
-            }
-        ), 404
-    payload["ok"] = True
-    return jsonify(payload)
+    rows, stats, league_stats = _load_upcoming_rows(CUP_UPCOMING_FILE, "cups")
+    return jsonify({"ok": True, "rows": rows, "stats": stats, "league_stats": league_stats})
 
 
 @app.get("/api/league-tables")
@@ -1914,7 +1616,6 @@ def api_league_tables():
     if mode == "mls":
         data = _load_projected_tables(MLS_PROJECTED_TABLE_FILE)
         bracket = _load_json_payload(MLS_PROJECTED_BRACKET_FILE)
-        return jsonify({"ok": True, **data, "available_leagues": _available_table_leagues().get("mls", []), "bracket": bracket})
         return jsonify({"ok": True, **data, "bracket": bracket})
     if mode == "cups":
         data = _load_projected_tables(CUP_PROJECTED_TABLE_FILE)
@@ -1922,10 +1623,10 @@ def api_league_tables():
         return jsonify({"ok": True, **data, "cup_brackets": brackets})
     if mode == "extra":
         data = _load_projected_tables(EXTRA_PROJECTED_TABLE_FILE)
-        return jsonify({"ok": True, **data, "available_leagues": _available_table_leagues().get("extra", [])})
+        return jsonify({"ok": True, **data})
     else:
         data = _load_projected_tables(GLOBAL_PROJECTED_TABLE_FILE)
-    return jsonify({"ok": True, **data, "available_leagues": _available_table_leagues().get("global", [])})
+    return jsonify({"ok": True, **data})
 
 
 @app.post("/api/feedback")
@@ -1958,31 +1659,15 @@ def api_feedback():
 
 
 @app.get("/tactics")
-@app.get("/tactics/")
 def tactics():
     """Render the tactics whiteboard page."""
     return render_template("tactics.html")
 
 
 @app.get("/players")
-@app.get("/players/")
 def players():
     """Render the players/top scorers page."""
     return render_template("players.html")
-
-
-@app.get("/player")
-@app.get("/player/")
-def players_alias():
-    """Redirect legacy singular player route to the canonical players page."""
-    return redirect(url_for("players"), code=302)
-
-
-@app.get("/tactic")
-@app.get("/tactic/")
-def tactics_alias():
-    """Redirect legacy singular tactic route to the canonical tactics page."""
-    return redirect(url_for("tactics"), code=302)
 
 
 @app.get("/api/scorers")

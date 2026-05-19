@@ -1,39 +1,33 @@
 :root {
-  /* Base light surfaces for a cleaner, less muddy canvas. */
-  --bg: #f3f7fb;
-  --bg-soft: #e8f0f8;
-  --card: #ffffff;
-  /* Primary text tones tuned for stronger readability in light mode. */
-  --text: #0f1f2f;
-  --muted: #5d7286;
-  --border: #c8d7e5;
-  /* Accent set keeps the football green identity while improving contrast. */
-  --primary: #1f8f5f;
-  --primary-strong: #15764d;
-  --danger: #c94848;
+  --bg:  #d0d9ec;
+  --bg-soft: #ADBBDA ;
+  --card: #e3e3e6;
+  --text: #05090e;
+  --muted: #7c8994;
+  --border: #8ea3b5;
+  --primary: #4caa68;
+  --primary-strong: #4ba566;
+  --danger: #d9534f;
   --card-bg: var(--card);
   --card-border: var(--border);
   --text-color: var(--text);
   --accent-color: var(--primary);
-  /* Primary button pairing favors clear text-on-accent contrast. */
   --btn-bg: var(--primary);
-  --btn-text: #f4fff8;
+  --btn-text: #a8a8a8;
   --btn-border: transparent;
   --btn-hover-bg: var(--primary-strong);
-  --btn-hover-text: #ebfff3;
-  /* Secondary controls stay subtle but legible against light cards. */
-  --btn-secondary-bg: rgba(255, 255, 255, 0.92);
+  --btn-hover-text: #3c3f3d;
+  --btn-secondary-bg: rgba(233, 232, 232, 0.8);
   --btn-secondary-text: var(--muted);
   --btn-secondary-border: var(--border);
   --btn-secondary-hover-bg: var(--primary);
-  --btn-secondary-hover-text: #f4fff8;
-  /* Form and table elements align with the refreshed neutral scale. */
-  --input-bg: #f8fbfe;
+  --btn-secondary-hover-text: #e0e0e0;
+  --input-bg: #dfdfdf;
   --input-text: var(--text);
   --input-border: var(--border);
-  --topbar-bg: rgba(255, 255, 255, 0.92);
+  --topbar-bg: #e3e3e6;
   --topbar-border: var(--border);
-  --table-header-bg: #e6eef6;
+  --table-header-bg: #c2c2c2;
   --table-header-text: var(--text);
 }
 
@@ -259,9 +253,6 @@ h1 {
 }
 
 .tab-btn {
-  display: inline-flex;
-  align-items: center;
-  text-decoration: none;
   margin: 0;
   border: 1px solid var(--btn-secondary-border);
   border-radius: 10px;
@@ -277,9 +268,6 @@ h1 {
   background: var(--primary);
 }
 
-a.brand,
-a.tab-btn {
-  text-decoration: none;
 .tab-btn.cup-tab-empty {
   opacity: 0.72;
 }
@@ -723,81 +711,6 @@ body:not(.dark-mode) .confidence-pill {
   font-size: 1.12rem;
 }
 
-.world-cup-hero {
-  display: flex;
-  justify-content: space-between;
-  gap: 14px;
-  flex-wrap: wrap;
-  align-items: center;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 16px;
-  margin-bottom: 14px;
-  background: linear-gradient(180deg, rgba(85, 211, 122, 0.12), rgba(85, 211, 122, 0.03));
-}
-
-.world-cup-hero h2 {
-  margin: 8px 0 4px;
-  color: var(--primary);
-}
-
-.world-cup-group-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  margin-bottom: 14px;
-}
-
-.world-cup-group-card {
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 12px;
-  background: #111922;
-  overflow-x: auto;
-}
-
-body:not(.dark-mode) .world-cup-group-card {
-  background: #f7f9fc;
-}
-
-.wc-qualified td {
-  background: rgba(69, 115, 179, 0.22);
-}
-
-.wc-third-place td {
-  background: rgba(113, 78, 163, 0.14);
-}
-
-.wc-third-qualified td {
-  background: rgba(85, 211, 122, 0.18);
-}
-
-.wc-third-eliminated td {
-  background: rgba(179, 81, 81, 0.12);
-}
-
-.world-cup-bracket {
-  display: flex;
-  gap: 14px;
-  overflow-x: auto;
-  padding-bottom: 4px;
-}
-
-.world-cup-round {
-  min-width: 210px;
-}
-
-.world-cup-match-card .match-meta {
-  margin-top: 6px;
-  font-size: 0.78rem;
-}
-
-.world-cup-rules ul {
-  margin: 8px 0 0;
-  padding-left: 20px;
-  color: var(--muted);
-}
-
 .player-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -938,10 +851,6 @@ body:not(.dark-mode) .world-cup-group-card {
     grid-template-columns: 1fr;
   }
 
-  .world-cup-group-grid {
-    grid-template-columns: 1fr;
-  }
-
   .tabs {
     overflow-x: auto;
     flex-wrap: nowrap;
@@ -955,5 +864,4 @@ body:not(.dark-mode) .world-cup-group-card {
   .site-nav {
     display: none;
   }
-}
 }
