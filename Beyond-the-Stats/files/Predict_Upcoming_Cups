@@ -65,11 +65,9 @@ def load_upcoming_matchweek_fixtures_from_thesportsdb(window_days, competition_n
     if not events:
         print(f"TheSportsDB: No events found for {competition_name}")
         return pd.DataFrame()
-    today = pd.Timestamp(datetime.now(UTC).date())
+    today = pd.Timestamp(datetime.now(UTC).date()).normalize()
     rows = []
     for event in events:
-        #test
-        print(event)
         # Parse date and filter by window
         date_str = event.get("dateEvent")
         if not date_str:
@@ -79,10 +77,6 @@ def load_upcoming_matchweek_fixtures_from_thesportsdb(window_days, competition_n
             continue
         match_date = match_date.tz_localize(None)
         if match_date < today:
-            continue
-        # Only include matches within the window
-        cutoff_date = calculate_fixture_window_end(window_days, start_date=today)
-        if match_date > cutoff_date:
             continue
         home_team = event.get("strHomeTeam", "").strip()
         away_team = event.get("strAwayTeam", "").strip()
@@ -101,6 +95,10 @@ def load_upcoming_matchweek_fixtures_from_thesportsdb(window_days, competition_n
         print(f"TheSportsDB: No valid fixtures for {competition_name}")
         return fixtures
     fixtures = fixtures.sort_values(["match_date", "home_team", "away_team"]).reset_index(drop=True)
+    fixtures = filter_to_next_fixture_window(fixtures, window_days, f"TheSportsDB {competition_name}")
+    if fixtures.empty:
+        print(f"TheSportsDB: No fixtures within anchored window for {competition_name}")
+        return fixtures
     print(f"TheSportsDB: Loaded {len(fixtures)} fixtures for {competition_name}")
     return fixtures
 
@@ -653,7 +651,7 @@ def parse_cli_args():
         "--window-days",
         type=int,
         default=DEFAULT_CUP_FIXTURE_WINDOW_DAYS,
-        help="Fallback lookahead window in days for cups without a configured fixture window.",
+        help="Fallback days after a cup's first upcoming fixture for cups without a configured fixture window.",
     )
     parser.add_argument(
         "--api-token",
@@ -676,7 +674,7 @@ def parse_match_date(value):
 
 
 def calculate_fixture_window_end(window_days, start_date=None):
-    # Anchor the window to today so the pull reflects the current slate.
+    # Anchor to the supplied start date, usually the cup's first upcoming fixture date.
     today = pd.Timestamp(start_date or datetime.now(UTC).date())
     today = today.normalize()
     min_window_end = today + pd.Timedelta(days=max(0, int(window_days)))
@@ -694,6 +692,26 @@ def cup_fixture_window_days(cup_data, fallback_window_days):
         return int(cup_data.get("fixture_window_days", fallback_window_days))
     except (TypeError, ValueError):
         return int(fallback_window_days)
+
+
+def filter_to_next_fixture_window(fixtures, window_days, label):
+    if fixtures.empty:
+        return fixtures
+
+    frame = fixtures.copy()
+    frame["match_date"] = pd.to_datetime(frame["match_date"], errors="coerce").dt.normalize()
+    frame = frame[frame["match_date"].notna()].copy()
+    if frame.empty:
+        return frame
+
+    first_fixture_date = frame["match_date"].min()
+    cutoff_date = calculate_fixture_window_end(window_days, start_date=first_fixture_date)
+    filtered = frame[frame["match_date"] <= cutoff_date].reset_index(drop=True)
+    print(
+        f"{label}: First fixture {first_fixture_date.date()} anchors "
+        f"{window_days}-day cutoff at {cutoff_date.date()}."
+    )
+    return filtered
 
 
 def make_prediction_key(match_date, competition, home_team, away_team):
@@ -1043,9 +1061,7 @@ def load_upcoming_matchweek_fixtures_from_csv_fallback(window_days, competition_
     fixtures = frame[["match_date", "competition", "home_team", "away_team"]].copy()
     fixtures["match_datetime_et"] = None
     fixtures = fixtures.sort_values(["match_date", "home_team", "away_team"]).reset_index(drop=True)
-    # Apply the same current-date window across fallback sources.
-    cutoff_date = calculate_fixture_window_end(window_days, start_date=today)
-    fixtures = fixtures[fixtures["match_date"] <= cutoff_date].reset_index(drop=True)
+    fixtures = filter_to_next_fixture_window(fixtures, window_days, f"CSV Fallback {competition_name}")
     print(f"CSV Fallback: Successfully filtered down to {len(fixtures)} fixtures.")
     return fixtures
 
@@ -1132,9 +1148,7 @@ def load_upcoming_matchweek_fixtures_from_espn(window_days, competition_name, es
         return fixtures
 
     fixtures = fixtures.sort_values(["match_date", "home_team", "away_team"]).reset_index(drop=True)
-    # Apply the same current-date window across ESPN results.
-    cutoff_date = calculate_fixture_window_end(window_days, start_date=today)
-    fixtures = fixtures[fixtures["match_date"] <= cutoff_date].reset_index(drop=True)
+    fixtures = filter_to_next_fixture_window(fixtures, window_days, f"ESPN {competition_name}")
     print(f"ESPN Loader: Successfully filtered down to {len(fixtures)} fixtures.")
     return fixtures
 
