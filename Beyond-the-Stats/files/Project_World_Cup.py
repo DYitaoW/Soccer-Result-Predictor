@@ -74,8 +74,11 @@ def ensure_model_bundle(rebuild, api_token):
         args = SimpleNamespace(
             skip_fetch=False,
             world_cup_only=True,
-            include_qualifiers=False,
-            api_token=api_token,
+            lookback_days=national.DEFAULT_LOOKBACK_DAYS,
+            rankings_file=national.FIFA_RANKINGS_FILE,
+            squad_values_file=national.SQUAD_VALUES_FILE,
+            footballdata_io_token=os.getenv("FOOTBALLDATA_IO_TOKEN", "").strip(),
+            sportradar_api_key=os.getenv("SPORTRADAR_API_KEY", "").strip(),
         )
         national.run_pipeline(args)
     return national.load_model_bundle()

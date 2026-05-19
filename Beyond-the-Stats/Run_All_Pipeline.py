@@ -144,8 +144,6 @@ def main():
         )
 
         national_process_cmd = [py, str(FILES_DIR / "Process_National_Team_Data.py"), "--world-cup-only"]
-        if api_token:
-            national_process_cmd += ["--api-token", api_token]
         run_step(
             "National team World Cup model",
             national_process_cmd,
