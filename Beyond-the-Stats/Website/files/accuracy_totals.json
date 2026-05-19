@@ -1,9 +1,9 @@
 {
-  "updated_at_utc": "2026-05-19T17:15:36+00:00",
+  "updated_at_utc": "2026-05-19T21:41:41+00:00",
   "overall": {
     "correct_total": 66,
-    "total_predictions": 135,
-    "accuracy_pct": 48.9
+    "total_predictions": 137,
+    "accuracy_pct": 48.2
   },
   "by_league": {
     "Italy/Serie A": {
@@ -13,8 +13,8 @@
     },
     "England/Premier League": {
       "correct_total": 9,
-      "total_predictions": 18,
-      "accuracy_pct": 50.0
+      "total_predictions": 20,
+      "accuracy_pct": 45.0
     },
     "Portugal/Liga Portugal": {
       "correct_total": 6,
@@ -856,6 +856,18 @@
       "competition": "United States/MLS",
       "predicted_result": "H",
       "actual_result": "D",
+      "is_correct": 0
+    },
+    "2026-05-19|England/Premier League|bournemouth|mancity": {
+      "competition": "England/Premier League",
+      "predicted_result": "A",
+      "actual_result": "D",
+      "is_correct": 0
+    },
+    "2026-05-19|England/Premier League|chelsea|tottenham": {
+      "competition": "England/Premier League",
+      "predicted_result": "A",
+      "actual_result": "H",
       "is_correct": 0
     }
   }
