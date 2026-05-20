@@ -918,13 +918,23 @@ def _load_upcoming_rows(csv_path, mode=None):
             return [], _compute_accuracy_stats(frame), _compute_league_accuracy_stats(frame)
 
     # Drop past fixtures so stale upcoming rows never show on the website.
-    parsed_dates = pd.to_datetime(frame["match_date"], errors="coerce").dt.normalize()
-    today = pd.Timestamp(datetime.now().date())
-    frame = frame[parsed_dates.notna()].copy()
-    frame["match_date"] = parsed_dates[parsed_dates.notna()].dt.strftime("%Y-%m-%d")
-    frame = frame[parsed_dates[parsed_dates.notna()] >= today].copy()
+    # CRITICAL: Must reset index after each filter to avoid index alignment issues
+    frame = frame.copy()
+    frame["parsed_date"] = pd.to_datetime(frame["match_date"], errors="coerce").dt.normalize()
+    frame = frame[frame["parsed_date"].notna()].reset_index(drop=True)
+    
     if frame.empty:
         return [], _compute_accuracy_stats(frame), _compute_league_accuracy_stats(frame)
+    
+    today = pd.Timestamp(datetime.now().date())
+    frame = frame[frame["parsed_date"] >= today].reset_index(drop=True)
+    
+    if frame.empty:
+        return [], _compute_accuracy_stats(frame), _compute_league_accuracy_stats(frame)
+    
+    # Now safely convert dates for display
+    frame["match_date"] = frame["parsed_date"].dt.strftime("%Y-%m-%d")
+    frame = frame.drop(columns=["parsed_date"])
 
     frame = frame.sort_values(["match_date", "competition", "home_team", "away_team"])
     target_mode = mode or ("mls" if os.path.normpath(csv_path) == os.path.normpath(MLS_UPCOMING_FILE) else "global")
@@ -1430,7 +1440,31 @@ def update_accuracy_history_files():
 
 @app.get("/")
 def index():
-    """Render the main website page with available team lists."""
+    """Render the home page with shared team context."""
+    return _render_site_page("home.html", active_page="home")
+
+
+def _render_site_page(template_name, active_page):
+    """Render a website tab page with shared team lists for forms and datalists."""
+    # Shared route map used by template JS navigation helpers.
+    page_routes = {
+        "home": "/",
+        "predictor": "/custom-predictor",
+        "global": "/upcoming-matches",
+        "cups": "/cups",
+        "h2h": "/head-to-head",
+        "market": "/market-odds",
+        "league-table": "/league-tables",
+        "world-cup": "/world-cup",
+        "position-odds": "/position-odds",
+        "players": "/players",
+        "tactics": "/tactics",
+        "about": "/about",
+    }
+    # Template defaults prevent Undefined errors for pages that serialize these values.
+    upcoming_leagues = {"global": [], "mls": [], "extra": [], "cups": []}
+    table_leagues = {"global": [], "mls": [], "extra": [], "cups": []}
+
     if STATIC_PREDICTIONS:
         _, global_teams = _get_static_predictions("global")
         _, mls_teams = _get_static_predictions("mls")
@@ -1455,11 +1489,70 @@ def index():
         except Exception:
             extra_display_teams = sorted({_team_name_for_display(team) for team in _load_teams_from_team_data(pm_extra)})
     return render_template(
-        "index.html",
+        template_name,
+        # Active page keeps nav highlighting/panel state aligned per template.
+        active_page=active_page,
+        page_routes=page_routes,
+        upcoming_leagues=upcoming_leagues,
+        table_leagues=table_leagues,
         teams=global_display_teams,
         mls_teams=mls_display_teams,
         extra_teams=extra_display_teams,
     )
+
+
+@app.get("/custom-predictor")
+def custom_predictor():
+    """Render the custom predictor tab page."""
+    return _render_site_page("predictor.html", active_page="predictor")
+
+
+@app.get("/upcoming-matches")
+def upcoming_matches():
+    """Render the upcoming matches tab page."""
+    return _render_site_page("upcoming_matches.html", active_page="global")
+
+
+@app.get("/cups")
+def cups_page():
+    """Render the cups tab page."""
+    return _render_site_page("cups.html", active_page="cups")
+
+
+@app.get("/head-to-head")
+def head_to_head():
+    """Render the head-to-head tab page."""
+    return _render_site_page("head_to_head.html", active_page="h2h")
+
+
+@app.get("/market-odds")
+def market_odds():
+    """Render the market odds tab page."""
+    return _render_site_page("market_odds.html", active_page="market")
+
+
+@app.get("/league-tables")
+def league_tables():
+    """Render the projected league tables tab page."""
+    return _render_site_page("league_tables.html", active_page="league-table")
+
+
+@app.get("/world-cup")
+def world_cup():
+    """Render the World Cup tab page."""
+    return _render_site_page("world_cup.html", active_page="world-cup")
+
+
+@app.get("/position-odds")
+def position_odds():
+    """Render the position odds tab page."""
+    return _render_site_page("position_odds.html", active_page="position-odds")
+
+
+@app.get("/about")
+def about():
+    """Render the about tab page."""
+    return _render_site_page("about.html", active_page="about")
 
 
 @app.get("/api/teams")

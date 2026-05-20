@@ -258,6 +258,7 @@ h1 {
   border-radius: 10px;
   background: var(--btn-secondary-bg);
   color: var(--btn-secondary-text);
+  text-decoration: none;
   padding: 8px 12px;
   font-size: 0.9rem;
 }
